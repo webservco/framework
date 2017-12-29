@@ -1,2 +1,2 @@
-# framework
+# webservco/framework
 A PHP Framework
