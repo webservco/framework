@@ -1,0 +1,21 @@
+{
+    "name": "webservco/framework",
+    "type": "library",
+    "description": "A PHP Framework",
+    "keywords": ["framework", "webservco"],
+    "homepage": "https://webserv.co",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Radu Maier",
+            "email": "ariademur@webserv.co"
+        }
+    ],
+    "require": {
+        "php": "^5.4 || ^7.0"
+    },
+    "require-dev": {
+        "pds/skeleton": "~1.0"
+    },
+    "minimum-stability": "stable"
+}
