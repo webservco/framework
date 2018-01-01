@@ -7,7 +7,8 @@ class Application
     {
     }
 
-    public function test()
+    public function helloWorld()
     {
+        return 'Hello World!';
     }
 }
