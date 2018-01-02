@@ -25,10 +25,7 @@
 			"WebServCo\\" : "src/WebServCo/"
 		}
 	},
-	"minimum-stability" : "stable",
 	"scripts" : {
-		"check" : [
-			"vendor/bin/phpcs --standard=PSR2 src"
-		]
+		"check" : "vendor/bin/phpcs --standard=PSR2 src"
 	}
 }
