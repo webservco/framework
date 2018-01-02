@@ -29,6 +29,6 @@
 	"scripts" : {
 		"check" : "vendor/bin/phpcs --standard=PSR2 src tests",
 		"test" : "vendor/bin/phpunit",
-		"test-d" : "vendor/bin/phpunit --textdoc"
+		"test-d" : "vendor/bin/phpunit --testdox"
 	}
 }
