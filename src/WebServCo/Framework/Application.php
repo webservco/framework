@@ -16,8 +16,6 @@ class Application
     
     public function boot()
     {
-        //config
-        
         if (Fw::isCLI()) {
             return $this->bootCLI();
         } else {
