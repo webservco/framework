@@ -6,7 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 final class Test extends TestCase
 {
-    public function testDummyPassingTest()
+    /**
+     * @test
+     */
+    public function dummyPassingTest()
     {
         $this->assertTrue(true);
     }

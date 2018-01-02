@@ -7,17 +7,26 @@ use WebServCo\Framework\Framework;
 
 final class FrameworkTest extends TestCase
 {
-    public function testCLICheckReturnsBoolean()
+    /**
+     * @test
+     */
+    public function cliCheckReturnsBoolean()
     {
         $this->assertInternalType('bool', Framework::isCLI());
     }
     
-    public function testConfigMethodReturnsCorrectInstance()
+    /**
+     * @test
+     */
+    public function configMethodReturnsCorrectInstance()
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Framework::config());
     }
     
-    public function testLogMethodReturnsCorrectInstance()
+    /**
+     * @test
+     */
+    public function logMethodReturnsCorrectInstance()
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Log', Framework::log());
     }
