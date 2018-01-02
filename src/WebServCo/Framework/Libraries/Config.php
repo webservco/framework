@@ -32,7 +32,7 @@ class Config extends \WebServCo\Framework\Library
      *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app.path.project')
+     *                          (eg 'app.path.project').
      * @param mixed $value The value to be stored.
      *
      * @return bool True on success and false on failure.
@@ -42,7 +42,7 @@ class Config extends \WebServCo\Framework\Library
         if (empty($setting)) {
             return false;
         }
-        $setting = $this->parseKey($setting, true);
+        $setting = $this->parseSetting($setting, true);
         if (is_array($setting)) {
             $reference = &$this->config;
             foreach ($setting as $item) {
@@ -54,5 +54,71 @@ class Config extends \WebServCo\Framework\Library
         }
         $this->config[$setting] = $value;
         return true;
+    }
+    
+    /**
+     * Gets a configuration value.
+     *
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app.path.project').
+     * @param array $config Configuration data. It is used a method
+     *                          parameter in recursion.
+     * @return mixed
+     */
+    public function get($setting = null, $config = array())
+    {
+        $setting = $this->parseSetting($setting, true);
+        $config = $config ?: $this->config;
+        
+        if (empty($setting)) {
+            return false;
+        }
+        
+        /**
+         * If $setting is an array, process it recursively.
+         */
+        if (is_array($setting)) {
+            /**
+             * Check if we have the first $setting element in the
+             * configuration data array.
+             */
+            if (array_key_exists(0, $setting) && array_key_exists($setting[0], $config)) {
+                /**
+                 * Remove first element from $setting.
+                 */
+                $key = array_shift($setting);
+                /**
+                 * At the end of the recursion $setting will be
+                 * an empty array. In this case we simply return the
+                 * current configuration data.
+                 */
+                if (empty($setting)) {
+                    return $config[$key];
+                }
+                /**
+                 * Go down one lement in the configuration data
+                 * and call the method again, with the remainig setting.
+                 */
+                return $this->get($setting, $config[$key]);
+            }
+            /**
+             * The requested setting doesn't exist in our
+             * configuration data array.
+             */
+            return false;
+        }
+        
+        /**
+         * If we arrive here, $setting must be a simple string.
+         */
+        if (array_key_exists($setting, $config)) {
+            return $config[$setting];
+        }
+        
+        /**
+         * If we got this far, there is no data to return.
+         */
+        return false;
     }
 }
