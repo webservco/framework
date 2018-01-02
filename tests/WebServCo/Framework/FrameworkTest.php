@@ -3,14 +3,13 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Constraint\IsType;
 use WebServCo\Framework\Framework;
 
 final class FrameworkTest extends TestCase
 {
     public function testCLICheckReturnsBoolean()
     {
-        $this->assertInternalType(IsType::TYPE_BOOL, Framework::isCLI());
+        $this->assertInternalType('bool', Framework::isCLI());
     }
     
     public function testConfigMethodReturnsCorrectInstance()
