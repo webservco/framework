@@ -8,3 +8,6 @@ php:
         - hhvm
 before_script:
   - composer update
+notifications:
+        email:
+                on_success: always
