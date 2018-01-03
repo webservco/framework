@@ -35,6 +35,14 @@ final class Framework
         return self::$libraries[$className];
     }
     
+    /**
+     * Returns the path the framework project is located in.
+     */
+    final public static function getPath()
+    {
+        return str_replace('src/WebServCo/Framework', '', __DIR__);
+    }
+    
     final public static function isCLI()
     {
         return 'cli' === PHP_SAPI;
