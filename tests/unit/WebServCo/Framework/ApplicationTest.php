@@ -11,8 +11,8 @@ final class ApplicationTest extends TestCase
 {
     private $filesystem;
     
-    protected $pathProject = '';
-    protected $pathWeb = '';
+    private $pathProject = '';
+    private $pathWeb = '';
     
     public function setUp()
     {

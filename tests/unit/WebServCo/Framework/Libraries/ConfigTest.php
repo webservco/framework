@@ -8,10 +8,10 @@ use WebServCo\Framework\Libraries\Config;
 
 final class ConfigTest extends TestCase
 {
-    protected $settingSimpleString = 'setting';
-    protected $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
-    protected $settingSpecialString = 'setting1.setting2.setting3';
-    protected $value = 'value';
+    private $settingSimpleString = 'setting';
+    private $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
+    private $settingSpecialString = 'setting1.setting2.setting3';
+    private $value = 'value';
     
     /**
      * @test
