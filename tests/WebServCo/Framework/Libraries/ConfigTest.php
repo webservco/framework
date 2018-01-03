@@ -185,12 +185,4 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::config()->set('app', $this->value));
         $this->assertEquals($this->value, Fw::config()->get('app'));
     }
-    
-    /**
-     * @test
-     */
-    public function test()
-    {
-        $this->markTestIncomplete('TODO');
-    }
 }

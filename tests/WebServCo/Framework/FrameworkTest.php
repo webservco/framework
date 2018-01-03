@@ -3,7 +3,7 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework;
+use WebServCo\Framework\Framework as Fw;
 
 final class FrameworkTest extends TestCase
 {
@@ -12,7 +12,7 @@ final class FrameworkTest extends TestCase
      */
     public function cliCheckReturnsBoolean()
     {
-        $this->assertInternalType('bool', Framework::isCLI());
+        $this->assertInternalType('bool', Fw::isCLI());
     }
     
     /**
@@ -20,7 +20,7 @@ final class FrameworkTest extends TestCase
      */
     public function configMethodReturnsCorrectInstance()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Framework::config());
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Fw::config());
     }
     
     /**
@@ -28,6 +28,6 @@ final class FrameworkTest extends TestCase
      */
     public function logMethodReturnsCorrectInstance()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Log', Framework::log());
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Log', Fw::log());
     }
 }
