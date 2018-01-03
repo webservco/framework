@@ -17,6 +17,11 @@ final class ApplicationTest extends TestCase
         $this->pathProject = $pathProject;
         $this->pathWeb = "{$pathProject}public/";
     }
+    
+    public function test()
+    {
+        $this->assertEquals('XXX', $this->pathProject);
+    }
      
     /**
     * @test
