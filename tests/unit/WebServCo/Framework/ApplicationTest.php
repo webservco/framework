@@ -18,11 +18,22 @@ final class ApplicationTest extends TestCase
         $this->pathWeb = "{$pathProject}public/";
     }
     
-    public function test()
+    /**
+    * @test
+    */
+    public function dummyProjectPathIsReadable()
     {
-        $this->assertEquals('XXX', $this->pathProject);
+        $this->assertTrue(is_readable($this->pathProject));
     }
-     
+    
+    /**
+    * @test
+    */
+    public function dummyWebPathIsReadable()
+    {
+        $this->assertTrue(is_readable($this->pathWeb));
+    }
+
     /**
     * @test
     * @expectedException \ErrorException
@@ -61,6 +72,8 @@ final class ApplicationTest extends TestCase
     
     /**
     * @test
+    * @depends dummyProjectPathIsReadable
+    * @depends dummyWebPathIsReadable
     */
     public function instantiationWithValidParametersWorks()
     {
@@ -72,6 +85,7 @@ final class ApplicationTest extends TestCase
     
     /**
     * @test
+    * @depends instantiationWithValidParametersWorks
     */
     public function setEnvironmentValueReturnsTrue()
     {
