@@ -3,19 +3,24 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
+use org\bovigo\vfs\vfsStream;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
+    private $filesystem;
+    
     protected $pathProject = '';
     protected $pathWeb = '';
     
     public function setUp()
     {
+        $this->filesystem = vfsStream::setup();
         $pathProject = Fw::getPath() . 'tests/assets/project/';
-        $this->pathProject = $pathProject;
-        $this->pathWeb = "{$pathProject}public/";
+        vfsStream::copyFromFileSystem($pathProject, $this->filesystem);
+        $this->pathProject = $this->filesystem->url() . '/';
+        $this->pathWeb = $this->filesystem->url() . '/public/';
     }
     
     /**
