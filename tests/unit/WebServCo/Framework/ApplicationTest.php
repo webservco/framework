@@ -16,11 +16,28 @@ final class ApplicationTest extends TestCase
     
     public function setUp()
     {
-        $this->filesystem = vfsStream::setup();
+        $this->filesystem = vfsStream::setup('root',null);
         $pathProject = Fw::getPath() . 'tests/assets/project/';
         vfsStream::copyFromFileSystem($pathProject, $this->filesystem);
         $this->pathProject = $this->filesystem->url() . '/';
         $this->pathWeb = $this->filesystem->url() . '/public/';
+    }
+    
+    /**
+    * @test
+    */
+    public function vfsStreamHasChildPublic()
+    {
+        $this->assertTrue($this->filesystem->hasChild('public'));
+        $this->assertEquals(0775, $this->filesystem->getChild('public')->getPermissions());
+    }
+    
+    /**
+    * @test
+    */
+    public function vfsStreamPublicPermissionsMatch()
+    {
+        $this->assertEquals(0775, $this->filesystem->getChild('public')->getPermissions());
     }
     
     /**
