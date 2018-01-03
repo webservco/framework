@@ -7,9 +7,12 @@ class Application
 {
     public function __construct($pathPublic, $pathProject)
     {
-        if (!is_readable($pathPublic) || !is_readable("{$pathProject}.env")) {
+        $pathPublic = rtrim($pathPublic, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $pathProject = rtrim($pathProject, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        
+        if (!is_readable("{$pathPublic}index.php") || !is_readable("{$pathProject}.env")) {
             throw new \ErrorException(
-                'Invalid paths specified'
+                'Invalid paths specified when initializing Application.'
             );
         }
         Fw::config()->set('app.path.web', $pathPublic);

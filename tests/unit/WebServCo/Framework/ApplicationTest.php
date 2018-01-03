@@ -17,6 +17,7 @@ final class ApplicationTest extends TestCase
         $pathWeb = "{$pathProject}public/";
         if (!is_readable($pathWeb)) {
                 mkdir($pathWeb, 0775, true);
+                touch("{$pathWeb}index.php");
                 file_put_contents("{$pathProject}.env", 'dev');
         }
         $this->pathProject = $pathProject;
@@ -29,6 +30,7 @@ final class ApplicationTest extends TestCase
         $pathProject = "{$pathBase}project/";
         $pathWeb = "{$pathProject}public/";
         if (is_readable($pathWeb)) {
+            unlink("{$pathWeb}index.php");
             rmdir($pathWeb);
             if (is_readable("{$pathProject}.env")) {
                 unlink("{$pathProject}.env");
