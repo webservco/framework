@@ -17,8 +17,6 @@ class Application
         }
         Fw::config()->set('app.path.web', $pathPublic);
         Fw::config()->set('app.path.project', $pathProject);
-        
-        \WebServCo\Framework\ErrorHandler::set();
     }
     
     /**
@@ -43,6 +41,8 @@ class Application
      */
     public function start()
     {
+        \WebServCo\Framework\ErrorHandler::set();
+        
         $this->setEnvironmentValue();
         
         return true;
