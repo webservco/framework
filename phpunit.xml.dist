@@ -16,4 +16,8 @@
             <directory suffix="Test.php">./tests/WebServCo/Framework</directory>
         </testsuite>
     </testsuites>
+    <php>
+	    <env name="APP_PATH_PROJECT" value="/path/to/webservco/framework/" />
+	    <env name="APP_PATH_PUBLIC" value="/path/to/webservco/framework/public/" />
+    </php>
 </phpunit>

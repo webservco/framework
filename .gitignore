@@ -5,3 +5,6 @@ vendor/
 .project
 .settings/
 
+# Configuration
+phpunit.xml
+
