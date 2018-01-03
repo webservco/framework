@@ -11,47 +11,51 @@ final class ApplicationTest extends TestCase
     protected $path_project = '';
     protected $path_public = '';
     
-    public function setUp() {
+    public function setUp()
+    {
         $fw_path = Fw::getPath();
         $this->path_project = "{$fw_path}tests/assets/project/";
         $this->path_public = "{$fw_path}tests/assets/project/public/";
     }
      
-     /**
-     * @test
-     */
-     public function instantiationWithNullParametersThrowsException()
-     {
-         $this->expectException(\Exception::class);
+    /**
+    * @test
+    */
+    public function instantiationWithNullParametersThrowsException()
+    {
+        $this->expectException(\Exception::class);
          
-         new App(null,null);
-     }
+        new App(null, null);
+    }
      
-     /**
-     * @test
-     */
-     public function instantiationWithEmptyParametersThrowsException()
-     {
-         $this->expectException(\Exception::class);
+    /**
+    * @test
+    */
+    public function instantiationWithEmptyParametersThrowsException()
+    {
+        $this->expectException(\Exception::class);
          
-         new App('','');
-     }
+        new App('', '');
+    }
      
-     /**
-     * @test
-     */
-     public function instantiationWithDummyParametersThrowsException()
-     {
-         $this->expectException(\Exception::class);
+    /**
+    * @test
+    */
+    public function instantiationWithDummyParametersThrowsException()
+    {
+        $this->expectException(\Exception::class);
          
-         new App('foo','bar');
-     }
+        new App('foo', 'bar');
+    }
      
-     /**
-     * @test
-     */
-     public function instantiationWithValidParametersWorks()
-     {
-         $this->assertInstanceOf('WebServCo\Framework\Application', new App($this->path_project,$this->path_public));
-     }
+    /**
+    * @test
+    */
+    public function instantiationWithValidParametersWorks()
+    {
+        $this->assertInstanceOf(
+            'WebServCo\Framework\Application',
+            new App($this->path_project, $this->path_public)
+        );
+    }
 }

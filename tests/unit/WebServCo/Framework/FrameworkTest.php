@@ -20,7 +20,7 @@ final class FrameworkTest extends TestCase
      */
     public function getPathReturnsString()
     {
-       $this->assertInternalType('string', Fw::getPath());
+        $this->assertInternalType('string', Fw::getPath());
     }
     
     /**
