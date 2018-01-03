@@ -20,41 +20,37 @@ final class ApplicationTest extends TestCase
      
     /**
     * @test
+    * @expectedException \ErrorException
     */
     public function instantiationWithNullParametersThrowsException()
     {
-        $this->expectException('\ErrorException');
-         
         new App(null, null);
     }
      
     /**
     * @test
+    * @expectedException \ErrorException
     */
     public function instantiationWithEmptyParametersThrowsException()
     {
-        $this->expectException('\ErrorException');
-         
         new App('', '');
     }
      
     /**
     * @test
+    * @expectedException \ErrorException
     */
     public function instantiationWithDummyParametersThrowsException()
     {
-        $this->expectException('\ErrorException');
-         
         new App('foo', 'bar');
     }
      
     /**
     * @test
+    * @expectedException \ErrorException
     */
     public function instantiationInvalidParametersThrowsException()
     {
-        $this->expectException('\ErrorException');
-         
         new App('/tmp', '/tmp');
     }
     

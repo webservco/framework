@@ -26,11 +26,10 @@ final class ErrorHandlerTest extends TestCase
     
     /**
      * @test
+     * @expectedException \ErrorException
      */
     public function handleThrowsErrorException()
     {
-        $this->expectException('\ErrorException');
-        
         ErrorHandler::handle(256, 'Custom error message', 'foo/bar.php', 13);
     }
 }
