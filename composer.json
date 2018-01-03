@@ -28,7 +28,7 @@
 	},
 	"scripts" : {
 		"check:structure" : "vendor/bin/pds-skeleton validate",
-		"check:code" : "vendor/bin/phpcs --standard=PSR2 src tests",
+		"check" : "vendor/bin/phpcs --standard=PSR2 --extensions=php src tests",
 		"test" : "vendor/bin/phpunit --colors=always",
 		"test:d" : "vendor/bin/phpunit --testdox"
 	}
