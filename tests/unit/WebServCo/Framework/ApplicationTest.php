@@ -3,34 +3,22 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use org\bovigo\vfs\vfsStream;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
-    private $filesystem;
-    
     private $pathProject = '';
     private $pathWeb = '';
     
     public function setUp()
     {
-        /*
-        $this->filesystem = vfsStream::setup('root',null);
-        $pathProject = Fw::getPath() . 'tests/assets/project/';
-        vfsStream::copyFromFileSystem($pathProject, $this->filesystem);
-        $this->pathProject = $this->filesystem->url() . '/';
-        $this->pathWeb = $this->filesystem->url() . '/public/';
-        */
-        
         $pathProject = '/tmp/webservco/project/';
         $pathWeb = "{$pathProject}public/";
         if (!is_readable($pathWeb)) {
                 mkdir($pathWeb, 0775, true);
                 file_put_contents("{$pathProject}.env", 'dev');
         }
-        
         $this->pathProject = $pathProject;
         $this->pathWeb = $pathWeb;
     }
@@ -48,23 +36,6 @@ final class ApplicationTest extends TestCase
             rmdir($pathProject);
             rmdir($pathBase);
         }
-    }
-    
-    /**
-    * @test
-    */
-    public function vfsStreamHasChildPublic()
-    {
-        //$this->assertTrue($this->filesystem->hasChild('public'));
-        //$this->assertEquals(0775, $this->filesystem->getChild('public')->getPermissions());
-    }
-    
-    /**
-    * @test
-    */
-    public function vfsStreamPublicPermissionsMatch()
-    {
-        //$this->assertEquals(0775, $this->filesystem->getChild('public')->getPermissions());
     }
     
     /**
