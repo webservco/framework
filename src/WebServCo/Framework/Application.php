@@ -7,41 +7,58 @@ class Application
 {
     public function __construct($pathPublic, $pathProject)
     {
-        
-        /*
-        $this->setEnvironment($pathProject);
-        
-        Fw::config()->set('app.path.public', $pathPublic);
+        if (!is_readable($pathPublic) || !is_readable("{$pathProject}.env")) {
+            throw new \ErrorException(
+                'Invalid paths specified'
+            );
+        }
+        Fw::config()->set('app.path.web', $pathPublic);
         Fw::config()->set('app.path.project', $pathProject);
-        */
-        //set local configuration
+        
+        \WebServCo\Framework\ErrorHandler::set();
     }
     
-    private function setEnvironment($pathProject)
+    /**
+     * Sets the env value from the project .env file.
+     */
+    public function setEnvironmentValue()
     {
-        $env = Environment::ENV_DEV;
-        if (is_readable("{$pathProject}.env")) {
-            $env = trim(include "{$pathProject}.env");
-        }
-        if (in_array($env, Environment::getOptions())) {
-            //XXX
-        }
+        /**
+         * Project path is set in the constructor.
+         */
+        $pathProject = Fw::config()->get('app.path.project');
+        /**
+         * Env file existence is verified in the controller.
+         */
+        Fw::config()->setEnv(trim(file_get_contents("{$pathProject}.env")));
+        
+        return true;
     }
     
-    public function boot()
+    /**
+     * Starts the execution of the application.
+     */
+    public function start()
     {
-        if (Fw::isCLI()) {
-            return $this->bootCLI();
-        } else {
-            return $this->bootHTTP();
-        }
+        $this->setEnvironmentValue();
+        
+        return true;
     }
     
-    protected function bootCLI()
+    /**
+     * Finishes the execution of the Application.
+     */
+    public function stop()
     {
+        \WebServCo\Framework\ErrorHandler::restore();
+        
+        return true;
     }
     
-    protected function bootHTTP()
+    /**
+     * Runs the applciation.
+     */
+    public function run()
     {
     }
 }
