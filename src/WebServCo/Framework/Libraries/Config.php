@@ -8,7 +8,15 @@ class Config extends \WebServCo\Framework\Library
      */
     private $delimiter;
     
+    /**
+     * Stores configuration data.
+     */
     private $config = [];
+    
+    /**
+     * Application environemnt.
+     */
+    private $env;
     
     public function __construct($delimiter = '.')
     {
@@ -120,5 +128,33 @@ class Config extends \WebServCo\Framework\Library
          * If we got this far, there is no data to return.
          */
         return false;
+    }
+    
+    /**
+     * Set application environment value.
+     *
+     * @param string $env
+     *
+     * @return bool
+     */
+    public function setEnv($env = null)
+    {
+        if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
+            $this->env = $env;
+        } else {
+            $this->env = \WebServCo\Framework\Environment::ENV_DEV;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Get application environment value.
+     *
+     * @return string
+     */
+    public function getEnv()
+    {
+        return $this->env ?: \WebServCo\Framework\Environment::ENV_DEV;
     }
 }

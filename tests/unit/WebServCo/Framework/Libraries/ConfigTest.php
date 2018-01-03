@@ -174,6 +174,7 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
         $this->assertEquals($this->value, Fw::config()->get('app.one.sub_two.key'));
     }
+    
     /**
      * @test
      */
@@ -184,5 +185,39 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
         $this->assertTrue(Fw::config()->set('app', $this->value));
         $this->assertEquals($this->value, Fw::config()->get('app'));
+    }
+    
+    /**
+     * @test
+     */
+    public function setEnvReturnsTrue()
+    {
+        $this->assertTrue(Fw::config()->setEnv('dev'));
+    }
+    
+    /**
+     * @test
+     */
+    public function setEnvDefaultsToDevOnInvalidValue()
+    {
+        Fw::config()->setEnv('noexist');
+        $this->assertEquals('dev', Fw::config()->getEnv());
+    }
+    
+    /**
+     * @test
+     */
+    public function getEnvReturnsString()
+    {
+        $this->assertInternalType('string', Fw::config()->getEnv());
+    }
+    
+    /**
+     * @test
+     */
+    public function getEnvDefaultsToDev()
+    {
+        $config = new \WebServCo\Framework\Libraries\Config;
+        $this->assertEquals('dev', $config->getEnv());
     }
 }
