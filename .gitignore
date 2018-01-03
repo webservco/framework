@@ -4,7 +4,3 @@ vendor/
 .buildpath
 .project
 .settings/
-
-# Configuration
-phpunit.xml
-

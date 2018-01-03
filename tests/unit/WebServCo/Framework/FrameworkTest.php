@@ -18,6 +18,14 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
+    public function getPathReturnsString()
+    {
+       $this->assertInternalType('string', Fw::getPath());
+    }
+    
+    /**
+     * @test
+     */
     public function configMethodReturnsCorrectInstance()
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Fw::config());

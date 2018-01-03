@@ -10,14 +10,10 @@
         stopOnFailure="false">
     <testsuites>
         <testsuite name="Test">
-            <directory suffix="Test.php">./tests/WebServCo/Test</directory>
+            <directory suffix="Test.php">./tests/unit/WebServCo/Test</directory>
         </testsuite>
         <testsuite name="Framework">
-            <directory suffix="Test.php">./tests/WebServCo/Framework</directory>
+            <directory suffix="Test.php">./tests/unit/WebServCo/Framework</directory>
         </testsuite>
     </testsuites>
-    <php>
-	    <env name="APP_PATH_PROJECT" value="/path/to/webservco/framework/" />
-	    <env name="APP_PATH_PUBLIC" value="/path/to/webservco/framework/public/" />
-    </php>
 </phpunit>
