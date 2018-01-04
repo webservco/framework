@@ -42,26 +42,77 @@ class Application
     public function start()
     {
         \WebServCo\Framework\ErrorHandler::set();
+        register_shutdown_function([$this, 'shutdown']);
         
-        $this->setEnvironmentValue();
-        
-        Fw::date()->setTimezone();
-        
-        return true;
+        try {
+            $this->setEnvironmentValue();
+            Fw::date()->setTimezone();
+            return true;
+        } catch (\Errors $e) { //php 7
+            return $this->shutdown($e, true);
+        } catch (\Exception $e) {
+            return $this->shutdown($e, true);
+        }
     }
     
     /**
      * Finishes the execution of the Application.
+     *
+     * This method is also registered as a shutdown handler.
      */
-    public function stop()
+    public function shutdown($exception = null, $manual = false)
     {
-        \WebServCo\Framework\ErrorHandler::restore();
+        $this->handleErrors($exception);
         
-        return true;
+        if (!$manual) { //if shutdown handler
+            /**
+             * Warning: this part will always be executed,
+             * independent of the outcome of the script.
+             */
+            
+            \WebServCo\Framework\ErrorHandler::restore();
+        }
+        exit;
     }
     
     /**
-     * Runs the applciation.
+     * Handle Errors.
+     *
+     * @param mixed $exception and Error or Exception object.
+     */
+    public function handleErrors($exception = null)
+    {
+        if (is_object($exception)) {
+            $errorInfo = [
+                'code' => $exception->getCode(),
+                'severity' => $exception instanceof ErrorException ? $exception->getSeverity() : null,
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTraceAsString(),
+            ];
+        } else {
+            $errorInfo = error_get_last();
+        }
+        
+        if (!empty($errorInfo)) {
+            if (!Fw::isCLI()) {
+                header('HTTP/1.1 500 Internal Server Error');
+            }
+            echo 'The Application made a boo boo.' . PHP_EOL;
+            if (\WebServCo\Framework\Environment::ENV_DEV === Fw::config()->getEnv()) {
+                echo $errorInfo['message'] . PHP_EOL;
+                if (isset($errorInfo['code'])) {
+                    echo $errorInfo['file'] . ':' . $errorInfo['line'] . PHP_EOL;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Runs the application.
      */
     public function run()
     {
