@@ -22,7 +22,7 @@ final class ErrorHandler
     {
         $logPath = Framework::OS_WINDOWS === Framework::getOS() ? 'null' : '/dev/null';
         
-        if (empty(ini_get('error_log'))) {
+        if (!ini_get('error_log')) {
             ini_set('error_log', $logPath);
         }
         ini_set('display_errors', 0);
