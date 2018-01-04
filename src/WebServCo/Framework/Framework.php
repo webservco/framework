@@ -86,4 +86,12 @@ final class Framework
     {
         return self::get('Log');
     }
+    
+    /**
+     * Method to access a single instance of the Date Library.
+     */
+    final public static function date()
+    {
+        return self::get('Date');
+    }
 }
