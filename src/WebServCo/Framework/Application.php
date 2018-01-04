@@ -45,6 +45,8 @@ class Application
         
         $this->setEnvironmentValue();
         
+        Fw::date()->setTimezone();
+        
         return true;
     }
     
