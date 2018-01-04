@@ -6,8 +6,10 @@ use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Libraries\Config;
 
-final class ConfigTest extends TestCase
+final class ConfigInstanceTest extends TestCase
 {
+    private $object;
+    
     private static $pathProject = '';
    
     private $settingSimpleString = 'setting';
@@ -66,19 +68,18 @@ final class ConfigTest extends TestCase
     
     public function setUp()
     {
-        /**
-         * Reset data to prevent phpunit hanging
-         */
-        Fw::config()->set('app', null);
-        Fw::config()->set('foo', null);
+        $this->object = new Config();
     }
     
     /**
      * @test
      */
-    public function canBeAccessedViaFramework()
+    public function canBeInstantiatedIndividually()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Fw::config());
+        $this->assertInstanceOf(
+            'WebServCo\Framework\Libraries\Config',
+            $this->object
+        );
     }
     
     /**
@@ -86,7 +87,7 @@ final class ConfigTest extends TestCase
      */
     public function nullSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->set(null, null));
+        $this->assertFalse($this->object->set(null, null));
     }
     
     /**
@@ -94,7 +95,7 @@ final class ConfigTest extends TestCase
      */
     public function falseSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->set(false, null));
+        $this->assertFalse($this->object->set(false, null));
     }
     
     /**
@@ -102,7 +103,7 @@ final class ConfigTest extends TestCase
      */
     public function emptySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->set('', null));
+        $this->assertFalse($this->object->set('', null));
     }
      
     /**
@@ -110,7 +111,7 @@ final class ConfigTest extends TestCase
      */
     public function validSettingReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->set('setting', 'value'));
+        $this->assertTrue($this->object->set('setting', 'value'));
     }
     
     /**
@@ -118,7 +119,7 @@ final class ConfigTest extends TestCase
      */
     public function settingNullValueReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->set('key', null));
+        $this->assertTrue($this->object->set('key', null));
     }
     
     /**
@@ -126,7 +127,7 @@ final class ConfigTest extends TestCase
      */
     public function settingFalseValueReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->set('key', false));
+        $this->assertTrue($this->object->set('key', false));
     }
     
     /**
@@ -134,16 +135,7 @@ final class ConfigTest extends TestCase
      */
     public function settingEmptyValueReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->set('key', ''));
-    }
-    
-    /**
-     * @test
-     * @depends validSettingReturnsTrue
-     */
-    public function frameworkAccessUsesSingleInstance()
-    {
-        $this->assertEquals('value', Fw::config()->get('setting'));
+        $this->assertTrue($this->object->set('key', ''));
     }
     
     /**
@@ -151,7 +143,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNonExistentSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->get('noexist'));
+        $this->assertFalse($this->object->get('noexist'));
     }
     
     /**
@@ -159,7 +151,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNullSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->get(null));
+        $this->assertFalse($this->object->get(null));
     }
     
     /**
@@ -167,7 +159,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingFalseSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->get(false));
+        $this->assertFalse($this->object->get(false));
     }
     
     /**
@@ -175,7 +167,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->get(''));
+        $this->assertFalse($this->object->get(''));
     }
     
     /**
@@ -183,7 +175,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptyArraySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::config()->get([]));
+        $this->assertFalse($this->object->get([]));
     }
     
     /**
@@ -191,8 +183,8 @@ final class ConfigTest extends TestCase
      */
     public function storingAndRetrievingSimpleStringSettingWorks()
     {
-        $this->assertTrue(Fw::config()->set($this->settingSimpleString, $this->value));
-        $this->assertEquals($this->value, Fw::config()->get($this->settingSimpleString));
+        $this->assertTrue($this->object->set($this->settingSimpleString, $this->value));
+        $this->assertEquals($this->value, $this->object->get($this->settingSimpleString));
     }
     
     /**
@@ -200,8 +192,8 @@ final class ConfigTest extends TestCase
      */
     public function storingAndRetrievingArraySettingWorks()
     {
-        $this->assertTrue(Fw::config()->set($this->settingArray, $this->value));
-        $this->assertEquals($this->value, Fw::config()->get($this->settingArray));
+        $this->assertTrue($this->object->set($this->settingArray, $this->value));
+        $this->assertEquals($this->value, $this->object->get($this->settingArray));
     }
     
     /**
@@ -209,8 +201,8 @@ final class ConfigTest extends TestCase
      */
     public function storingAndRetrievingSpecialStringSettingWorks()
     {
-        $this->assertTrue(Fw::config()->set($this->settingSpecialString, $this->value));
-        $this->assertEquals($this->value, Fw::config()->get($this->settingSpecialString));
+        $this->assertTrue($this->object->set($this->settingSpecialString, $this->value));
+        $this->assertEquals($this->value, $this->object->get($this->settingSpecialString));
     }
     
     /**
@@ -218,10 +210,10 @@ final class ConfigTest extends TestCase
      */
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting()
     {
-        $this->assertTrue(Fw::config()->set('app.one.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.two.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
-        $this->assertEquals($this->value, Fw::config()->get('app.one.sub_two.key'));
+        $this->assertTrue($this->object->set('app.one.sub_two.key', $this->value));
+        $this->assertTrue($this->object->set('app.two.sub_two.key', $this->value));
+        $this->assertTrue($this->object->set('app.three.sub_three.key', $this->value));
+        $this->assertEquals($this->value, $this->object->get('app.one.sub_two.key'));
     }
     
     /**
@@ -229,11 +221,11 @@ final class ConfigTest extends TestCase
      */
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting()
     {
-        $this->assertTrue(Fw::config()->set('app.one.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.two.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app', $this->value));
-        $this->assertEquals($this->value, Fw::config()->get('app'));
+        $this->assertTrue($this->object->set('app.one.sub_two.key', $this->value));
+        $this->assertTrue($this->object->set('app.two.sub_two.key', $this->value));
+        $this->assertTrue($this->object->set('app.three.sub_three.key', $this->value));
+        $this->assertTrue($this->object->set('app', $this->value));
+        $this->assertEquals($this->value, $this->object->get('app'));
     }
     
     /**
@@ -241,9 +233,9 @@ final class ConfigTest extends TestCase
      */
     public function settingSameKeyTwiceOverwritesTheFirst()
     {
-        $this->assertTrue(Fw::config()->set('foo', 'old value'));
-        $this->assertTrue(Fw::config()->set('foo', 'new value'));
-        $this->assertEquals('new value', Fw::config()->get('foo'));
+        $this->assertTrue($this->object->set('foo', 'old value'));
+        $this->assertTrue($this->object->set('foo', 'new value'));
+        $this->assertEquals('new value', $this->object->get('foo'));
     }
     
     /**
@@ -251,9 +243,9 @@ final class ConfigTest extends TestCase
      */
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst()
     {
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertTrue($this->object->set('foo.bar.baz', 'old value'));
+        $this->assertTrue($this->object->set('foo.bar.baz', 'new value'));
+        $this->assertEquals('new value', $this->object->get('foo.bar.baz'));
     }
     
     /**
@@ -261,7 +253,7 @@ final class ConfigTest extends TestCase
      */
     public function addReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->add('add', 'dda'));
+        $this->assertTrue($this->object->add('add', 'dda'));
     }
     
     /**
@@ -285,12 +277,12 @@ final class ConfigTest extends TestCase
                 ],
             ],
         ];
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
-        $this->assertTrue(Fw::config()->add('foo', $config));
+        $this->assertTrue($this->object->set('foo.bar.baz', 'old value'));
+        $this->assertTrue($this->object->set('foo.bar.baz', 'new value'));
+        $this->assertTrue($this->object->add('foo', $config));
         
-        $this->assertEquals('value', Fw::config()->get('foo.level1.level2.level3.0'));
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertEquals('value', $this->object->get('foo.level1.level2.level3.0'));
+        $this->assertEquals('new value', $this->object->get('foo.bar.baz'));
     }
     
     /**
@@ -298,7 +290,7 @@ final class ConfigTest extends TestCase
      */
     public function loadReturnsFalseOnInvalidPath()
     {
-        $this->assertFalse(Fw::config()->load('foo', '/foo/bar'));
+        $this->assertFalse($this->object->load('foo', '/foo/bar'));
     }
     
     /**
@@ -315,7 +307,7 @@ final class ConfigTest extends TestCase
      */
     public function loadReturnsArrayOnValidPath()
     {
-        $this->assertInternalType('array', Fw::config()->load('foo', self::$pathProject));
+        $this->assertInternalType('array', $this->object->load('foo', self::$pathProject));
     }
     
     /**
@@ -324,9 +316,9 @@ final class ConfigTest extends TestCase
      */
     public function addDataFromFileWorks()
     {
-        $data = Fw::config()->load('foo', self::$pathProject);
-        $this->assertTrue(Fw::config()->add('foo', $data));
-        $this->assertEquals('value1', Fw::config()->get('foo.options.setting1'));
+        $data = $this->object->load('foo', self::$pathProject);
+        $this->assertTrue($this->object->add('foo', $data));
+        $this->assertEquals('value1', $this->object->get('foo.options.setting1'));
     }
     /**
      * @test
@@ -334,10 +326,10 @@ final class ConfigTest extends TestCase
      */
     public function loadAppendsDataInsteadOfOverwriting()
     {
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
-        $data = Fw::config()->load('foo', self::$pathProject);
-        Fw::config()->add('foo', $data);
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertTrue($this->object->set('foo.bar.baz', 'new value'));
+        $data = $this->object->load('foo', self::$pathProject);
+        $this->object->add('foo', $data);
+        $this->assertEquals('new value', $this->object->get('foo.bar.baz'));
     }
     
     /**
@@ -345,7 +337,7 @@ final class ConfigTest extends TestCase
      */
     public function setEnvReturnsTrue()
     {
-        $this->assertTrue(Fw::config()->setEnv('dev'));
+        $this->assertTrue($this->object->setEnv('dev'));
     }
     
     /**
@@ -353,8 +345,8 @@ final class ConfigTest extends TestCase
      */
     public function setEnvDefaultsToDevOnInvalidValue()
     {
-        Fw::config()->setEnv('noexist');
-        $this->assertEquals('dev', Fw::config()->getEnv());
+        $this->object->setEnv('noexist');
+        $this->assertEquals('dev', $this->object->getEnv());
     }
     
     /**
@@ -362,7 +354,7 @@ final class ConfigTest extends TestCase
      */
     public function getEnvReturnsString()
     {
-        $this->assertInternalType('string', Fw::config()->getEnv());
+        $this->assertInternalType('string', $this->object->getEnv());
     }
     
     /**

@@ -11,17 +11,6 @@ final class LogTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually()
-    {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Log',
-            new Log()
-        );
-    }
-    
-    /**
-     * @test
-     */
     public function canBeAccessedViaFramework()
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Log', Fw::log());
