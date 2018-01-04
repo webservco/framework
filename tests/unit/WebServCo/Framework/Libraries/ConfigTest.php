@@ -8,10 +8,61 @@ use WebServCo\Framework\Libraries\Config;
 
 final class ConfigTest extends TestCase
 {
+    private static $pathProject = '';
+   
     private $settingSimpleString = 'setting';
     private $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
     private $settingSpecialString = 'setting1.setting2.setting3';
     private $value = 'value';
+    
+    public static function setUpBeforeClass()
+    {
+        $pathProject = '/tmp/webservco/project/';
+        if (!is_readable($pathProject)) {
+                mkdir($pathProject, 0775, true);
+                $data = "<?php
+                return [
+                    'date' => [
+                        'timezone' => 'Europe/Budapest',
+                    ],
+                    'options' => [
+                        'setting1' => 'value1',
+                        'setting2' => 'value2',
+                        'setting3' => 'value3',
+                    ],
+                    'level1' => [
+                        'level2' => [
+                            'level3' => ['value']
+                        ],
+                    ],
+                    ];
+                ";
+                file_put_contents("{$pathProject}foo.php", $data);
+        }
+        self::$pathProject = $pathProject;
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $pathBase = '/tmp/webservco/';
+        $pathProject = "{$pathBase}project/";
+        if (is_readable($pathProject)) {
+            if (is_readable("{$pathProject}foo.php")) {
+                unlink("{$pathProject}foo.php");
+            }
+            rmdir($pathProject);
+            rmdir($pathBase);
+        }
+    }
+    
+    public function setUp()
+    {
+        /**
+         * Reset data to prevent phpunit hanging
+         */
+        Fw::config()->set('app', null);
+        Fw::config()->set('foo', null);
+    }
     
     /**
      * @test
@@ -185,6 +236,100 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
         $this->assertTrue(Fw::config()->set('app', $this->value));
         $this->assertEquals($this->value, Fw::config()->get('app'));
+    }
+    
+    /**
+     * @test
+     */
+    public function settingSameKeyTwiceOverwritesTheFirst()
+    {
+        $this->assertTrue(Fw::config()->set('foo', 'old value'));
+        $this->assertTrue(Fw::config()->set('foo', 'new value'));
+        $this->assertEquals('new value', Fw::config()->get('foo'));
+    }
+    
+    /**
+     * @test
+     */
+    public function settingSameMultilevelKeyTwiceOverwritesTheFirst()
+    {
+        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
+        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
+        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+    }
+    
+    /**
+     * @test
+     */
+    public function addReturnsTrue()
+    {
+        $this->assertTrue(Fw::config()->add('add', 'dda'));
+    }
+    
+    /**
+     * @test
+     */
+    public function addAppendsDataInsteadOfOverwriting()
+    {
+        
+        $config = [
+            'date' => [
+                'timezone' => 'Europe/Budapest',
+            ],
+            'options' => [
+                'setting1' => 'value1',
+                'setting2' => 'value2',
+                'setting3' => 'value3',
+            ],
+            'level1' => [
+                'level2' => [
+                    'level3' => ['value']
+                ],
+            ],
+        ];
+        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
+        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
+        $this->assertTrue(Fw::config()->add('foo', $config));
+        
+        $this->assertEquals('value', Fw::config()->get('foo.level1.level2.level3.0'));
+        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+    }
+    
+    /**
+     * @test
+     */
+    public function loadReturnsFalseOnInvalidPath()
+    {
+        $this->assertFalse(Fw::config()->load('foo', '/foo/bar'));
+    }
+    
+    /**
+     * @test
+     */
+    public function loadReturnsTrueOnValidPath()
+    {
+        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
+        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+    }
+    
+    /**
+     * @test
+     */
+    public function loadWorks()
+    {
+        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
+        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+        $this->assertEquals('value1', Fw::config()->get('foo.options.setting1'));
+    }
+    /**
+     * @test
+     */
+    public function loadAppendsDataInsteadOfOverwriting()
+    {
+        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
+        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
+        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
     }
     
     /**

@@ -8,10 +8,10 @@ use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
-    private $pathProject = '';
-    private $pathWeb = '';
+    private static $pathProject = '';
+    private static $pathWeb = '';
     
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         $pathProject = '/tmp/webservco/project/';
         $pathWeb = "{$pathProject}public/";
@@ -20,24 +20,37 @@ final class ApplicationTest extends TestCase
                 touch("{$pathWeb}index.php");
                 file_put_contents("{$pathProject}.env", 'dev');
         }
-        $this->pathProject = $pathProject;
-        $this->pathWeb = $pathWeb;
+        self::$pathProject = $pathProject;
+        self::$pathWeb = $pathWeb;
     }
-    
-    public function tearDown()
+
+    public static function tearDownAfterClass()
     {
         $pathBase = '/tmp/webservco/';
         $pathProject = "{$pathBase}project/";
         $pathWeb = "{$pathProject}public/";
         if (is_readable($pathWeb)) {
-            unlink("{$pathWeb}index.php");
+            if (is_readable(("{$pathWeb}index.php"))) {
+                    unlink("{$pathWeb}index.php");
+            }
             rmdir($pathWeb);
             if (is_readable("{$pathProject}.env")) {
                 unlink("{$pathProject}.env");
             }
+            if (is_readable("{$pathProject}foo.php")) {
+                unlink("{$pathProject}foo.php");
+            }
             rmdir($pathProject);
             rmdir($pathBase);
         }
+    }
+    
+    public function setUp()
+    {
+    }
+    
+    public function tearDown()
+    {
     }
     
     /**
@@ -45,7 +58,7 @@ final class ApplicationTest extends TestCase
     */
     public function dummyProjectPathIsReadable()
     {
-        $this->assertTrue(is_readable($this->pathProject));
+        $this->assertTrue(is_readable(self::$pathProject));
     }
     
     /**
@@ -53,7 +66,7 @@ final class ApplicationTest extends TestCase
     */
     public function dummyWebPathIsReadable()
     {
-        $this->assertTrue(is_readable($this->pathWeb));
+        $this->assertTrue(is_readable(self::$pathWeb));
     }
 
     /**
@@ -101,7 +114,7 @@ final class ApplicationTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Application',
-            new App($this->pathWeb, $this->pathProject)
+            new App(self::$pathWeb, self::$pathProject)
         );
     }
     
@@ -111,7 +124,7 @@ final class ApplicationTest extends TestCase
     */
     public function setEnvironmentValueReturnsTrue()
     {
-        $app = new App($this->pathWeb, $this->pathProject);
+        $app = new App(self::$pathWeb, self::$pathProject);
         $this->assertTrue($app->setEnvironmentValue());
     }
     
@@ -122,7 +135,7 @@ final class ApplicationTest extends TestCase
     */
     public function startReturnsTrue()
     {
-        $app = new App($this->pathWeb, $this->pathProject);
+        $app = new App(self::$pathWeb, self::$pathProject);
         $this->assertTrue($app->start());
     }
     
@@ -134,7 +147,7 @@ final class ApplicationTest extends TestCase
     */
     public function stopReturnsTrue()
     {
-        $app = new App($this->pathWeb, $this->pathProject);
+        $app = new App(self::$pathWeb, self::$pathProject);
         $this->assertTrue($app->stop());
     }
 }

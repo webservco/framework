@@ -36,6 +36,63 @@ class Config extends \WebServCo\Framework\Library
     }
     
     /**
+     * Append data to configuration settings.
+     *
+     * Used recursively.
+     * @param array $config Configuration data to append to.
+     * @param mixed $data Data to append.
+     * @return array
+     */
+    private function append($config, $data)
+    {
+        if (is_array($config) && is_array($data)) {
+            foreach ($data as $setting => $value) {
+                if (array_key_exists($setting, $config) &&
+                    is_array($config[$setting]) &&
+                    is_array($value)
+                ) {
+                    $config[$setting] = $this->append($config[$setting], $value);
+                } else {
+                    $config[$setting] = $value;
+                }
+            }
+        }
+        return $config;
+    }
+    
+    /**
+     * Load configuration data from a file.
+     *
+     * Data is appended to any existing data.
+     * @param string $setting Name of setting to load.
+     * @param string $path Directory where the file is located.
+     *                      File name must be <$setting>.php
+     */
+    public function load($setting, $path)
+    {
+        if (!is_readable("{$path}{$setting}.php")) {
+            return false;
+        }
+        $data = include "{$path}{$setting}.php";
+        return $this->add($setting, $data);
+    }
+    
+    /**
+     * Add base setting data.
+     *
+     * Keys will be preserved.
+     * Existing values will be overwritten.
+     *
+     * @param string $setting Name of setting to load.
+     * @param mixed $data Data to add.
+     */
+    public function add($setting, $data)
+    {
+        $this->config = $this->append($this->config, [$setting => $data]);
+        return true;
+    }
+    
+    /**
      * Sets a configuration value.
      *
      * @param mixed $setting Can be an array, a string,
