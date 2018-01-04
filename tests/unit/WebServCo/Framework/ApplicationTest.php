@@ -167,4 +167,14 @@ final class ApplicationTest extends TestCase
             $this->assertTrue($app->handleErrors($e));
         }
     }
+    
+    /**
+     * @test
+     */
+    public function shutdownMethodIsPublic()
+    {
+        $app = new App(self::$pathWeb, self::$pathProject);
+        $reflection = new \ReflectionMethod($app, 'shutdown');
+        $this->assertTrue($reflection->isPublic());
+    }
 }

@@ -60,7 +60,7 @@ class Application
      *
      * This method is also registered as a shutdown handler.
      */
-    public function shutdown($exception = null, $manual = false)
+    final public function shutdown($exception = null, $manual = false)
     {
         $this->handleErrors($exception);
         
