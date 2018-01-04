@@ -3,9 +3,9 @@ namespace WebServCo\Framework;
 
 final class Framework
 {
-    public const OS_WINDOWS = 'Windows';
-    public const OS_LINUX = 'Linux';
-    public const OS_UNSUPPORTED = 'Unsupported';
+    const OS_WINDOWS = 'Windows';
+    const OS_LINUX = 'Linux';
+    const OS_UNSUPPORTED = 'Unsupported';
     
     /**
      * Stores all object instances.

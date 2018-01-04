@@ -3,9 +3,9 @@ namespace WebServCo\Framework;
 
 final class Environment
 {
-    public const ENV_DEV = 'dev';
-    public const ENV_TEST = 'test';
-    public const ENV_PROD = 'prod';
+    const ENV_DEV = 'dev';
+    const ENV_TEST = 'test';
+    const ENV_PROD = 'prod';
     
     /**
      * Retrieve list of all possible environment options.
