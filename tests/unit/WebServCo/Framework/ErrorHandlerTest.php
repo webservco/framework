@@ -28,8 +28,8 @@ final class ErrorHandlerTest extends TestCase
      * @test
      * @expectedException \ErrorException
      */
-    public function handleThrowsErrorException()
+    public function throwsErrorExceptionWorks()
     {
-        ErrorHandler::handle(256, 'Custom error message', 'foo/bar.php', 13);
+        ErrorHandler::throwErrorException(256, 'Custom error message', 'foo/bar.php', 13);
     }
 }

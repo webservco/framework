@@ -10,8 +10,22 @@ final class ErrorHandler
      */
     final public static function set()
     {
-        set_error_handler(['\WebServCo\Framework\ErrorHandler', 'handle']);
+        self::disableErrorDisplay();
+        set_error_handler(['\WebServCo\Framework\ErrorHandler', 'throwErrorException']);
         return true;
+    }
+    
+    /**
+     * Disable error display.
+     */
+    final private static function disableErrorDisplay()
+    {
+        $logPath = Framework::OS_WINDOWS === Framework::getOS() ? 'null' : '/dev/null';
+        
+        if (empty(ini_get('error_log'))) {
+            ini_set('error_log', $logPath);
+        }
+        ini_set('display_errors', 0);
     }
     
     /**
@@ -25,7 +39,7 @@ final class ErrorHandler
     }
     
     /**
-     * Handle errors.
+     * Throws ErrorException.
      *
      * @param int $errno  Error level
      * @param string $errstr Error message
@@ -34,7 +48,7 @@ final class ErrorHandler
      *
      * @throws ErrorException
      */
-    final public static function handle($errno, $errstr, $errfile, $errline)
+    final public static function throwErrorException($errno, $errstr, $errfile, $errline)
     {
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
