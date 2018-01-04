@@ -27,22 +27,22 @@ final class ApplicationTest extends TestCase
     public static function tearDownAfterClass()
     {
         $pathBase = '/tmp/webservco/';
-        $pathProject = "{$pathBase}project/";
-        $pathWeb = "{$pathProject}public/";
-        if (is_readable($pathWeb)) {
-            if (is_readable(("{$pathWeb}index.php"))) {
-                    unlink("{$pathWeb}index.php");
+        $it = new \RecursiveDirectoryIterator(
+            $pathBase,
+            \RecursiveDirectoryIterator::SKIP_DOTS
+        );
+        $files = new \RecursiveIteratorIterator(
+            $it,
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($files as $item) {
+            if ($item->isDir()) {
+                rmdir($item->getRealPath());
+            } else {
+                unlink($item->getRealPath());
             }
-            rmdir($pathWeb);
-            if (is_readable("{$pathProject}.env")) {
-                unlink("{$pathProject}.env");
-            }
-            if (is_readable("{$pathProject}foo.php")) {
-                unlink("{$pathProject}foo.php");
-            }
-            rmdir($pathProject);
-            rmdir($pathBase);
         }
+        rmdir($pathBase);
     }
     
     public function setUp()

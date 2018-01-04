@@ -18,8 +18,9 @@ final class ConfigTest extends TestCase
     public static function setUpBeforeClass()
     {
         $pathProject = '/tmp/webservco/project/';
-        if (!is_readable($pathProject)) {
-                mkdir($pathProject, 0775, true);
+        $pathConfig = "{$pathProject}config/dev/";
+        if (!is_readable($pathConfig)) {
+                mkdir($pathConfig, 0775, true);
                 $data = "<?php
                 return [
                     'date' => [
@@ -37,7 +38,7 @@ final class ConfigTest extends TestCase
                     ],
                     ];
                 ";
-                file_put_contents("{$pathProject}foo.php", $data);
+                file_put_contents("{$pathConfig}foo.php", $data);
         }
         self::$pathProject = $pathProject;
     }
@@ -45,14 +46,22 @@ final class ConfigTest extends TestCase
     public static function tearDownAfterClass()
     {
         $pathBase = '/tmp/webservco/';
-        $pathProject = "{$pathBase}project/";
-        if (is_readable($pathProject)) {
-            if (is_readable("{$pathProject}foo.php")) {
-                unlink("{$pathProject}foo.php");
+        $it = new \RecursiveDirectoryIterator(
+            $pathBase,
+            \RecursiveDirectoryIterator::SKIP_DOTS
+        );
+        $files = new \RecursiveIteratorIterator(
+            $it,
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($files as $item) {
+            if ($item->isDir()) {
+                rmdir($item->getRealPath());
+            } else {
+                unlink($item->getRealPath());
             }
-            rmdir($pathProject);
-            rmdir($pathBase);
         }
+        rmdir($pathBase);
     }
     
     public function setUp()
@@ -306,29 +315,39 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function loadReturnsTrueOnValidPath()
+    public function dummyConfigFileExists()
     {
-        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
-        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+        $this->assertTrue(is_readable(self::$pathProject . 'config/dev/foo.php'));
     }
     
     /**
      * @test
+     * @depends dummyConfigFileExists
      */
-    public function loadWorks()
+    public function loadReturnsArrayOnValidPath()
     {
-        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
-        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+        $this->assertInternalType('array', Fw::config()->load('foo', self::$pathProject));
+    }
+    
+    /**
+     * @test
+     * @depends loadReturnsArrayOnValidPath
+     */
+    public function addDataFromFileWorks()
+    {
+        $data = Fw::config()->load('foo', self::$pathProject);
+        $this->assertTrue(Fw::config()->add('foo', $data));
         $this->assertEquals('value1', Fw::config()->get('foo.options.setting1'));
     }
     /**
      * @test
+     * @depends loadReturnsArrayOnValidPath
      */
     public function loadAppendsDataInsteadOfOverwriting()
     {
-        $this->assertTrue(is_readable(self::$pathProject . 'foo.php'));
         $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
-        $this->assertTrue(Fw::config()->load('foo', self::$pathProject));
+        $data = Fw::config()->load('foo', self::$pathProject);
+        Fw::config()->add('foo', $data);
         $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
     }
     

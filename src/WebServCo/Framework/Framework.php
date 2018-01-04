@@ -20,26 +20,37 @@ final class Framework
         /**
          * Work only with framework libraries.
          */
-        $className = __NAMESPACE__ . "\\Libraries\\$className";
+        $fullClassName = __NAMESPACE__ . "\\Libraries\\$className";
         /**
          * Load class only if not already loaded.
          */
-        if (!isset(self::$libraries[$className])) {
+        if (!isset(self::$libraries[$fullClassName])) {
             /**
              * Check if the class exists.
              */
-            if (!class_exists($className)) {
+            if (!class_exists($fullClassName)) {
                 return false;
             }
             /**
+             * Load class config.
+             */
+            $config = [];
+            if ('Config' !== $className) {
+                $pathProject = self::config()->get('app.path.project');
+                if (!empty($pathProject)) {
+                    $config = self::config()->load($className, $pathProject);
+                }
+            }
+            
+            /**
              * Load class.
              */
-            self::$libraries[$className] = new $className();
+            self::$libraries[$fullClassName] = new $fullClassName($config);
         }
         /**
          * Return class instance
          */
-        return self::$libraries[$className];
+        return self::$libraries[$fullClassName];
     }
     
     /**

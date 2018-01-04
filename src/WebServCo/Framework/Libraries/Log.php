@@ -1,9 +1,6 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-class Log
+class Log extends \WebServCo\Framework\Library
 {
-    public function __construct()
-    {
-    }
 }

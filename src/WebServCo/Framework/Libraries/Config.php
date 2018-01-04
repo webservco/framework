@@ -6,7 +6,7 @@ class Config extends \WebServCo\Framework\Library
     /**
      * Delimiter to use for special configuration strings.
      */
-    private $delimiter;
+    const DELIMITER = '.';
     
     /**
      * Stores configuration data.
@@ -18,9 +18,14 @@ class Config extends \WebServCo\Framework\Library
      */
     private $env;
     
-    public function __construct($delimiter = '.')
+    /**
+     * If implementing constructor make sure to call also the parent one.
+     *
+     * @param array $config Configuration data.
+     */
+    public function __construct($config = [])
     {
-        $this->delimiter = $delimiter;
+        parent::__construct($config);
     }
     
     /**
@@ -29,8 +34,8 @@ class Config extends \WebServCo\Framework\Library
      */
     private function parseSetting($setting)
     {
-        if (is_string($setting) && false !== strpos($setting, $this->delimiter)) {
-            return explode($this->delimiter, $setting);
+        if (is_string($setting) && false !== strpos($setting, self::DELIMITER)) {
+            return explode(self::DELIMITER, $setting);
         }
         return $setting;
     }
@@ -67,14 +72,16 @@ class Config extends \WebServCo\Framework\Library
      * @param string $setting Name of setting to load.
      * @param string $path Directory where the file is located.
      *                      File name must be <$setting>.php
+     * @return mixed
      */
-    public function load($setting, $path)
+    public function load($setting, $pathProject)
     {
-        if (!is_readable("{$path}{$setting}.php")) {
+        $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
+        if (!is_readable($pathFull)) {
             return false;
         }
-        $data = include "{$path}{$setting}.php";
-        return $this->add($setting, $data);
+        $data = (include $pathFull);
+        return is_array($data) ? $data : false;
     }
     
     /**
