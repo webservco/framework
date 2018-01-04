@@ -3,6 +3,10 @@ namespace WebServCo\Framework;
 
 final class Framework
 {
+    public const OS_WINDOWS = 'Windows';
+    public const OS_LINUX = 'Linux';
+    public const OS_UNSUPPORTED = 'Unsupported';
+    
     /**
      * Stores all object instances.
      */
@@ -69,6 +73,21 @@ final class Framework
     final public static function isCLI()
     {
         return 'cli' === PHP_SAPI;
+    }
+    
+    /**
+     * Get operating system (if supported).
+     */
+    final public static function getOS()
+    {
+        $uname = php_uname('s');
+        if (0 === strncasecmp($uname, 'Win', 3)) {
+            return self::OS_WINDOWS;
+        } elseif (0 === strncasecmp($uname, 'Linux', 5)) {
+            return self::OS_LINUX;
+        } else {
+            return self::OS_UNSUPPORTED;
+        }
     }
     
     /**
