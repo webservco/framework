@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-class Date extends \WebServCo\Framework\Library
+class Date extends \WebServCo\Framework\AbstractLibrary
 {
     const DEFAULT_TIMEZONE = 'Europe/Rome';
     

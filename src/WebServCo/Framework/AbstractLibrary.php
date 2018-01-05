@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
-abstract class Library
+abstract class AbstractLibrary
 {
     private $settings = [];
     

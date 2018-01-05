@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-class Config extends \WebServCo\Framework\Library
+class Config extends \WebServCo\Framework\AbstractLibrary
 {
     /**
      * Delimiter to use for special configuration strings.
