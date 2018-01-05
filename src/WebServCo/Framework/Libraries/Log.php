@@ -1,6 +1,6 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-class Log extends \WebServCo\Framework\AbstractLibrary
+final class Log extends \WebServCo\Framework\AbstractLibrary
 {
 }

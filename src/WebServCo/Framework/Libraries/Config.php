@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-class Config extends \WebServCo\Framework\AbstractLibrary
+final class Config extends \WebServCo\Framework\AbstractLibrary
 {
     /**
      * Delimiter to use for special configuration strings.
@@ -19,20 +19,10 @@ class Config extends \WebServCo\Framework\AbstractLibrary
     private $env;
     
     /**
-     * If implementing constructor make sure to call also the parent one.
-     *
-     * @param array $config Configuration data.
-     */
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-    }
-    
-    /**
      * Parse the setting key to make sure it's a simple string
      * or an array.
      */
-    private function parseSetting($setting)
+    final private function parseSetting($setting)
     {
         if (is_string($setting) && false !== strpos($setting, self::DELIMITER)) {
             return explode(self::DELIMITER, $setting);
@@ -48,7 +38,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      * @param mixed $data Data to append.
      * @return array
      */
-    private function append($config, $data)
+    final private function append($config, $data)
     {
         if (is_array($config) && is_array($data)) {
             foreach ($data as $setting => $value) {
@@ -74,7 +64,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      *                      File name must be <$setting>.php
      * @return mixed
      */
-    public function load($setting, $pathProject)
+    final public function load($setting, $pathProject)
     {
         $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
         if (!is_readable($pathFull)) {
@@ -93,7 +83,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      * @param string $setting Name of setting to load.
      * @param mixed $data Data to add.
      */
-    public function add($setting, $data)
+    final public function add($setting, $data)
     {
         $this->config = $this->append($this->config, [$setting => $data]);
         return true;
@@ -109,7 +99,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return bool True on success and false on failure.
      */
-    public function set($setting, $value)
+    final public function set($setting, $value)
     {
         if (empty($setting)) {
             return false;
@@ -138,7 +128,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      *                          parameter in recursion.
      * @return mixed
      */
-    public function get($setting = null, $config = array())
+    final public function get($setting = null, $config = array())
     {
         $setting = $this->parseSetting($setting, true);
         $config = $config ?: $this->config;
@@ -201,7 +191,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return bool
      */
-    public function setEnv($env = null)
+    final public function setEnv($env = null)
     {
         if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
             $this->env = $env;
@@ -217,7 +207,7 @@ class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return string
      */
-    public function getEnv()
+    final public function getEnv()
     {
         return $this->env ?: \WebServCo\Framework\Environment::ENV_DEV;
     }

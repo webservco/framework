@@ -1,9 +1,7 @@
 <?php
-
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Libraries\Log;
 
 final class LogInstanceTest extends TestCase

@@ -10,7 +10,7 @@ final class Framework
     /**
      * Stores all object instances.
      */
-    private static $libraries;
+    private static $libraries = [];
     
     /**
      * Returns an instance of a Framework Library.
@@ -19,7 +19,7 @@ final class Framework
      *
      * @return mixed
      */
-    final private static function get($className)
+    final private static function get($className, $args = [])
     {
         /**
          * Work only with framework libraries.
@@ -45,11 +45,16 @@ final class Framework
                     $config = self::config()->load($className, $pathProject);
                 }
             }
-            
+            /**
+             * Libraries can have custom parameters to constructor,
+             * however the configuration array is always the first.
+             */
+            $args = is_array($args) ? array_merge([$config], $args) : [$config];
             /**
              * Load class.
              */
-            self::$libraries[$fullClassName] = new $fullClassName($config);
+            $reflection = new \ReflectionClass($fullClassName);
+            self::$libraries[$fullClassName] = $reflection->newInstanceArgs($args);
         }
         /**
          * Return class instance
@@ -90,27 +95,23 @@ final class Framework
         }
     }
     
-    /**
-     * Method to access a single instance of the Config Library.
-     */
     final public static function config()
     {
         return self::get('Config');
     }
     
-    /**
-     * Method to access a single instance of the Log Library.
-     */
     final public static function log()
     {
         return self::get('Log');
     }
     
-    /**
-     * Method to access a single instance of the Date Library.
-     */
     final public static function date()
     {
         return self::get('Date');
+    }
+    
+    final public static function request()
+    {
+        return self::get('Request', [$_SERVER]);
     }
 }

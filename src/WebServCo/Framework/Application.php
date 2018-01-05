@@ -2,6 +2,7 @@
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Framework as Fw;
+use WebServCo\Framework\Environment as Env;
 
 class Application
 {
@@ -22,7 +23,7 @@ class Application
     /**
      * Sets the env value from the project .env file.
      */
-    public function setEnvironmentValue()
+    final public function setEnvironmentValue()
     {
         /**
          * Project path is set in the constructor.
@@ -39,7 +40,7 @@ class Application
     /**
      * Starts the execution of the application.
      */
-    public function start()
+    final public function start()
     {
         \WebServCo\Framework\ErrorHandler::set();
         register_shutdown_function([$this, 'shutdown']);
@@ -47,6 +48,31 @@ class Application
         try {
             $this->setEnvironmentValue();
             Fw::date()->setTimezone();
+            /**
+             * @todo i18n init
+             */
+            /**
+             * @todo log (psr3)
+             */
+            /**
+             * @todo sanitize request
+             */
+            /**
+             * @todo routing (if not cli) XXX
+             */
+            /**
+             * @todo session (if not cli)
+             */
+            /**
+             * @todo session i18n functionality (if not cli)
+             */
+            /**
+             * @todo user init (if not cli)
+             */
+            /**
+             * @todo i18n
+             */
+            
             return true;
         } catch (\Errors $e) { //php 7
             return $this->shutdown($e, true);
@@ -100,11 +126,11 @@ class Application
                 header('HTTP/1.1 500 Internal Server Error');
             }
             echo 'The Application made a boo boo.' . PHP_EOL;
-            if (\WebServCo\Framework\Environment::ENV_DEV === Fw::config()->getEnv()) {
+            if (Env::ENV_DEV === Fw::config()->getEnv()) {
                 echo $errorInfo['message'] . PHP_EOL;
-                if (isset($errorInfo['code'])) {
+                //if (isset($errorInfo['code'])) {
                     echo $errorInfo['file'] . ':' . $errorInfo['line'] . PHP_EOL;
-                }
+                //}
             }
             return true;
         }
@@ -114,7 +140,7 @@ class Application
     /**
      * Runs the application.
      */
-    public function run()
+    final public function run()
     {
     }
 }

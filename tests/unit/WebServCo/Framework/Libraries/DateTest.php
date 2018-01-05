@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
