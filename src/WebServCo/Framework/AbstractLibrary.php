@@ -21,7 +21,7 @@ abstract class AbstractLibrary
      * @param mixed $defaultValue
      * @return mixed
      */
-    final protected function setting($setting, $defaultValue = false)
+    final public function setting($setting, $defaultValue = false)
     {
         return array_key_exists($setting, $this->settings) ?
         $this->settings[$setting] :

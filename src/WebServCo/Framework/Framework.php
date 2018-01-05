@@ -40,6 +40,11 @@ final class Framework
              */
             $config = [];
             if ('Config' !== $className) {
+                /**
+                 * If the Application library is used, project path is
+                 * available, so we can load the custom configuration
+                 * file for the library.
+                 */
                 $pathProject = self::config()->get('app.path.project');
                 if (!empty($pathProject)) {
                     $config = self::config()->load($className, $pathProject);
@@ -113,5 +118,10 @@ final class Framework
     final public static function request()
     {
         return self::get('Request', [$_SERVER]);
+    }
+    
+    final public static function router()
+    {
+        return self::get('Router');
     }
 }
