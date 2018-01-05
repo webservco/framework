@@ -20,7 +20,10 @@ final class ErrorHandler
      */
     final private static function disableErrorDisplay()
     {
-        $logPath = Framework::OS_WINDOWS === Framework::getOS() ? 'null' : '/dev/null';
+        $logPath =
+        \WebServCo\Framework\Framework::OS_WINDOWS
+        === \WebServCo\Framework\Framework::getOS()
+        ? 'null' : '/dev/null';
         
         if (!ini_get('error_log')) {
             ini_set('error_log', $logPath);
