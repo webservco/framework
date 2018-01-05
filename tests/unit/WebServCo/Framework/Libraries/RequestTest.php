@@ -62,4 +62,23 @@ final class RequestTest extends TestCase
     {
         $this->assertInternalType('string', Fw::request()->getHost());
     }
+    
+    /**
+     * @test
+     */
+    public function sanitizeRemovesBadChars()
+    {
+        $this->assertEquals('x', Fw::request()->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"));
+    }
+    
+    /**
+     * @test
+     */
+    public function sanitizeDisablesTags()
+    {
+        $this->assertEquals(
+            'script&#60;script&#62;alerthacked&#60;/script&#62;.htmlkeyvalue',
+            Fw::request()->sanitize("script=<script>alert('hacked!')</script>.html&key=value")
+        );
+    }
 }

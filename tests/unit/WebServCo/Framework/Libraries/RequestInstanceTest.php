@@ -72,4 +72,23 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertInternalType('string', $this->object->getHost());
     }
+    
+    /**
+     * @test
+     */
+    public function sanitizeRemovesBadChars()
+    {
+        $this->assertEquals('x', $this->object->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"));
+    }
+    
+    /**
+     * @test
+     */
+    public function sanitizeDisablesTags()
+    {
+        $this->assertEquals(
+            'script&#60;script&#62;alerthacked&#60;/script&#62;.htmlkeyvalue',
+            $this->object->sanitize("script=<script>alert('hacked!')</script>.html&key=value")
+        );
+    }
 }

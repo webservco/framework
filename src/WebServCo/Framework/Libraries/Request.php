@@ -33,6 +33,43 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         false;
     }
     
+    final public function sanitize($string)
+    {
+        $unwanted = [
+            "`",
+            "'",
+            '"',
+            "\b",
+            "\n",
+            "\r",
+            "\t",
+            "?",
+            "!",
+            "~",
+            "#",
+            "^",
+            "&",
+            "*",
+            "=",
+            "[",
+            "]",
+            ":",
+            ";",
+            ",",
+            "|",
+            "\\",
+            "{",
+            "}",
+            "(",
+            ")",
+            "\$"
+        ];
+        $string = str_replace($unwanted, '', $string);
+        $string = str_replace(['&lt;','<','%3C'], '&#60;', $string);
+        $string = str_replace(['&gt;','>','%3E'], '&#62;', $string);
+        return $string;
+    }
+    
     final private function process()
     {
         switch (true) {
@@ -52,8 +89,9 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
                 return false; //CLI
                 break;
         }
-        list ($this->custom, $queryString) = $this->parse($string);
-        $this->query = $this->format($queryString);
+        list ($custom, $queryString) = $this->parse($string);
+        $this->custom = $this->sanitize(urldecode($custom));
+        $this->query = $this->format($this->sanitize($queryString));
     }
     
     final private function parse($string)
@@ -119,6 +157,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     final public function split($string)
     {
         $parts = explode('/', $string);
+        $parts = array_map('urldecode', $parts);
         return array_diff($parts, ['']);
     }
     
