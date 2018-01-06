@@ -78,17 +78,36 @@ final class RequestInstanceTest extends TestCase
      */
     public function sanitizeRemovesBadChars()
     {
-        $this->assertEquals('x', $this->object->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"));
+        $this->assertEquals(
+            '?&#39;&#34;?!~#^&*=[]:;||{}()x',
+            $this->object->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx")
+        );
     }
     
     /**
      * @test
      */
-    public function sanitizeDisablesTags()
+    public function sanitizeRemovesTags()
     {
         $this->assertEquals(
-            'script&#60;script&#62;alerthacked&#60;/script&#62;.htmlkeyvalue',
-            $this->object->sanitize("script=<script>alert('hacked!')</script>.html&key=value")
+            'script=alert(&#39;hacked!&#39;).html&key=value',
+            $this->object->sanitize(
+                "script=<script>alert('hacked!')</script>.html&key=value"
+            )
+        );
+    }
+    
+    /**
+     * @test
+     */
+    public function sanitizeNotExtendedDoesNotRemovesTags()
+    {
+        $this->assertEquals(
+            "script=<script>alert('hacked!')</script>.html&key=value",
+            $this->object->sanitize(
+                "script=<script>alert('hacked!')</script>.html&key=value",
+                false
+            )
         );
     }
 }

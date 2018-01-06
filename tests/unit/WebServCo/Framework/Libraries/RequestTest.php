@@ -68,17 +68,36 @@ final class RequestTest extends TestCase
      */
     public function sanitizeRemovesBadChars()
     {
-        $this->assertEquals('x', Fw::request()->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"));
+        $this->assertEquals(
+            '?&#39;&#34;?!~#^&*=[]:;||{}()x',
+            Fw::request()->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx")
+        );
     }
     
     /**
      * @test
      */
-    public function sanitizeDisablesTags()
+    public function sanitizeRemovesTags()
     {
         $this->assertEquals(
-            'script&#60;script&#62;alerthacked&#60;/script&#62;.htmlkeyvalue',
-            Fw::request()->sanitize("script=<script>alert('hacked!')</script>.html&key=value")
+            'script=alert(&#39;hacked!&#39;).html&key=value',
+            Fw::request()->sanitize(
+                "script=<script>alert('hacked!')</script>.html&key=value"
+            )
+        );
+    }
+    
+    /**
+     * @test
+     */
+    public function sanitizeNotExtendedDoesNotRemovesTags()
+    {
+        $this->assertEquals(
+            "script=<script>alert('hacked!')</script>.html&key=value",
+            Fw::request()->sanitize(
+                "script=<script>alert('hacked!')</script>.html&key=value",
+                false
+            )
         );
     }
 }

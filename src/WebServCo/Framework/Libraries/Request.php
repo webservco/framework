@@ -3,75 +3,28 @@ namespace WebServCo\Framework\Libraries;
 
 final class Request extends \WebServCo\Framework\AbstractLibrary
 {
-    private $server = [];
-    public $path;
+    public $server = [];
+    public $method;
     public $filename;
-    public $custom;
-    public $query;
+    public $path;
+    public $target = '';
+    public $query = [];
     
     final public function __construct($config, $server)
     {
         parent::__construct($config);
         
-        $this->server = $server;
-        $this->filename = $this->getFilename();
-        $this->path = $this->getPath();
+        $this->server = array_map([$this, 'sanitize'], $server);
         
         $this->process();
     }
     
-    final private function getFilename()
-    {
-        return !empty($this->server['SCRIPT_NAME']) ?
-        basename($this->server['SCRIPT_NAME']) : false;
-    }
-    
-    final private function getPath()
-    {
-        return !empty($this->server['SCRIPT_NAME']) ?
-        str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']) :
-        false;
-    }
-    
-    final public function sanitize($string)
-    {
-        $unwanted = [
-            "`",
-            "'",
-            '"',
-            "\b",
-            "\n",
-            "\r",
-            "\t",
-            "?",
-            "!",
-            "~",
-            "#",
-            "^",
-            "&",
-            "*",
-            "=",
-            "[",
-            "]",
-            ":",
-            ";",
-            ",",
-            "|",
-            "\\",
-            "{",
-            "}",
-            "(",
-            ")",
-            "\$"
-        ];
-        $string = str_replace($unwanted, '', $string);
-        $string = str_replace(['&lt;','<','%3C'], '&#60;', $string);
-        $string = str_replace(['&gt;','>','%3E'], '&#62;', $string);
-        return $string;
-    }
-    
     final private function process()
     {
+        $this->method = $this->getMethod();
+        $this->filename = $this->getFilename();
+        $this->path = $this->getPath();
+        
         switch (true) {
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
@@ -89,10 +42,79 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
                 return false; //CLI
                 break;
         }
-        list ($custom, $queryString) = $this->parse($string);
-        $this->custom = $this->sanitize(urldecode($custom));
+        list ($target, $queryString) = $this->parse($string);
+        $this->target = $this->sanitize(urldecode($target));
         $this->query = $this->format($this->sanitize($queryString));
     }
+    
+    final private function getMethod()
+    {
+        return !empty($this->server['REQUEST_METHOD']) &&
+        in_array(
+            $this->server['REQUEST_METHOD'],
+            \WebServCo\Framework\Http::getMethods()
+        ) ?
+        $this->server['REQUEST_METHOD'] : false;
+    }
+    
+    final private function getFilename()
+    {
+        return !empty($this->server['SCRIPT_NAME']) ?
+        basename($this->server['SCRIPT_NAME']) : false;
+    }
+    
+    final private function getPath()
+    {
+        return !empty($this->server['SCRIPT_NAME']) ?
+        str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']) :
+        false;
+    }
+    
+    final public function sanitize($string, $extended = true)
+    {
+        $string = filter_var($string, FILTER_SANITIZE_URL);
+        
+        /**
+         * Extra sanitization, eg. for _GET, _SERVER
+         */
+        if ($extended) {
+            $string = filter_var($string, FILTER_SANITIZE_STRING);
+            $unwanted = [
+                "`",
+                //"'",
+                //'"',
+                "\b",
+                "\n",
+                "\r",
+                "\t",
+                //"?",
+                //"!",
+                //"~",
+                //"#",
+                //"^",
+                //"&",
+                //"*",
+                //"=",
+                //"[",
+                //"]",
+                //":",
+                //";",
+                //",",
+                //"|",
+                "\\",
+                //"{",
+                //"}",
+                //"(",
+                //")",
+                "\$"
+            ];
+            $string = str_replace($unwanted, '', $string);
+        }
+        
+        return $string;
+    }
+    
+   
     
     final private function parse($string)
     {
@@ -104,10 +126,10 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         if (0 === strncasecmp($this->filename, $string, $filenameLen)) {
             $string = substr($string, $filenameLen);
         }
-        list($custom, $query) = $this->explode($string);
-        $custom = $this->removeSuffix($this->transform($custom));
+        list($target, $query) = $this->explode($string);
+        $target = $this->removeSuffix($this->transform($target));
         $query = $this->transform($query);
-        return [$custom, $query];
+        return [$target, $query];
     }
     
     final private function explode($string)
