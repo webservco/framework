@@ -117,7 +117,7 @@ final class Framework
     
     final public static function request()
     {
-        return self::get('Request', [$_SERVER]);
+        return self::get('Request', [$_SERVER, $_POST]);
     }
     
     final public static function router()

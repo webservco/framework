@@ -6,12 +6,23 @@ use WebServCo\Framework\Libraries\Request;
 
 final class RequestInstanceTest extends TestCase
 {
+    private $cfg;
+    private $post;
     private $object;
+    private $objectPost;
     
     public function setUp()
     {
-        $cfg = ['suffixes' => ['.htm','.html'],];
-        $this->object = new Request($cfg, $_SERVER);
+        $this->cfg = ['suffixes' => ['.htm','.html'],];
+        $this->post = [
+            'key' => 'value',
+            'script' => '<script>hello</script>',
+            '<h1>invalid</h1>' => '<tag>tag</tag>',
+        ];
+        $this->object = new Request($this->cfg, $_SERVER, $this->post);
+        
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $this->objectPost = new Request($this->cfg, $_SERVER, $this->post);
     }
     
     /**
@@ -109,5 +120,38 @@ final class RequestInstanceTest extends TestCase
                 false
             )
         );
+    }
+    
+    /**
+     * @test
+     */
+    public function postRequestIsParsedCorrectly()
+    {
+        $this->assertTrue(array_key_exists('key', $this->objectPost->data));
+        $this->assertEquals(
+            'value',
+            $this->objectPost->data['key']
+        );
+    }
+    
+    /**
+     * @test
+     */
+    public function postRequestTagsNotDisabledInValues()
+    {
+        $this->assertTrue(array_key_exists('script', $this->objectPost->data));
+        $this->assertEquals(
+            '<script>hello</script>',
+            $this->objectPost->data['script']
+        );
+    }
+    
+    /**
+     * @test
+     */
+    public function postRequestTagsDisabledInKeys()
+    {
+        $this->assertFalse(array_key_exists('<h1>invalid</h1>', $this->objectPost->data));
+        $this->assertTrue(array_key_exists('invalid', $this->objectPost->data));
     }
 }

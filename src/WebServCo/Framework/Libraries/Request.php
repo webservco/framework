@@ -3,28 +3,90 @@ namespace WebServCo\Framework\Libraries;
 
 final class Request extends \WebServCo\Framework\AbstractLibrary
 {
+    /**
+     * Sanitized _SERVER data.
+     */
     public $server = [];
+    /**
+     * Request method.
+     */
     public $method;
+    /**
+     * Current script filename. Should most commonly be index.php
     public $filename;
-    public $path;
+    /**
+     * Script path.
+     * For HTTP requests this will be public web server subdirectory
+     * the project is located in.
+     * For CLI request this will be the script path
+     * (full or relative, depending on how the script was called).
+     */
+    public $path = '';
+    /**
+     * Sanitized Framework customized target path.
+     */
     public $target = '';
+    /**
+     * Sanitized request query.
+     */
     public $query = [];
+    /**
+     * Sanitized POST data.
+     */
+    public $data = [];
     
-    final public function __construct($config, $server)
+    final public function __construct($config, $server, $post = [])
     {
         parent::__construct($config);
         
+        $this->init($server, $post);
+    }
+    
+    final private function init($server, $post = [])
+    {
         $this->server = array_map([$this, 'sanitize'], $server);
-        
+        $this->method = $this->getMethod();
+        $this->filename = $this->getFilename();
+        $this->path = $this->getPath();
         $this->process();
+        
+        switch ($this->method) {
+            case \WebServCo\Framework\Http::METHOD_GET:
+            case \WebServCo\Framework\Http::METHOD_HEAD:
+                break;
+            case \WebServCo\Framework\Http::METHOD_POST:
+                $this->porcessPost($post);
+                break;
+        }
+        if ($this->setting('clear_globals', true)) {
+            $this->clearGlobals();
+        }
+    }
+    
+    final private function clearGlobals()
+    {
+        if (!empty($_GET)) {
+            foreach ($_GET as $k => $v) {
+                unset($_REQUEST[$k]);
+            }
+            $_GET = [];
+        }
+        if (!empty($_POST)) {
+            $_POST = [];
+        }
+        return true;
+    }
+    
+    final private function porcessPost($post = [])
+    {
+        foreach ($post as $k => $v) {
+            $this->data[$this->sanitize($k)] = $this->sanitize($v, false);
+        }
+        return true;
     }
     
     final private function process()
     {
-        $this->method = $this->getMethod();
-        $this->filename = $this->getFilename();
-        $this->path = $this->getPath();
-        
         switch (true) {
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
