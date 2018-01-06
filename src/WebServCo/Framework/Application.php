@@ -3,6 +3,7 @@ namespace WebServCo\Framework;
 
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Environment as Env;
+use WebServCo\Framework\ErrorHandler as Err;
 
 class Application
 {
@@ -42,7 +43,7 @@ class Application
      */
     final public function start()
     {
-        \WebServCo\Framework\ErrorHandler::set();
+        Err::set();
         register_shutdown_function([$this, 'shutdown']);
         
         try {
@@ -96,45 +97,9 @@ class Application
              * independent of the outcome of the script.
              */
             
-            \WebServCo\Framework\ErrorHandler::restore();
+            Err::restore();
         }
         exit;
-    }
-    
-    /**
-     * Handle Errors.
-     *
-     * @param mixed $exception and Error or Exception object.
-     */
-    public function handleErrors($exception = null)
-    {
-        if (is_object($exception)) {
-            $errorInfo = [
-                'code' => $exception->getCode(),
-                'severity' => $exception instanceof ErrorException ? $exception->getSeverity() : null,
-                'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTraceAsString(),
-            ];
-        } else {
-            $errorInfo = error_get_last();
-        }
-        
-        if (!empty($errorInfo)) {
-            if (!Fw::isCLI()) {
-                header('HTTP/1.1 500 Internal Server Error');
-            }
-            echo 'The Application made a boo boo.' . PHP_EOL;
-            if (Env::ENV_DEV === Fw::config()->getEnv()) {
-                echo $errorInfo['message'] . PHP_EOL;
-                //if (isset($errorInfo['code'])) {
-                    echo $errorInfo['file'] . ':' . $errorInfo['line'] . PHP_EOL;
-                //}
-            }
-            return true;
-        }
-        return false;
     }
     
     /**
@@ -142,5 +107,171 @@ class Application
      */
     final public function run()
     {
+        if (Fw::isCLI()) {
+            return $this->runCli();
+        } else {
+            return $this->runHttp();
+        }
+    }
+    
+    public function runHttp()
+    {
+        try {
+            list($class, $method, $args) =
+            Fw::router()->getRoute(
+                Fw::request()->target,
+                Fw::router()->setting('routes')
+            );
+            $className = "\\Project\\Domain\\{$class}\\{$class}Controller";
+            if (!class_exists($className)) {
+                throw new \ErrorException('No matching controller found', 404);
+            }
+            if (method_exists(
+                '\WebServCo\Framework\AbstractController',
+                $method
+            ) ||
+                !is_callable([$className, $method])
+            ) {
+                throw new \ErrorException('No matching action found', 404);
+            }
+            return call_user_func_array([new $className, $method], $args);
+        } catch (\Errors $e) { //php 7
+            return $this->shutdown($e, true);
+        } catch (\Exception $e) {
+            return $this->shutdown($e, true);
+        }
+        return true;
+    }
+    
+    public function runCli()
+    {
+        try {
+            throw new \ErrorException(
+                'CLI not supported, please open this resource in a web browser'
+            );
+        } catch (\Errors $e) { //php 7
+            return $this->shutdown($e, true);
+        } catch (\Exception $e) {
+            return $this->shutdown($e, true);
+        }
+        return true;
+    }
+    
+    /**
+     * Handle Errors.
+     *
+     * @param mixed $exception An Error or Exception object.
+     */
+    final private function handleErrors($exception = null)
+    {
+        $errorInfo = [
+            'code' => 0,
+            'severity' => null,
+            'message' => null,
+            'file' => null,
+            'line' => null,
+            'trace' => null,
+        ];
+        if (is_object($exception)) {
+            $errorInfo['code'] = $exception->getCode();
+            if ($exception instanceof ErrorException) {
+                $errorInfo['severity'] = $exception->getSeverity();
+            }
+            $errorInfo['message'] = $exception->getMessage();
+            $errorInfo['file'] = $exception->getFile();
+            $errorInfo['line'] = $exception->getLine();
+            $errorInfo['trace'] = $exception->getTraceAsString();
+        } else {
+            $last_error = error_get_last();
+            if (!empty($last_error['message'])) {
+                $errorInfo['message'] = $last_error['message'];
+            }
+            if (!empty($last_error['file'])) {
+                $errorInfo['file'] = $last_error['file'];
+            }
+            if (!empty($last_error['line'])) {
+                $errorInfo['line'] = $last_error['line'];
+            }
+        }
+        if (!empty($errorInfo['message'])) {
+            return $this->halt($errorInfo);
+        }
+        return false;
+    }
+    
+    final private function halt($errorInfo = [])
+    {
+        if (Fw::isCLI()) {
+            return $this->haltCli($errorInfo);
+        } else {
+            return $this->haltHttp($errorInfo);
+        }
+    }
+    
+    public function haltHttp($errorInfo = [])
+    {
+        switch ($errorInfo['code']) {
+            case 404:
+                $statusCode = 404;
+                $title = 'Resource not found';
+                break;
+            case 500:
+            default:
+                $statusCode = 500;
+                $title = 'The App made a boo boo';
+                break;
+        }
+        Fw::response()->setStatusHeader($statusCode);
+        
+        echo '<!doctype html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sorry</title>
+            <style>
+            * {
+                background: #436f4d; color: #fff;
+            }
+            .o {
+                display: table; position: absolute; height: 100%; width: 100%;
+            }
+
+            .m {
+                display: table-cell; vertical-align: middle;
+            }
+
+            .i {
+                margin-left: auto; margin-right: auto; width: 680px; text-align: center;
+            }
+            small {
+                font-size: 0.7em;
+            }
+            </style>
+        </head>
+        <body>
+            <div class="o">
+                <div class="m">
+                    <div class="i">';
+        echo "<h1>{$title}</h1>";
+        if (Env::ENV_DEV === Fw::config()->getEnv()) {
+            echo "<p>$errorInfo[message]</p>";
+            echo "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
+        }
+        echo '      </div>
+                </div>
+            </div>
+        </body>
+        </html>';
+        return true;
+    }
+    
+    public function haltCli($errorInfo = [])
+    {
+        echo 'The App made a boo boo' . PHP_EOL;
+        if (Env::ENV_DEV === Fw::config()->getEnv()) {
+            echo $errorInfo['message'] . PHP_EOL;
+            echo "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
+        }
+        return true;
     }
 }

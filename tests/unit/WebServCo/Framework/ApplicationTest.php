@@ -139,35 +139,6 @@ final class ApplicationTest extends TestCase
     }
     
     /**
-    * @test
-    *
-    * @depends instantiationWithValidParametersWorks
-    */
-    public function handleErrorsReturnsFalseIfNoErrors()
-    {
-        $app = new App(self::$pathWeb, self::$pathProject);
-        $this->assertFalse($app->handleErrors());
-    }
-    
-    /**
-    * @test
-    *
-    * @depends instantiationWithValidParametersWorks
-    */
-    public function handleErrorsReturnsTrueOnValidException()
-    {
-        $app = new App(self::$pathWeb, self::$pathProject);
-        
-        $this->setOutputCallback(function () {
-        });
-        try {
-            throw new \ErrorException("Foo bar");
-        } catch (\ErrorException $e) {
-            $this->assertTrue($app->handleErrors($e));
-        }
-    }
-    
-    /**
      * @test
      */
     public function shutdownMethodIsPublic()

@@ -120,6 +120,11 @@ final class Framework
         return self::get('Request', [$_SERVER, $_POST]);
     }
     
+    final public static function response()
+    {
+        return self::get('Response');
+    }
+    
     final public static function router()
     {
         return self::get('Router');
