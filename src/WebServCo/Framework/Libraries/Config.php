@@ -84,24 +84,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      */
     final public function set($setting, $value)
     {
-        /*
-        if (empty($setting)) {
-            return false;
-        }
-        $setting = $this->parseSetting($setting, true);
-        if (is_array($setting)) {
-            $reference = &$this->config;
-            foreach ($setting as $item) {
-                $reference = &$reference[$item];
-            }
-            $reference = $value;
-            unset($reference);
-            return true;
-        }
-        $this->config[$setting] = $value;
-        return true;
-        */
-        //XXX
         if (empty($setting)) {
             return false;
         }
