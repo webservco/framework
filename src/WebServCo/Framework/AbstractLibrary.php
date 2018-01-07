@@ -4,7 +4,7 @@ namespace WebServCo\Framework;
 abstract class AbstractLibrary
 {
     private $settings = [];
-    private $data = [];
+    protected $data = [];
     
     public function __construct($settings = [])
     {
