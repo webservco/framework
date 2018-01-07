@@ -29,7 +29,6 @@ final class ArrayStorage
     final public static function get($storage = [], $setting = null, $defaultValue = false)
     {
         $setting = self::parseSetting($setting, true);
-        
         if (empty($setting)) {
             return false;
         }

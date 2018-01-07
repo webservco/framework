@@ -231,7 +231,7 @@ class Application
             <title>Sorry</title>
             <style>
             * {
-                background: #436f4d; color: #fff;
+                background: #f2dede; color: #a94442;
             }
             .o {
                 display: table; position: absolute; height: 100%; width: 100%;

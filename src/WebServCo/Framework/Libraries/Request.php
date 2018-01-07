@@ -30,10 +30,6 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
      * Sanitized request query.
      */
     public $query = [];
-    /**
-     * Sanitized POST data.
-     */
-    public $data = [];
     
     final public function __construct($config, $server, $post = [])
     {
@@ -79,6 +75,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     final private function porcessPost($post = [])
     {
+        $this->data = [];
         foreach ($post as $k => $v) {
             $this->data[$this->sanitize($k)] = $this->sanitize($v, false);
         }
@@ -278,5 +275,16 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
             return $this->server['HOSTNAME']; //CLI
         }
         return null;
+    }
+    
+    final public function guessAppUrl()
+    {
+        if (\WebServCo\Framework\Framework::isCLI()) {
+            return false;
+        }
+        return $this->getSchema() .
+        '://' .
+        $this->getHost() . 
+        $this->path;
     }
 }
