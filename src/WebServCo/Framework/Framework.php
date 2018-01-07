@@ -129,4 +129,18 @@ final class Framework
     {
         return self::get('Router');
     }
+    
+    final public static function output($type)
+    {
+        switch ($type) {
+            case 'json':
+                $library = 'JsonOutput';
+                break;
+            case 'html':
+            default:
+                $library = 'HtmlOutput';
+                break;
+        }
+        return self::get($library);
+    }
 }
