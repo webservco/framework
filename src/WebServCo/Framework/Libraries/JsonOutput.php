@@ -9,12 +9,6 @@ final class JsonOutput extends \WebServCo\Framework\AbstractLibrary implements
         parent::__construct($config);
     }
     
-    final public function setData($key, $value)
-    {
-        $this->data[$key] = $value;
-        return true;
-    }
-    
     final public function setTemplate($template)
     {
         return false;
