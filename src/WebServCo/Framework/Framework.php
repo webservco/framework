@@ -45,7 +45,12 @@ final class Framework
                  * available, so we can load the custom configuration
                  * file for the library.
                  */
-                $pathProject = self::config()->get('app.path.project');
+                $pathProject = self::config()->get(
+                    sprintf(
+                        'app%1$spath%1$sproject',
+                        \WebServCo\Framework\Settings::DIVIDER
+                    )
+                );
                 if (!empty($pathProject)) {
                     $config = self::config()->load($className, $pathProject);
                 }

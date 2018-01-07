@@ -4,29 +4,43 @@ namespace WebServCo\Framework\Libraries;
 final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\OutputInterface
 {
+    private $path;
+    private $template;
+    
     final public function __construct($config)
     {
         parent::__construct($config);
     }
     
-    final public function setData($key, $value)
+    final public function setPath($path)
     {
-        $this->data[$key] = $value;
+        $this->path = $path;
         return true;
-    }
-    
-    final public function getData($key)
-    {
-        return $this->data($key, false);
     }
     
     final public function setTemplate($template)
     {
-        return false;
+        $this->template = $template;
+        return true;
     }
     
     final public function render()
     {
-        return false;
+        try {
+            $templatePath = "{$this->path}{$this->template}.php";
+            if (!is_file($templatePath)) {
+                throw new \ErrorException('Template file not found');
+            }
+            ob_start();
+            include $templatePath;
+            $output = ob_get_clean();
+        } catch (\Throwable $e) { //php > 7
+            ob_end_clean();
+            throw $e;
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
+        return $output;
     }
 }

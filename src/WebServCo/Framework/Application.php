@@ -1,6 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Settings as S;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Environment as Env;
 use WebServCo\Framework\ErrorHandler as Err;
@@ -17,8 +18,9 @@ class Application
                 'Invalid paths specified when initializing Application.'
             );
         }
-        Fw::config()->set('app.path.web', $pathPublic);
-        Fw::config()->set('app.path.project', $pathProject);
+        
+        Fw::config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $pathPublic);
+        Fw::config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $pathProject);
     }
     
     /**
@@ -29,7 +31,7 @@ class Application
         /**
          * Project path is set in the constructor.
          */
-        $pathProject = Fw::config()->get('app.path.project');
+        $pathProject = Fw::config()->get(sprintf('app%1$spath%1$sproject', S::DIVIDER));
         /**
          * Env file existence is verified in the controller.
          */
@@ -126,15 +128,13 @@ class Application
             if (!class_exists($className)) {
                 throw new \ErrorException('No matching controller found', 404);
             }
-            if (method_exists(
-                '\WebServCo\Framework\AbstractController',
-                $method
-            ) ||
-                !is_callable([$className, $method])
-            ) {
+            $object = new $className;
+            $parent = get_parent_class($object);
+            if (method_exists($parent, $method) ||
+                !is_callable([$className, $method])) {
                 throw new \ErrorException('No matching action found', 404);
             }
-            return call_user_func_array([new $className, $method], $args);
+            return call_user_func_array([$object, $method], $args);
         } catch (\Throwable $e) { //php > 7
             return $this->shutdown($e, true);
         } catch (\Exception $e) {
