@@ -75,7 +75,7 @@ class Application
              */
             
             return true;
-        } catch (\Errors $e) { //php 7
+        } catch (\Throwable $e) { //php > 7
             return $this->shutdown($e, true);
         } catch (\Exception $e) {
             return $this->shutdown($e, true);
@@ -122,7 +122,7 @@ class Application
                 Fw::request()->target,
                 Fw::router()->setting('routes')
             );
-            $className = "\\Project\\Domain\\{$class}\\{$class}Controller";
+            $className = "\\Project\\Domain\\{$class}\\Http\\{$class}Controller";
             if (!class_exists($className)) {
                 throw new \ErrorException('No matching controller found', 404);
             }
@@ -135,7 +135,7 @@ class Application
                 throw new \ErrorException('No matching action found', 404);
             }
             return call_user_func_array([new $className, $method], $args);
-        } catch (\Errors $e) { //php 7
+        } catch (\Throwable $e) { //php > 7
             return $this->shutdown($e, true);
         } catch (\Exception $e) {
             return $this->shutdown($e, true);
@@ -147,9 +147,10 @@ class Application
     {
         try {
             throw new \ErrorException(
-                'CLI not supported, please open this resource in a web browser'
+                'CLI support not implemented yet,'.
+                ' please open this resource in a web browser.'
             );
-        } catch (\Errors $e) { //php 7
+        } catch (\Throwable $e) { //php > 7
             return $this->shutdown($e, true);
         } catch (\Exception $e) {
             return $this->shutdown($e, true);
