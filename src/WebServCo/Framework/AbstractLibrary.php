@@ -13,6 +13,12 @@ abstract class AbstractLibrary
         }
     }
     
+    final public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+        return true;
+    }
+    
     final public function setting($setting, $defaultValue = false)
     {
         return array_key_exists($setting, $this->settings) ?
@@ -22,8 +28,10 @@ abstract class AbstractLibrary
     
     final public function data($key, $defaultValue = false)
     {
-        return array_key_exists($key, $this->data) ?
-        $this->data[$key] :
-        $defaultValue;
+        return \WebServCo\Framework\ArrayStorage::get(
+            $this->data,
+            $key,
+            $defaultValue
+        );
     }
 }

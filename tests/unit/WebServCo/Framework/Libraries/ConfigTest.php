@@ -4,6 +4,7 @@ namespace Tests\Framework\Libraries;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Libraries\Config;
+use WebServCo\Framework\Settings as S;
 
 final class ConfigTest extends TestCase
 {
@@ -217,10 +218,10 @@ final class ConfigTest extends TestCase
      */
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting()
     {
-        $this->assertTrue(Fw::config()->set('app.one.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.two.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
-        $this->assertEquals($this->value, Fw::config()->get('app.one.sub_two.key'));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
+        $this->assertEquals($this->value, Fw::config()->get(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)));
     }
     
     /**
@@ -228,9 +229,9 @@ final class ConfigTest extends TestCase
      */
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting()
     {
-        $this->assertTrue(Fw::config()->set('app.one.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.two.sub_two.key', $this->value));
-        $this->assertTrue(Fw::config()->set('app.three.sub_three.key', $this->value));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue(Fw::config()->set(sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
         $this->assertTrue(Fw::config()->set('app', $this->value));
         $this->assertEquals($this->value, Fw::config()->get('app'));
     }
@@ -250,9 +251,9 @@ final class ConfigTest extends TestCase
      */
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst()
     {
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertTrue(Fw::config()->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
+        $this->assertTrue(Fw::config()->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertEquals('new value', Fw::config()->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
     
     /**
@@ -284,12 +285,12 @@ final class ConfigTest extends TestCase
                 ],
             ],
         ];
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'old value'));
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
+        $this->assertTrue(Fw::config()->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
+        $this->assertTrue(Fw::config()->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
         $this->assertTrue(Fw::config()->add('foo', $config));
         
-        $this->assertEquals('value', Fw::config()->get('foo.level1.level2.level3.0'));
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertEquals('value', Fw::config()->get(sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', S::DIVIDER)));
+        $this->assertEquals('new value', Fw::config()->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
     
     /**
@@ -325,7 +326,7 @@ final class ConfigTest extends TestCase
     {
         $data = Fw::config()->load('foo', self::$pathProject);
         $this->assertTrue(Fw::config()->add('foo', $data));
-        $this->assertEquals('value1', Fw::config()->get('foo.options.setting1'));
+        $this->assertEquals('value1', Fw::config()->get(sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)));
     }
     /**
      * @test
@@ -333,10 +334,10 @@ final class ConfigTest extends TestCase
      */
     public function loadAppendsDataInsteadOfOverwriting()
     {
-        $this->assertTrue(Fw::config()->set('foo.bar.baz', 'new value'));
+        $this->assertTrue(Fw::config()->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
         $data = Fw::config()->load('foo', self::$pathProject);
         Fw::config()->add('foo', $data);
-        $this->assertEquals('new value', Fw::config()->get('foo.bar.baz'));
+        $this->assertEquals('new value', Fw::config()->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
     
     /**

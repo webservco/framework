@@ -4,31 +4,14 @@ namespace WebServCo\Framework\Libraries;
 final class Config extends \WebServCo\Framework\AbstractLibrary
 {
     /**
-     * Delimiter to use for special configuration strings.
-     */
-    const DELIMITER = '.';
-    
-    /**
      * Stores configuration data.
      */
     private $config = [];
     
     /**
-     * Application environemnt.
+     * Application environment.
      */
     private $env;
-    
-    /**
-     * Parse the setting key to make sure it's a simple string
-     * or an array.
-     */
-    final private function parseSetting($setting)
-    {
-        if (is_string($setting) && false !== strpos($setting, self::DELIMITER)) {
-            return explode(self::DELIMITER, $setting);
-        }
-        return $setting;
-    }
     
     /**
      * Append data to configuration settings.
@@ -94,13 +77,14 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app.path.project').
+     *                          (eg 'app|path|project').
      * @param mixed $value The value to be stored.
      *
      * @return bool True on success and false on failure.
      */
     final public function set($setting, $value)
     {
+        /*
         if (empty($setting)) {
             return false;
         }
@@ -116,72 +100,18 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         }
         $this->config[$setting] = $value;
         return true;
-    }
-    
-    /**
-     * Gets a configuration value.
-     *
-     * @param mixed $setting Can be an array, a string,
-     *                          or a special formatted string
-     *                          (eg 'app.path.project').
-     * @param array $config Configuration data. It is used a method
-     *                          parameter in recursion.
-     * @return mixed
-     */
-    final public function get($setting = null, $config = array())
-    {
-        $setting = $this->parseSetting($setting, true);
-        $config = $config ?: $this->config;
-        
+        */
+        //XXX
         if (empty($setting)) {
             return false;
         }
-        
-        /**
-         * If $setting is an array, process it recursively.
-         */
-        if (is_array($setting)) {
-            /**
-             * Check if we have the first $setting element in the
-             * configuration data array.
-             */
-            if (array_key_exists(0, $setting) && array_key_exists($setting[0], $config)) {
-                /**
-                 * Remove first element from $setting.
-                 */
-                $key = array_shift($setting);
-                /**
-                 * At the end of the recursion $setting will be
-                 * an empty array. In this case we simply return the
-                 * current configuration data.
-                 */
-                if (empty($setting)) {
-                    return $config[$key];
-                }
-                /**
-                 * Go down one lement in the configuration data
-                 * and call the method again, with the remainig setting.
-                 */
-                return $this->get($setting, $config[$key]);
-            }
-            /**
-             * The requested setting doesn't exist in our
-             * configuration data array.
-             */
-            return false;
-        }
-        
-        /**
-         * If we arrive here, $setting must be a simple string.
-         */
-        if (array_key_exists($setting, $config)) {
-            return $config[$setting];
-        }
-        
-        /**
-         * If we got this far, there is no data to return.
-         */
-        return false;
+        $this->config = \WebServCo\Framework\ArrayStorage::set($this->config, $setting, $value);
+        return true;
+    }
+    
+    final public function get($setting, $defaultValue = false)
+    {
+        return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
     }
     
     /**
