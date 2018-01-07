@@ -39,6 +39,24 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
     }
     
     /**
+     * Add base setting data.
+     *
+     * Keys will be preserved.
+     * Existing values will be overwritten.
+     *
+     * @param string $setting Name of setting to load.
+     * @param mixed $data Data to add.
+     */
+    final public function add($setting, $data)
+    {
+        $this->config = \WebServCo\Framework\ArrayStorage::append(
+            $this->config,
+            [$setting => $data]
+        );
+        return true;
+    }
+    
+    /**
      * Load configuration data from a file.
      *
      * Data is appended to any existing data.
@@ -55,21 +73,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         }
         $data = (include $pathFull);
         return is_array($data) ? $data : false;
-    }
-    
-    /**
-     * Add base setting data.
-     *
-     * Keys will be preserved.
-     * Existing values will be overwritten.
-     *
-     * @param string $setting Name of setting to load.
-     * @param mixed $data Data to add.
-     */
-    final public function add($setting, $data)
-    {
-        $this->config = $this->append($this->config, [$setting => $data]);
-        return true;
     }
     
     /**

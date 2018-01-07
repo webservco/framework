@@ -82,7 +82,7 @@ final class ArrayStorage
     }
     
     /**
-     * Sets a configuration value.
+     * Sets a value in a storage array.
      *
      * @param array $storage
      * @param mixed $setting Can be an array, a string,
@@ -108,6 +108,30 @@ final class ArrayStorage
             return $storage;
         }
         $storage[$setting] = $value;
+        return $storage;
+    }
+    
+    /**
+     * Append data to a storage array.
+     *
+     * @param array $storage
+     * @param mixed $data
+     * @return array
+     */
+    final public static function append($storage, $data = [])
+    {
+        if (is_array($storage) && is_array($data)) {
+            foreach ($data as $setting => $value) {
+                if (array_key_exists($setting, $storage) &&
+                    is_array($storage[$setting]) &&
+                    is_array($value)
+                ) {
+                    $storage[$setting] = self::append($storage[$setting], $value);
+                } else {
+                    $storage[$setting] = $value;
+                }
+            }
+        }
         return $storage;
     }
 }
