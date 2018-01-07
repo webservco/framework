@@ -1,5 +1,4 @@
 <?php
-
 namespace WebServCo\Framework;
 
 final class ErrorHandler
