@@ -284,7 +284,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         }
         return $this->getSchema() .
         '://' .
-        $this->getHost() . 
+        $this->getHost() .
         $this->path;
     }
 }
