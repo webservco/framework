@@ -4,6 +4,7 @@ namespace WebServCo\Framework;
 abstract class AbstractLibrary
 {
     private $settings = [];
+    private $data = [];
     
     public function __construct($settings = [])
     {
@@ -12,19 +13,17 @@ abstract class AbstractLibrary
         }
     }
     
-    /**
-     * Returns a library setting value.
-     *
-     * An optional default value can be specified.
-     *
-     * @param string $setting
-     * @param mixed $defaultValue
-     * @return mixed
-     */
     final public function setting($setting, $defaultValue = false)
     {
         return array_key_exists($setting, $this->settings) ?
         $this->settings[$setting] :
+        $defaultValue;
+    }
+    
+    final public function data($key, $defaultValue = false)
+    {
+        return array_key_exists($key, $this->data) ?
+        $this->data[$key] :
         $defaultValue;
     }
 }
