@@ -127,10 +127,9 @@ final class RequestInstanceTest extends TestCase
      */
     public function postRequestIsParsedCorrectly()
     {
-        $this->assertTrue(array_key_exists('key', $this->objectPost->data));
         $this->assertEquals(
             'value',
-            $this->objectPost->data['key']
+            $this->objectPost->data('key')
         );
     }
     
@@ -139,10 +138,9 @@ final class RequestInstanceTest extends TestCase
      */
     public function postRequestTagsNotDisabledInValues()
     {
-        $this->assertTrue(array_key_exists('script', $this->objectPost->data));
         $this->assertEquals(
             '<script>hello</script>',
-            $this->objectPost->data['script']
+            $this->objectPost->data('script')
         );
     }
     
@@ -151,7 +149,7 @@ final class RequestInstanceTest extends TestCase
      */
     public function postRequestTagsDisabledInKeys()
     {
-        $this->assertFalse(array_key_exists('<h1>invalid</h1>', $this->objectPost->data));
-        $this->assertTrue(array_key_exists('invalid', $this->objectPost->data));
+        $this->assertFalse($this->objectPost->data('<h1>invalid</h1>'));
+        $this->assertEquals('<tag>tag</tag>', $this->objectPost->data('invalid'));
     }
 }
