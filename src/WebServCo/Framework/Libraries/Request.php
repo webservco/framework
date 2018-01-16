@@ -124,11 +124,6 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     final private function getPath()
     {
-        /* XXX
-        return !empty($this->server['SCRIPT_NAME']) ?
-        str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']) :
-        false;
-        */
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
