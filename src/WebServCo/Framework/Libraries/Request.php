@@ -51,7 +51,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
             case \WebServCo\Framework\Http::METHOD_HEAD:
                 break;
             case \WebServCo\Framework\Http::METHOD_POST:
-                $this->porcessPost($post);
+                $this->processPost($post);
                 break;
         }
         if ($this->setting('clear_globals', true)) {
@@ -73,7 +73,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    final private function porcessPost($post = [])
+    final private function processPost($post = [])
     {
         $this->data = [];
         foreach ($post as $k => $v) {
