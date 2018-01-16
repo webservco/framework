@@ -77,7 +77,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     {
         $this->data = [];
         foreach ($post as $k => $v) {
-            $this->data[$this->sanitize($k)] = $this->sanitize($v, false);
+            $this->data[$this->sanitize($k)] = $v;
         }
         return true;
     }
@@ -124,56 +124,54 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     final private function getPath()
     {
+        /* XXX
         return !empty($this->server['SCRIPT_NAME']) ?
         str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']) :
         false;
+        */
+        if (empty($this->server['SCRIPT_NAME'])) {
+            return false;
+        }
+        $path = str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']);
+        return rtrim($path, DIRECTORY_SEPARATOR);
     }
     
-    final public function sanitize($string, $extended = true)
+    final public function sanitize($string)
     {
-        $string = filter_var($string, FILTER_SANITIZE_URL);
-        
-        /**
-         * Extra sanitization, eg. for _GET, _SERVER
-         */
-        if ($extended) {
-            $string = filter_var($string, FILTER_SANITIZE_STRING);
-            $unwanted = [
-                "`",
-                //"'",
-                //'"',
-                "\b",
-                "\n",
-                "\r",
-                "\t",
-                //"?",
-                //"!",
-                //"~",
-                //"#",
-                //"^",
-                //"&",
-                //"*",
-                //"=",
-                //"[",
-                //"]",
-                //":",
-                //";",
-                //",",
-                //"|",
-                "\\",
-                //"{",
-                //"}",
-                //"(",
-                //")",
-                "\$"
-            ];
-            $string = str_replace($unwanted, '', $string);
-        }
-        
+        // Strip tags, optionally strip or encode special characters.
+        $string = filter_var($string, FILTER_SANITIZE_STRING);
+        $unwanted = [
+            "`",
+            //"'",
+            //'"',
+            "\b",
+            "\n",
+            "\r",
+            "\t",
+            //"?",
+            //"!",
+            //"~",
+            //"#",
+            //"^",
+            //"&",
+            //"*",
+            //"=",
+            //"[",
+            //"]",
+            //":",
+            //";",
+            //",",
+            //"|",
+            "\\",
+            //"{",
+            //"}",
+            //"(",
+            //")",
+            "\$"
+        ];
+        $string = str_replace($unwanted, '', $string);
         return $string;
     }
-    
-   
     
     final private function parse($string)
     {
@@ -285,6 +283,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return $this->getSchema() .
         '://' .
         $this->getHost() .
-        $this->path;
+        $this->path .
+        DIRECTORY_SEPARATOR;
     }
 }
