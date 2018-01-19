@@ -111,20 +111,6 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function sanitizeNotExtendedDoesNotRemovesTags()
-    {
-        $this->assertEquals(
-            "script=<script>alert('hacked!')</script>.html&key=value",
-            $this->object->sanitize(
-                "script=<script>alert('hacked!')</script>.html&key=value",
-                false
-            )
-        );
-    }
-    
-    /**
-     * @test
-     */
     public function postRequestIsParsedCorrectly()
     {
         $this->assertEquals(

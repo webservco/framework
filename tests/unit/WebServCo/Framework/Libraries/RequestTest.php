@@ -86,18 +86,4 @@ final class RequestTest extends TestCase
             )
         );
     }
-    
-    /**
-     * @test
-     */
-    public function sanitizeNotExtendedDoesNotRemovesTags()
-    {
-        $this->assertEquals(
-            "script=<script>alert('hacked!')</script>.html&key=value",
-            Fw::request()->sanitize(
-                "script=<script>alert('hacked!')</script>.html&key=value",
-                false
-            )
-        );
-    }
 }
