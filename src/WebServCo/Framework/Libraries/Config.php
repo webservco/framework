@@ -14,31 +14,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
     private $env;
     
     /**
-     * Append data to configuration settings.
-     *
-     * Used recursively.
-     * @param array $config Configuration data to append to.
-     * @param mixed $data Data to append.
-     * @return array
-     */
-    final private function append($config, $data)
-    {
-        if (is_array($config) && is_array($data)) {
-            foreach ($data as $setting => $value) {
-                if (array_key_exists($setting, $config) &&
-                    is_array($config[$setting]) &&
-                    is_array($value)
-                ) {
-                    $config[$setting] = $this->append($config[$setting], $value);
-                } else {
-                    $config[$setting] = $value;
-                }
-            }
-        }
-        return $config;
-    }
-    
-    /**
      * Add base setting data.
      *
      * Keys will be preserved.
