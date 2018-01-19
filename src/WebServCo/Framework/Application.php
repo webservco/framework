@@ -175,7 +175,7 @@ class Application
         ];
         if (is_object($exception)) {
             $errorInfo['code'] = $exception->getCode();
-            if ($exception instanceof ErrorException) {
+            if ($exception instanceof \ErrorException) {
                 $errorInfo['severity'] = $exception->getSeverity();
             }
             $errorInfo['message'] = $exception->getMessage();
