@@ -1,25 +1,27 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Framework as Fw; //XXX
-
 class AbstractOutputLoader
 {
     protected $projectPath;
+    protected $htmlOutput;
+    protected $jsonOutput;
     
-    public function __construct($projectPath)
+    public function __construct($projectPath, $htmlOutput = null, $jsonOutput = null)
     {
         $this->projectPath = $projectPath;
+        $this->htmlOutput = $htmlOutput;
+        $this->jsonOutput = $jsonOutput;
     }
     
-    private function htmlOutput()
+    protected function htmlOutput()
     {
-        return Fw::getLibrary('HtmlOutput');
+        return $this->htmlOutput;
     }
     
-    private function jsonOutput()
+    protected function jsonOutput()
     {
-        return Fw::getLibrary('JsonOutput');
+        $this->jsonOutput = $jsonOutput;
     }
     
     private function getRenderedHtml($template)

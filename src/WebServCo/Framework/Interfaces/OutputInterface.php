@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Interfaces;
 
 interface OutputInterface
 {
