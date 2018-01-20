@@ -2,7 +2,7 @@
 namespace WebServCo\Framework\Libraries;
 
 final class JsonOutput extends \WebServCo\Framework\AbstractLibrary implements
-    \WebServCo\Framework\OutputInterface
+    \WebServCo\Framework\Interfaces\OutputInterface
 {
     final public function __construct($config)
     {
