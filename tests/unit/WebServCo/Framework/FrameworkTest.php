@@ -18,14 +18,6 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function getProjectPathReturnsFalseOutsideApplicationContext()
-    {
-        $this->assertFalse(Fw::getProjectPath());
-    }
-    
-    /**
-     * @test
-     */
     public function getCliReturnsBoolean()
     {
         $this->assertInternalType('bool', Fw::isCLI());
