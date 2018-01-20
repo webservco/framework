@@ -132,7 +132,7 @@ class Application
                 $this->request()->target,
                 $this->router()->setting('routes')
             );
-            $className = "\\Project\\Domain\\{$class}\\Http\\{$class}Controller";
+            $className = "\\Project\\Domain\\{$class}\\{$class}Controller";
             if (!class_exists($className)) {
                 throw new \ErrorException('No matching controller found', 404);
             }
