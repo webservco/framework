@@ -30,12 +30,4 @@ final class FrameworkTest extends TestCase
     {
         $this->assertInternalType('string', Fw::getOS());
     }
-    
-    /**
-     * @test
-     */
-    public function configMethodReturnsCorrectInstance()
-    {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Fw::config());
-    }
 }

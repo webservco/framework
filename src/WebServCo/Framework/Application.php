@@ -8,19 +8,24 @@ use WebServCo\Framework\ErrorHandler as Err;
 
 class Application
 {
-    public function __construct($pathPublic, $pathProject)
+    public function __construct($publicPath, $projectPath)
     {
-        $pathPublic = rtrim($pathPublic, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $pathProject = rtrim($pathProject, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         
-        if (!is_readable("{$pathPublic}index.php") || !is_readable("{$pathProject}.env")) {
+        if (!is_readable("{$publicPath}index.php") || !is_readable("{$projectPath}.env")) {
             throw new \ErrorException(
                 'Invalid paths specified when initializing Application.'
             );
         }
         
-        Fw::config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $pathPublic);
-        Fw::config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $pathProject);
+        $this->config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $publicPath);
+        $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $projectPath);
+    }
+    
+    final public function config()
+    {
+        return Fw::getLibrary('Config');
     }
     
     final protected function date()
@@ -51,11 +56,11 @@ class Application
         /**
          * Project path is set in the constructor.
          */
-        $pathProject = Fw::config()->get(sprintf('app%1$spath%1$sproject', S::DIVIDER));
+        $pathProject = $this->config()->get(sprintf('app%1$spath%1$sproject', S::DIVIDER));
         /**
          * Env file existence is verified in the controller.
          */
-        Fw::config()->setEnv(trim(file_get_contents("{$pathProject}.env")));
+        $this->config()->setEnv(trim(file_get_contents("{$pathProject}.env")));
         
         return true;
     }
@@ -257,7 +262,7 @@ class Application
                 <div class="m">
                     <div class="i">';
         echo "<h1>{$title}</h1>";
-        if (Env::ENV_DEV === Fw::config()->getEnv()) {
+        if (Env::ENV_DEV === $this->config()->getEnv()) {
             echo "<p>$errorInfo[message]</p>";
             echo "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
         }
@@ -272,7 +277,7 @@ class Application
     public function haltCli($errorInfo = [])
     {
         echo 'The App made a boo boo' . PHP_EOL;
-        if (Env::ENV_DEV === Fw::config()->getEnv()) {
+        if (Env::ENV_DEV === $this->config()->getEnv()) {
             echo $errorInfo['message'] . PHP_EOL;
             echo "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         }

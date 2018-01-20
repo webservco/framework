@@ -104,9 +104,4 @@ final class Framework
             return self::OS_UNSUPPORTED;
         }
     }
-    
-    public static function config()
-    {
-        return self::getLibrary('Config');
-    }
 }
