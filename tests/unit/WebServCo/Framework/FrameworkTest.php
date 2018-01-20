@@ -54,12 +54,4 @@ final class FrameworkTest extends TestCase
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Response', Fw::response());
     }
-    
-    /**
-     * @test
-     */
-    public function routerMethodReturnsCorrectInstance()
-    {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::router());
-    }
 }

@@ -25,7 +25,7 @@ final class RouterTest extends TestCase
      */
     public function canBeAccessedViaFramework()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::router());
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::getLibrary('Router'));
     }
     
     /**
@@ -33,7 +33,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsArrayOnEmptyData()
     {
-        $route = Fw::router()->getRoute('', []);
+        $route = Fw::getLibrary('Router')->getRoute('', []);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
@@ -43,7 +43,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsArrayOnNullData()
     {
-        $route = Fw::router()->getRoute(null, []);
+        $route = Fw::getLibrary('Router')->getRoute(null, []);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
@@ -53,7 +53,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsArrayOnValidData()
     {
-        $route = Fw::router()->getRoute('foo/bar/baz', $this->cfg['routes']);
+        $route = Fw::getLibrary('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
@@ -63,7 +63,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsValidData()
     {
-        $route = Fw::router()->getRoute('foo/bar/baz', $this->cfg['routes']);
+        $route = Fw::getLibrary('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('foo', $route[0]);
@@ -76,7 +76,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsValidDataWithCustomRoutes()
     {
-        $route = Fw::router()->getRoute('qwerty', $this->cfg['routes']);
+        $route = Fw::getLibrary('Router')->getRoute('qwerty', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('Content', $route[0]);

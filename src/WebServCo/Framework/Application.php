@@ -28,6 +28,11 @@ class Application
         return Fw::getLibrary('Date');
     }
     
+    final protected function router()
+    {
+        return Fw::getLibrary('Router');
+    }
+    
     /**
      * Sets the env value from the project .env file.
      */
@@ -108,9 +113,9 @@ class Application
     {
         try {
             list($class, $method, $args) =
-            Fw::router()->getRoute(
+            $this->router()->getRoute(
                 Fw::request()->target,
-                Fw::router()->setting('routes')
+                $this->router()->setting('routes')
             );
             $className = "\\Project\\Domain\\{$class}\\Http\\{$class}Controller";
             if (!class_exists($className)) {

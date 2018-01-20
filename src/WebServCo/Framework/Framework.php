@@ -119,9 +119,4 @@ final class Framework
     {
         return self::getLibrary('Response');
     }
-    
-    public static function router()
-    {
-        return self::getLibrary('Router');
-    }
 }
