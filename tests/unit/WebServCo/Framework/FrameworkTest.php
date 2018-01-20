@@ -10,9 +10,17 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function getPathReturnsString()
+    public function getFrameworkPathReturnsString()
     {
-        $this->assertInternalType('string', Fw::getPath());
+        $this->assertInternalType('string', Fw::getFrameworkPath());
+    }
+    
+    /**
+     * @test
+     */
+    public function getProjectPathReturnsFalseOutsideApplicationContext()
+    {
+        $this->assertFalse(Fw::getProjectPath());
     }
     
     /**

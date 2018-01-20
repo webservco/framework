@@ -8,9 +8,89 @@ final class Framework
     const OS_UNSUPPORTED = 'Unsupported';
     
     /**
-     * Stores all object instances.
+     * Stores library instances.
      */
     private static $libraries = [];
+    
+    private static function getFullClassName($className, $classType)
+    {
+        switch ($classType) {
+            case 'Library':
+                return __NAMESPACE__ . '\\Libraries\\' . $className;
+                break;
+            default:
+                return $className;
+                break;
+        }
+    }
+    
+    /**
+     * Returns the path the framework project is located in.
+     *
+     * @return string
+     */
+    public static function getFrameworkPath()
+    {
+        return str_replace('src/WebServCo/Framework', '', __DIR__);
+    }
+    
+    /**
+     * Returns current project path.
+     *
+     * If used outside an Application context it returns false.
+     */
+    public static function getProjectPath()
+    {
+        return self::getLibrary('Config')->get(
+            sprintf(
+                'app%1$spath%1$sproject',
+                \WebServCo\Framework\Settings::DIVIDER
+            )
+        );
+    }
+    
+    private static function loadLibraryConfiguration($className)
+    {
+        if ('Config' == $className) {
+            return false;
+        }
+        $projectPath = self::getProjectPath();
+        if (empty($projectPath)) {
+            return false;
+        }
+        return self::getLibrary('Config')->load($className, $projectPath);
+    }
+    
+    private static function loadLibrary($className, $fullClassName, $args = [])
+    {
+        if (!class_exists($fullClassName)) {
+            throw new \ErrorException(
+                sprintf('Library %s not found', $fullClassName)
+            );
+        }
+        $config = self::loadLibraryConfiguration($className);
+        /**
+         * Libraries can have custom parameters to constructor,
+         * however the configuration array is always the first.
+         */
+        $args = is_array($args) ? array_merge([$config], $args) : [$config];
+        
+        $reflection = new \ReflectionClass($fullClassName);
+        return $reflection->newInstanceArgs($args);
+    }
+    
+    public static function getLibrary($className, $args = [], $storageKey = null)
+    {
+        $fullClassName = self::getFullClassName($className, 'Library');
+        
+        $storageKey = $storageKey ?: $fullClassName;
+        
+        if (!isset(self::$libraries[$storageKey])) {
+            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName, $args);
+        }
+        
+        return self::$libraries[$storageKey];
+    }
     
     /**
      * Returns an instance of a Framework Library.
@@ -19,73 +99,15 @@ final class Framework
      *
      * @return mixed
      */
-    final private static function get($className, $args = [])
+    private static function get($className, $args = [])
     {
-        /**
-         * Work only with framework libraries.
-         */
-        $fullClassName = __NAMESPACE__ . "\\Libraries\\$className";
-        /**
-         * Load class only if not already loaded.
-         */
-        if (!isset(self::$libraries[$fullClassName])) {
-            /**
-             * Check if the class exists.
-             */
-            if (!class_exists($fullClassName)) {
-                return false;
-            }
-            /**
-             * Load class config.
-             */
-            $config = [];
-            if ('Config' !== $className) {
-                /**
-                 * If the Application library is used, project path is
-                 * available, so we can load the custom configuration
-                 * file for the library.
-                 */
-                $pathProject = self::config()->get(
-                    sprintf(
-                        'app%1$spath%1$sproject',
-                        \WebServCo\Framework\Settings::DIVIDER
-                    )
-                );
-                if (!empty($pathProject)) {
-                    $config = self::config()->load($className, $pathProject);
-                }
-            }
-            /**
-             * Libraries can have custom parameters to constructor,
-             * however the configuration array is always the first.
-             */
-            $args = is_array($args) ? array_merge([$config], $args) : [$config];
-            /**
-             * Load class.
-             */
-            $reflection = new \ReflectionClass($fullClassName);
-            self::$libraries[$fullClassName] = $reflection->newInstanceArgs($args);
-        }
-        /**
-         * Return class instance
-         */
-        return self::$libraries[$fullClassName];
-    }
-    
-    /**
-     * Returns the path the framework project is located in.
-     *
-     * @return string
-     */
-    final public static function getPath()
-    {
-        return str_replace('src/WebServCo/Framework', '', __DIR__);
+        return self::getLibrary($className, $args); //XXX
     }
     
     /**
      * Checks if interface type is CLI
      */
-    final public static function isCLI()
+    public static function isCLI()
     {
         return 'cli' === PHP_SAPI;
     }
@@ -93,7 +115,7 @@ final class Framework
     /**
      * Get operating system (if supported).
      */
-    final public static function getOS()
+    public static function getOS()
     {
         $uname = php_uname('s');
         if (0 === strncasecmp($uname, 'Win', 3)) {
@@ -105,37 +127,37 @@ final class Framework
         }
     }
     
-    final public static function config()
+    public static function config()
     {
         return self::get('Config');
     }
     
-    final public static function log()
+    public static function log()
     {
         return self::get('Log');
     }
     
-    final public static function date()
+    public static function date()
     {
         return self::get('Date');
     }
     
-    final public static function request()
+    public static function request()
     {
         return self::get('Request', [$_SERVER, $_POST]);
     }
     
-    final public static function response()
+    public static function response()
     {
         return self::get('Response');
     }
     
-    final public static function router()
+    public static function router()
     {
         return self::get('Router');
     }
     
-    final public static function output($type)
+    public static function output($type)
     {
         switch ($type) {
             case 'json':
@@ -147,5 +169,10 @@ final class Framework
                 break;
         }
         return self::get($library);
+    }
+    
+    public static function database()
+    {
+        //XXX
     }
 }
