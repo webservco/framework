@@ -34,9 +34,9 @@ final class Framework
         return str_replace('src/WebServCo/Framework', '', __DIR__);
     }
     
-    private static function loadLibraryConfiguration($className)
+    private static function loadLibraryConfiguration($configName)
     {
-        if ('Config' == $className) {
+        if ('Config' == $configName) {
             return false;
         }
         $projectPath = self::getLibrary('Config')->get(
@@ -48,17 +48,18 @@ final class Framework
         if (empty($projectPath)) {
             return false;
         }
-        return self::getLibrary('Config')->load($className, $projectPath);
+        return self::getLibrary('Config')->load($configName, $projectPath);
     }
     
-    private static function loadLibrary($className, $fullClassName)
+    private static function loadLibrary($className, $fullClassName, $configName = null)
     {
         if (!class_exists($fullClassName)) {
             throw new \ErrorException(
                 sprintf('Library %s not found', $fullClassName)
             );
         }
-        $config = self::loadLibraryConfiguration($className);
+        $configName = $configName ?: $className;
+        $config = self::loadLibraryConfiguration($configName);
         /**
          * Libraries can have custom parameters to constructor,
          * however the configuration array is always the first.
@@ -77,14 +78,14 @@ final class Framework
         return $reflection->newInstanceArgs($args);
     }
     
-    public static function getLibrary($className, $storageKey = null)
+    public static function getLibrary($className, $storageKey = null, $configName = null)
     {
         $fullClassName = self::getFullClassName($className, 'Library');
         
         $storageKey = $storageKey ?: $fullClassName;
         
         if (!isset(self::$libraries[$storageKey])) {
-            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName);
+            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName, $configName);
         }
         
         return self::$libraries[$storageKey];
