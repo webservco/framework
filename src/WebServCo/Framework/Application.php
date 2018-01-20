@@ -33,6 +33,16 @@ class Application
         return Fw::getLibrary('Router');
     }
     
+    final protected function request()
+    {
+        return Fw::getLibrary('Request', [$_SERVER, $_POST]);
+    }
+    
+    final protected function response()
+    {
+        return Fw::getLibrary('Response');
+    }
+    
     /**
      * Sets the env value from the project .env file.
      */
@@ -114,7 +124,7 @@ class Application
         try {
             list($class, $method, $args) =
             $this->router()->getRoute(
-                Fw::request()->target,
+                $this->request()->target,
                 $this->router()->setting('routes')
             );
             $className = "\\Project\\Domain\\{$class}\\Http\\{$class}Controller";
@@ -215,7 +225,7 @@ class Application
                 $title = 'The App made a boo boo';
                 break;
         }
-        Fw::response()->setStatusHeader($statusCode);
+        $this->response()->setStatusHeader($statusCode);
         
         echo '<!doctype html>
         <html>

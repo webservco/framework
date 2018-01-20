@@ -109,14 +109,4 @@ final class Framework
     {
         return self::getLibrary('Config');
     }
-    
-    public static function request()
-    {
-        return self::getLibrary('Request', [$_SERVER, $_POST]);
-    }
-    
-    public static function response()
-    {
-        return self::getLibrary('Response');
-    }
 }

@@ -38,20 +38,4 @@ final class FrameworkTest extends TestCase
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', Fw::config());
     }
-    
-    /**
-     * @test
-     */
-    public function requestMethodReturnsCorrectInstance()
-    {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', Fw::request());
-    }
-    
-    /**
-     * @test
-     */
-    public function responseMethodReturnsCorrectInstance()
-    {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Response', Fw::response());
-    }
 }

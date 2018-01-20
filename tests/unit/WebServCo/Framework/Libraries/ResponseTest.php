@@ -12,7 +12,7 @@ final class ResponseTest extends TestCase
      */
     public function canBeAccessedViaFramework()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Response', Fw::response());
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Response', Fw::getLibrary('Response'));
     }
     
     /**
@@ -20,7 +20,7 @@ final class ResponseTest extends TestCase
      */
     public function formatStatusHeaderTextReturnsFalseOnNullCode()
     {
-        $this->assertFalse(Fw::response()->formatStatusHeaderText(null));
+        $this->assertFalse(Fw::getLibrary('Response')->formatStatusHeaderText(null));
     }
     
     /**
@@ -28,7 +28,7 @@ final class ResponseTest extends TestCase
      */
     public function formatStatusHeaderTextReturnsFalseOnEmptyCode()
     {
-        $this->assertFalse(Fw::response()->formatStatusHeaderText(''));
+        $this->assertFalse(Fw::getLibrary('Response')->formatStatusHeaderText(''));
     }
     
     /**
@@ -36,7 +36,7 @@ final class ResponseTest extends TestCase
      */
     public function formatStatusHeaderTextReturnsFalseOnInvalidCode()
     {
-        $this->assertFalse(Fw::response()->formatStatusHeaderText(999));
+        $this->assertFalse(Fw::getLibrary('Response')->formatStatusHeaderText(999));
     }
     
     /**
@@ -44,7 +44,7 @@ final class ResponseTest extends TestCase
      */
     public function formatStatusHeaderTextReturnsCorrectlyFormattedValueOnInvalidCode()
     {
-        $this->assertEquals('HTTP/1.1 200 OK', Fw::response()->formatStatusHeaderText(200));
+        $this->assertEquals('HTTP/1.1 200 OK', Fw::getLibrary('Response')->formatStatusHeaderText(200));
     }
     
     /**
@@ -52,7 +52,7 @@ final class ResponseTest extends TestCase
      */
     public function setStatusHeaderReturnsFalseOnEmptyCode()
     {
-        $this->assertFalse(Fw::response()->setStatusHeader(''));
+        $this->assertFalse(Fw::getLibrary('Response')->setStatusHeader(''));
     }
     
     /**
@@ -60,6 +60,6 @@ final class ResponseTest extends TestCase
      */
     public function setStatusHeaderReturnsFalseOnInvalidCode()
     {
-        $this->assertFalse(Fw::response()->setStatusHeader(999));
+        $this->assertFalse(Fw::getLibrary('Response')->setStatusHeader(999));
     }
 }
