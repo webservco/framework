@@ -110,11 +110,6 @@ final class Framework
         return self::getLibrary('Config');
     }
     
-    public static function log()
-    {
-        return self::getLibrary('Log');
-    }
-    
     public static function date()
     {
         return self::getLibrary('Date');
@@ -133,24 +128,5 @@ final class Framework
     public static function router()
     {
         return self::getLibrary('Router');
-    }
-    
-    public static function output($type)
-    {
-        switch ($type) {
-            case 'json':
-                $library = 'JsonOutput';
-                break;
-            case 'html':
-            default:
-                $library = 'HtmlOutput';
-                break;
-        }
-        return self::getLibrary($library);
-    }
-    
-    public static function database()
-    {
-        //XXX
     }
 }
