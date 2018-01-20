@@ -29,24 +29,9 @@ final class Framework
      *
      * @return string
      */
-    public static function getFrameworkPath()
+    public static function getPath()
     {
         return str_replace('src/WebServCo/Framework', '', __DIR__);
-    }
-    
-    /**
-     * Returns current project path.
-     *
-     * If used outside an Application context it returns false.
-     */
-    public static function getProjectPath()
-    {
-        return self::getLibrary('Config')->get(
-            sprintf(
-                'app%1$spath%1$sproject',
-                \WebServCo\Framework\Settings::DIVIDER
-            )
-        );
     }
     
     private static function loadLibraryConfiguration($className)
@@ -54,7 +39,12 @@ final class Framework
         if ('Config' == $className) {
             return false;
         }
-        $projectPath = self::getProjectPath();
+        $projectPath = self::getLibrary('Config')->get(
+            sprintf(
+                'app%1$spath%1$sproject',
+                \WebServCo\Framework\Settings::DIVIDER
+            )
+        );
         if (empty($projectPath)) {
             return false;
         }
@@ -93,18 +83,6 @@ final class Framework
     }
     
     /**
-     * Returns an instance of a Framework Library.
-     *
-     * @param string $className
-     *
-     * @return mixed
-     */
-    private static function get($className, $args = [])
-    {
-        return self::getLibrary($className, $args); //XXX
-    }
-    
-    /**
      * Checks if interface type is CLI
      */
     public static function isCLI()
@@ -129,32 +107,32 @@ final class Framework
     
     public static function config()
     {
-        return self::get('Config');
+        return self::getLibrary('Config');
     }
     
     public static function log()
     {
-        return self::get('Log');
+        return self::getLibrary('Log');
     }
     
     public static function date()
     {
-        return self::get('Date');
+        return self::getLibrary('Date');
     }
     
     public static function request()
     {
-        return self::get('Request', [$_SERVER, $_POST]);
+        return self::getLibrary('Request', [$_SERVER, $_POST]);
     }
     
     public static function response()
     {
-        return self::get('Response');
+        return self::getLibrary('Response');
     }
     
     public static function router()
     {
-        return self::get('Router');
+        return self::getLibrary('Router');
     }
     
     public static function output($type)
@@ -168,7 +146,7 @@ final class Framework
                 $library = 'HtmlOutput';
                 break;
         }
-        return self::get($library);
+        return self::getLibrary($library);
     }
     
     public static function database()
