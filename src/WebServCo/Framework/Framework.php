@@ -110,11 +110,6 @@ final class Framework
         return self::getLibrary('Config');
     }
     
-    public static function date()
-    {
-        return self::getLibrary('Date');
-    }
-    
     public static function request()
     {
         return self::getLibrary('Request', [$_SERVER, $_POST]);

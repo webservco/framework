@@ -42,14 +42,6 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function dateMethodReturnsCorrectInstance()
-    {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Date', Fw::date());
-    }
-    
-    /**
-     * @test
-     */
     public function requestMethodReturnsCorrectInstance()
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', Fw::request());

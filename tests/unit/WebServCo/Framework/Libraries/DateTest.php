@@ -12,7 +12,7 @@ final class DateTest extends TestCase
      */
     public function canBeAccessedViaFramework()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Date', Fw::date());
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Date', Fw::getLibrary('Date'));
     }
     
     /**
@@ -20,7 +20,7 @@ final class DateTest extends TestCase
      */
     public function setValidTimezoneReturnsTrue()
     {
-        $this->assertTrue(Fw::date()->setTimezone('Europe/Budapest'));
+        $this->assertTrue(Fw::getLibrary('Date')->setTimezone('Europe/Budapest'));
     }
     
     /**
@@ -28,7 +28,7 @@ final class DateTest extends TestCase
      */
     public function setInValidTimezoneReturnsFalse()
     {
-        $this->assertFalse(Fw::date()->setTimezone('foo/bar'));
+        $this->assertFalse(Fw::getLibrary('Date')->setTimezone('foo/bar'));
     }
     
     /**
@@ -36,8 +36,8 @@ final class DateTest extends TestCase
      */
     public function setTimezoneWithoutParametersUsesDefaultValue()
     {
-        $this->assertTrue(Fw::date()->setTimezone());
-        $this->assertEquals('Europe/Rome', Fw::date()->getTimezone());
+        $this->assertTrue(Fw::getLibrary('Date')->setTimezone());
+        $this->assertEquals('Europe/Rome', Fw::getLibrary('Date')->getTimezone());
     }
     
     /**
@@ -45,7 +45,7 @@ final class DateTest extends TestCase
      */
     public function getTimezoneWithoutSettingReturnsDefaultValue()
     {
-        $this->assertEquals('Europe/Rome', Fw::date()->getTimezone());
+        $this->assertEquals('Europe/Rome', Fw::getLibrary('Date')->getTimezone());
     }
    
     /**
@@ -53,6 +53,6 @@ final class DateTest extends TestCase
      */
     public function getTimezoneReturnsString()
     {
-        $this->assertInternalType('string', Fw::date()->getTimezone());
+        $this->assertInternalType('string', Fw::getLibrary('Date')->getTimezone());
     }
 }

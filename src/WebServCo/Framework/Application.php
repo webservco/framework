@@ -23,6 +23,11 @@ class Application
         Fw::config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $pathProject);
     }
     
+    final protected function date()
+    {
+        return Fw::getLibrary('Date');
+    }
+    
     /**
      * Sets the env value from the project .env file.
      */
@@ -54,7 +59,7 @@ class Application
             /**
              * With no argument, timezone will be set from the configuration.
              */
-            Fw::date()->setTimezone();
+            $this->date()->setTimezone();
             /**
              * @todo i18n, log, session (if not cli), users (if not cli)
              */
