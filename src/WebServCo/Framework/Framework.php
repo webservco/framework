@@ -51,7 +51,7 @@ final class Framework
         return self::getLibrary('Config')->load($className, $projectPath);
     }
     
-    private static function loadLibrary($className, $fullClassName, $args = [])
+    private static function loadLibrary($className, $fullClassName)
     {
         if (!class_exists($fullClassName)) {
             throw new \ErrorException(
@@ -62,21 +62,29 @@ final class Framework
         /**
          * Libraries can have custom parameters to constructor,
          * however the configuration array is always the first.
+         * $args = is_array($args) ? array_merge([$config], $args) : [$config];
          */
-        $args = is_array($args) ? array_merge([$config], $args) : [$config];
+        switch ($className) {
+            case 'Request':
+                $args = [$config, $_SERVER, $_POST];
+                break;
+            default:
+                $args = [$config];
+                break;
+        }
         
         $reflection = new \ReflectionClass($fullClassName);
         return $reflection->newInstanceArgs($args);
     }
     
-    public static function getLibrary($className, $args = [], $storageKey = null)
+    public static function getLibrary($className, $storageKey = null)
     {
         $fullClassName = self::getFullClassName($className, 'Library');
         
         $storageKey = $storageKey ?: $fullClassName;
         
         if (!isset(self::$libraries[$storageKey])) {
-            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName, $args);
+            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName);
         }
         
         return self::$libraries[$storageKey];

@@ -12,7 +12,10 @@ final class RequestTest extends TestCase
      */
     public function canBeAccessedViaFramework()
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', Fw::getLibrary('Request', [$_SERVER, $_POST]));
+        $this->assertInstanceOf(
+            'WebServCo\Framework\Libraries\Request',
+            Fw::getLibrary('Request')
+        );
     }
     
     /**
@@ -20,7 +23,10 @@ final class RequestTest extends TestCase
      */
     public function splitReturnsArrayOnNull()
     {
-        $this->assertInternalType('array', Fw::getLibrary('Request', [$_SERVER, $_POST])->split(null));
+        $this->assertInternalType(
+            'array',
+            Fw::getLibrary('Request')->split(null)
+        );
     }
     
     /**
@@ -28,7 +34,10 @@ final class RequestTest extends TestCase
      */
     public function splitReturnsArrayOnEmptyValue()
     {
-        $this->assertInternalType('array', Fw::getLibrary('Request', [$_SERVER, $_POST])->split(''));
+        $this->assertInternalType(
+            'array',
+            Fw::getLibrary('Request')->split('')
+        );
     }
     
     /**
@@ -36,7 +45,10 @@ final class RequestTest extends TestCase
      */
     public function splitReturnsArrayOnValidValue()
     {
-        $this->assertInternalType('array', Fw::getLibrary('Request', [$_SERVER, $_POST])->split('foo/bar'));
+        $this->assertInternalType(
+            'array',
+            Fw::getLibrary('Request')->split('foo/bar')
+        );
     }
     
     /**
@@ -44,7 +56,7 @@ final class RequestTest extends TestCase
      */
     public function getSchemaReturnsNullOnCli()
     {
-        $this->assertNull(Fw::getLibrary('Request', [$_SERVER, $_POST])->getSchema());
+        $this->assertNull(Fw::getLibrary('Request')->getSchema());
     }
     
     /**
@@ -52,7 +64,7 @@ final class RequestTest extends TestCase
      */
     public function getRefererReturnsNullOnCli()
     {
-        $this->assertNull(Fw::getLibrary('Request', [$_SERVER, $_POST])->getReferer());
+        $this->assertNull(Fw::getLibrary('Request')->getReferer());
     }
     
     /**
@@ -60,7 +72,10 @@ final class RequestTest extends TestCase
      */
     public function getHostReturnsString()
     {
-        $this->assertInternalType('string', Fw::getLibrary('Request', [$_SERVER, $_POST])->getHost());
+        $this->assertInternalType(
+            'string',
+            Fw::getLibrary('Request')->getHost()
+        );
     }
     
     /**
@@ -70,7 +85,9 @@ final class RequestTest extends TestCase
     {
         $this->assertEquals(
             '?&#39;&#34;?!~#^&*=[]:;||{}()x',
-            Fw::getLibrary('Request', [$_SERVER, $_POST])->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx")
+            Fw::getLibrary('Request')->sanitize(
+                "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"
+            )
         );
     }
     
@@ -81,7 +98,7 @@ final class RequestTest extends TestCase
     {
         $this->assertEquals(
             'script=alert(&#39;hacked!&#39;).html&key=value',
-            Fw::getLibrary('Request', [$_SERVER, $_POST])->sanitize(
+            Fw::getLibrary('Request')->sanitize(
                 "script=<script>alert('hacked!')</script>.html&key=value"
             )
         );

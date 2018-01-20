@@ -40,7 +40,7 @@ class Application
     
     final protected function request()
     {
-        return Fw::getLibrary('Request', [$_SERVER, $_POST]);
+        return Fw::getLibrary('Request');
     }
     
     final protected function response()
