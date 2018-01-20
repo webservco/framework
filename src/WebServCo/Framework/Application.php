@@ -50,30 +50,13 @@ class Application
         
         try {
             $this->setEnvironmentValue();
+            
+            /**
+             * With no argument, timezone will be set from the configuration.
+             */
             Fw::date()->setTimezone();
             /**
-             * @todo i18n init
-             */
-            /**
-             * @todo log (psr3)
-             */
-            /**
-             * @todo sanitize request
-             */
-            /**
-             * @todo routing (if not cli) XXX
-             */
-            /**
-             * @todo session (if not cli)
-             */
-            /**
-             * @todo session i18n functionality (if not cli)
-             */
-            /**
-             * @todo user init (if not cli)
-             */
-            /**
-             * @todo i18n
+             * @todo i18n, log, session (if not cli), users (if not cli)
              */
             
             return true;
