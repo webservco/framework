@@ -46,7 +46,6 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
         if (!empty($params)) {
             $this->stmt = $this->db->prepare($query);
             $this->bindParams($params);
-            //$this->stmt->debugDumpParams(); exit; //XXX
             $this->stmt->execute();
         } else {
             $this->stmt = $this->db->query($query);
