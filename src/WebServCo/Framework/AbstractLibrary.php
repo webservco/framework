@@ -19,11 +19,13 @@ abstract class AbstractLibrary
         return true;
     }
     
-    final public function setting($setting, $defaultValue = false)
+    final public function setting($key, $defaultValue = false)
     {
-        return array_key_exists($setting, $this->settings) ?
-        $this->settings[$setting] :
-        $defaultValue;
+        return \WebServCo\Framework\ArrayStorage::get(
+            $this->settings,
+            $key,
+            $defaultValue
+        );
     }
     
     final public function data($key, $defaultValue = false)
