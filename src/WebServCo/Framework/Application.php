@@ -236,7 +236,7 @@ class Application
         <html>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sorry</title>
+            <title>Oups</title>
             <style>
             * {
                 background: #f2dede; color: #a94442;
