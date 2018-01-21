@@ -21,7 +21,7 @@ class AbstractOutputLoader
     
     protected function jsonOutput()
     {
-        $this->jsonOutput = $jsonOutput;
+        return $this->jsonOutput;
     }
     
     private function getRenderedHtml($template)
