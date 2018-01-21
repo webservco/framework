@@ -59,10 +59,8 @@ trait DatabaseTrait
                 $query = self::QUERY_TYPE_INSERT . ' INTO';
                 break;
         }
-        $query .= " `{$tableName}` (" .
-        implode(', ', array_map(function ($v) {
-            return "`{$v}`";
-        }, $keys)) .
+        $query .= ' '.$this->escapeIdentifier($tableName).' (' .
+        implode(', ', array_map([$this, 'escapeIdentifier'], $keys)) .
         ') VALUES';
         if ($multiDimensional) {
             $valuesStrings = [];
