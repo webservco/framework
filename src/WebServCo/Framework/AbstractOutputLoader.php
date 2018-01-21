@@ -37,16 +37,30 @@ class AbstractOutputLoader
         return $this->htmlOutput()->render();
     }
     
-    public function html($data, $pageTemplate, $mainTemplate = null)
+    protected function setHtmlTemplateData($data)
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+        foreach ($data as $key => $value) {
+            $this->htmlOutput()->setData($key, $value);
+        }
+        return true;
+    }
+    
+    public function html($data, $template)
+    {
+        $this->setHtmlTemplateData($data);
+        return $this->getRenderedHtml($template);
+    }
+    
+    public function htmlPage($data, $pageTemplate, $mainTemplate = null)
     {
         /**
-         * Set page data
+         * Set template data.
          */
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
-                $this->htmlOutput()->setData($key, $value);
-            }
-        }
+        $this->setHtmlTemplateData($data);
+        
         /**
          * Partials
          */
