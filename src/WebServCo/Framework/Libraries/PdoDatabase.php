@@ -37,7 +37,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
         return $this->db->quote($string);
     }
     
-    public function executeQuery($query, $params = [])
+    public function query($query, $params = [])
     {
         if (empty($query)) {
             throw new \ErrorException('No query specified');
@@ -51,19 +51,19 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             $this->stmt = $this->db->query($query);
         }
         $this->setLastInsertId();
-        return true;
+        return $this->stmt;
     }
     
-    public function executeTransaction($data)
+    public function transaction($queries)
     {
         try {
             $this->db->beginTransaction();
-            foreach ($data as $item) {
+            foreach ($queries as $item) {
                 if (!isset($item[0])) {
                     throw new \ErrorException('No query specified');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
-                $this->executeQuery($item[0], $params);
+                $this->query($item[0], $params);
             }
             $this->db->commit();
             return true;
@@ -95,20 +95,20 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     
     public function getRows($query, $params = [])
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $this->rows;
     }
     
     public function getRow($query, $params = [])
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         return $this->stmt->fetch(\PDO::FETCH_ASSOC);
     }
     
     public function getColumn($query, $params = [], $columnNumber = 0)
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         return $this->stmt->fetchColumn($columnNumber);
     }
         

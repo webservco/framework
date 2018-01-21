@@ -35,7 +35,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         return $this->db->real_escape_string($string);
     }
     
-    public function executeQuery($query, $params = [])
+    public function query($query, $params = [])
     {
         if (empty($query)) {
             throw new \ErrorException('No query specified');
@@ -47,19 +47,19 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         $this->bindParams($params);
         $this->stmt->execute();
         $this->setLastInsertId();
-        return true;
+        return $this->stmt;
     }
     
-    public function executeTransaction($data)
+    public function transaction($queries)
     {
         try {
             $this->db->autocommit(false);
-            foreach ($data as $item) {
+            foreach ($queries as $item) {
                 if (!isset($item[0])) {
                     throw new \ErrorException('No query specified');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
-                $this->executeQuery($item[0], $params);
+                $this->query($item[0], $params);
             }
             $this->db->commit();
             return true;
@@ -91,7 +91,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function getRows($query, $params = [])
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         $this->mysqliResult = $this->stmt->get_result();
         $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
         return $this->rows;
@@ -99,14 +99,14 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function getRow($query, $params = [])
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         $this->mysqliResult = $this->stmt->get_result();
         return $this->mysqliResult->fetch_assoc();
     }
     
     public function getColumn($query, $params = [], $columnNumber = 0)
     {
-        $this->executeQuery($query, $params);
+        $this->query($query, $params);
         $this->mysqliResult = $this->stmt->get_result();
         $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
         return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
