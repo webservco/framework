@@ -10,6 +10,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
     
     protected $db;
     protected $stmt;
+    protected $lastInsertId;
     
     public function __construct($config)
     {
@@ -60,8 +61,9 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
         }
     }
     
-    protected function getKeysValues($data = [], $multiDimensional = false)
+    protected function getKeysValues($data = [])
     {
+        $multiDimensional = is_array($data[key($data)]);
         if ($multiDimensional) {
             $keys = array_keys(call_user_func_array('array_merge', $data));
             // fill any missing keys with empty data
@@ -76,8 +78,12 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
         return [$keys, $data];
     }
     
-    protected function generateAddQuery($queryType, $tableName, $keys, $data, $multiDimensional = false)
+    protected function generateAddQuery($queryType, $tableName, $data)
     {
+        $multiDimensional = is_array($data[key($data)]);
+        
+        list($keys, $data) = $this->getKeysValues($data);
+        
         switch ($queryType) {
             case self::QUERY_TYPE_REPLACE:
                 $query = self::QUERY_TYPE_REPLACE . ' INTO';
@@ -90,7 +96,6 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
                 $query = self::QUERY_TYPE_INSERT . ' INTO';
                 break;
         }
-        
         $query .= " `{$tableName}` (" .
         implode(', ', array_map(function ($v) {
             return "`{$v}`";
@@ -115,8 +120,13 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
         }, $data)) . ')';
     }
     
-    protected function bindValues($data, $multiDimensional = false)
+    protected function bindValues($data)
     {
+        if (empty($data)) {
+            return false;
+        }
+        $multiDimensional = is_array($data[key($data)]);
+        
         $i = 1;
         foreach ($data as $item) {
             if ($multiDimensional) {
@@ -132,29 +142,74 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
     
-    public function add($queryType, $tableName, $data = [])
+    protected function setLastInsertId()
+    {
+        $this->lastInsertId = $this->db->lastInsertId();
+    }
+    
+    public function getLastInsertId()
+    {
+        /**
+         * https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id
+         * If you insert multiple rows using a single INSERT statement,
+         * LAST_INSERT_ID() returns the value generated for the first inserted row only.
+         * The reason for this is to make it possible to reproduce easily the same
+         * INSERT statement against some other server.
+         */
+        return $this->lastInsertId;
+    }
+    
+    public function getAffectedRows()
+    {
+        return $this->stmt->rowCount();
+    }
+    
+    protected function add($queryType, $tableName, $data = [])
     {
         if (empty($tableName) || empty($data)) {
             throw new \ErrorException('No data specified');
         }
         
-        $multiDimensional = is_array($data[key($data)]);
+        $query = $this->generateAddQuery($queryType, $tableName, $data);
         
-        list($keys, $data) = $this->getKeysValues($data, $multiDimensional);
-        
-        $query = $this->generateAddQuery($queryType, $tableName, $keys, $data, $multiDimensional);
-        
+        return $this->executeQuery($query, $data);
+    }
+    
+    public function executeTransaction($data)
+    {
         try {
             $this->db->beginTransaction();
-            $this->stmt = $this->db->prepare($query);
-            $this->bindValues($data, $multiDimensional);
-            $this->stmt->execute();
+            foreach ($data as $item) {
+                if (!isset($item[0])) {
+                    throw new \ErrorException('No query specified');
+                }
+                $values = isset($item[1]) ? $item[1] : [];
+                $this->executeQuery($item[0], $values);
+            }
             $this->db->commit();
-            return $this->stmt->rowCount();
+            return true;
         } catch (\PDOException $e) {
             $this->db->rollBack();
             throw new \ErrorException($e->getMessage());
         }
+    }
+    
+    public function executeQuery($query, $values = [])
+    {
+        if (empty($query)) {
+            throw new \ErrorException('No query specified');
+        }
+        $this->stmt = $this->db->prepare($query);
+        if (!empty($values)) {
+            $this->bindValues($values);
+        }
+        
+        $result = $this->stmt->execute();
+        if (!$result) {
+            return false;
+        }
+        $this->setLastInsertId();
+        return true;
     }
     
     public function insert($tableName, $data = [])
