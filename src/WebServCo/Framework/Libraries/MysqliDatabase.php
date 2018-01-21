@@ -7,6 +7,8 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
     
+    protected $mysqliResult;
+    
     public function __construct($config)
     {
         parent::__construct($config);
@@ -38,14 +40,12 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         if (empty($query)) {
             throw new \ErrorException('No query specified');
         }
+        /**
+         * For simplicity use statements even for simple queries.
+         */
         $this->stmt = $this->db->prepare($query);
-        if (!empty($params)) {
-            $this->bindParams($params);
-        }
-        $result = $this->stmt->execute();
-        if (!$result) {
-            return false;
-        }
+        $this->bindParams($params);
+        $this->stmt->execute();
         $this->setLastInsertId();
         return true;
     }
@@ -71,10 +71,14 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function numRows()
     {
-        if (!is_object($this->stmt)) {
-            throw new \ErrorException('No Statement object available.');
-        }
-        return $this->stmt->num_rows;
+        /**
+         * @TODO Fix.
+         * "$this->stmt->num_rows" will be 0 because we can't use
+         * "$this->stmt->store_result();"
+         * We could count "$this->mysqliResult" but that would mean
+         * the method will only work if getRow*() was called before.
+         */
+        throw new \ErrorException('Method not implemented.');
     }
     
     public function affectedRows()
@@ -87,17 +91,25 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function getRows($query, $params = [])
     {
-        throw new \ErrorException('Method not implemented.');
+        $this->executeQuery($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
+        return $this->rows;
     }
     
     public function getRow($query, $params = [])
     {
-        throw new \ErrorException('Method not implemented.');
+        $this->executeQuery($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        return $this->mysqliResult->fetch_assoc();
     }
     
     public function getColumn($query, $params = [], $columnNumber = 0)
     {
-        throw new \ErrorException('Method not implemented.');
+        $this->executeQuery($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
+        return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
     }
     
     protected function bindParams($params = [])
