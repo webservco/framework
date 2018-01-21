@@ -5,6 +5,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
+    use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
     
     public function __construct($config)
     {
@@ -22,7 +23,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
                 $this->setting('connection/port', 3306)
             );
             $this->db->set_charset('utf8mb4');
-        } catch (\mysqli_sql_exception $e) {
+        } catch (\Exception $e) {
             throw new \ErrorException($e->getMessage());
         }
     }
@@ -62,7 +63,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             }
             $this->db->commit();
             return true;
-        } catch (\mysqli_sql_exception $e) {
+        } catch (\Exception $e) {
             $this->db->rollback();
             throw new \ErrorException($e->getMessage());
         }
@@ -70,12 +71,33 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function numRows()
     {
+        if (!is_object($this->stmt)) {
+            throw new \ErrorException('No Statement object available.');
+        }
         return $this->stmt->num_rows;
     }
     
     public function affectedRows()
     {
+        if (!is_object($this->stmt)) {
+            throw new \ErrorException('No Statement object available.');
+        }
         return $this->stmt->affected_rows;
+    }
+    
+    public function getRows($query, $params = [])
+    {
+        throw new \ErrorException('Method not implemented.');
+    }
+    
+    public function getRow($query, $params = [])
+    {
+        throw new \ErrorException('Method not implemented.');
+    }
+    
+    public function getColumn($query, $params = [], $columnNumber = 0)
+    {
+        throw new \ErrorException('Method not implemented.');
     }
     
     protected function bindParams($params = [])
