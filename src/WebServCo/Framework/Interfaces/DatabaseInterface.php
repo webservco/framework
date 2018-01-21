@@ -13,5 +13,11 @@ interface DatabaseInterface
     
     public function affectedRows();
     
+    public function getRows($query, $params = []);
+    
+    public function getRow($query, $params = []);
+    
+    public function getColumn($query, $params = [], $columnNumber = 0);
+    
     public function lastInsertId();
 }

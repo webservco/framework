@@ -5,6 +5,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
+    use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
     
     public function __construct($config)
     {
@@ -20,12 +21,13 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
                 $this->setting('connection/username', 'root'),
                 $this->setting('connection/passwd', ''),
                 [
-                    \PDO::ATTR_EMULATE_PREPARES => false,
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
                     \PDO::ATTR_PERSISTENT => false
                 ]
             );
-        } catch (\PDOException $e) {
+        } catch (\Exception $e) {
             throw new \ErrorException($e->getMessage());
         }
     }
@@ -40,14 +42,14 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
         if (empty($query)) {
             throw new \ErrorException('No query specified');
         }
-        $this->stmt = $this->db->prepare($query);
+        
         if (!empty($params)) {
+            $this->stmt = $this->db->prepare($query);
             $this->bindParams($params);
-        }
-        //$this->stmt->debugDumpParams(); exit; //XXX
-        $result = $this->stmt->execute();
-        if (!$result) {
-            return false;
+            //$this->stmt->debugDumpParams(); exit; //XXX
+            $this->stmt->execute();
+        } else {
+            $this->stmt = $this->db->query($query);
         }
         $this->setLastInsertId();
         return true;
@@ -66,7 +68,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             }
             $this->db->commit();
             return true;
-        } catch (\PDOException $e) {
+        } catch (\Exception $e) {
             $this->db->rollBack();
             throw new \ErrorException($e->getMessage());
         }
@@ -75,15 +77,40 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     public function numRows()
     {
         if (!is_object($this->stmt)) {
-            return false;
+            throw new \ErrorException('No Statement object available.');
         }
-        $rows = $this->rows ?: $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ('mysql' == $this->setting('driver')) {
+            return $this->stmt->rowCount();
+        }
+        $rows = $this->rows ?: $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
         return count($rows);
     }
     
     public function affectedRows()
     {
+        if (!is_object($this->stmt)) {
+            throw new \ErrorException('No Statement object available.');
+        }
         return $this->stmt->rowCount();
+    }
+    
+    public function getRows($query, $params = [])
+    {
+        $this->executeQuery($query, $params);
+        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->rows;
+    }
+    
+    public function getRow($query, $params = [])
+    {
+        $this->executeQuery($query, $params);
+        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+    
+    public function getColumn($query, $params = [], $columnNumber = 0)
+    {
+        $this->executeQuery($query, $params);
+        return $this->stmt->fetchColumn($columnNumber);
     }
         
     protected function bindParams($data)
