@@ -36,7 +36,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * Data is appended to any existing data.
      * @param string $setting Name of setting to load.
-     * @param string $path Directory where the file is located.
+     * @param string $pathProject Directory where the file is located.
      *                      File name must be <$setting>.php
      * @return mixed
      */
