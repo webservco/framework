@@ -13,6 +13,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     public $method;
     /**
      * Current script filename. Should most commonly be index.php
+     */
     public $filename;
     /**
      * Script path.
