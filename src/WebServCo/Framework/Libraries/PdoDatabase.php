@@ -139,7 +139,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
         
         switch ($type) {
             case 'NULL':
-                return PDO::PARAM_NULL;
+                return \PDO::PARAM_NULL;
                 break;
             case 'boolean':
                 return \PDO::PARAM_BOOL;
