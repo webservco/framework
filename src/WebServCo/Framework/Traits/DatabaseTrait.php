@@ -21,7 +21,7 @@ trait DatabaseTrait
         
         $query = $this->generateAddQuery($queryType, $tableName, $data);
         
-        return $this->executeQuery($query, $data);
+        return $this->query($query, $data);
     }
     
     protected function getKeysValues($data = [])
