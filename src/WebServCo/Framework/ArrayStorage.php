@@ -28,7 +28,7 @@ final class ArrayStorage
      */
     final public static function get($storage = [], $setting = null, $defaultValue = false)
     {
-        $setting = self::parseSetting($setting, true);
+        $setting = self::parseSetting($setting);
         
         if (empty($setting) || empty($storage)) {
             return $defaultValue;
@@ -97,7 +97,7 @@ final class ArrayStorage
         if (empty($setting)) {
             return false;
         }
-        $setting = self::parseSetting($setting, true);
+        $setting = self::parseSetting($setting);
         if (is_array($setting)) {
             $reference = &$storage;
             foreach ($setting as $item) {
