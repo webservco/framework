@@ -75,7 +75,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     
     public function numRows()
     {
-        if (!is_object($this->stmt)) {
+        if (!($this->stmt instanceof \PDOStatement)) {
             throw new \ErrorException('No Statement object available.');
         }
         if ('mysql' == $this->setting('driver')) {
@@ -87,7 +87,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     
     public function affectedRows()
     {
-        if (!is_object($this->stmt)) {
+        if (!($this->stmt instanceof \PDOStatement)) {
             throw new \ErrorException('No Statement object available.');
         }
         return $this->stmt->rowCount();
