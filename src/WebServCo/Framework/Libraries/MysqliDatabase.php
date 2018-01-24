@@ -83,7 +83,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     public function affectedRows()
     {
-        if (!is_object($this->stmt)) {
+        if (!($this->stmt instanceof \mysqli_stmt)) {
             throw new \ErrorException('No Statement object available.');
         }
         return $this->stmt->affected_rows;
