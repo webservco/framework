@@ -90,12 +90,12 @@ final class ArrayStorage
      *                          (eg 'app|path|project').
      * @param mixed $value The value to be stored.
      *
-     * @return bool True on success and false on failure.
+     * @return array The storage array with new data.
      */
     final public static function set($storage, $setting, $value)
     {
-        if (empty($setting)) {
-            return false;
+        if (!is_array($storage) || empty($setting)) {
+            return $storage;
         }
         $setting = self::parseSetting($setting);
         if (is_array($setting)) {
