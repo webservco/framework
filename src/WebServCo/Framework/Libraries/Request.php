@@ -85,6 +85,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     final private function process()
     {
+        $string = null;
         switch (true) {
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
@@ -99,8 +100,10 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
                 $string = $this->server['ORIG_PATH_INFO'];
                 break;
             default:
-                return false; //CLI
                 break;
+        }
+        if (empty($string)) {
+            return false; //CLI
         }
         list ($target, $queryString) = $this->parse($string);
         $this->target = $this->sanitize(urldecode($target));
