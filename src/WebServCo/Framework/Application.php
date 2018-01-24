@@ -85,9 +85,9 @@ class Application
              */
             
             return true;
-        } catch (\Throwable $e) { //php > 7
+        } catch (\Throwable $e) { // php7
             return $this->shutdown($e, true);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // php5
             return $this->shutdown($e, true);
         }
     }
@@ -106,7 +106,6 @@ class Application
              * Warning: this part will always be executed,
              * independent of the outcome of the script.
              */
-            
             Err::restore();
         }
         exit;
@@ -143,9 +142,9 @@ class Application
                 throw new \ErrorException('No matching action found', 404);
             }
             return call_user_func_array([$object, $method], $args);
-        } catch (\Throwable $e) { //php > 7
+        } catch (\Throwable $e) { // php7
             return $this->shutdown($e, true);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // php5
             return $this->shutdown($e, true);
         }
         return true;
@@ -158,9 +157,9 @@ class Application
                 'CLI support not implemented yet,'.
                 ' please open this resource in a web browser.'
             );
-        } catch (\Throwable $e) { //php > 7
+        } catch (\Throwable $e) { // php7
             return $this->shutdown($e, true);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // php5
             return $this->shutdown($e, true);
         }
         return true;
@@ -169,23 +168,21 @@ class Application
     /**
      * Handle Errors.
      *
-     * @param mixed $exception An Error or Exception object.
+     * @param mixed $exception An \Error or \Exception object.
      */
     final private function handleErrors($exception = null)
     {
         $errorInfo = [
             'code' => 0,
-            'severity' => null,
             'message' => null,
             'file' => null,
             'line' => null,
             'trace' => null,
         ];
-        if (is_object($exception)) {
+        if ($exception instanceof \Throwable ||
+            $exception instanceof \Exception
+        ) {
             $errorInfo['code'] = $exception->getCode();
-            if ($exception instanceof \ErrorException) {
-                $errorInfo['severity'] = $exception->getSeverity();
-            }
             $errorInfo['message'] = $exception->getMessage();
             $errorInfo['file'] = $exception->getFile();
             $errorInfo['line'] = $exception->getLine();

@@ -34,10 +34,10 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
             ob_start();
             include $templatePath;
             $output = ob_get_clean();
-        } catch (\Throwable $e) { //php > 7
+        } catch (\Throwable $e) { // php7
             ob_end_clean();
             throw $e;
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // php5
             ob_end_clean();
             throw $e;
         }

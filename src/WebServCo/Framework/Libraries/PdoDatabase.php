@@ -27,7 +27,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
                     \PDO::ATTR_PERSISTENT => false
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // PDOException/RuntimeException/Exception
             throw new \ErrorException($e->getMessage());
         }
     }
@@ -67,7 +67,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             }
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { //PDOException/RuntimeException/Exception
             $this->db->rollBack();
             throw new \ErrorException($e->getMessage());
         }

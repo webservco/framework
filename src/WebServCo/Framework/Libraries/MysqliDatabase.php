@@ -25,7 +25,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
                 $this->setting('connection/port', 3306)
             );
             $this->db->set_charset('utf8mb4');
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
             throw new \ErrorException($e->getMessage());
         }
     }
@@ -63,7 +63,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             }
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
             $this->db->rollback();
             throw new \ErrorException($e->getMessage());
         }
