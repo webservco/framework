@@ -8,6 +8,8 @@ php:
         - hhvm
 before_script:
   - composer update
+script:
+    - composer phpstan:7
 notifications:
         email:
                 on_success: always
