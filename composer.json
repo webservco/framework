@@ -19,14 +19,8 @@
 	"require-dev" : {
 		"pds/skeleton" : "~1.0",
 		"squizlabs/php_codesniffer" : "3.*",
-		"phpunit/phpunit" : "~4|~5",
-		"phpstan/phpstan": "^0.9.1"
+		"phpunit/phpunit" : "~4|~5"
 	},
-    "config": {
-        "platform": {
-            "php": "7.1"
-        }
-    },
 	"autoload" : {
 		"psr-4" : {
 			"WebServCo\\" : "src/WebServCo/"
@@ -36,14 +30,6 @@
 		"check:structure" : "vendor/bin/pds-skeleton validate",
 		"check" : "vendor/bin/phpcs --standard=PSR2 --extensions=php src tests",
 		"test" : "vendor/bin/phpunit --colors=always",
-		"test:d" : "vendor/bin/phpunit --testdox",
-        "stan:0": "vendor/bin/phpstan analyse src --level=0 --ansi",
-        "stan:1": "vendor/bin/phpstan analyse src --level=1 --ansi",
-        "stan:2": "vendor/bin/phpstan analyse src --level=2 --ansi",
-        "stan:3": "vendor/bin/phpstan analyse src --level=3 --ansi",
-        "stan:4": "vendor/bin/phpstan analyse src --level=4 --ansi",
-        "stan:5": "vendor/bin/phpstan analyse src --level=5 --ansi",
-        "stan:6": "vendor/bin/phpstan analyse src --level=6 --ansi",
-        "stan:7": "vendor/bin/phpstan analyse src --level=7 --ansi"
+		"test:d" : "vendor/bin/phpunit --testdox"
 	}
 }
