@@ -79,12 +79,12 @@ final class Http
      *
      * @return array
      */
-    final public static function getMethods()
+    public static function getMethods()
     {
         return [self::METHOD_GET, self::METHOD_HEAD, self::METHOD_POST];
     }
     
-    final public static function getStatusCodeMessage($statusCode)
+    public static function getStatusCodeMessage($statusCode)
     {
         return array_key_exists($statusCode, self::$statusCodes) ?
         self::$statusCodes[$statusCode] :

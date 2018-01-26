@@ -8,7 +8,7 @@ final class ErrorHandler
      *
      * @return bool
      */
-    final public static function set()
+    public static function set()
     {
         self::disableErrorDisplay();
         set_error_handler(['\WebServCo\Framework\ErrorHandler', 'throwErrorException']);
@@ -18,7 +18,7 @@ final class ErrorHandler
     /**
      * Disable error display.
      */
-    final private static function disableErrorDisplay()
+    private static function disableErrorDisplay()
     {
         $logPath =
         \WebServCo\Framework\Framework::OS_WINDOWS
@@ -36,7 +36,7 @@ final class ErrorHandler
      *
      * @return bool
      */
-    final public static function restore()
+    public static function restore()
     {
         return restore_error_handler();
     }
@@ -51,7 +51,7 @@ final class ErrorHandler
      *
      * @throws ErrorException
      */
-    final public static function throwErrorException($errno, $errstr, $errfile, $errline)
+    public static function throwErrorException($errno, $errstr, $errfile, $errline)
     {
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }

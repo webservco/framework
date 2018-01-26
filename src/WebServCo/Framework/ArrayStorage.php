@@ -7,7 +7,7 @@ final class ArrayStorage
      * Parse the setting key to make sure it's a simple string
      * or an array.
      */
-    final private static function parseSetting($setting)
+    private static function parseSetting($setting)
     {
         if (is_string($setting) &&
         false !== strpos($setting, \WebServCo\Framework\Settings::DIVIDER)) {
@@ -26,7 +26,7 @@ final class ArrayStorage
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public static function get($storage = [], $setting = null, $defaultValue = false)
+    public static function get($storage = [], $setting = null, $defaultValue = false)
     {
         $setting = self::parseSetting($setting);
         
@@ -92,7 +92,7 @@ final class ArrayStorage
      *
      * @return array The storage array with new data.
      */
-    final public static function set($storage, $setting, $value)
+    public static function set($storage, $setting, $value)
     {
         if (!is_array($storage) || empty($setting)) {
             return $storage;
@@ -118,7 +118,7 @@ final class ArrayStorage
      * @param mixed $data
      * @return array
      */
-    final public static function append($storage, $data = [])
+    public static function append($storage, $data = [])
     {
         if (is_array($storage) && is_array($data)) {
             foreach ($data as $setting => $value) {
