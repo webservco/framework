@@ -1,39 +1,40 @@
 {
-	"name" : "webservco/framework",
-	"type" : "library",
-	"description" : "A PHP Framework",
-	"keywords" : [
-		"framework",
-		"webservco"
-	],
-	"homepage" : "https://webserv.co",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Radu Maier",
-			"email" : "ariademur@webserv.co"
-		}
-	],
-	"require" : {
-		"php" : "^5.4 || ^7.0"
-	},
-	"require-dev" : {
-		"pds/skeleton" : "~1.0",
-		"squizlabs/php_codesniffer" : "3.*",
-		"phpunit/phpunit" : "~4|~5"
-	},
+    "name" : "webservco/framework",
+    "type" : "library",
+    "description" : "A PHP Framework",
+    "keywords" : [
+        "framework",
+        "webservco"
+    ],
+    "homepage" : "https://webserv.co",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Radu Maier",
+            "email" : "ariademur@webserv.co"
+        }
+    ],
+    "require" : {
+        "php" : "^5.4 || ^7.0"
+    },
+    "require-dev" : {
+        "pds/skeleton" : "~1.0",
+        "squizlabs/php_codesniffer" : "3.*",
+        "phpunit/phpunit" : "~4|~5"
+    },
     "suggest" : {
         "phpstan/phpstan" : "PHP Static Analysis Tool, when using PHP 7.x"
     },
-	"autoload" : {
-		"psr-4" : {
-			"WebServCo\\" : "src/WebServCo/"
-		}
-	},
-	"scripts" : {
-		"check:structure" : "vendor/bin/pds-skeleton validate",
-		"check" : "vendor/bin/phpcs --standard=PSR2 --extensions=php src tests",
-		"test" : "vendor/bin/phpunit --colors=always",
-		"test:d" : "vendor/bin/phpunit --testdox",
+    "autoload" : {
+        "psr-4" : {
+            "WebServCo\\" : "src/WebServCo/"
+        }
+    },
+    "scripts" : {
+        "check:structure" : "vendor/bin/pds-skeleton validate",
+        "check" : "vendor/bin/phpcs --standard=PSR2 --extensions=php src tests",
+        "test" : "vendor/bin/phpunit --colors=always",
+        "test:d" : "vendor/bin/phpunit --testdox",
         "s:1": "phpstan analyse src --level=1 --ansi",
         "s:2": "phpstan analyse src --level=2 --ansi",
         "s:3": "phpstan analyse src --level=3 --ansi",
@@ -41,6 +42,5 @@
         "s:5": "phpstan analyse src --level=5 --ansi",
         "s:6": "phpstan analyse src --level=6 --ansi",
         "s:7": "phpstan analyse src --level=7 --ansi"
-
-	}
+    }
 }
