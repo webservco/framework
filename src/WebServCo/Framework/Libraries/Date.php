@@ -5,7 +5,7 @@ final class Date extends \WebServCo\Framework\AbstractLibrary
 {
     const DEFAULT_TIMEZONE = 'Europe/Rome';
     
-    final public function setTimezone($timezoneIdentifier = null)
+    public function setTimezone($timezoneIdentifier = null)
     {
         $timezoneIdentifier = $timezoneIdentifier ?:
             $this->setting('timezone', self::DEFAULT_TIMEZONE);
@@ -16,7 +16,7 @@ final class Date extends \WebServCo\Framework\AbstractLibrary
         return false;
     }
     
-    final public function getTimezone()
+    public function getTimezone()
     {
         return date_default_timezone_get();
     }

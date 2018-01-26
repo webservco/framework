@@ -32,14 +32,14 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
      */
     public $query = [];
     
-    final public function __construct($config, $server, $post = [])
+    public function __construct($config, $server, $post = [])
     {
         parent::__construct($config);
         
         $this->init($server, $post);
     }
     
-    final private function init($server, $post = [])
+    private function init($server, $post = [])
     {
         $this->server = array_map([$this, 'sanitize'], $server);
         $this->method = $this->getMethod();
@@ -60,7 +60,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         }
     }
     
-    final private function clearGlobals()
+    private function clearGlobals()
     {
         if (!empty($_GET)) {
             foreach ($_GET as $k => $v) {
@@ -74,7 +74,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    final private function processPost($post = [])
+    private function processPost($post = [])
     {
         $this->data = [];
         foreach ($post as $k => $v) {
@@ -83,7 +83,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    final private function process()
+    private function process()
     {
         $string = null;
         switch (true) {
@@ -110,7 +110,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         $this->query = $this->format($this->sanitize($queryString));
     }
     
-    final private function getMethod()
+    private function getMethod()
     {
         return !empty($this->server['REQUEST_METHOD']) &&
         in_array(
@@ -120,13 +120,13 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         $this->server['REQUEST_METHOD'] : false;
     }
     
-    final private function getFilename()
+    private function getFilename()
     {
         return !empty($this->server['SCRIPT_NAME']) ?
         basename($this->server['SCRIPT_NAME']) : false;
     }
     
-    final private function getPath()
+    private function getPath()
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
@@ -135,7 +135,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return rtrim($path, DIRECTORY_SEPARATOR);
     }
     
-    final public function sanitize($string)
+    public function sanitize($string)
     {
         // Strip tags, optionally strip or encode special characters.
         $string = filter_var($string, FILTER_SANITIZE_STRING);
@@ -172,7 +172,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return $string;
     }
     
-    final private function parse($string)
+    private function parse($string)
     {
         $pathLen = strlen($this->path);
         if (0 === strncasecmp($this->path, $string, $pathLen)) {
@@ -188,7 +188,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return [$target, $query];
     }
     
-    final private function explode($string)
+    private function explode($string)
     {
         if (false !== strpos($string, '?')) {
             return explode('?', $string, 2);
@@ -198,13 +198,13 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return [$string, null];
     }
     
-    final private function transform($string)
+    private function transform($string)
     {
         $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
         return trim($string, ' /');
     }
     
-    final private function removeSuffix($string)
+    private function removeSuffix($string)
     {
         $suffixes = $this->setting('suffixes');
         if (is_array($suffixes)) {
@@ -220,7 +220,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return $string;
     }
     
-    final private function format($string)
+    private function format($string)
     {
         $data = [];
         $parts = $this->split($string);
@@ -232,14 +232,14 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return $data;
     }
     
-    final public function split($string)
+    public function split($string)
     {
         $parts = explode('/', $string);
         $parts = array_map('urldecode', $parts);
         return array_diff($parts, ['']);
     }
     
-    final public function getSchema()
+    public function getSchema()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {
             return null;
@@ -257,12 +257,12 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return 'http';
     }
     
-    final public function getReferer()
+    public function getReferer()
     {
         return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
     }
     
-    final public function getHost()
+    public function getHost()
     {
         if (!empty($this->server['HTTP_HOST'])) {
             return $this->server['HTTP_HOST'];
@@ -274,7 +274,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return null;
     }
     
-    final public function guessAppUrl()
+    public function guessAppUrl()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {
             return false;

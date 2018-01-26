@@ -7,24 +7,24 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
     private $path;
     private $template;
     
-    final public function __construct($config)
+    public function __construct($config)
     {
         parent::__construct($config);
     }
     
-    final public function setPath($path)
+    public function setPath($path)
     {
         $this->path = $path;
         return true;
     }
     
-    final public function setTemplate($template)
+    public function setTemplate($template)
     {
         $this->template = $template;
         return true;
     }
     
-    final public function render()
+    public function render()
     {
         try {
             $templatePath = "{$this->path}{$this->template}.php";

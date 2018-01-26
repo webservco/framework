@@ -22,7 +22,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      * @param string $setting Name of setting to load.
      * @param mixed $data Data to add.
      */
-    final public function add($setting, $data)
+    public function add($setting, $data)
     {
         $this->config = \WebServCo\Framework\ArrayStorage::append(
             $this->config,
@@ -40,7 +40,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *                      File name must be <$setting>.php
      * @return mixed
      */
-    final public function load($setting, $pathProject)
+    public function load($setting, $pathProject)
     {
         $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
         if (!is_readable($pathFull)) {
@@ -60,7 +60,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return bool True on success and false on failure.
      */
-    final public function set($setting, $value)
+    public function set($setting, $value)
     {
         if (empty($setting)) {
             return false;
@@ -69,7 +69,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    final public function get($setting, $defaultValue = false)
+    public function get($setting, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
     }
@@ -81,7 +81,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return bool
      */
-    final public function setEnv($env = null)
+    public function setEnv($env = null)
     {
         if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
             $this->env = $env;
@@ -97,7 +97,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @return string
      */
-    final public function getEnv()
+    public function getEnv()
     {
         return $this->env ?: \WebServCo\Framework\Environment::ENV_DEV;
     }

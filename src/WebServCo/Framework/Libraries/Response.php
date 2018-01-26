@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Libraries;
 
 final class Response extends \WebServCo\Framework\AbstractLibrary
 {
-    final public function formatStatusHeaderText($statusCode)
+    public function formatStatusHeaderText($statusCode)
     {
         if ($statusMessage =
          \WebServCo\Framework\Http::getStatusCodeMessage($statusCode)) {
@@ -12,7 +12,7 @@ final class Response extends \WebServCo\Framework\AbstractLibrary
         return false;
     }
     
-    final public function setStatusHeader($statusCode)
+    public function setStatusHeader($statusCode)
     {
         if ($statusHeaderText = $this->formatStatusHeaderText($statusCode)) {
             header($statusHeaderText);
