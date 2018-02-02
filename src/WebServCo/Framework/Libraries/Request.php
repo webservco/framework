@@ -41,7 +41,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     private function init($server, $post = [])
     {
-        $this->server = array_map([$this, 'sanitize'], $server);
+        $this->server = $this->sanitize($server);
         $this->method = $this->getMethod();
         $this->filename = $this->getFilename();
         $this->path = $this->getPath();
@@ -135,7 +135,16 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         return rtrim($path, DIRECTORY_SEPARATOR);
     }
     
-    public function sanitize($string)
+    public function sanitize($data)
+    {
+        if (is_array($data)) {
+            array_walk_recursive($data, [$this, 'sanitizeString']);
+            return $data;
+        }
+        return $this->sanitizeString($data);
+    }
+    
+    protected function sanitizeString($string)
     {
         // Strip tags, optionally strip or encode special characters.
         $string = filter_var($string, FILTER_SANITIZE_STRING);
