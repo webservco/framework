@@ -85,6 +85,22 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     
     private function process()
     {
+        if (\WebServCo\Framework\Framework::isCLI()) {
+            return $this->processCli();
+        }
+        
+        return $this->processHttp();
+    }
+    
+    private function processCli()
+    {
+        if (isset($this->server['argv'][1])) {
+            $this->target = $this->server['argv'][1];
+        }
+    }
+    
+    private function processHttp()
+    {
         $string = null;
         switch (true) {
             case isset($this->server['REQUEST_URI']):
@@ -101,9 +117,6 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
                 break;
             default:
                 break;
-        }
-        if (empty($string)) {
-            return false; //CLI
         }
         list ($target, $queryString) = $this->parse($string);
         $this->target = $this->sanitize(urldecode($target));
