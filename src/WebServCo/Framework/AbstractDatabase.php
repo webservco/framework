@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
-class AbstractDatabase extends \WebServCo\Framework\AbstractLibrary
+abstract class AbstractDatabase extends \WebServCo\Framework\AbstractLibrary
 {
     const QUERY_TYPE_INSERT = 'INSERT';
     const QUERY_TYPE_INSERT_IGNORE = 'INSERT IGNORE';

@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
-class AbstractOutputLoader
+abstract class AbstractOutputLoader
 {
     protected $projectPath;
     protected $htmlOutput;
