@@ -112,6 +112,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
                 $this->args[] = $this->sanitize($v);
             }
         }
+        return true;
     }
     
     private function processHttp()
@@ -136,6 +137,7 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         list ($target, $queryString) = $this->parse($string);
         $this->target = $this->sanitize(urldecode($target));
         $this->query = $this->format($this->sanitize($queryString));
+        return true;
     }
     
     private function getMethod()
