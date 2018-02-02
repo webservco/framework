@@ -39,30 +39,6 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function splitReturnsArrayOnNull()
-    {
-        $this->assertInternalType('array', $this->object->split(null));
-    }
-    
-    /**
-     * @test
-     */
-    public function splitReturnsArrayOnEmptyValue()
-    {
-        $this->assertInternalType('array', $this->object->split(''));
-    }
-    
-    /**
-     * @test
-     */
-    public function splitReturnsArrayOnValidValue()
-    {
-        $this->assertInternalType('array', $this->object->split('foo/bar'));
-    }
-    
-    /**
-     * @test
-     */
     public function getSchemaReturnsNullOnCli()
     {
         $this->assertNull($this->object->getSchema());

@@ -21,39 +21,6 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function splitReturnsArrayOnNull()
-    {
-        $this->assertInternalType(
-            'array',
-            Fw::getLibrary('Request')->split(null)
-        );
-    }
-    
-    /**
-     * @test
-     */
-    public function splitReturnsArrayOnEmptyValue()
-    {
-        $this->assertInternalType(
-            'array',
-            Fw::getLibrary('Request')->split('')
-        );
-    }
-    
-    /**
-     * @test
-     */
-    public function splitReturnsArrayOnValidValue()
-    {
-        $this->assertInternalType(
-            'array',
-            Fw::getLibrary('Request')->split('foo/bar')
-        );
-    }
-    
-    /**
-     * @test
-     */
     public function getSchemaReturnsNullOnCli()
     {
         $this->assertNull(Fw::getLibrary('Request')->getSchema());
