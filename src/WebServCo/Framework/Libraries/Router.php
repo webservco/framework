@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Libraries;
 
 final class Router extends \WebServCo\Framework\AbstractLibrary
 {
-    public function getRoute($requestCustom, $routes)
+    public function getRoute($requestCustom, $routes, $extraArgs = [])
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString)) {
@@ -23,6 +23,11 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         }
         if (!empty($parts['2'])) {
             $args = explode('/', $parts[2]);
+        }
+        if (!empty($extraArgs)) {
+            foreach ($extraArgs as $k => $v) {
+                $args[] = $v;
+            }
         }
         return [$controller, $action, $args];
     }

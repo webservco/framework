@@ -121,7 +121,8 @@ class Application
             list($class, $method, $args) =
             $this->router()->getRoute(
                 $this->request()->target,
-                $this->router()->setting('routes')
+                $this->router()->setting('routes'),
+                $this->request()->args
             );
             $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
             if (!class_exists($className)) {

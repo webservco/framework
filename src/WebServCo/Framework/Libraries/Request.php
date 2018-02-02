@@ -31,6 +31,13 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
      * Sanitized request query.
      */
     public $query = [];
+    /**
+     * Sanitized Framework customized CLI arguments.
+     *
+     * Excludes the script name and the second argument
+     * which is the Framework customized target path.
+     */
+    public $args = [];
     
     public function __construct($config, $server, $post = [])
     {
@@ -96,6 +103,14 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     {
         if (isset($this->server['argv'][1])) {
             $this->target = $this->server['argv'][1];
+        }
+        if (isset($this->server['argv'][2])) {
+            foreach ($this->server['argv'] as $k => $v) {
+                if (in_array($k, [0,1])) {
+                    continue;
+                }
+                $this->args[] = $this->sanitize($v);
+            }
         }
     }
     
