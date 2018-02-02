@@ -116,24 +116,16 @@ class Application
      */
     final public function run()
     {
-        if (Fw::isCLI()) {
-            return $this->runCli();
-        } else {
-            return $this->runHttp();
-        }
-    }
-    
-    public function runHttp()
-    {
         try {
+            $classType = Fw::isCLI() ? 'Command' : 'Controller';
             list($class, $method, $args) =
             $this->router()->getRoute(
                 $this->request()->target,
                 $this->router()->setting('routes')
             );
-            $className = "\\Project\\Domain\\{$class}\\{$class}Controller";
+            $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
             if (!class_exists($className)) {
-                throw new \ErrorException('No matching controller found', 404);
+                throw new \ErrorException("No matching {$classType} found", 404);
             }
             $object = new $className;
             $parent = get_parent_class($object);
@@ -147,22 +139,6 @@ class Application
         } catch (\Exception $e) { // php5
             return $this->shutdown($e, true);
         }
-        return true;
-    }
-    
-    public function runCli()
-    {
-        try {
-            throw new \ErrorException(
-                'CLI support not implemented yet,'.
-                ' please open this resource in a web browser.'
-            );
-        } catch (\Throwable $e) { // php7
-            return $this->shutdown($e, true);
-        } catch (\Exception $e) { // php5
-            return $this->shutdown($e, true);
-        }
-        return true;
     }
     
     /**
@@ -214,7 +190,7 @@ class Application
         }
     }
     
-    public function haltHttp($errorInfo = [])
+    protected function haltHttp($errorInfo = [])
     {
         switch ($errorInfo['code']) {
             case 404:
@@ -271,7 +247,7 @@ class Application
         return true;
     }
     
-    public function haltCli($errorInfo = [])
+    protected function haltCli($errorInfo = [])
     {
         echo 'The App made a boo boo' . PHP_EOL;
         if (Env::ENV_DEV === $this->config()->getEnv()) {
