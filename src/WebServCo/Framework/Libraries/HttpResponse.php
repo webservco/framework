@@ -60,8 +60,20 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
     protected function sendHeaders(Request $request)
     {
         foreach ($this->headers as $name => $value) {
-            header($name . ': ' . $value, true, $this->statusCode);
+            header(
+                sprintf('%s: %s', $name, $value),
+                true,
+                $this->statusCode
+            );
         }
+        
+        $contentLength = strlen($this->content);
+        header(
+            sprintf('Content-length: %s', $contentLength),
+            true,
+            $this->statusCode
+        );
+        
         $serverProtocol = $request->getServerProtocol();
         if (!empty($serverProtocol)) {
             header(
