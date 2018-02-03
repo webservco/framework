@@ -94,4 +94,12 @@ abstract class AbstractOutputLoader
         }
         return $this->jsonOutput()->render();
     }
+    
+    public function write($string, $eol = true)
+    {
+        echo $string;
+        if ($eol) {
+            echo PHP_EOL;
+        }
+    }
 }
