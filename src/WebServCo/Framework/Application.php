@@ -90,28 +90,6 @@ class Application extends \WebServCo\Framework\AbstractApplication
         }
     }
     
-    /**
-     * Finishes the execution of the Application.
-     *
-     * This method is also registered as a shutdown handler.
-     */
-    final public function shutdown($exception = null, $manual = false, $statusCode = 0)
-    {
-        $hasError = $this->handleErrors($exception);
-        if ($hasError) {
-            $statusCode = 1;
-        }
-        
-        if (!$manual) { //if shutdown handler
-            /**
-             * Warning: this part will always be executed,
-             * independent of the outcome of the script.
-             */
-            Err::restore();
-        }
-        exit($statusCode);
-    }
-    
     final protected function execute()
     {
         $classType = Fw::isCLI() ? 'Command' : 'Controller';
@@ -132,5 +110,27 @@ class Application extends \WebServCo\Framework\AbstractApplication
             throw new \ErrorException('No matching action found', 404);
         }
         return call_user_func_array([$object, $method], $args);
+    }
+    
+    /**
+     * Finishes the execution of the Application.
+     *
+     * This method is also registered as a shutdown handler.
+     */
+    final public function shutdown($exception = null, $manual = false, $statusCode = 0)
+    {
+        $hasError = $this->handleErrors($exception);
+        if ($hasError) {
+            $statusCode = 1;
+        }
+        
+        if (!$manual) { //if shutdown handler
+            /**
+             * Warning: this part will always be executed,
+             * independent of the outcome of the script.
+             */
+            Err::restore();
+        }
+        exit($statusCode);
     }
 }
