@@ -83,11 +83,4 @@ final class Http
     {
         return [self::METHOD_GET, self::METHOD_HEAD, self::METHOD_POST];
     }
-    
-    public static function getStatusCodeMessage($statusCode)
-    {
-        return array_key_exists($statusCode, self::$statusCodes) ?
-        self::$statusCodes[$statusCode] :
-        false;
-    }
 }

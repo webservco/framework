@@ -14,36 +14,4 @@ final class HttpTest extends TestCase
     {
         $this->assertInternalType('array', Http::getMethods());
     }
-    
-    /**
-     * @test
-     */
-    public function getStatusCodeMessageReturnsFalseOnEmptyValue()
-    {
-        $this->assertFalse(Http::getStatusCodeMessage(''));
-    }
-    
-    /**
-     * @test
-     */
-    public function getStatusCodeMessageReturnsFalseOnNullValue()
-    {
-        $this->assertFalse(Http::getStatusCodeMessage(null));
-    }
-    
-    /**
-     * @test
-     */
-    public function getStatusCodeMessageReturnsFalseOnInvalidValue()
-    {
-        $this->assertFalse(Http::getStatusCodeMessage(999));
-    }
-    
-    /**
-     * @test
-     */
-    public function getStatusCodeMessageReturnsCorrectValueOnValidCode()
-    {
-        $this->assertEquals('OK', Http::getStatusCodeMessage(200));
-    }
 }

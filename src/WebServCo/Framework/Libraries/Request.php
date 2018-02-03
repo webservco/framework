@@ -45,6 +45,14 @@ final class Request extends \WebServCo\Framework\AbstractRequest
         return null;
     }
     
+    public function getServerProtocol()
+    {
+        if (!isset($this->server['SERVER_PROTOCOL'])) {
+            return false;
+        }
+        return $this->server['SERVER_PROTOCOL'];
+    }
+    
     public function guessAppUrl()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {

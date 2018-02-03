@@ -6,7 +6,7 @@ use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Environment as Env;
 use WebServCo\Framework\ErrorHandler as Err;
 
-class Application
+class Application extends \WebServCo\Framework\AbstractApplication
 {
     public function __construct($publicPath, $projectPath)
     {
@@ -21,31 +21,6 @@ class Application
         
         $this->config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $publicPath);
         $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $projectPath);
-    }
-    
-    final public function config()
-    {
-        return Fw::getLibrary('Config');
-    }
-    
-    final protected function date()
-    {
-        return Fw::getLibrary('Date');
-    }
-    
-    final protected function router()
-    {
-        return Fw::getLibrary('Router');
-    }
-    
-    final protected function request()
-    {
-        return Fw::getLibrary('Request');
-    }
-    
-    final protected function response()
-    {
-        return Fw::getLibrary('Response');
     }
     
     /**
@@ -93,48 +68,21 @@ class Application
     }
     
     /**
-     * Finishes the execution of the Application.
-     *
-     * This method is also registered as a shutdown handler.
-     */
-    final public function shutdown($exception = null, $manual = false)
-    {
-        $this->handleErrors($exception);
-        
-        if (!$manual) { //if shutdown handler
-            /**
-             * Warning: this part will always be executed,
-             * independent of the outcome of the script.
-             */
-            Err::restore();
-        }
-        exit;
-    }
-    
-    /**
      * Runs the application.
      */
     final public function run()
     {
         try {
-            $classType = Fw::isCLI() ? 'Command' : 'Controller';
-            list($class, $method, $args) =
-            $this->router()->getRoute(
-                $this->request()->target,
-                $this->router()->setting('routes'),
-                $this->request()->args
-            );
-            $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
-            if (!class_exists($className)) {
-                throw new \ErrorException("No matching {$classType} found", 404);
+            $response = $this->execute();
+            if ($response instanceof
+                \WebServCo\Framework\Interfaces\ResponseInterface) {
+                $statusCode = $response->send($this->request());
+                return $this->shutdown(
+                    null,
+                    true,
+                    Fw::isCLI() ? $statusCode : 0
+                );
             }
-            $object = new $className;
-            $parent = get_parent_class($object);
-            if (method_exists($parent, $method) ||
-                !is_callable([$className, $method])) {
-                throw new \ErrorException('No matching action found', 404);
-            }
-            return call_user_func_array([$object, $method], $args);
         } catch (\Throwable $e) { // php7
             return $this->shutdown($e, true);
         } catch (\Exception $e) { // php5
@@ -143,118 +91,46 @@ class Application
     }
     
     /**
-     * Handle Errors.
+     * Finishes the execution of the Application.
      *
-     * @param mixed $exception An \Error or \Exception object.
+     * This method is also registered as a shutdown handler.
      */
-    final private function handleErrors($exception = null)
+    final public function shutdown($exception = null, $manual = false, $statusCode = 0)
     {
-        $errorInfo = [
-            'code' => 0,
-            'message' => null,
-            'file' => null,
-            'line' => null,
-            'trace' => null,
-        ];
-        if ($exception instanceof \Throwable ||
-            $exception instanceof \Exception
-        ) {
-            $errorInfo['code'] = $exception->getCode();
-            $errorInfo['message'] = $exception->getMessage();
-            $errorInfo['file'] = $exception->getFile();
-            $errorInfo['line'] = $exception->getLine();
-            $errorInfo['trace'] = $exception->getTraceAsString();
-        } else {
-            $last_error = error_get_last();
-            if (!empty($last_error['message'])) {
-                $errorInfo['message'] = $last_error['message'];
-            }
-            if (!empty($last_error['file'])) {
-                $errorInfo['file'] = $last_error['file'];
-            }
-            if (!empty($last_error['line'])) {
-                $errorInfo['line'] = $last_error['line'];
-            }
+        $hasError = $this->handleErrors($exception);
+        if ($hasError) {
+            $statusCode = 1;
         }
-        if (!empty($errorInfo['message'])) {
-            return $this->halt($errorInfo);
-        }
-        return false;
-    }
-    
-    final private function halt($errorInfo = [])
-    {
-        if (Fw::isCLI()) {
-            return $this->haltCli($errorInfo);
-        } else {
-            return $this->haltHttp($errorInfo);
-        }
-    }
-    
-    protected function haltHttp($errorInfo = [])
-    {
-        switch ($errorInfo['code']) {
-            case 404:
-                $statusCode = 404;
-                $title = 'Resource not found';
-                break;
-            case 500:
-            default:
-                $statusCode = 500;
-                $title = 'The App made a boo boo';
-                break;
-        }
-        $this->response()->setStatusHeader($statusCode);
         
-        echo '<!doctype html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Oups</title>
-            <style>
-            * {
-                background: #f2dede; color: #a94442;
-            }
-            .o {
-                display: table; position: absolute; height: 100%; width: 100%;
-            }
-
-            .m {
-                display: table-cell; vertical-align: middle;
-            }
-
-            .i {
-                margin-left: auto; margin-right: auto; width: 680px; text-align: center;
-            }
-            small {
-                font-size: 0.7em;
-            }
-            </style>
-        </head>
-        <body>
-            <div class="o">
-                <div class="m">
-                    <div class="i">';
-        echo "<h1>{$title}</h1>";
-        if (Env::ENV_DEV === $this->config()->getEnv()) {
-            echo "<p>$errorInfo[message]</p>";
-            echo "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
+        if (!$manual) { //if shutdown handler
+            /**
+             * Warning: this part will always be executed,
+             * independent of the outcome of the script.
+             */
+            Err::restore();
         }
-        echo '      </div>
-                </div>
-            </div>
-        </body>
-        </html>';
-        return true;
+        exit($statusCode);
     }
     
-    protected function haltCli($errorInfo = [])
+    final protected function execute()
     {
-        echo 'The App made a boo boo' . PHP_EOL;
-        if (Env::ENV_DEV === $this->config()->getEnv()) {
-            echo $errorInfo['message'] . PHP_EOL;
-            echo "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
+        $classType = Fw::isCLI() ? 'Command' : 'Controller';
+        list($class, $method, $args) =
+            $this->router()->getRoute(
+                $this->request()->target,
+                $this->router()->setting('routes'),
+                $this->request()->args
+            );
+        $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
+        if (!class_exists($className)) {
+            throw new \ErrorException("No matching {$classType} found", 404);
         }
-        return true;
+        $object = new $className;
+        $parent = get_parent_class($object);
+        if (method_exists($parent, $method) ||
+            !is_callable([$className, $method])) {
+            throw new \ErrorException('No matching action found', 404);
+        }
+        return call_user_func_array([$object, $method], $args);
     }
 }

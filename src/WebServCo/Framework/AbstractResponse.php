@@ -4,7 +4,7 @@ namespace WebServCo\Framework;
 abstract class AbstractResponse
 {
     protected $content;
-    protected $status;
+    protected $statusCode;
     
     public function setContent($content)
     {
