@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
+use WebServCo\Framework\Settings as S;
+
 final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
@@ -18,11 +20,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         
         try {
             $this->db = new \mysqli(
-                $this->setting('connection/host', '127.0.0.1'),
-                $this->setting('connection/username', 'root'),
-                $this->setting('connection/passwd', ''),
-                $this->setting('connection/dbname', 'test'),
-                $this->setting('connection/port', 3306)
+                $this->setting(sprintf('connection%shost', S::DIVIDER), '127.0.0.1'),
+                $this->setting(sprintf('connection%susername', S::DIVIDER), 'root'),
+                $this->setting(sprintf('connection%spasswd', S::DIVIDER), ''),
+                $this->setting(sprintf('connection%sdbname', S::DIVIDER), 'test'),
+                $this->setting(sprintf('connection%sport', S::DIVIDER), 3306)
             );
             $this->db->set_charset('utf8mb4');
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception

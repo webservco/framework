@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
+use WebServCo\Framework\Settings as S;
+
 final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
@@ -14,12 +16,12 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
         try {
             $this->db = new \PDO(
                 $this->setting('driver', 'mysql') .
-                ':host=' . $this->setting('connection/host', '127.0.0.1') .
-                ';dbname=' . $this->setting('connection/dbname', 'test') .
-                ';port=' . $this->setting('connection/port', 3306) .
+                ':host=' . $this->setting(sprintf('connection%shost', S::DIVIDER), '127.0.0.1') .
+                ';dbname=' . $this->setting(sprintf('connection%sdbname', S::DIVIDER), 'test') .
+                ';port=' . $this->setting(sprintf('connection%sport', S::DIVIDER), 3306) .
                 ';charset=utf8mb4',
-                $this->setting('connection/username', 'root'),
-                $this->setting('connection/passwd', ''),
+                $this->setting(sprintf('connection%susername', S::DIVIDER), 'root'),
+                $this->setting(sprintf('connection%spasswd', S::DIVIDER), ''),
                 [
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
