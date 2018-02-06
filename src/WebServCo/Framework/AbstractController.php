@@ -21,4 +21,9 @@ abstract class AbstractController
     {
         return Fw::getLibrary('Request');
     }
+    
+    final protected function session()
+    {
+        return Fw::getLibrary('Session');
+    }
 }
