@@ -190,9 +190,6 @@ final class ArrayStorage
      */
     protected static function removeByIndex($array, $indices)
     {
-        if (!is_array($array) || !is_array($indices)) {
-            throw new \ErrorException('Invalid parameters specified');
-        }
         // Create a reference to the original array.
         $a = &$array;
         // Count all passed indices, remove one because arrays are zero based.
