@@ -106,7 +106,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    public function clear($storage, $setting)
+    public function clear($setting)
     {
         return $this->set($setting, null);
     }
