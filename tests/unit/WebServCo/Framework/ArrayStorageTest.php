@@ -113,7 +113,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function clearWorksWithTripleSetting()
+    public function setEmptyWorksWithTripleSetting()
     {
         $setting = sprintf('foo%1$sbar%1$sbaz', S::DIVIDER);
         $expected = [
@@ -124,16 +124,17 @@ final class ArrayStorageTest extends TestCase
                 ],
             ],
         ];
-        $this->assertEquals($expected, ArrayStorage::clear(
+        $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
-            $setting
+            $setting,
+            null
         ));
     }
     
     /**
      * @test
      */
-    public function clearWorksWithDoubleSetting()
+    public function setEmptyWorksWithDoubleSetting()
     {
         $setting = sprintf('foo%1$sbar', S::DIVIDER);
         $expected = [
@@ -142,24 +143,26 @@ final class ArrayStorageTest extends TestCase
                 'bar' => null,
             ],
         ];
-        $this->assertEquals($expected, ArrayStorage::clear(
+        $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
-            $setting
+            $setting,
+            null
         ));
     }
     
     /**
      * @test
      */
-    public function clearWorksWithSimpleSetting()
+    public function setEmptyWorksWithSimpleSetting()
     {
         $expected = [
             'key' => 'value',
             'foo' => null,
         ];
-        $this->assertEquals($expected, ArrayStorage::clear(
+        $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
-            'foo'
+            'foo',
+            null
         ));
     }
 }

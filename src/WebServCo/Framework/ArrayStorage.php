@@ -113,20 +113,6 @@ final class ArrayStorage
     }
     
     /**
-     * Clears a value from a storage array
-     * @param array $storage
-     * @param mixed $setting Can be an array, a string,
-     *                          or a special formatted string
-     *                          (eg 'app/path/project').
-     *
-     * @return array The updates storage array.
-     */
-    public static function clear($storage, $setting)
-    {
-        return self::set($storage, $setting, null);
-    }
-    
-    /**
      * Append data to a storage array.
      *
      * @param array $storage

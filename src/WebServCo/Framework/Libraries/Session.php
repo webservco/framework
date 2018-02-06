@@ -84,6 +84,17 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
+    public function get($setting, $defaultValue = false)
+    {
+        $this->checkSession();
+        
+        return \WebServCo\Framework\ArrayStorage::get(
+            $_SESSION,
+            $setting,
+            $defaultValue
+        );
+    }
+    
     public function remove($setting)
     {
         $this->checkSession();
@@ -95,14 +106,8 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    public function get($setting, $defaultValue = false)
+    public function clear($storage, $setting)
     {
-        $this->checkSession();
-        
-        return \WebServCo\Framework\ArrayStorage::get(
-            $_SESSION,
-            $setting,
-            $defaultValue
-        );
+        return $this->set($setting, null);
     }
 }
