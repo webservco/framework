@@ -84,11 +84,11 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
     
-    public function unset($setting)
+    public function remove($setting)
     {
         $this->checkSession();
         
-        $_SESSION = \WebServCo\Framework\ArrayStorage::unset(
+        $_SESSION = \WebServCo\Framework\ArrayStorage::remove(
             $_SESSION,
             $setting
         );

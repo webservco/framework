@@ -163,7 +163,7 @@ final class ArrayStorage
      * @return array The updated storage array.
      * @throws \ErrorException
      */
-    public static function unset($storage, $setting)
+    public static function remove($storage, $setting)
     {
         if (!is_array($storage) || empty($setting)) {
             throw new \ErrorException('Invalid parameters specified');

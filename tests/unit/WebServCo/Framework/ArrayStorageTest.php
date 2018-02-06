@@ -31,7 +31,7 @@ final class ArrayStorageTest extends TestCase
     public function unsetWithNonExistingTripleSettingThrowsException()
     {
         $setting = sprintf('foo%1$snotBar%1$sbaz', S::DIVIDER);
-        ArrayStorage::unset(
+        ArrayStorage::remove(
             $this->originalArray,
             $setting
         );
@@ -44,7 +44,7 @@ final class ArrayStorageTest extends TestCase
     public function unsetWithNonExistingDoubleSettingThrowsException()
     {
         $setting = sprintf('foo%1$snotBar', S::DIVIDER);
-        ArrayStorage::unset(
+        ArrayStorage::remove(
             $this->originalArray,
             $setting
         );
@@ -56,7 +56,7 @@ final class ArrayStorageTest extends TestCase
      */
     public function unsetWithNonExistingSimpleSettingThrowsException()
     {
-        ArrayStorage::unset(
+        ArrayStorage::remove(
             $this->originalArray,
             'noexist'
         );
@@ -74,7 +74,7 @@ final class ArrayStorageTest extends TestCase
                 'bar' => [],
             ],
         ];
-        $this->assertEquals($expected, ArrayStorage::unset(
+        $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
             $setting
         ));
@@ -90,7 +90,7 @@ final class ArrayStorageTest extends TestCase
             'key' => 'value',
             'foo' => [],
         ];
-        $this->assertEquals($expected, ArrayStorage::unset(
+        $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
             $setting
         ));
@@ -104,7 +104,7 @@ final class ArrayStorageTest extends TestCase
         $expected = [
             'key' => 'value',
         ];
-        $this->assertEquals($expected, ArrayStorage::unset(
+        $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
             'foo'
         ));
