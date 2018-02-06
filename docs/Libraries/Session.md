@@ -7,7 +7,9 @@
 #### Framework
 
 Both `\WebServCo\Framework\AbstractController` and `\WebServCo\Framework\AbstractRepository` contain the method `session()` which returns a single instance of the Session class.
+
 So you can use `$this->session()` in your Controller or Repository classes.
+
 The Library is initialized using the configuration file `Session.php` from your application's `config` directory.
 
 To use the library in another place:
@@ -15,7 +17,7 @@ To use the library in another place:
 ```php
 final public function session()
 {
-    return Fw::getLibrary('Session');
+    return \\WebServCo\Framework\Framework::getLibrary('Session');
 }
 ```
 
