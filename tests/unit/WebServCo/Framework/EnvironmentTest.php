@@ -2,7 +2,6 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Environment as Env;
 
 final class EnvironmentTest extends TestCase
