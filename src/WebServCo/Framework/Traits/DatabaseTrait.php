@@ -1,21 +1,23 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\AbstractDatabase as Db;
+
 trait DatabaseTrait
 {
     public function insert($tableName, $data = [])
     {
-        return $this->add(self::QUERY_TYPE_INSERT, $tableName, $data);
+        return $this->add(Db::QUERY_TYPE_INSERT, $tableName, $data);
     }
     
     public function insertIgnore($tableName, $data = [])
     {
-        return $this->add(self::QUERY_TYPE_INSERT_IGNORE, $tableName, $data);
+        return $this->add(Db::QUERY_TYPE_INSERT_IGNORE, $tableName, $data);
     }
     
     public function replace($tableName, $data = [])
     {
-        return $this->add(self::QUERY_TYPE_REPLACE, $tableName, $data);
+        return $this->add(Db::QUERY_TYPE_REPLACE, $tableName, $data);
     }
     
     protected function add($queryType, $tableName, $data = [])
@@ -53,15 +55,15 @@ trait DatabaseTrait
         list($keys, $data) = $this->getKeysValues($data);
         
         switch ($queryType) {
-            case self::QUERY_TYPE_REPLACE:
-                $query = self::QUERY_TYPE_REPLACE . ' INTO';
+            case Db::QUERY_TYPE_REPLACE:
+                $query = Db::QUERY_TYPE_REPLACE . ' INTO';
                 break;
-            case self::QUERY_TYPE_INSERT_IGNORE:
-                $query = self::QUERY_TYPE_INSERT_IGNORE . ' INTO';
+            case Db::QUERY_TYPE_INSERT_IGNORE:
+                $query = Db::QUERY_TYPE_INSERT_IGNORE . ' INTO';
                 break;
-            case self::QUERY_TYPE_INSERT:
+            case Db::QUERY_TYPE_INSERT:
             default:
-                $query = self::QUERY_TYPE_INSERT . ' INTO';
+                $query = Db::QUERY_TYPE_INSERT . ' INTO';
                 break;
         }
         $query .= ' '.$this->escapeIdentifier($tableName).' (' .
