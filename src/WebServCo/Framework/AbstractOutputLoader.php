@@ -95,7 +95,7 @@ abstract class AbstractOutputLoader
         return $this->jsonOutput()->render();
     }
     
-    public function write($string, $eol = true)
+    public function cli($string, $eol = true)
     {
         echo $string;
         if ($eol) {

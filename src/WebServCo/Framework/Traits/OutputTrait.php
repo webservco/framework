@@ -10,9 +10,9 @@ trait OutputTrait
         return $this->outputLoader;
     }
     
-    final protected function echo($string, $eol = true)
+    final protected function outputCli($string, $eol = true)
     {
-        return $this->output()->write($string, $eol);
+        return $this->output()->cli($string, $eol);
     }
     
     protected function outputHtml($data, $pageTemplate, $mainTemplate = null)
