@@ -8,6 +8,11 @@ trait DatabaseTrait
         return $this->add(self::QUERY_TYPE_INSERT, $tableName, $data);
     }
     
+    public function insertIgnore($tableName, $data = [])
+    {
+        return $this->add(self::QUERY_TYPE_INSERT_IGNORE, $tableName, $data);
+    }
+    
     public function replace($tableName, $data = [])
     {
         return $this->add(self::QUERY_TYPE_REPLACE, $tableName, $data);
