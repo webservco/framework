@@ -2,9 +2,9 @@
 
 ## \WebServCo\Framework\Libraries\Session
 
-### Initialization
+## Initialization
 
-#### Framework
+### Framework
 
 Both `\WebServCo\Framework\AbstractController` and `\WebServCo\Framework\AbstractRepository` contain the method `session()` which returns a single instance of the Session class.
 
@@ -21,7 +21,7 @@ final public function session()
 }
 ```
 
-#### Standalone initialization
+### Standalone initialization
 
 Standalone initialization is also possible:
 
@@ -29,11 +29,11 @@ Standalone initialization is also possible:
 $session = new \WebServCo\Framework\Libraries\Session($configurationArray);
 ```
 
-### Starting the session
+## Starting the session
 
 In your Controller's `__construct()` method:
 
-#### with custom storage directory (recommended):
+### with custom storage directory (recommended):
 
 ```php
 $this->session()->start($storagePath);
@@ -43,21 +43,21 @@ $this->session()->start(
 );
 ```
 
-#### with default PHP storage directory:
+### with default PHP storage directory:
 
 ```php
 $this->session()->start();
 ```
 
-### Usage
+## Usage
 
-#### Setting a value
+### Setting a value
 
 ```php
 $this->session()->set($setting, $value);
 $this->session()->set('user/name', 'Aria');
 ```
-#### Clearing a value
+### Clearing a value
 
 The key remains in session storage, however the value will be `null`.
 
@@ -66,7 +66,7 @@ $this->session()->clear($setting);
 $this->session()->clear('user/name');
 ```
 
-#### Removing a value
+### Removing a value
 
 The key is deleted from session storage.
 
@@ -75,7 +75,7 @@ $this->session()->remove($setting);
 $this->session()->remove('user/name');
 ```
 
-#### Retrieving data
+### Retrieving data
 
 ```php
 $this->session()->get($setting, $defaultValue = false);
