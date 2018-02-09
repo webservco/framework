@@ -36,9 +36,7 @@ $this->db()->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 
 #### Add multiple items at once
 
-> IMPORTANT
->
-> Please note the information about the last inserted Id below
+> MySQL: Please note the information about the last inserted Id below
 
 ```php
 $this->db()->insert(
@@ -66,9 +64,9 @@ return $this->db()->getRow("SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?"
 #### One column
 ```php
 return $this->db()->getColumn(
-    "SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?",
-    ['<val3>'],
-    0
+    "SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", // query
+    ['<val3>'], // params
+    0 // column number
 );
 ```
 
@@ -108,8 +106,7 @@ return $this->db()->lastInsertId();
 
 ### Get last inserted Id
 
-> [IMPORTANT](https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id)
->
+> [MySQL](https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id):
 > If you insert multiple rows using a single INSERT statement, LAST_INSERT_ID() returns the value generated for the first inserted row only. The reason for this is to make it possible to reproduce easily the same INSERT statement against some other server.
 
 ```php
@@ -124,9 +121,9 @@ return $this->db()->affectedRows();
 
 ### Get row count
 
-> IMPORTANT
->
 > It is strongly recommended to avoid this functionality, as it adds an usually unnecessary overhead.
+>
+> Alternative: use `$this->db()->getRows()` and count the result.
 
 ```php
 $this->db()->query("SELECT <col> FROM <table>");
