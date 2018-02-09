@@ -4,9 +4,13 @@ namespace WebServCo\Framework\Libraries;
 final class CliResponse extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
-    public function __construct($content = null, $statusCode = 0)
+    public function __construct($content = null, $exitStatus = 0)
     {
-        $this->setStatus($statusCode);
+        if (true === is_bool($exitStatus)) {
+            $exitStatus = false === $exitStatus ? 1 : 0;
+        }
+        
+        $this->setStatus($exitStatus);
         
         $this->setContent($content);
     }
