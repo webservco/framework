@@ -14,42 +14,24 @@
 
 ## Usage
 
-### Add 
+### Add
 
 #### INSERT
 
 ```php
-$this->db()->insert(
-    '<tableName>',
-    [
-        '<col1>' => <val1>,
-        '<col2>' => <val2>,
-    ]
-);
+$this->db()->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
 #### INSERT IGNORE
 
 ```php
-$this->db()->insertIgnore(
-    '<tableName>',
-    [
-        '<col1>' => <val1>,
-        '<col2>' => <val2>,
-    ]
-);
+$this->db()->insertIgnore('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
 #### REPLACE
 
 ```php
-$this->db()->replace(
-    '<tableName>',
-    [
-        '<col1>' => <val1>,
-        '<col2>' => <val2>,
-    ]
-);
+$this->db()->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
 #### Add multiple items at once
@@ -73,17 +55,12 @@ $this->db()->insert(
 #### Multiple rows
 
 ```php
-return $this->db()->getRows(
-    "SELECT <col1>, <col2> FROM <table> WHERE 1", null
-);
+return $this->db()->getRows("SELECT <col1>, <col2> FROM <table> WHERE 1", null);
 ```
 
 #### One row
 ```php
-return $this->db()->getRow(
-    "SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?",
-    ['<val3>']
-);
+return $this->db()->getRow("SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", ['<val3>']);
 ```
 
 #### One column
@@ -99,10 +76,7 @@ return $this->db()->getColumn(
 
 ```php
 $data = [];
-$stmt = $this->db()->query(
-    "SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?",
-    ['<val3>']
-);
+$stmt = $this->db()->query("SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", ['<val3>']);
 while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
     $data[] = $row;
 }
@@ -114,10 +88,7 @@ return $this->db()->affectedRows();
 ```
 
 ```php
-$this->db()->query(
-    "UPDATE <table> SET <col1> = ? WHERE <col2> = ?",
-    ['<val1>', '<val2>']
-);
+$this->db()->query("UPDATE <table> SET <col1> = ? WHERE <col2> = ?", ['<val1>', '<val2>']);
 return $this->db()->affectedRows();
 ```
 
