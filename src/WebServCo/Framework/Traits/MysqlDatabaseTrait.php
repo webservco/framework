@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Traits;
 
 trait MysqlDatabaseTrait
 {
-    protected function escapeIdentifier($string)
+    public function escapeIdentifier($string)
     {
         return '`' . str_replace('`', '``', $string) . '`';
     }
