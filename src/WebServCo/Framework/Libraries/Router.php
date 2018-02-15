@@ -7,7 +7,11 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString)) {
-            return $this->setting('default_route', [null, null, null]);
+            $defaultRoute = $this->setting('default_route');
+            if (!isset($defaultRoute[1])) {
+                throw new \ErrorException("Default route missing or not valid");
+            }
+            return $defaultRoute;
         }
         
         $controller = '';

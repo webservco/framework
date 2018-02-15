@@ -93,12 +93,19 @@ class Application extends \WebServCo\Framework\AbstractApplication
     final protected function execute()
     {
         $classType = Fw::isCLI() ? 'Command' : 'Controller';
-        list($class, $method, $args) =
-            $this->router()->getRoute(
-                $this->request()->target,
-                $this->router()->setting('routes'),
-                $this->request()->args
-            );
+        $route = $this->router()->getRoute(
+            $this->request()->target,
+            $this->router()->setting('routes'),
+            $this->request()->args
+        );
+        
+        $class = isset($route[0]) ? $route[0] : null;
+        $method = isset($route[1]) ? $route[1] : null;
+        $args = isset($route[2]) ? $route[2] : [];
+        
+        if (empty($class) || empty($method)) {
+            throw new \ErrorException("Invalid route");
+        }
         $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
         if (!class_exists($className)) {
             throw new \ErrorException("No matching {$classType} found", 404);
