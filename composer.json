@@ -18,11 +18,11 @@
         "php" : "^5.4 || ^7.0"
     },
     "require-dev" : {
-        "pds/skeleton" : "~1.0",
-        "squizlabs/php_codesniffer" : "3.*",
         "phpunit/phpunit" : "~4|~5"
     },
     "suggest" : {
+        "pds/skeleton" : "A standard filesystem skeleton suitable for all PHP packages.",
+        "squizlabs/php_codesniffer" : "Detects violations of a defined set of coding standards.",
         "phpstan/phpstan" : "PHP Static Analysis Tool, when using PHP 7.x"
     },
     "autoload" : {
@@ -31,10 +31,10 @@
         }
     },
     "scripts" : {
-        "check:structure" : "vendor/bin/pds-skeleton validate",
-        "check" : "vendor/bin/phpcs --standard=PSR2 --extensions=php src tests",
         "test" : "vendor/bin/phpunit --colors=always",
         "test:d" : "vendor/bin/phpunit --testdox",
+        "check:structure" : "pds-skeleton validate",
+        "check" : "phpcs --standard=PSR2 --extensions=php src tests",
         "s:1": "phpstan analyse src --level=1 --ansi",
         "s:2": "phpstan analyse src --level=2 --ansi",
         "s:3": "phpstan analyse src --level=3 --ansi",
