@@ -33,7 +33,7 @@
     "scripts" : {
         "test" : "vendor/bin/phpunit --colors=always",
         "test:d" : "vendor/bin/phpunit --testdox",
-        "check:structure" : "pds-skeleton validate",
+        "check:structure" : "pds-skeleton validate .",
         "check" : "phpcs --standard=PSR2 --extensions=php src tests",
         "s:1": "phpstan analyse src --level=1 --ansi",
         "s:2": "phpstan analyse src --level=2 --ansi",
