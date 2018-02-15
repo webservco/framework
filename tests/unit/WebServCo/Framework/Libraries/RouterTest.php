@@ -31,26 +31,6 @@ final class RouterTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnEmptyData()
-    {
-        $route = Fw::getLibrary('Router')->getRoute('', []);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-    }
-    
-    /**
-     * @test
-     */
-    public function getRouteReturnsArrayOnNullData()
-    {
-        $route = Fw::getLibrary('Router')->getRoute(null, []);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-    }
-    
-    /**
-     * @test
-     */
     public function getRouteReturnsArrayOnValidData()
     {
         $route = Fw::getLibrary('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
