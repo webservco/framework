@@ -60,8 +60,8 @@ final class Framework
         }
         
         switch ($className) {
-            case 'I18n' :
-            self::loadHelper($className);
+            case 'I18n':
+                self::loadHelper($className);
                 break;
         }
         
