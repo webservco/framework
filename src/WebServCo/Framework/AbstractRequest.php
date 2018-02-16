@@ -8,15 +8,15 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
     /**
      * Sanitized _SERVER data.
      */
-    public $server = [];
+    protected $server = [];
     /**
      * Request method.
      */
-    public $method;
+    protected $method;
     /**
      * Current script filename. Should most commonly be index.php
      */
-    public $filename;
+    protected $filename;
     /**
      * Script path.
      * For HTTP requests this will be public web server subdirectory
@@ -24,22 +24,22 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
      * For CLI request this will be the script path
      * (full or relative, depending on how the script was called).
      */
-    public $path = '';
+    protected $path = '';
     /**
      * Sanitized Framework customized target path.
      */
-    public $target = '';
+    protected $target = '';
     /**
      * Sanitized request query.
      */
-    public $query = [];
+    protected $query = [];
     /**
      * Sanitized Framework customized CLI arguments.
      *
      * Excludes the script name and the second argument
      * which is the Framework customized target path.
      */
-    public $args = [];
+    protected $args = [];
     
     final public function sanitize($data)
     {
