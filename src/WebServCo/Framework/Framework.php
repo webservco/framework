@@ -58,6 +58,13 @@ final class Framework
                 sprintf('Library %s not found', $fullClassName)
             );
         }
+        
+        switch ($className) {
+            case 'I18n' :
+            self::loadHelper($className);
+                break;
+        }
+        
         $configName = $configName ?: $className;
         $config = self::loadLibraryConfiguration($configName);
         /**
@@ -76,6 +83,18 @@ final class Framework
         
         $reflection = new \ReflectionClass($fullClassName);
         return $reflection->newInstanceArgs($args);
+    }
+    
+    protected static function loadHelper($className)
+    {
+        $path = self::getPath() . 'src/WebServCo/Framework/Helpers/' . $className . 'Helper.php';
+        if (!is_readable($path)) {
+            throw new \ErrorException(
+                sprintf('Helper for %s Library not found', $className)
+            );
+        }
+        require $path;
+        return true;
     }
     
     public static function getLibrary($className, $storageKey = null, $configName = null)
