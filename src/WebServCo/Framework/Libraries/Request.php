@@ -53,6 +53,14 @@ final class Request extends \WebServCo\Framework\AbstractRequest
         return $this->server['SERVER_PROTOCOL'];
     }
     
+    public function getAcceptLanguage()
+    {
+        if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
+            return false;
+        }
+        return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    }
+    
     public function guessAppUrl()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {
