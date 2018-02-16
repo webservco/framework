@@ -8,6 +8,8 @@
 A PHP Framework
 
 ## Documentation
-* [Session](docs/Libraries/Session.md)
-* [Database (PDO)](docs/Libraries/PdoDatabase.md)
+
 * [CLI Response](docs/Libraries/CliResponse.md)
+* [Internationalization](docs/Libraries/I18n.md)
+* [Database (PDO)](docs/Libraries/PdoDatabase.md)
+* [Session](docs/Libraries/Session.md)

@@ -17,6 +17,11 @@ abstract class AbstractController
         return Fw::getLibrary('Config');
     }
     
+    final protected function i18n()
+    {
+        return Fw::getLibrary('I18n');
+    }
+    
     final protected function request()
     {
         return Fw::getLibrary('Request');

@@ -22,6 +22,11 @@ abstract class AbstractRepository
         return Fw::getLibrary('MysqliDatabase');
     }
     
+    final protected function i18n()
+    {
+        return Fw::getLibrary('I18n');
+    }
+    
     final protected function session()
     {
         return Fw::getLibrary('Session');
