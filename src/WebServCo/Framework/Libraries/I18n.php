@@ -50,6 +50,11 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         return $this->lang;
     }
     
+    public function getLanguages()
+    {
+        return $this->langs;
+    }
+    
     protected function setLocale($locale)
     {
         /**
