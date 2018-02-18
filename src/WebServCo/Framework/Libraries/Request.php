@@ -1,8 +1,48 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-final class Request extends \WebServCo\Framework\AbstractRequest
+final class Request extends \WebServCo\Framework\AbstractLibrary
 {
+    /**
+     * Sanitized _SERVER data.
+     */
+    protected $server = [];
+    /**
+     * Request method.
+     */
+    protected $method;
+    /**
+     * Current script filename. Should most commonly be index.php
+     */
+    protected $filename;
+    /**
+     * Script path.
+     * For HTTP requests this will be public web server subdirectory
+     * the project is located in.
+     * For CLI request this will be the script path
+     * (full or relative, depending on how the script was called).
+     */
+    protected $path = '';
+    /**
+     * Sanitized Framework customized target path.
+     */
+    protected $target = '';
+    /**
+     * Sanitized request query.
+     */
+    protected $query = [];
+    /**
+     * Sanitized Framework customized CLI arguments.
+     *
+     * Excludes the script name and the second argument
+     * which is the Framework customized target path.
+     */
+    protected $args = [];
+    
+    use \WebServCo\Framework\Traits\RequestProcessTrait;
+    use \WebServCo\Framework\Traits\RequestServerTrait;
+    use \WebServCo\Framework\Traits\RequestUrlTrait;
+     
     public function __construct($config, $server, $post = [])
     {
         parent::__construct($config);
@@ -10,66 +50,13 @@ final class Request extends \WebServCo\Framework\AbstractRequest
         $this->init($server, $post);
     }
     
-    public function getSchema()
+    public function getTarget()
     {
-        if (\WebServCo\Framework\Framework::isCLI()) {
-            return null;
-        }
-        
-        if (isset($this->server['HTTPS']) && 'off' != $this->server['HTTPS']) {
-            return 'https';
-        } elseif (isset($this->server['HTTP_X_FORWARDED_PROTO']) &&
-        'https' == $this->server['HTTP_X_FORWARDED_PROTO']) {
-            return 'https';
-        } elseif (isset($this->server['HTTP_X_FORWARDED_SSL']) &&
-        'on' == $this->server['HTTP_X_FORWARDED_SSL']) {
-            return 'https';
-        }
-        return 'http';
+        return $this->target;
     }
     
-    public function getReferer()
+    public function getArgs()
     {
-        return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
-    }
-    
-    public function getHost()
-    {
-        if (!empty($this->server['HTTP_HOST'])) {
-            return $this->server['HTTP_HOST'];
-        } elseif (!empty($this->server['SERVER_NAME'])) {
-            return $this->server['SERVER_NAME'];
-        } elseif (!empty($this->server['HOSTNAME'])) {
-            return $this->server['HOSTNAME']; //CLI
-        }
-        return null;
-    }
-    
-    public function getServerProtocol()
-    {
-        if (!isset($this->server['SERVER_PROTOCOL'])) {
-            return false;
-        }
-        return $this->server['SERVER_PROTOCOL'];
-    }
-    
-    public function getAcceptLanguage()
-    {
-        if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
-            return false;
-        }
-        return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-    }
-    
-    public function guessAppUrl()
-    {
-        if (\WebServCo\Framework\Framework::isCLI()) {
-            return false;
-        }
-        return $this->getSchema() .
-        '://' .
-        $this->getHost() .
-        $this->path .
-        DIRECTORY_SEPARATOR;
+        return $this->args;
     }
 }

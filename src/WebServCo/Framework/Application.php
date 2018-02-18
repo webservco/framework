@@ -94,9 +94,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
     {
         $classType = Fw::isCLI() ? 'Command' : 'Controller';
         $route = $this->router()->getRoute(
-            $this->request()->target,
+            $this->request()->getTarget(),
             $this->router()->setting('routes'),
-            $this->request()->args
+            $this->request()->getArgs()
         );
         
         $class = isset($route[0]) ? $route[0] : null;

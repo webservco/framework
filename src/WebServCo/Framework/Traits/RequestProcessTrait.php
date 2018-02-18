@@ -1,46 +1,10 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\RequestUtils as Utils;
 
-abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
+trait RequestProcessTrait
 {
-    /**
-     * Sanitized _SERVER data.
-     */
-    protected $server = [];
-    /**
-     * Request method.
-     */
-    protected $method;
-    /**
-     * Current script filename. Should most commonly be index.php
-     */
-    protected $filename;
-    /**
-     * Script path.
-     * For HTTP requests this will be public web server subdirectory
-     * the project is located in.
-     * For CLI request this will be the script path
-     * (full or relative, depending on how the script was called).
-     */
-    protected $path = '';
-    /**
-     * Sanitized Framework customized target path.
-     */
-    protected $target = '';
-    /**
-     * Sanitized request query.
-     */
-    protected $query = [];
-    /**
-     * Sanitized Framework customized CLI arguments.
-     *
-     * Excludes the script name and the second argument
-     * which is the Framework customized target path.
-     */
-    protected $args = [];
-    
     final public function sanitize($data)
     {
         if (is_array($data)) {
@@ -56,9 +20,11 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
     protected function init($server, $post = [])
     {
         $this->server = $this->sanitize($server);
-        $this->method = $this->getMethod();
-        $this->filename = $this->getFilename();
-        $this->path = $this->getPath();
+        
+        $this->setMethod();
+        $this->setFilename();
+        $this->setPath();
+
         $this->process();
         
         switch ($this->method) {
@@ -72,6 +38,46 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
         if ($this->setting('clear_globals', true)) {
             $this->clearGlobals();
         }
+    }
+    
+    protected function setMethod()
+    {
+        if (empty($this->server['REQUEST_METHOD']) ||
+        !in_array(
+            $this->server['REQUEST_METHOD'],
+            \WebServCo\Framework\Http::getMethods()
+        )) {
+            return false;
+        }
+        $this->method = $this->server['REQUEST_METHOD'];
+        return true;
+    }
+    
+    protected function setFilename()
+    {
+        if (empty($this->server['SCRIPT_NAME'])) {
+            return false;
+        }
+        $this->filename = basename($this->server['SCRIPT_NAME']);
+        return true;
+    }
+    
+    protected function setPath()
+    {
+        if (empty($this->server['SCRIPT_NAME'])) {
+            return false;
+        }
+        
+        $this->path = rtrim(
+            str_replace(
+                $this->filename,
+                '',
+                $this->server['SCRIPT_NAME']
+            ),
+            DIRECTORY_SEPARATOR
+        );
+        
+        return true;
     }
     
     protected function clearGlobals()
@@ -150,30 +156,5 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
         $this->target = $this->sanitize(urldecode($target));
         $this->query = Utils::format($this->sanitize($queryString));
         return true;
-    }
-    
-    protected function getMethod()
-    {
-        return !empty($this->server['REQUEST_METHOD']) &&
-        in_array(
-            $this->server['REQUEST_METHOD'],
-            \WebServCo\Framework\Http::getMethods()
-        ) ?
-        $this->server['REQUEST_METHOD'] : false;
-    }
-    
-    protected function getFilename()
-    {
-        return !empty($this->server['SCRIPT_NAME']) ?
-        basename($this->server['SCRIPT_NAME']) : false;
-    }
-    
-    protected function getPath()
-    {
-        if (empty($this->server['SCRIPT_NAME'])) {
-            return false;
-        }
-        $path = str_replace($this->getFilename(), '', $this->server['SCRIPT_NAME']);
-        return rtrim($path, DIRECTORY_SEPARATOR);
     }
 }
