@@ -27,6 +27,11 @@ abstract class AbstractRepository
         return Fw::getLibrary('I18n');
     }
     
+    final protected function request()
+    {
+        return Fw::getLibrary('Request');
+    }
+    
     final protected function session()
     {
         return Fw::getLibrary('Session');
