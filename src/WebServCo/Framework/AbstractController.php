@@ -1,34 +1,13 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Framework as Fw;
-
 abstract class AbstractController
 {
     use \WebServCo\Framework\Traits\OutputTrait;
+    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
     
     public function __construct($outputLoader)
     {
         $this->outputLoader = $outputLoader;
-    }
-    
-    final protected function config()
-    {
-        return Fw::getLibrary('Config');
-    }
-    
-    final protected function i18n()
-    {
-        return Fw::getLibrary('I18n');
-    }
-    
-    final protected function request()
-    {
-        return Fw::getLibrary('Request');
-    }
-    
-    final protected function session()
-    {
-        return Fw::getLibrary('Session');
     }
 }
