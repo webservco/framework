@@ -50,6 +50,11 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
         $this->init($server, $post);
     }
     
+    public function getQuery()
+    {
+        return $this->query;
+    }
+    
     public function getTarget()
     {
         return $this->target;
