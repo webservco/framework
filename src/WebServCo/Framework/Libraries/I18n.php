@@ -20,12 +20,12 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         $this->domain = $this->setting('domain', 'messages');
     }
     
-    public function init($projectPath)
+    public function init($projectPath, $lang = null)
     {
         $this->translationsPath = $projectPath . 'resources/translations';
         
-        $defaultLang = $this->setting('lang', 'en');
-        $this->setLanguage($defaultLang);
+        $lang = $lang ? $lang : $this->setting('lang', 'en');
+        $this->setLanguage($lang);
         
         return true;
     }
