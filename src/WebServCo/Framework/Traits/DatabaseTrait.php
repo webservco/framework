@@ -31,6 +31,18 @@ trait DatabaseTrait
         return $this->query($query, $data);
     }
     
+    public function valueExists($table, $field, $value)
+    {
+        return (bool) $this->getColumn(
+            sprintf(
+                "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
+                $this->escapeIdentifier($table),
+                $this->escapeIdentifier($field)
+            ),
+            [$value]
+        );
+    }
+    
     protected function getKeysValues($data = [])
     {
         $multiDimensional = is_array($data[key($data)]);

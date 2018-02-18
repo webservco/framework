@@ -20,4 +20,6 @@ interface DatabaseInterface
     public function getColumn($query, $params = [], $columnNumber = 0);
     
     public function lastInsertId();
+    
+    public function escapeIdentifier($string);
 }
