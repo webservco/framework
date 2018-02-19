@@ -22,6 +22,19 @@
 $this->db()->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
+#### INSERT ... ON DUPLICATE KEY UPDATE
+
+> Not supported when adding multiple rows at once
+
+```php
+$this->db()->insert('<tableName>', [<addData>], [<updateData>]);
+$this->db()->insert(
+    '<tableName>',
+    ['<col1>' => <val1>, '<col2>' => <val2>],
+    ['<col2>' => <val2>]
+);
+```
+
 #### INSERT IGNORE
 
 ```php
