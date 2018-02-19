@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Exceptions\ArrayStorageException;
+
 final class ArrayStorage
 {
     /**
@@ -91,12 +93,12 @@ final class ArrayStorage
      * @param mixed $value The value to be stored.
      *
      * @return array The storage array with new data.
-     * @throws \ErrorException
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public static function set($storage, $setting, $value)
     {
         if (!is_array($storage) || empty($setting)) {
-            throw new \ErrorException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified');
         }
         $setting = self::parseSetting($setting);
         if (is_array($setting)) {
@@ -118,12 +120,12 @@ final class ArrayStorage
      * @param array $storage
      * @param mixed $data
      * @return array
-     * @throws \ErrorException
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public static function append($storage, $data = [])
     {
         if (!is_array($storage) || !is_array($data)) {
-            throw new \ErrorException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified');
         }
         foreach ($data as $setting => $value) {
             if (array_key_exists($setting, $storage) &&
@@ -147,26 +149,26 @@ final class ArrayStorage
      *                          (eg 'app/path/project').
      *
      * @return array The updated storage array.
-     * @throws \ErrorException
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public static function remove($storage, $setting)
     {
         if (!is_array($storage) || empty($setting)) {
-            throw new \ErrorException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified');
         }
         
         $setting = self::parseSetting($setting);
         
         if (empty($setting)) {
-            throw new \ErrorException('Empty setting');
+            throw new ArrayStorageException('Empty setting');
         }
         
         if (is_array($setting)) {
             return self::removeByIndex($storage, $setting);
         }
         if (!array_key_exists($setting, $storage)) {
-            throw new \ErrorException(
-                sprintf('"%s" does not exist in storage object', $setting)
+            throw new ArrayStorageException(
+                sprintf('setting "%s" does not exist in storage object', $setting)
             );
         }
         unset($storage[$setting]);
@@ -185,7 +187,7 @@ final class ArrayStorage
      *   removed.
      * @return array
      *   The array with the index removed.
-     * @throws \ErrorException
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      *   If the index does not exist within the array.
      */
     protected static function removeByIndex($array, $indices)
@@ -198,7 +200,7 @@ final class ArrayStorage
         for ($i = 0; $i <= $c; ++$i) {
             // Make sure the index to go down for deletion actually exists.
             if (!array_key_exists($indices[$i], $a)) {
-                throw new \ErrorException(
+                throw new ArrayStorageException(
                     sprintf('"%s" does not exist in storage object', $indices[$i])
                 );
             }
@@ -209,7 +211,7 @@ final class ArrayStorage
                 // Make sure we have an array to go further down.
                 $a = &$a[$indices[$i]];
             } else {
-                throw new \ErrorException(
+                throw new ArrayStorageException(
                     sprintf('"%s" does not exist in storage object', $indices[$i])
                 );
             }
