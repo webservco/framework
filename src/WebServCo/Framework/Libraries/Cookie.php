@@ -30,9 +30,9 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         );
     }
     
-    public function get($name)
+    public function get($name, $defaultValue = false)
     {
-        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : false;
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
     }
     
     public function remove($name)
