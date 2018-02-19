@@ -26,7 +26,7 @@ final class ArrayStorageTest extends TestCase
     
     /**
      * @test
-     * @expectedException \ErrorException
+     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingTripleSettingThrowsException()
     {
@@ -39,7 +39,7 @@ final class ArrayStorageTest extends TestCase
     
     /**
      * @test
-     * @expectedException \ErrorException
+     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingDoubleSettingThrowsException()
     {
@@ -52,7 +52,7 @@ final class ArrayStorageTest extends TestCase
     
     /**
      * @test
-     * @expectedException \ErrorException
+     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingSimpleSettingThrowsException()
     {
