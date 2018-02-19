@@ -95,6 +95,11 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         );
     }
     
+    public function has($setting)
+    {
+        return (bool) $this->get($setting);
+    }
+    
     public function remove($setting)
     {
         $this->checkSession();
