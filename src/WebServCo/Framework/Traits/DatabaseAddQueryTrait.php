@@ -1,0 +1,109 @@
+<?php
+namespace WebServCo\Framework\Traits;
+
+use WebServCo\Framework\AbstractDatabase as Db;
+
+trait DatabaseAddQueryTrait
+{
+    protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
+    {
+        $multiDimensional = is_array($addData[key($addData)]);
+        
+        list($keys, $data) = $this->getKeysValues($addData);
+        
+        $query = $this->generateAddQueryPrefix($queryType);
+        $query .= ' ' . $this->escapeIdentifier($tableName);
+        $query .= $this->generateAddQueryFieldsPart($tableName, $keys);
+        $query .= $this->generateAddQueryValuesPart($data, $multiDimensional);
+        
+        if ($multiDimensional) {
+            return $query;
+        }
+        
+        $query .= $this->generateAddQueryUpdatePart($updateData);
+        
+        return $query;
+    }
+    
+    protected function getKeysValues($data = [])
+    {
+        $multiDimensional = is_array($data[key($data)]);
+        if ($multiDimensional) {
+            $keys = array_keys(call_user_func_array('array_merge', $data));
+            // fill any missing keys with empty data
+            $key_pair = array_combine($keys, array_fill(0, count($keys), null));
+            $data = array_map(function ($e) use ($key_pair) {
+                return array_merge($key_pair, $e);
+            }, $data);
+        } else {
+            $keys = array_keys($data);
+        }
+        
+        return [$keys, $data];
+    }
+    
+    protected function generateAddQueryPrefix($queryType)
+    {
+        switch ($queryType) {
+            case Db::QUERY_TYPE_REPLACE:
+                $query = Db::QUERY_TYPE_REPLACE . ' INTO';
+                break;
+            case Db::QUERY_TYPE_INSERT_IGNORE:
+                $query = Db::QUERY_TYPE_INSERT_IGNORE . ' INTO';
+                break;
+            case Db::QUERY_TYPE_INSERT:
+            default:
+                $query = Db::QUERY_TYPE_INSERT . ' INTO';
+                break;
+        }
+        
+        return $query;
+    }
+    
+    protected function generateAddQueryFieldsPart($tableName, $fields)
+    {
+        return ' (' . implode(
+            ', ',
+            array_map([$this, 'escapeIdentifier'], $fields)
+        ) .
+        ')';
+    }
+    
+    protected function generateAddQueryValuesPart($data, $multiDimensional)
+    {
+        $query = ' VALUES';
+        if ($multiDimensional) {
+            $valuesStrings = [];
+            foreach ($data as $item) {
+                $valuesStrings[] = $this->generateValuesString($item);
+            }
+            $query .= implode(', ', $valuesStrings);
+        } else {
+            $query .= $this->generateValuesString($data);
+        }
+        return $query;
+    }
+    
+    protected function generateAddQueryUpdatePart($data = [])
+    {
+        if (empty($data)) {
+            return false;
+        }
+        
+        $strings = [];
+        foreach ($data as $k => $v) {
+            $strings[] = sprintf('%s = ?', $this->escapeIdentifier($k));
+        }
+        
+        $query = " ON DUPLICATE KEY UPDATE ";
+        $query .= implode(', ', $strings);
+        return $query;
+    }
+    
+    protected function generateValuesString($data)
+    {
+        return ' (' . implode(', ', array_map(function ($v) {
+            return '?';
+        }, $data)) . ')';
+    }
+}

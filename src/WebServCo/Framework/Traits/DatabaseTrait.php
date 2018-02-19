@@ -5,9 +5,11 @@ use WebServCo\Framework\AbstractDatabase as Db;
 
 trait DatabaseTrait
 {
-    public function insert($tableName, $data = [])
+    use DatabaseAddQueryTrait;
+    
+    public function insert($tableName, $addData = [], $updateData = [])
     {
-        return $this->add(Db::QUERY_TYPE_INSERT, $tableName, $data);
+        return $this->add(Db::QUERY_TYPE_INSERT, $tableName, $addData, $updateData);
     }
     
     public function insertIgnore($tableName, $data = [])
@@ -20,15 +22,23 @@ trait DatabaseTrait
         return $this->add(Db::QUERY_TYPE_REPLACE, $tableName, $data);
     }
     
-    protected function add($queryType, $tableName, $data = [])
+    protected function add($queryType, $tableName, $addData = [], $updateData = [])
     {
-        if (empty($tableName) || empty($data)) {
+        if (empty($tableName) || empty($addData)) {
             throw new \ErrorException('No data specified');
         }
         
-        $query = $this->generateAddQuery($queryType, $tableName, $data);
+        $query = $this->generateAddQuery($queryType, $tableName, $addData, $updateData);
         
-        return $this->query($query, $data);
+        $queryData = [];
+        foreach ($addData as $item) {
+            $queryData[] = $item;
+        }
+        foreach ($updateData as $item) {
+            $queryData[] = $item;
+        }
+        
+        return $this->query($query, $queryData);
     }
     
     public function valueExists($table, $field, $value)
@@ -41,62 +51,5 @@ trait DatabaseTrait
             ),
             [$value]
         );
-    }
-    
-    protected function getKeysValues($data = [])
-    {
-        $multiDimensional = is_array($data[key($data)]);
-        if ($multiDimensional) {
-            $keys = array_keys(call_user_func_array('array_merge', $data));
-            // fill any missing keys with empty data
-            $key_pair = array_combine($keys, array_fill(0, count($keys), null));
-            $data = array_map(function ($e) use ($key_pair) {
-                return array_merge($key_pair, $e);
-            }, $data);
-        } else {
-            $keys = array_keys($data);
-        }
-        
-        return [$keys, $data];
-    }
-    
-    protected function generateAddQuery($queryType, $tableName, $data)
-    {
-        $multiDimensional = is_array($data[key($data)]);
-        
-        list($keys, $data) = $this->getKeysValues($data);
-        
-        switch ($queryType) {
-            case Db::QUERY_TYPE_REPLACE:
-                $query = Db::QUERY_TYPE_REPLACE . ' INTO';
-                break;
-            case Db::QUERY_TYPE_INSERT_IGNORE:
-                $query = Db::QUERY_TYPE_INSERT_IGNORE . ' INTO';
-                break;
-            case Db::QUERY_TYPE_INSERT:
-            default:
-                $query = Db::QUERY_TYPE_INSERT . ' INTO';
-                break;
-        }
-        $query .= ' '.$this->escapeIdentifier($tableName).' (' .
-        implode(', ', array_map([$this, 'escapeIdentifier'], $keys)) .
-        ') VALUES';
-        if ($multiDimensional) {
-            $valuesStrings = [];
-            foreach ($data as $item) {
-                $valuesStrings[] = $this->generateValuesString($item);
-            }
-            $query .= implode(', ', $valuesStrings);
-        } else {
-            $query .= $this->generateValuesString($data);
-        }
-        return $query;
-    }
-    
-    protected function generateValuesString($data)
-    {
-        return ' (' . implode(', ', array_map(function ($v) {
-            return '?';
-        }, $data)) . ')';
     }
 }
