@@ -37,10 +37,6 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
     
     public function setHeader($name, $value)
     {
-        if ('Content-Type' == $name) {
-            $this->headers[$name] = $value . '; charset=' . $this->charset;
-        }
-        
         switch ($name) {
             case 'Content-Type':
                 $this->headers[$name] = $value . '; charset=' . $this->charset;
