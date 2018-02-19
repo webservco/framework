@@ -10,6 +10,11 @@ trait ExposeLibrariesTrait
         return Fw::getLibrary('Config');
     }
     
+    final protected function cookie()
+    {
+        return Fw::getLibrary('Cookie');
+    }
+    
     final protected function i18n()
     {
         return Fw::getLibrary('I18n');

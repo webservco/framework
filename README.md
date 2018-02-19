@@ -10,6 +10,7 @@ A PHP Framework
 ## Documentation
 
 * [CLI Response](docs/Libraries/CliResponse.md)
+* [Cookie](docs/Libraries/Cookie.md)
 * [Internationalization](docs/Libraries/I18n.md)
 * [Database (PDO)](docs/Libraries/PdoDatabase.md)
 * [Session](docs/Libraries/Session.md)
