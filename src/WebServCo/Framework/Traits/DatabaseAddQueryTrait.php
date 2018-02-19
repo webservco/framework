@@ -5,7 +5,7 @@ use WebServCo\Framework\AbstractDatabase as Db;
 
 trait DatabaseAddQueryTrait
 {
-    protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
+    final protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
     {
         $multiDimensional = is_array($addData[key($addData)]);
         
@@ -25,7 +25,7 @@ trait DatabaseAddQueryTrait
         return $query;
     }
     
-    protected function getKeysValues($data = [])
+    final protected function getKeysValues($data = [])
     {
         $multiDimensional = is_array($data[key($data)]);
         if ($multiDimensional) {
@@ -42,7 +42,7 @@ trait DatabaseAddQueryTrait
         return [$keys, $data];
     }
     
-    protected function generateAddQueryPrefix($queryType)
+    final protected function generateAddQueryPrefix($queryType)
     {
         switch ($queryType) {
             case Db::QUERY_TYPE_REPLACE:
@@ -60,7 +60,7 @@ trait DatabaseAddQueryTrait
         return $query;
     }
     
-    protected function generateAddQueryFieldsPart($tableName, $fields)
+    final protected function generateAddQueryFieldsPart($tableName, $fields)
     {
         return ' (' . implode(
             ', ',
@@ -69,7 +69,7 @@ trait DatabaseAddQueryTrait
         ')';
     }
     
-    protected function generateAddQueryValuesPart($data, $multiDimensional)
+    final protected function generateAddQueryValuesPart($data, $multiDimensional)
     {
         $query = ' VALUES';
         if ($multiDimensional) {
@@ -84,7 +84,7 @@ trait DatabaseAddQueryTrait
         return $query;
     }
     
-    protected function generateAddQueryUpdatePart($data = [])
+    final protected function generateAddQueryUpdatePart($data = [])
     {
         if (empty($data)) {
             return false;
@@ -100,7 +100,7 @@ trait DatabaseAddQueryTrait
         return $query;
     }
     
-    protected function generateValuesString($data)
+    final protected function generateValuesString($data)
     {
         return ' (' . implode(', ', array_map(function ($v) {
             return '?';

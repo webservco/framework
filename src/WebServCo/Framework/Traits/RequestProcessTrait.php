@@ -5,7 +5,7 @@ use WebServCo\Framework\RequestUtils as Utils;
 
 trait RequestProcessTrait
 {
-    final public function sanitize($data)
+    public function sanitize($data)
     {
         if (is_array($data)) {
             array_walk_recursive(

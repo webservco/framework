@@ -7,22 +7,22 @@ trait DatabaseTrait
 {
     use DatabaseAddQueryTrait;
     
-    public function insert($tableName, $addData = [], $updateData = [])
+    final public function insert($tableName, $addData = [], $updateData = [])
     {
         return $this->add(Db::QUERY_TYPE_INSERT, $tableName, $addData, $updateData);
     }
     
-    public function insertIgnore($tableName, $data = [])
+    final public function insertIgnore($tableName, $data = [])
     {
         return $this->add(Db::QUERY_TYPE_INSERT_IGNORE, $tableName, $data);
     }
     
-    public function replace($tableName, $data = [])
+    final public function replace($tableName, $data = [])
     {
         return $this->add(Db::QUERY_TYPE_REPLACE, $tableName, $data);
     }
     
-    protected function add($queryType, $tableName, $addData = [], $updateData = [])
+    final protected function add($queryType, $tableName, $addData = [], $updateData = [])
     {
         if (empty($tableName) || empty($addData)) {
             throw new \ErrorException('No data specified');
@@ -41,7 +41,7 @@ trait DatabaseTrait
         return $this->query($query, $queryData);
     }
     
-    public function valueExists($table, $field, $value)
+    final public function valueExists($table, $field, $value)
     {
         return (bool) $this->getColumn(
             sprintf(
