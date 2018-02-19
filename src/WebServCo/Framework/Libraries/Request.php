@@ -38,6 +38,10 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
      * which is the Framework customized target path.
      */
     protected $args = [];
+    /**
+     * Dummy file extension used in the URL
+     */
+    protected $suffix;
     
     use \WebServCo\Framework\Traits\RequestProcessTrait;
     use \WebServCo\Framework\Traits\RequestServerTrait;
@@ -63,5 +67,10 @@ final class Request extends \WebServCo\Framework\AbstractLibrary
     public function getArgs()
     {
         return $this->args;
+    }
+    
+    public function getSuffix()
+    {
+        return $this->suffix;
     }
 }

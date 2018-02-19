@@ -147,7 +147,7 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        list ($target, $queryString) = Utils::parse(
+        list ($target, $queryString, $suffix) = Utils::parse(
             $string,
             $this->path,
             $this->filename,
@@ -155,6 +155,7 @@ trait RequestProcessTrait
         );
         $this->target = $this->sanitize(urldecode($target));
         $this->query = Utils::format($this->sanitize($queryString));
+        $this->suffix = $suffix;
         return true;
     }
 }

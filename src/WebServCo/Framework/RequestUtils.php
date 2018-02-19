@@ -46,11 +46,11 @@ final class RequestUtils
                 $suffixRev = strrev($suffix);
                 $suffixLen = strlen($suffix);
                 if (0 === strncasecmp($suffixRev, $stringRev, $suffixLen)) {
-                    return strrev(substr($stringRev, $suffixLen));
+                    return [strrev(substr($stringRev, $suffixLen)), $suffix];
                 }
             }
         }
-        return $string;
+        return [$string, null];
     }
     
     public static function sanitizeString($string)
@@ -101,11 +101,11 @@ final class RequestUtils
             $string = substr($string, $filenameLen);
         }
         list($target, $query) = self::explode($string);
-        $target = self::removeSuffix(
+        list($target, $suffix) = self::removeSuffix(
             self::transform($target),
             $suffixes
         );
         $query = self::transform($query);
-        return [$target, $query];
+        return [$target, $query, $suffix];
     }
 }
