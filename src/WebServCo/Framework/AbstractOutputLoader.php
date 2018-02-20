@@ -7,8 +7,11 @@ abstract class AbstractOutputLoader
     protected $htmlOutput;
     protected $jsonOutput;
     
-    public function __construct($projectPath, $htmlOutput = null, $jsonOutput = null)
-    {
+    public function __construct(
+        $projectPath,
+        \WebServCo\Framework\Libraries\HtmlOutput $htmlOutput = null,
+        \WebServCo\Framework\Libraries\JsonOutput $jsonOutput = null
+    ) {
         $this->projectPath = $projectPath;
         $this->htmlOutput = $htmlOutput;
         $this->jsonOutput = $jsonOutput;
