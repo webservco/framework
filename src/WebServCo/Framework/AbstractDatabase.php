@@ -12,11 +12,6 @@ abstract class AbstractDatabase extends \WebServCo\Framework\AbstractLibrary
     protected $lastInsertId;
     protected $rows;
     
-    public function __construct($config)
-    {
-        parent::__construct($config);
-    }
-    
     /**
      * Get last inserted Id.
      *

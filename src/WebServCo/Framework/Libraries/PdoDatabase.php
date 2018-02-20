@@ -9,9 +9,9 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
     
-    public function __construct($config)
+    public function __construct($settings = [])
     {
-        parent::__construct($config);
+        parent::__construct($settings);
         
         try {
             $this->db = new \PDO(

@@ -11,9 +11,9 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     
     protected $mysqliResult;
     
-    public function __construct($config)
+    public function __construct($settings = [])
     {
-        parent::__construct($config);
+        parent::__construct($settings);
         
         $driver = new \mysqli_driver();
         $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
