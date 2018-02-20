@@ -51,6 +51,15 @@ trait RequestUrlTrait
         return $this->query;
     }
     
+    public function query($key, $defaultValue = false)
+    {
+        return \WebServCo\Framework\ArrayStorage::get(
+            $this->query,
+            $key,
+            $defaultValue
+        );
+    }
+    
     public function queryToString($query = [])
     {
         if (empty($query)) {
