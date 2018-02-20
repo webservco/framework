@@ -5,6 +5,8 @@ use WebServCo\Framework\Settings as S;
 use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Environment as Env;
 use WebServCo\Framework\ErrorHandler as Err;
+use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Exceptions\NotFoundException;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
@@ -14,7 +16,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         
         if (!is_readable("{$publicPath}index.php") || !is_readable("{$projectPath}.env")) {
-            throw new \ErrorException(
+            throw new ApplicationException(
                 'Invalid paths specified when initializing Application.'
             );
         }
@@ -104,17 +106,19 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $args = isset($route[2]) ? $route[2] : [];
         
         if (empty($class) || empty($method)) {
-            throw new \ErrorException("Invalid route");
+            throw new ApplicationException("Invalid route");
         }
         $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
         if (!class_exists($className)) {
-            throw new \ErrorException("No matching {$classType} found", 404);
+            throw new NotFoundException(
+                sprintf('No matching %s found', $classType)
+            );
         }
         $object = new $className;
         $parent = get_parent_class($object);
         if (method_exists($parent, $method) ||
             !is_callable([$className, $method])) {
-            throw new \ErrorException('No matching action found', 404);
+            throw new NotFoundException('No matching Action found');
         }
         return call_user_func_array([$object, $method], $args);
     }

@@ -2,6 +2,7 @@
 namespace WebServCo\Framework\Libraries;
 
 use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Exceptions\DatabaseException;
 
 final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
@@ -30,7 +31,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
                 ]
             );
         } catch (\Exception $e) { // PDOException/RuntimeException/Exception
-            throw new \ErrorException($e->getMessage());
+            throw new DatabaseException($e->getMessage());
         }
     }
     
@@ -42,7 +43,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     public function query($query, $params = [])
     {
         if (empty($query)) {
-            throw new \ErrorException('No query specified');
+            throw new DatabaseException('No query specified');
         }
         
         if (!empty($params)) {
@@ -62,7 +63,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             $this->db->beginTransaction();
             foreach ($queries as $item) {
                 if (!isset($item[0])) {
-                    throw new \ErrorException('No query specified');
+                    throw new DatabaseException('No query specified');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
                 $this->query($item[0], $params);
@@ -71,14 +72,14 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             return true;
         } catch (\Exception $e) { //PDOException/RuntimeException/Exception
             $this->db->rollBack();
-            throw new \ErrorException($e->getMessage());
+            throw new DatabaseException($e->getMessage());
         }
     }
     
     public function numRows()
     {
         if (!($this->stmt instanceof \PDOStatement)) {
-            throw new \ErrorException('No Statement object available.');
+            throw new DatabaseException('No Statement object available.');
         }
         if ('mysql' == $this->setting('driver')) {
             return $this->stmt->rowCount();
@@ -90,7 +91,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
     public function affectedRows()
     {
         if (!($this->stmt instanceof \PDOStatement)) {
-            throw new \ErrorException('No Statement object available.');
+            throw new DatabaseException('No Statement object available.');
         }
         return $this->stmt->rowCount();
     }

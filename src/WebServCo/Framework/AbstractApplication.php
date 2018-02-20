@@ -79,10 +79,11 @@ abstract class AbstractApplication
     {
         switch ($errorInfo['code']) {
             case 404:
-                $statusCode = 404;
+                $statusCode = 404; //not found
                 $title = 'Resource not found';
                 break;
-            case 500:
+            case 500: //application
+            case 0: //default
             default:
                 $statusCode = 500;
                 $title = 'The App made a boo boo';

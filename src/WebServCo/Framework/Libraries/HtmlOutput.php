@@ -24,7 +24,9 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
         try {
             $templatePath = "{$this->path}{$this->template}.php";
             if (!is_file($templatePath)) {
-                throw new \ErrorException('Template file not found');
+                throw new \WebServCo\Framework\Exceptions\ApplicationException(
+                    sprintf('Template "%s" not found', $this->template)
+                );
             }
             ob_start();
             include $templatePath;

@@ -27,7 +27,7 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
     public function setStatus($statusCode)
     {
         if (!isset(Http::$statusCodes[$statusCode])) {
-                throw new \ErrorException(
+                throw new \WebServCo\Framework\Exceptions\ApplicationException(
                     sprintf('Invalid HTTP status code: %s', $statusCode)
                 );
         }

@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Exceptions\ApplicationException;
+
 final class Framework
 {
     const OS_WINDOWS = 'Windows';
@@ -54,7 +56,7 @@ final class Framework
     private static function loadLibrary($className, $fullClassName, $configName = null)
     {
         if (!class_exists($fullClassName)) {
-            throw new \ErrorException(
+            throw new ApplicationException(
                 sprintf('Library %s not found', $fullClassName)
             );
         }
@@ -89,7 +91,7 @@ final class Framework
     {
         $path = self::getPath() . 'src/WebServCo/Framework/Helpers/' . $className . 'Helper.php';
         if (!is_readable($path)) {
-            throw new \ErrorException(
+            throw new ApplicationException(
                 sprintf('Helper for %s Library not found', $className)
             );
         }

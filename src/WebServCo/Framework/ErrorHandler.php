@@ -44,7 +44,7 @@ final class ErrorHandler
     /**
      * Throws ErrorException.
      *
-     * @param int $errno  Error level
+     * @param int $errno Error level
      * @param string $errstr Error message
      * @param string $errfile Filename the error was raised in
      * @param int $errline Line number the error was raised at

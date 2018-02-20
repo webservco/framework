@@ -9,22 +9,25 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         if (empty($routeString) || 'index' == $routeString) {
             $defaultRoute = $this->setting('default_route');
             if (!isset($defaultRoute[1])) {
-                throw new \ErrorException("Default route missing or not valid");
+                throw new \WebServCo\Framework\Exceptions\ApplicationException(
+                    "Default route missing or not valid"
+                );
             }
             return $defaultRoute;
         }
         
-        $controller = '';
-        $action = '';
+        $parts = explode('/', $routeString, 3);
+
+        if (empty($parts[1])) {
+            throw new \WebServCo\Framework\Exceptions\NotFoundException(
+                sprintf('The requested resource "%s" was not found', $routeString)
+            );
+        }
+
+        $controller = $parts[0];
+        $action = $parts[1];
         $args = [];
         
-        $parts = explode('/', $routeString, 3);
-        if (!empty($parts['0'])) {
-            $controller = $parts[0];
-        }
-        if (!empty($parts['1'])) {
-            $action = $parts[1];
-        }
         if (!empty($parts['2'])) {
             $args = explode('/', $parts[2]);
         }

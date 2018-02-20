@@ -2,6 +2,7 @@
 namespace WebServCo\Framework\Libraries;
 
 use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Exceptions\DatabaseException;
 
 final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
@@ -28,7 +29,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             );
             $this->db->set_charset('utf8mb4');
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
-            throw new \ErrorException($e->getMessage());
+            throw new DatabaseException($e->getMessage());
         }
     }
     
@@ -40,7 +41,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     public function query($query, $params = [])
     {
         if (empty($query)) {
-            throw new \ErrorException('No query specified');
+            throw new DatabaseException('No query specified');
         }
         /**
          * For simplicity use statements even for simple queries.
@@ -58,7 +59,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             $this->db->autocommit(false);
             foreach ($queries as $item) {
                 if (!isset($item[0])) {
-                    throw new \ErrorException('No query specified');
+                    throw new DatabaseException('No query specified');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
                 $this->query($item[0], $params);
@@ -67,7 +68,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             return true;
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
             $this->db->rollback();
-            throw new \ErrorException($e->getMessage());
+            throw new DatabaseException($e->getMessage());
         }
     }
     
@@ -80,13 +81,13 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
          * We could count "$this->mysqliResult" but that would mean
          * the method will only work if getRow*() was called before.
          */
-        throw new \ErrorException('Method not implemented.');
+        throw new DatabaseException('Method not implemented.');
     }
     
     public function affectedRows()
     {
         if (!($this->stmt instanceof \mysqli_stmt)) {
-            throw new \ErrorException('No Statement object available.');
+            throw new DatabaseException('No Statement object available.');
         }
         return $this->stmt->affected_rows;
     }

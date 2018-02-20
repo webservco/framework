@@ -33,7 +33,9 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
     public function setLanguage($lang)
     {
         if (!array_key_exists($lang, $this->langs)) {
-            throw new \ErrorException('Language not available');
+            throw new \WebServCo\Framework\Exceptions\ApplicationException(
+                'Language not available'
+            );
         }
         
         $this->lang = $lang;

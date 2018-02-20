@@ -2,13 +2,14 @@
 namespace WebServCo\Framework\Libraries;
 
 use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Exceptions\ApplicationException;
 
 final class Session extends \WebServCo\Framework\AbstractLibrary
 {
     protected function checkSession()
     {
         if (session_status() === \PHP_SESSION_NONE) {
-            throw new \ErrorException(
+            throw new ApplicationException(
                 'Session is not started.'
             );
         }
@@ -17,7 +18,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
     public function start($storagePath = null)
     {
         if (session_status() === \PHP_SESSION_ACTIVE) {
-            throw new \ErrorException(
+            throw new ApplicationException(
                 'Could not start session, already started.'
             );
         }
@@ -61,7 +62,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         session_name('webservco');
         
         if (!session_start()) {
-            throw new \ErrorException('Failed to start session');
+            throw new ApplicationException('Failed to start session');
         }
         
         return true;
