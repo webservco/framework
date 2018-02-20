@@ -3,7 +3,11 @@ namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 {
-    protected $errors = [];
+    protected $errors;
+    
+    protected $filtered;
+    
+    protected $valid;
     
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
     
@@ -17,9 +21,25 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
              */
             $this->setData($field, $this->request()->data($field));
         }
+        $this->errors = [];
+        
+        $this->filtered = $this->filter();
+        
+        if ($this->isSent()) {
+            $this->valid = $this->validate();
+        }
     }
     
     abstract protected function db();
+    
+    /**
+     * @return bool
+     */
+    abstract protected function filter();
+    
+    /**
+     * @return bool
+     */
     abstract protected function validate();
     
     final public function asArray()
@@ -38,6 +58,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     
     final public function isValid()
     {
-        return $this->validate();
+        return $this->valid;
     }
 }
