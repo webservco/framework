@@ -1,8 +1,6 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-use WebServCo\Framework\RequestUtils as Utils;
-
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
     public function set(
@@ -16,7 +14,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
     ) {
         return setcookie(
             $name,
-            Utils::sanitizeString($value),
+            \WebServCo\Framework\RequestUtils::sanitizeString($value),
             $expire,
             $path,
             $domain,
