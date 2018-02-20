@@ -3,9 +3,9 @@ namespace WebServCo\Framework\Libraries;
 
 final class Request extends \WebServCo\Framework\AbstractRequest
 {
-    public function __construct($config, $server, $post = [])
+    public function __construct($settings = [], $server, $post = [])
     {
-        parent::__construct($config);
+        parent::__construct($settings);
         
         $this->init($server, $post);
     }
