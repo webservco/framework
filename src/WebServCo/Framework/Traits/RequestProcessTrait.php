@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\RequestUtils as Utils;
+use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
@@ -10,11 +10,11 @@ trait RequestProcessTrait
         if (is_array($data)) {
             array_walk_recursive(
                 $data,
-                'WebServCo\Framework\RequestUtils::sanitizeString'
+                '\WebServCo\Framework\RequestUtils::sanitizeString'
             );
             return $data;
         }
-        return Utils::sanitizeString($data);
+        return RequestUtils::sanitizeString($data);
     }
     
     protected function init($server, $post = [])
@@ -147,14 +147,14 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        list ($target, $queryString, $suffix) = Utils::parse(
+        list ($target, $queryString, $suffix) = RequestUtils::parse(
             $string,
             $this->path,
             $this->filename,
             $this->setting('suffixes')
         );
         $this->target = $this->sanitize(urldecode($target));
-        $this->query = Utils::format($this->sanitize($queryString));
+        $this->query = RequestUtils::format($this->sanitize($queryString));
         $this->suffix = $suffix;
         return true;
     }
