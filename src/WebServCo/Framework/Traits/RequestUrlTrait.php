@@ -3,6 +3,12 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
+    abstract public function getTarget();
+    
+    abstract public function getQuery();
+    
+    abstract public function getSuffix();
+    
     public function getAppUrl()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {

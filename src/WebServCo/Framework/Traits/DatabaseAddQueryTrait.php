@@ -5,6 +5,8 @@ use WebServCo\Framework\AbstractDatabase as Db;
 
 trait DatabaseAddQueryTrait
 {
+    abstract public function escapeIdentifier($string);
+    
     final protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
     {
         $multiDimensional = is_array($addData[key($addData)]);
@@ -13,7 +15,7 @@ trait DatabaseAddQueryTrait
         
         $query = $this->generateAddQueryPrefix($queryType);
         $query .= ' ' . $this->escapeIdentifier($tableName);
-        $query .= $this->generateAddQueryFieldsPart($tableName, $keys);
+        $query .= $this->generateAddQueryFieldsPart($keys);
         $query .= $this->generateAddQueryValuesPart($data, $multiDimensional);
         
         if ($multiDimensional) {
@@ -60,7 +62,7 @@ trait DatabaseAddQueryTrait
         return $query;
     }
     
-    final protected function generateAddQueryFieldsPart($tableName, $fields)
+    final protected function generateAddQueryFieldsPart($fields)
     {
         return ' (' . implode(
             ', ',

@@ -7,6 +7,8 @@ trait DatabaseTrait
 {
     use DatabaseAddQueryTrait;
     
+    abstract public function query($query, $values = []);
+    
     final public function insert($tableName, $addData = [], $updateData = [])
     {
         return $this->add(Db::QUERY_TYPE_INSERT, $tableName, $addData, $updateData);
