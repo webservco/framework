@@ -11,16 +11,23 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
     
-    public function __construct($settings)
+    public function __construct($settings, $defaultData = [])
     {
         parent::__construct($settings);
         
+        /**
+         * Set form data
+         */
         foreach ($this->setting('meta', []) as $field => $title) {
-            /**
-             * Set form data from POST request.
-             */
-            $this->setData($field, $this->request()->data($field));
+            $this->setData(
+                $field,
+                $this->request()->data( // from POST
+                    $field,
+                    \WebServCo\Framework\Utils::isA($defaultData, $field) // default data
+                )
+            );
         }
+        
         $this->errors = [];
         
         $this->filtered = $this->filter();
