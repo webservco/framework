@@ -5,11 +5,6 @@ use WebServCo\Framework\Settings as S;
 
 final class Session extends \WebServCo\Framework\AbstractLibrary
 {
-    public function __construct($config)
-    {
-        parent::__construct($config);
-    }
-    
     protected function checkSession()
     {
         if (session_status() === \PHP_SESSION_NONE) {
