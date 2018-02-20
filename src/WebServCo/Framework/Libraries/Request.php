@@ -15,23 +15,8 @@ final class Request extends \WebServCo\Framework\AbstractRequest
         return $this->method;
     }
     
-    public function getTarget()
-    {
-        return $this->target;
-    }
-    
-    public function getQuery()
-    {
-        return $this->query;
-    }
-    
     public function getArgs()
     {
         return $this->args;
-    }
-    
-    public function getSuffix()
-    {
-        return $this->suffix;
     }
 }

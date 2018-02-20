@@ -3,11 +3,15 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-    abstract public function getTarget();
+    public function getSuffix()
+    {
+        return $this->suffix;
+    }
     
-    abstract public function getQuery();
-    
-    abstract public function getSuffix();
+    public function getTarget()
+    {
+        return $this->target;
+    }
     
     public function getAppUrl()
     {
@@ -40,6 +44,11 @@ trait RequestUrlTrait
         }
         $url .= $this->queryToString($query);
         return $url;
+    }
+    
+    public function getQuery()
+    {
+        return $this->query;
     }
     
     public function queryToString($query = [])

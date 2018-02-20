@@ -46,10 +46,4 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
     use \WebServCo\Framework\Traits\RequestProcessTrait;
     use \WebServCo\Framework\Traits\RequestServerTrait;
     use \WebServCo\Framework\Traits\RequestUrlTrait;
-    
-    abstract public function getTarget();
-    
-    abstract public function getQuery();
-    
-    abstract public function getSuffix();
 }
