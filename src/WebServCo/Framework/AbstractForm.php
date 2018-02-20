@@ -20,13 +20,24 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     }
     
     abstract protected function db();
-    
-    abstract protected function request();
-    
     abstract protected function validate();
+    
+    final public function asArray()
+    {
+        return [
+            'meta' => $this->setting('meta', []),
+            'data' => $this->data,
+            'errors' => $this->errors,
+        ];
+    }
     
     final public function isSent()
     {
         return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+    }
+    
+    final public function isValid()
+    {
+        return $this->validate();
     }
 }
