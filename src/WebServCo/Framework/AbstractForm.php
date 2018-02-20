@@ -27,6 +27,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     
     final public function isSent()
     {
-        return $this->request->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+        return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
     }
 }
