@@ -49,15 +49,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      */
     abstract protected function validate();
     
-    final public function asArray()
-    {
-        return [
-            'meta' => $this->setting('meta', []),
-            'data' => $this->data,
-            'errors' => $this->errors,
-        ];
-    }
-    
     final public function isSent()
     {
         return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
@@ -66,5 +57,14 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function isValid()
     {
         return $this->valid;
+    }
+    
+    final public function toArray()
+    {
+        return [
+            'meta' => $this->setting('meta', []),
+            'data' => $this->data,
+            'errors' => $this->errors,
+        ];
     }
 }
