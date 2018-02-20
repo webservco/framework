@@ -5,11 +5,6 @@ use WebServCo\Framework\RequestUtils as Utils;
 
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
-    public function __construct($config)
-    {
-        parent::__construct($config);
-    }
-    
     public function set(
         $name,
         $value = '',
