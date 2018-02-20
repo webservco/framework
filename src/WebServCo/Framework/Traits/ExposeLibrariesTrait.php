@@ -20,6 +20,16 @@ trait ExposeLibrariesTrait
         return Fw::getLibrary('I18n');
     }
     
+    final protected function mysqliDb()
+    {
+        return Fw::getLibrary('MysqliDatabase');
+    }
+    
+    final protected function pdoDb()
+    {
+        return Fw::getLibrary('PdoDatabase');
+    }
+    
     final protected function request()
     {
         return Fw::getLibrary('Request');

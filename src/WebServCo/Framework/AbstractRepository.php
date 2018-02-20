@@ -13,14 +13,4 @@ abstract class AbstractRepository
     {
         $this->outputLoader = $outputLoader;
     }
-    
-    final protected function pdoDb()
-    {
-        return Fw::getLibrary('PdoDatabase');
-    }
-    
-    final protected function mysqliDb()
-    {
-        return Fw::getLibrary('MysqliDatabase');
-    }
 }
