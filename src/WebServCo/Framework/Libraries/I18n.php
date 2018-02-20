@@ -12,9 +12,9 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
     
     protected $translationsPath;
     
-    public function __construct($config)
+    public function __construct($settings = [])
     {
-        parent::__construct($config);
+        parent::__construct($settings);
         
         $this->langs = $this->setting('langs', []);
         $this->domain = $this->setting('domain', 'messages');
