@@ -10,6 +10,11 @@ final class Request extends \WebServCo\Framework\AbstractRequest
         $this->init($server, $post);
     }
     
+    public function getMethod()
+    {
+        return $this->method;
+    }
+    
     public function getTarget()
     {
         return $this->target;

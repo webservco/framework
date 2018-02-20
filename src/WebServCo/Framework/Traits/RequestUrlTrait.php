@@ -15,24 +15,36 @@ trait RequestUrlTrait
         DIRECTORY_SEPARATOR;
     }
     
-    public function getUrl($includeQuery = true)
+    public function getShortUrl()
     {
         $url = $this->getAppUrl();
         $url .= $this->getTarget();
         $url .= $this->getSuffix();
-        if ($includeQuery) {
-            $url .= '?' . $this->getQueryString();
-        }
         return $url;
     }
     
-    public function getQueryString()
+    public function getUrl($removeParameters = [])
     {
-        $queries = [];
+        $url = $this->getShortUrl();
         $query = $this->getQuery();
+        foreach ($removeParameters as $item) {
+            if (array_key_exists($item, $query)) {
+                unset($query[$item]);
+            }
+        }
+        $url .= $this->queryToString($query);
+        return $url;
+    }
+    
+    public function queryToString($query = [])
+    {
+        if (empty($query)) {
+            return false;
+        }
+        $queries = [];
         foreach ($query as $k => $v) {
             $queries[] = sprintf('%s=%s', $k, $v);
         }
-        return implode('&', $queries);
+        return '?' . implode('&', $queries);
     }
 }
