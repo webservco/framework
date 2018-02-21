@@ -24,8 +24,12 @@ trait OutputTrait
         );
     }
     
-    protected function outputJson($data)
+    protected function outputJson($content, $result = true)
     {
+        $data = [
+            'result' => $result,
+            'data' => $content,
+        ];
         return new \WebServCo\Framework\Libraries\HttpResponse(
             $this->output()->json($data),
             200,
