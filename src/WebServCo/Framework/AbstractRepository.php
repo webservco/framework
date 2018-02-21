@@ -11,6 +11,6 @@ abstract class AbstractRepository
     
     public function __construct(\WebServCo\Framework\AbstractOutputLoader $outputLoader)
     {
-        $this->outputLoader = $outputLoader;
+        $this->setOutputLoader($outputLoader);
     }
 }

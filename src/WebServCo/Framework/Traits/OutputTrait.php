@@ -5,6 +5,11 @@ trait OutputTrait
 {
     protected $outputLoader;
     
+    final protected function setOutputLoader(\WebServCo\Framework\AbstractOutputLoader $outputLoader)
+    {
+        $this->outputLoader = $outputLoader;
+    }
+    
     final protected function output()
     {
         return $this->outputLoader;

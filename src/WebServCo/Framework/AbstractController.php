@@ -9,6 +9,6 @@ abstract class AbstractController
     
     public function __construct(\WebServCo\Framework\AbstractOutputLoader $outputLoader)
     {
-        $this->outputLoader = $outputLoader;
+        $this->setOutputLoader($outputLoader);
     }
 }
