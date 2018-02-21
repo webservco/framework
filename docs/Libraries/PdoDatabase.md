@@ -66,7 +66,7 @@ $this->db()->insert(
 #### Multiple rows
 
 ```php
-return $this->db()->getRows("SELECT <col1>, <col2> FROM <table> WHERE 1", null);
+return $this->db()->getRows("SELECT <col1>, <col2> FROM <table> WHERE 1", []);
 ```
 
 #### One row
@@ -108,7 +108,7 @@ return $this->db()->affectedRows();
 ```php
 $this->db()->transaction(
     [
-        ["TRUNCATE TABLE <table>", null],
+        ["TRUNCATE TABLE <table>", []],
         ["INSERT INTO <table> (<col1>, <col2>) VALUES (?, ?)", [<val1>, <val2>]],
         ["INSERT INTO <table> (<col1>, <col2>) VALUES (?, ?)", [<val1>, <val2>]],
         ["INSERT INTO <table> (<col1>, <col2>) VALUES (?, ?)", [<val1>, <val2>]],
