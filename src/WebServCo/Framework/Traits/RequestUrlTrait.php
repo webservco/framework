@@ -3,10 +3,6 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-    protected $query;
-    protected $suffix;
-    protected $target;
-    
     public function getSuffix()
     {
         return $this->suffix;
