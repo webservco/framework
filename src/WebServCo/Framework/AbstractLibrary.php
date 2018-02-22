@@ -13,10 +13,26 @@ abstract class AbstractLibrary
         }
     }
     
+    /**
+     * @param mixed $key Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $value The value to be stored.
+     *
+     * @return bool True on success and false on failure.
+     */
     final public function setData($key, $value)
     {
-        $this->data[$key] = $value;
+        if (empty($key)) {
+            return false;
+        }
+        $this->data = \WebServCo\Framework\ArrayStorage::set($this->data, $key, $value);
         return true;
+    }
+    
+    final public function getData()
+    {
+        return $this->data;
     }
     
     final public function setting($key, $defaultValue = false)
