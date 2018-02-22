@@ -54,7 +54,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
      *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app|path|project').
+     *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
      *
      * @return bool True on success and false on failure.
