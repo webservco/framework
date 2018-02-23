@@ -21,7 +21,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
             return false;
         }
         
-        $result = ini_set('session.save_path', $storagePath);
+        ini_set('session.save_path', $storagePath);
         $actualStoragePath = session_save_path($storagePath);
         
         if ($actualStoragePath != $storagePath) {
