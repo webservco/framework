@@ -7,6 +7,7 @@ trait DatabaseTrait
 {
     use DatabaseAddQueryTrait;
     
+    abstract public function getColumn($query, $params = [], $columnNumber = 0);
     abstract public function query($query, $values = []);
     
     final public function insert($tableName, $addData = [], $updateData = [])
