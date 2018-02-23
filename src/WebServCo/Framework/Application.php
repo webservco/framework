@@ -61,9 +61,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
             
             return true;
         } catch (\Throwable $e) { // php7
-            return $this->shutdown($e, true);
+            $this->shutdown($e, true);
         } catch (\Exception $e) { // php5
-            return $this->shutdown($e, true);
+            $this->shutdown($e, true);
         }
     }
     
@@ -77,16 +77,16 @@ class Application extends \WebServCo\Framework\AbstractApplication
             if ($response instanceof
                 \WebServCo\Framework\Interfaces\ResponseInterface) {
                 $statusCode = $response->send($this->request());
-                return $this->shutdown(
+                $this->shutdown(
                     null,
                     true,
                     Fw::isCLI() ? $statusCode : 0
                 );
             }
         } catch (\Throwable $e) { // php7
-            return $this->shutdown($e, true);
+            $this->shutdown($e, true);
         } catch (\Exception $e) { // php5
-            return $this->shutdown($e, true);
+            $this->shutdown($e, true);
         }
     }
     
