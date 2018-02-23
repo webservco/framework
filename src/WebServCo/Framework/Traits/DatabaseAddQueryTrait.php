@@ -104,7 +104,7 @@ trait DatabaseAddQueryTrait
     
     final protected function generateValuesString($data)
     {
-        return ' (' . implode(', ', array_map(function ($v) {
+        return ' (' . implode(', ', array_map(function () {
             return '?';
         }, $data)) . ')';
     }
