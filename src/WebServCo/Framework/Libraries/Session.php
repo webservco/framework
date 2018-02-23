@@ -15,11 +15,32 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         }
     }
     
+    protected function setStoragePath($storagePath)
+    {
+        if (empty($storagePath)) {
+            return false;
+        }
+        
+        $result = ini_set('session.save_path', $storagePath);
+        $actualStoragePath = session_save_path($storagePath);
+        
+        if ($actualStoragePath != $storagePath) {
+            if ($this->setting('strict_custom_path', true)) {
+                throw new ApplicationException(
+                    'Unable to set custom session storage path. ' .
+                    sprintf('Current path: %s', $actualStoragePath)
+                );
+            }
+            return false;
+        }
+        return true;
+    }
+    
     public function start($storagePath = null)
     {
         if (session_status() === \PHP_SESSION_ACTIVE) {
             throw new ApplicationException(
-                'Could not start session, already started.'
+                'Unable to start session: already started.'
             );
         }
         
@@ -41,10 +62,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         /**
         * Set custom session storage path.
         */
-        if (!empty($storagePath)) {
-            ini_set('session.save_path', $storagePath);
-            session_save_path($storagePath);
-        }
+        $this->setStoragePath($storagePath);
     
         /**
          * Make sure garbage collector visits us.
@@ -62,7 +80,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         session_name('webservco');
         
         if (!session_start()) {
-            throw new ApplicationException('Failed to start session');
+            throw new ApplicationException('Unable to start session');
         }
         
         return true;
