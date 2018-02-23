@@ -5,6 +5,8 @@ use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
+    abstract public function setting($key, $defaultValue = false);
+    
     public function sanitize($data)
     {
         if (is_array($data)) {
