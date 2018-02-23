@@ -3,6 +3,9 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
+    abstract public function getHost();
+    abstract public function getSchema();
+    
     public function getSuffix()
     {
         return $this->suffix;
