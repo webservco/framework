@@ -105,7 +105,7 @@ abstract class AbstractApplication
 </head>
 <body><div class="o"><div class="m"><div class="i">' .
         "<h1>{$title}</h1>";
-        if (Env::ENV_DEV === $this->config()->getEnv()) {
+        if (Env::ENV_PROD !== $this->config()->getEnv()) {
             $output .= "<p>$errorInfo[message]</p>" .
             "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
         }
@@ -123,7 +123,7 @@ abstract class AbstractApplication
     protected function haltCli($errorInfo = [])
     {
         $output = 'The App made a boo boo' . PHP_EOL;
-        if (Env::ENV_DEV === $this->config()->getEnv()) {
+        if (Env::ENV_PROD !== $this->config()->getEnv()) {
             $output .= $errorInfo['message'] . PHP_EOL;
             $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         }
