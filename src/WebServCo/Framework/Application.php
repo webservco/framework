@@ -10,19 +10,21 @@ use WebServCo\Framework\Exceptions\NotFoundException;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
+    protected $projectPath;
+    
     public function __construct($publicPath, $projectPath)
     {
         $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $this->projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         
-        if (!is_readable("{$publicPath}index.php") || !is_readable("{$projectPath}.env")) {
+        if (!is_readable($publicPath . 'index.php') || !is_readable($this->projectPath . '.env')) {
             throw new ApplicationException(
                 'Invalid paths specified when initializing Application.'
             );
         }
         
         $this->config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $publicPath);
-        $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $projectPath);
+        $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $this->projectPath);
     }
     
     /**
@@ -31,13 +33,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
     final public function setEnvironmentValue()
     {
         /**
-         * Project path is set in the constructor.
-         */
-        $pathProject = $this->config()->get(sprintf('app%1$spath%1$sproject', S::DIVIDER));
-        /**
          * Env file existence is verified in the controller.
          */
-        $this->config()->setEnv(trim(file_get_contents("{$pathProject}.env")));
+        $this->config()->setEnv(trim(file_get_contents($this->projectPath . '.env')));
         
         return true;
     }
@@ -47,10 +45,10 @@ class Application extends \WebServCo\Framework\AbstractApplication
      */
     final public function start()
     {
-        Err::set();
-        register_shutdown_function([$this, 'shutdown']);
-        
         try {
+            Err::set();
+            register_shutdown_function([$this, 'shutdown']);
+        
             $this->setEnvironmentValue();
             
             /**
