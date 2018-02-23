@@ -18,16 +18,8 @@ final class ErrorHandler
     /**
      * Disable error display.
      */
-    private static function disableErrorDisplay()
+    protected static function disableErrorDisplay()
     {
-        $logPath =
-        \WebServCo\Framework\Framework::OS_WINDOWS
-        === \WebServCo\Framework\Framework::getOS()
-        ? 'null' : '/dev/null';
-        
-        if (!ini_get('error_log')) {
-            ini_set('error_log', $logPath);
-        }
         ini_set('display_errors', 0);
     }
     
