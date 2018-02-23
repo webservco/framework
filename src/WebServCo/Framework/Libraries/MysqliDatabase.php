@@ -135,7 +135,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             }
         }
         
-        $typeString = implode(null, $types);
+        $typeString = implode('', $types);
         $args = [
             0 => &$typeString,
         ];
