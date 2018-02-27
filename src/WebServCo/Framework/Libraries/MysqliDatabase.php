@@ -9,16 +9,16 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
-    
+
     protected $mysqliResult;
-    
+
     public function __construct($settings = [])
     {
         parent::__construct($settings);
-        
+
         $driver = new \mysqli_driver();
         $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
-        
+
         try {
             $this->db = new \mysqli(
                 $this->setting(sprintf('connection%shost', S::DIVIDER), '127.0.0.1'),
@@ -32,27 +32,32 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             throw new DatabaseException($e->getMessage());
         }
     }
-    
+
     public function escape($string)
     {
         return $this->db->real_escape_string($string);
     }
-    
+
     public function query($query, $params = [])
     {
         if (empty($query)) {
             throw new DatabaseException('No query specified');
         }
-        /**
-         * For simplicity use statements even for simple queries.
-         */
-        $this->stmt = $this->db->prepare($query);
-        $this->bindParams($params);
-        $this->stmt->execute();
-        $this->setLastInsertId();
-        return $this->stmt;
+
+        try {
+            /**
+             * For simplicity use statements even for simple queries.
+             */
+            $this->stmt = $this->db->prepare($query);
+            $this->bindParams($params);
+            $this->stmt->execute();
+            $this->setLastInsertId();
+            return $this->stmt;
+        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
+            throw new DatabaseException($e->getMessage());
+        }
     }
-    
+
     public function transaction($queries)
     {
         try {
@@ -71,7 +76,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             throw new DatabaseException($e->getMessage());
         }
     }
-    
+
     public function numRows()
     {
         /**
@@ -83,7 +88,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
          */
         throw new DatabaseException('Method not implemented.');
     }
-    
+
     public function affectedRows()
     {
         if (!($this->stmt instanceof \mysqli_stmt)) {
@@ -91,7 +96,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         }
         return $this->stmt->affected_rows;
     }
-    
+
     public function getRows($query, $params = [])
     {
         $this->query($query, $params);
@@ -99,14 +104,14 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
         return $this->rows;
     }
-    
+
     public function getRow($query, $params = [])
     {
         $this->query($query, $params);
         $this->mysqliResult = $this->stmt->get_result();
         return $this->mysqliResult->fetch_assoc();
     }
-    
+
     public function getColumn($query, $params = [], $columnNumber = 0)
     {
         $this->query($query, $params);
@@ -114,13 +119,13 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
         return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
     }
-    
+
     protected function bindParams($params = [])
     {
         if (empty($params)) {
             return false;
         }
-        
+
         $types = [];
         $values = [];
         foreach ($params as $item) {
@@ -134,7 +139,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
                 $values[] = $item;
             }
         }
-        
+
         $typeString = implode('', $types);
         $args = [
             0 => &$typeString,
@@ -142,14 +147,14 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         foreach ($values as &$v) {
             $args[] = &$v;
         }
-        
+
         return call_user_func_array([$this->stmt, 'bind_param'], $args);
     }
-    
+
     protected function getDataType($variable)
     {
         $type = gettype($variable);
-        
+
         switch ($type) {
             case 'integer':
                 return 'i';
@@ -169,7 +174,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
                 break;
         }
     }
-    
+
     protected function setLastInsertId()
     {
         $this->lastInsertId = $this->db->insert_id;
