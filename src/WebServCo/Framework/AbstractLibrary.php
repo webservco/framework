@@ -5,14 +5,14 @@ abstract class AbstractLibrary
 {
     private $settings = [];
     protected $data = [];
-    
+
     public function __construct($settings = [])
     {
         if (is_array($settings)) {
             $this->settings = $settings;
         }
     }
-    
+
     /**
      * @param mixed $key Can be an array, a string,
      *                          or a special formatted string
@@ -29,12 +29,29 @@ abstract class AbstractLibrary
         $this->data = \WebServCo\Framework\ArrayStorage::set($this->data, $key, $value);
         return true;
     }
-    
+
+    /**
+     * @param mixed $key Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $value The value to be stored.
+     *
+     * @return bool True on success and false on failure.
+     */
+    final public function setSetting($key, $value)
+    {
+        if (empty($key)) {
+            return false;
+        }
+        $this->settings = \WebServCo\Framework\ArrayStorage::set($this->settings, $key, $value);
+        return true;
+    }
+
     final public function getData()
     {
         return $this->data;
     }
-    
+
     final public function setting($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
@@ -43,7 +60,7 @@ abstract class AbstractLibrary
             $defaultValue
         );
     }
-    
+
     final public function data($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
