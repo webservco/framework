@@ -6,7 +6,7 @@ abstract class AbstractOutputLoader
     protected $projectPath;
     protected $htmlOutput;
     protected $jsonOutput;
-    
+
     public function __construct(
         $projectPath,
         \WebServCo\Framework\Libraries\HtmlOutput $htmlOutput = null,
@@ -16,17 +16,17 @@ abstract class AbstractOutputLoader
         $this->htmlOutput = $htmlOutput;
         $this->jsonOutput = $jsonOutput;
     }
-    
-    protected function htmlOutput()
+
+    public function htmlOutput()
     {
         return $this->htmlOutput;
     }
-    
-    protected function jsonOutput()
+
+    public function jsonOutput()
     {
         return $this->jsonOutput;
     }
-    
+
     private function getRenderedHtml($template)
     {
         /**
@@ -39,7 +39,7 @@ abstract class AbstractOutputLoader
         $this->htmlOutput()->setTemplate($template);
         return $this->htmlOutput()->render();
     }
-    
+
     protected function setHtmlTemplateData($data)
     {
         if (!is_array($data)) {
@@ -50,20 +50,20 @@ abstract class AbstractOutputLoader
         }
         return true;
     }
-    
+
     public function html($data, $template)
     {
         $this->setHtmlTemplateData($data);
         return $this->getRenderedHtml($template);
     }
-    
+
     public function htmlPage($data, $pageTemplate, $mainTemplate = null)
     {
         /**
          * Set template data.
          */
         $this->setHtmlTemplateData($data);
-        
+
         /**
          * Partials
          */
@@ -87,7 +87,7 @@ abstract class AbstractOutputLoader
             $this->htmlOutput()->setting('main_template', 'layout');
         return $this->getRenderedHtml($mainTemplate);
     }
-    
+
     public function json($data)
     {
         if (is_array($data)) {
@@ -97,7 +97,7 @@ abstract class AbstractOutputLoader
         }
         return $this->jsonOutput()->render();
     }
-    
+
     public function cli($string, $eol = true)
     {
         echo $string;
