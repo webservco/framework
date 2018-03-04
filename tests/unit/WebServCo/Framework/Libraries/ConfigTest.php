@@ -69,8 +69,8 @@ final class ConfigTest extends TestCase
         /**
          * Reset data to prevent phpunit hanging
          */
-        Fw::getLibrary('Config')->set('app', null);
-        Fw::getLibrary('Config')->set('foo', null);
+        Fw::library('Config')->set('app', null);
+        Fw::library('Config')->set('foo', null);
     }
     
     /**
@@ -80,7 +80,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Config',
-            Fw::getLibrary('Config')
+            Fw::library('Config')
         );
     }
     
@@ -89,7 +89,7 @@ final class ConfigTest extends TestCase
      */
     public function nullSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->set(null, null));
+        $this->assertFalse(Fw::library('Config')->set(null, null));
     }
     
     /**
@@ -97,7 +97,7 @@ final class ConfigTest extends TestCase
      */
     public function falseSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->set(false, null));
+        $this->assertFalse(Fw::library('Config')->set(false, null));
     }
     
     /**
@@ -105,7 +105,7 @@ final class ConfigTest extends TestCase
      */
     public function emptySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->set('', null));
+        $this->assertFalse(Fw::library('Config')->set('', null));
     }
      
     /**
@@ -113,7 +113,7 @@ final class ConfigTest extends TestCase
      */
     public function validSettingReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set('setting', 'value'));
+        $this->assertTrue(Fw::library('Config')->set('setting', 'value'));
     }
     
     /**
@@ -121,7 +121,7 @@ final class ConfigTest extends TestCase
      */
     public function settingNullValueReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set('key', null));
+        $this->assertTrue(Fw::library('Config')->set('key', null));
     }
     
     /**
@@ -129,7 +129,7 @@ final class ConfigTest extends TestCase
      */
     public function settingFalseValueReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set('key', false));
+        $this->assertTrue(Fw::library('Config')->set('key', false));
     }
     
     /**
@@ -137,7 +137,7 @@ final class ConfigTest extends TestCase
      */
     public function settingEmptyValueReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set('key', ''));
+        $this->assertTrue(Fw::library('Config')->set('key', ''));
     }
     
     /**
@@ -146,7 +146,7 @@ final class ConfigTest extends TestCase
      */
     public function frameworkAccessUsesSingleInstance()
     {
-        $this->assertEquals('value', Fw::getLibrary('Config')->get('setting'));
+        $this->assertEquals('value', Fw::library('Config')->get('setting'));
     }
     
     /**
@@ -154,7 +154,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNonExistentSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->get('noexist'));
+        $this->assertFalse(Fw::library('Config')->get('noexist'));
     }
     
     /**
@@ -162,7 +162,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNullSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->get(null));
+        $this->assertFalse(Fw::library('Config')->get(null));
     }
     
     /**
@@ -170,7 +170,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingFalseSettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->get(false));
+        $this->assertFalse(Fw::library('Config')->get(false));
     }
     
     /**
@@ -178,7 +178,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->get(''));
+        $this->assertFalse(Fw::library('Config')->get(''));
     }
     
     /**
@@ -186,7 +186,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptyArraySettingReturnsFalse()
     {
-        $this->assertFalse(Fw::getLibrary('Config')->get([]));
+        $this->assertFalse(Fw::library('Config')->get([]));
     }
     
     /**
@@ -195,14 +195,14 @@ final class ConfigTest extends TestCase
     public function storingAndRetrievingSimpleStringSettingWorks()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 $this->settingSimpleString,
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::getLibrary('Config')->get($this->settingSimpleString)
+            Fw::library('Config')->get($this->settingSimpleString)
         );
     }
     
@@ -212,14 +212,14 @@ final class ConfigTest extends TestCase
     public function storingAndRetrievingArraySettingWorks()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 $this->settingArray,
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::getLibrary('Config')->get($this->settingArray)
+            Fw::library('Config')->get($this->settingArray)
         );
     }
     
@@ -228,8 +228,8 @@ final class ConfigTest extends TestCase
      */
     public function storingAndRetrievingSpecialStringSettingWorks()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set($this->settingSpecialString, $this->value));
-        $this->assertEquals($this->value, Fw::getLibrary('Config')->get($this->settingSpecialString));
+        $this->assertTrue(Fw::library('Config')->set($this->settingSpecialString, $this->value));
+        $this->assertEquals($this->value, Fw::library('Config')->get($this->settingSpecialString));
     }
     
     /**
@@ -238,26 +238,26 @@ final class ConfigTest extends TestCase
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)
             )
         );
@@ -269,29 +269,29 @@ final class ConfigTest extends TestCase
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set('app', $this->value)
+            Fw::library('Config')->set('app', $this->value)
         );
         $this->assertEquals(
             $this->value,
-            Fw::getLibrary('Config')->get('app')
+            Fw::library('Config')->get('app')
         );
     }
     
@@ -300,9 +300,9 @@ final class ConfigTest extends TestCase
      */
     public function settingSameKeyTwiceOverwritesTheFirst()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->set('foo', 'old value'));
-        $this->assertTrue(Fw::getLibrary('Config')->set('foo', 'new value'));
-        $this->assertEquals('new value', Fw::getLibrary('Config')->get('foo'));
+        $this->assertTrue(Fw::library('Config')->set('foo', 'old value'));
+        $this->assertTrue(Fw::library('Config')->set('foo', 'new value'));
+        $this->assertEquals('new value', Fw::library('Config')->get('foo'));
     }
     
     /**
@@ -311,20 +311,20 @@ final class ConfigTest extends TestCase
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
         $this->assertEquals(
             'new value',
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -335,7 +335,7 @@ final class ConfigTest extends TestCase
      */
     public function addReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->add('add', 'dda'));
+        $this->assertTrue(Fw::library('Config')->add('add', 'dda'));
     }
     
     /**
@@ -360,22 +360,22 @@ final class ConfigTest extends TestCase
             ],
         ];
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
-        $this->assertTrue(Fw::getLibrary('Config')->add('foo', $config));
+        $this->assertTrue(Fw::library('Config')->add('foo', $config));
         
         $this->assertEquals(
             'value',
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf(
                     'foo%1$slevel1%1$slevel2%1$slevel3%1$s0',
                     S::DIVIDER
@@ -384,7 +384,7 @@ final class ConfigTest extends TestCase
         );
         $this->assertEquals(
             'new value',
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -396,7 +396,7 @@ final class ConfigTest extends TestCase
     public function loadReturnsFalseOnInvalidPath()
     {
         $this->assertFalse(
-            Fw::getLibrary('Config')->load('foo', '/foo/bar')
+            Fw::library('Config')->load('foo', '/foo/bar')
         );
     }
     
@@ -418,7 +418,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertInternalType(
             'array',
-            Fw::getLibrary('Config')->load('foo', self::$pathProject)
+            Fw::library('Config')->load('foo', self::$pathProject)
         );
     }
     
@@ -428,11 +428,11 @@ final class ConfigTest extends TestCase
      */
     public function addDataFromFileWorks()
     {
-        $data = Fw::getLibrary('Config')->load('foo', self::$pathProject);
-        $this->assertTrue(Fw::getLibrary('Config')->add('foo', $data));
+        $data = Fw::library('Config')->load('foo', self::$pathProject);
+        $this->assertTrue(Fw::library('Config')->add('foo', $data));
         $this->assertEquals(
             'value1',
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)
             )
         );
@@ -444,16 +444,16 @@ final class ConfigTest extends TestCase
     public function loadAppendsDataInsteadOfOverwriting()
     {
         $this->assertTrue(
-            Fw::getLibrary('Config')->set(
+            Fw::library('Config')->set(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
-        $data = Fw::getLibrary('Config')->load('foo', self::$pathProject);
-        Fw::getLibrary('Config')->add('foo', $data);
+        $data = Fw::library('Config')->load('foo', self::$pathProject);
+        Fw::library('Config')->add('foo', $data);
         $this->assertEquals(
             'new value',
-            Fw::getLibrary('Config')->get(
+            Fw::library('Config')->get(
                 sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -464,7 +464,7 @@ final class ConfigTest extends TestCase
      */
     public function setEnvReturnsTrue()
     {
-        $this->assertTrue(Fw::getLibrary('Config')->setEnv('dev'));
+        $this->assertTrue(Fw::library('Config')->setEnv('dev'));
     }
     
     /**
@@ -472,8 +472,8 @@ final class ConfigTest extends TestCase
      */
     public function setEnvDefaultsToDevOnInvalidValue()
     {
-        Fw::getLibrary('Config')->setEnv('noexist');
-        $this->assertEquals('dev', Fw::getLibrary('Config')->getEnv());
+        Fw::library('Config')->setEnv('noexist');
+        $this->assertEquals('dev', Fw::library('Config')->getEnv());
     }
     
     /**
@@ -483,7 +483,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertInternalType(
             'string',
-            Fw::getLibrary('Config')->getEnv()
+            Fw::library('Config')->getEnv()
         );
     }
     

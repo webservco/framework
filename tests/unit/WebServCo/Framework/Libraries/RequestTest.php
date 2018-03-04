@@ -14,7 +14,7 @@ final class RequestTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Request',
-            Fw::getLibrary('Request')
+            Fw::library('Request')
         );
     }
     
@@ -23,7 +23,7 @@ final class RequestTest extends TestCase
      */
     public function getSchemaReturnsNullOnCli()
     {
-        $this->assertNull(Fw::getLibrary('Request')->getSchema());
+        $this->assertNull(Fw::library('Request')->getSchema());
     }
     
     /**
@@ -31,7 +31,7 @@ final class RequestTest extends TestCase
      */
     public function getRefererReturnsNullOnCli()
     {
-        $this->assertNull(Fw::getLibrary('Request')->getReferer());
+        $this->assertNull(Fw::library('Request')->getReferer());
     }
     
     /**
@@ -41,7 +41,7 @@ final class RequestTest extends TestCase
     {
         $this->assertInternalType(
             'string',
-            Fw::getLibrary('Request')->getHost()
+            Fw::library('Request')->getHost()
         );
     }
     
@@ -52,7 +52,7 @@ final class RequestTest extends TestCase
     {
         $this->assertEquals(
             '?&#39;&#34;?!~#^&*=[]:;||{}()x',
-            Fw::getLibrary('Request')->sanitize(
+            Fw::library('Request')->sanitize(
                 "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"
             )
         );
@@ -65,7 +65,7 @@ final class RequestTest extends TestCase
     {
         $this->assertEquals(
             'script=alert(&#39;hacked!&#39;).html&key=value',
-            Fw::getLibrary('Request')->sanitize(
+            Fw::library('Request')->sanitize(
                 "script=<script>alert('hacked!')</script>.html&key=value"
             )
         );
