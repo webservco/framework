@@ -11,22 +11,24 @@ use WebServCo\Framework\Exceptions\NotFoundException;
 class Application extends \WebServCo\Framework\AbstractApplication
 {
     protected $projectPath;
-    
+
+    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
+
     public function __construct($publicPath, $projectPath)
     {
         $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        
+
         if (!is_readable($publicPath . 'index.php') || !is_readable($this->projectPath . '.env')) {
             throw new ApplicationException(
                 'Invalid paths specified when initializing Application.'
             );
         }
-        
+
         $this->config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $publicPath);
         $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $this->projectPath);
     }
-    
+
     /**
      * Sets the env value from the project .env file.
      */
@@ -36,10 +38,10 @@ class Application extends \WebServCo\Framework\AbstractApplication
          * Env file existence is verified in the controller.
          */
         $this->config()->setEnv(trim(file_get_contents($this->projectPath . '.env')));
-        
+
         return true;
     }
-    
+
     /**
      * Starts the execution of the application.
      */
@@ -48,9 +50,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
         try {
             Err::set();
             register_shutdown_function([$this, 'shutdown']);
-        
+
             $this->setEnvironmentValue();
-            
+
             /**
              * With no argument, timezone will be set from the configuration.
              */
@@ -58,7 +60,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             /**
              * @todo i18n, log, session (if not cli), users (if not cli)
              */
-            
+
             return true;
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
@@ -66,7 +68,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $this->shutdown($e, true);
         }
     }
-    
+
     /**
      * Runs the application.
      */
@@ -89,7 +91,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $this->shutdown($e, true);
         }
     }
-    
+
     final protected function execute()
     {
         $classType = Fw::isCLI() ? 'Command' : 'Controller';
@@ -98,11 +100,11 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $this->router()->setting('routes'),
             $this->request()->getArgs()
         );
-        
+
         $class = isset($route[0]) ? $route[0] : null;
         $method = isset($route[1]) ? $route[1] : null;
         $args = isset($route[2]) ? $route[2] : [];
-        
+
         if (empty($class) || empty($method)) {
             throw new ApplicationException("Invalid route");
         }
@@ -120,7 +122,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         }
         return call_user_func_array([$object, $method], $args);
     }
-    
+
     /**
      * Finishes the execution of the Application.
      *
@@ -132,7 +134,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         if ($hasError) {
             $statusCode = 1;
         }
-        
+
         if (!$manual) { //if shutdown handler
             /**
              * Warning: this part will always be executed,

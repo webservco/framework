@@ -6,26 +6,9 @@ use WebServCo\Framework\Environment as Env;
 
 abstract class AbstractApplication
 {
-    final public function config()
-    {
-        return Fw::getLibrary('Config');
-    }
-    
-    final protected function date()
-    {
-        return Fw::getLibrary('Date');
-    }
-    
-    final protected function router()
-    {
-        return Fw::getLibrary('Router');
-    }
-    
-    final protected function request()
-    {
-        return Fw::getLibrary('Request');
-    }
-    
+    abstract protected function config();
+    abstract protected function request();
+
     /**
      * Handle Errors.
      *
@@ -65,7 +48,7 @@ abstract class AbstractApplication
         }
         return false;
     }
-    
+
     final protected function halt($errorInfo = [])
     {
         if (Fw::isCLI()) {
@@ -74,7 +57,7 @@ abstract class AbstractApplication
             return $this->haltHttp($errorInfo);
         }
     }
-    
+
     protected function haltHttp($errorInfo = [])
     {
         switch ($errorInfo['code']) {
@@ -89,7 +72,7 @@ abstract class AbstractApplication
                 $title = 'The App made a boo boo';
                 break;
         }
-        
+
         $output = '<!doctype html>
 <html>
 <head>
@@ -110,7 +93,7 @@ abstract class AbstractApplication
             "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
         }
         $output .= '</div></div></div></body></html>';
-        
+
         $response = new \WebServCo\Framework\Libraries\HttpResponse(
             $output,
             $statusCode,
@@ -119,7 +102,7 @@ abstract class AbstractApplication
         $response->send($this->request());
         return true;
     }
-    
+
     protected function haltCli($errorInfo = [])
     {
         $output = 'The App made a boo boo' . PHP_EOL;
