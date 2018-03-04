@@ -66,8 +66,6 @@ trait DatabaseTrait
         try {
             $this->query(sprintf('SELECT 1 FROM %s LIMIT 1', $name));
             return true;
-        //} catch (\Exception $e) {
-            //return false;
         } catch (\WebServCo\Framework\Exceptions\DatabaseException $e) {
             return false;
         }
