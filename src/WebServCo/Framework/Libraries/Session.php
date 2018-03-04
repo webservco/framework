@@ -14,16 +14,16 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
             );
         }
     }
-    
+
     protected function setStoragePath($storagePath)
     {
         if (empty($storagePath)) {
             return false;
         }
-        
+
         ini_set('session.save_path', $storagePath);
         $actualStoragePath = session_save_path($storagePath);
-        
+
         if ($actualStoragePath != $storagePath) {
             if ($this->setting('strict_custom_path', true)) {
                 throw new ApplicationException(
@@ -35,7 +35,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         }
         return true;
     }
-    
+
     public function start($storagePath = null)
     {
         if (session_status() === \PHP_SESSION_ACTIVE) {
@@ -43,27 +43,27 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
                 'Unable to start session: already started.'
             );
         }
-        
+
         /**
          * Set cache limiter.
          */
         session_cache_limiter('public, must-revalidate');
-        
+
         /**
          * Set cache expire (minutes).
          */
         session_cache_expire($this->setting('expire', '36000') / 60);
-        
+
         /**
          * Set garbage collector timeout (seconds).
          */
         ini_set('session.gc_maxlifetime', $this->setting('expire', '36000'));
-        
+
         /**
         * Set custom session storage path.
         */
         $this->setStoragePath($storagePath);
-    
+
         /**
          * Make sure garbage collector visits us.
          */
@@ -76,20 +76,41 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
             $this->setting(sprintf('cookie%ssecure', S::DIVIDER), false),
             $this->setting(sprintf('cookie%shttponly', S::DIVIDER), true)
         );
-        
+
         session_name('webservco');
-        
+
         if (!session_start()) {
             throw new ApplicationException('Unable to start session');
         }
-        
+
         return true;
     }
-    
+
+    public function destroy()
+    {
+        $_SESSION = [];
+        setcookie(
+            session_name(),
+            '',
+            time() - 3600,
+            $this->setting(sprintf('cookie%spath', S::DIVIDER), '/'),
+            $this->setting(sprintf('cookie%sdomain', S::DIVIDER), ''),
+            $this->setting(sprintf('cookie%ssecure', S::DIVIDER), false),
+            $this->setting(sprintf('cookie%shttponly', S::DIVIDER), true)
+        );
+        session_destroy();
+        return true;
+    }
+
+    public function regenerate()
+    {
+        return session_regenerate_id(true);
+    }
+
     public function set($setting, $value)
     {
         $this->checkSession();
-        
+
         $_SESSION = \WebServCo\Framework\ArrayStorage::set(
             $_SESSION,
             $setting,
@@ -97,34 +118,34 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         );
         return true;
     }
-    
+
     public function get($setting, $defaultValue = false)
     {
         $this->checkSession();
-        
+
         return \WebServCo\Framework\ArrayStorage::get(
             $_SESSION,
             $setting,
             $defaultValue
         );
     }
-    
+
     public function has($setting)
     {
         return (bool) $this->get($setting);
     }
-    
+
     public function remove($setting)
     {
         $this->checkSession();
-        
+
         $_SESSION = \WebServCo\Framework\ArrayStorage::remove(
             $_SESSION,
             $setting
         );
         return true;
     }
-    
+
     public function clear($setting)
     {
         return $this->set($setting, null);
