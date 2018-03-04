@@ -61,6 +61,13 @@ abstract class AbstractLibrary
         );
     }
 
+    /**
+     * Returns data if exists, $defaultValue otherwise.
+     *
+     * @param string $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     final public function data($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
@@ -68,5 +75,18 @@ abstract class AbstractLibrary
             $key,
             $defaultValue
         );
+    }
+
+    /**
+     * Returns data if not empty, $defaultValue otherwise.
+     *
+     * @param string $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function when($key, $defaultValue = false)
+    {
+        $data = $this->data($key, false);
+        return !empty($data) ? $data : $defaultValue;
     }
 }
