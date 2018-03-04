@@ -7,41 +7,51 @@ trait ExposeLibrariesTrait
 {
     final protected function config()
     {
-        return Fw::getLibrary('Config');
+        return Fw::library('Config');
     }
-    
+
+    final protected function date()
+    {
+        return Fw::library('Date');
+    }
+
     final protected function cookie()
     {
-        return Fw::getLibrary('Cookie');
+        return Fw::library('Cookie');
     }
-    
+
     final protected function i18n()
     {
-        return Fw::getLibrary('I18n');
+        return Fw::library('I18n');
     }
-    
+
     final protected function mysqliDb()
     {
-        return Fw::getLibrary('MysqliDatabase');
+        return Fw::library('MysqliDatabase');
     }
-    
+
     final protected function pdoDb()
     {
-        return Fw::getLibrary('PdoDatabase');
+        return Fw::library('PdoDatabase');
     }
-    
+
     final protected function request()
     {
-        return Fw::getLibrary('Request');
+        return Fw::library('Request');
     }
-    
+
+    final protected function router()
+    {
+        return Fw::library('Router');
+    }
+
     final protected function security()
     {
-        return Fw::getLibrary('Security');
+        return Fw::library('Security');
     }
-    
+
     final protected function session()
     {
-        return Fw::getLibrary('Session');
+        return Fw::library('Session');
     }
 }
