@@ -8,24 +8,35 @@ final class Framework
     const OS_WINDOWS = 'Windows';
     const OS_LINUX = 'Linux';
     const OS_UNSUPPORTED = 'Unsupported';
-    
+
+    const TYPE_FRAMEWORK = 'Framework';
+    const TYPE_PROJECT = 'Project';
+
     /**
-     * Stores library instances.
+     * Stores Framework Library instances.
      */
-    private static $libraries = [];
-    
-    private static function getFullClassName($className, $classType)
+    private static $frameworkLibraries = [];
+
+    /**
+     * Stores Project Library instances.
+     */
+    protected static $projectLibraries = [];
+
+    private static function getFullClassName($className, $classType = null)
     {
         switch ($classType) {
-            case 'Library':
-                return __NAMESPACE__ . '\\Libraries\\' . $className;
+            case self::TYPE_FRAMEWORK:
+                return sprintf('\\%s\\Libraries\\%s', __NAMESPACE__, $className);
+                break;
+            case self::TYPE_PROJECT:
+                return sprintf('\\Project\\Libraries\\%s', $className);
                 break;
             default:
                 return $className;
                 break;
         }
     }
-    
+
     /**
      * Returns the path the framework project is located in.
      *
@@ -35,13 +46,13 @@ final class Framework
     {
         return str_replace('src/WebServCo/Framework', '', __DIR__);
     }
-    
+
     private static function loadLibraryConfiguration($configName)
     {
         if ('Config' == $configName) {
             return false;
         }
-        $projectPath = self::getLibrary('Config')->get(
+        $projectPath = self::library('Config')->get(
             sprintf(
                 'app%1$spath%1$sproject',
                 \WebServCo\Framework\Settings::DIVIDER
@@ -50,9 +61,9 @@ final class Framework
         if (empty($projectPath)) {
             return false;
         }
-        return self::getLibrary('Config')->load($configName, $projectPath);
+        return self::library('Config')->load($configName, $projectPath);
     }
-    
+
     private static function loadLibrary($className, $fullClassName, $configName = null)
     {
         if (!class_exists($fullClassName)) {
@@ -60,13 +71,13 @@ final class Framework
                 sprintf('Library %s not found', $fullClassName)
             );
         }
-        
+
         switch ($className) {
             case 'I18n':
                 self::loadHelper($className);
                 break;
         }
-        
+
         $configName = $configName ?: $className;
         $config = self::loadLibraryConfiguration($configName);
         /**
@@ -82,11 +93,11 @@ final class Framework
                 $args = [$config];
                 break;
         }
-        
+
         $reflection = new \ReflectionClass($fullClassName);
         return $reflection->newInstanceArgs($args);
     }
-    
+
     protected static function loadHelper($className)
     {
         $path = self::getPath() . 'src/WebServCo/Framework/Helpers/' . $className . 'Helper.php';
@@ -98,20 +109,33 @@ final class Framework
         require $path;
         return true;
     }
-    
-    public static function getLibrary($className, $storageKey = null, $configName = null)
+
+    public static function library($className, $storageKey = null, $configName = null)
     {
-        $fullClassName = self::getFullClassName($className, 'Library');
-        
+        $fullClassName = self::getFullClassName($className, self::TYPE_FRAMEWORK);
+
         $storageKey = $storageKey ?: $fullClassName;
-        
-        if (!isset(self::$libraries[$storageKey])) {
-            self::$libraries[$storageKey] = self::loadLibrary($className, $fullClassName, $configName);
+
+        if (!isset(self::$frameworkLibraries[$storageKey])) {
+            self::$frameworkLibraries[$storageKey] = self::loadLibrary($className, $fullClassName, $configName);
         }
-        
-        return self::$libraries[$storageKey];
+
+        return self::$frameworkLibraries[$storageKey];
     }
-    
+
+    public static function projectLibrary($className, $storageKey = null, $configName = null)
+    {
+        $fullClassName = self::getFullClassName($className, self::TYPE_PROJECT);
+
+        $storageKey = $storageKey ?: $fullClassName;
+
+        if (!isset(self::$projectLibraries[$storageKey])) {
+            self::$projectLibraries[$storageKey] = self::loadLibrary($className, $fullClassName, $configName);
+        }
+
+        return self::$projectLibraries[$storageKey];
+    }
+
     /**
      * Checks if interface type is CLI
      */
@@ -119,7 +143,7 @@ final class Framework
     {
         return 'cli' === PHP_SAPI;
     }
-    
+
     /**
      * Get operating system (if supported).
      */
