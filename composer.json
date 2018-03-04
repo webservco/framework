@@ -41,6 +41,7 @@
         "s:4": "phpstan analyse src --level=4 --ansi -c phpstan.neon",
         "s:5": "phpstan analyse src --level=5 --ansi -c phpstan.neon",
         "s:6": "phpstan analyse src --level=6 --ansi -c phpstan.neon",
-        "s:7": "phpstan analyse src --level=7 --ansi -c phpstan.neon"
+        "s:7": "phpstan analyse src --level=7 --ansi -c phpstan.neon",
+        "all": "clear && composer s:7 && composer check && composer test"
     }
 }
