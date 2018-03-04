@@ -35,6 +35,11 @@ trait ExposeLibrariesTrait
         return Fw::getLibrary('Request');
     }
     
+    final protected function security()
+    {
+        return Fw::getLibrary('Security');
+    }
+    
     final protected function session()
     {
         return Fw::getLibrary('Session');
