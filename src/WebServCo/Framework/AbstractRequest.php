@@ -42,8 +42,4 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
      * Dummy file extension used in the URL
      */
     protected $suffix;
-    
-    use \WebServCo\Framework\Traits\RequestProcessTrait;
-    use \WebServCo\Framework\Traits\RequestServerTrait;
-    use \WebServCo\Framework\Traits\RequestUrlTrait;
 }
