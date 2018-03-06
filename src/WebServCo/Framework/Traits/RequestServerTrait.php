@@ -10,7 +10,7 @@ trait RequestServerTrait
         }
         return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
-    
+
     public function getHost()
     {
         if (!empty($this->server['HTTP_HOST'])) {
@@ -22,18 +22,29 @@ trait RequestServerTrait
         }
         return null;
     }
-    
+
+    public function getHostExtension()
+    {
+        $host = $this->getHost();
+        if (empty($host)) {
+            return false;
+        }
+
+        $parts = explode('.', $host);
+        return end($parts);
+    }
+
     public function getReferer()
     {
         return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
     }
-    
+
     public function getSchema()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {
             return null;
         }
-        
+
         if (isset($this->server['HTTPS']) && 'off' != $this->server['HTTPS']) {
             return 'https';
         } elseif (isset($this->server['HTTP_X_FORWARDED_PROTO']) &&
@@ -45,7 +56,7 @@ trait RequestServerTrait
         }
         return 'http';
     }
-    
+
     public function getServerProtocol()
     {
         if (!isset($this->server['SERVER_PROTOCOL'])) {
