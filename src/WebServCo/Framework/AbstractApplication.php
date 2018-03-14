@@ -94,7 +94,7 @@ abstract class AbstractApplication
         }
         $output .= '</div></div></div></body></html>';
 
-        $response = new \WebServCo\Framework\Libraries\HttpResponse(
+        $response = new \WebServCo\Framework\HttpResponse(
             $output,
             $statusCode,
             ['Content-Type' => 'text/html']
@@ -110,7 +110,7 @@ abstract class AbstractApplication
             $output .= $errorInfo['message'] . PHP_EOL;
             $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         }
-        $response = new \WebServCo\Framework\Libraries\CliResponse(
+        $response = new \WebServCo\Framework\CliResponse(
             $output,
             1
         );

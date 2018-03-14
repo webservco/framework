@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Traits;
 trait ResponseUrlTrait
 {
     abstract protected function request();
-    
+
     /**
      * Redirect to an application location (Request target).
      */
@@ -17,7 +17,7 @@ trait ResponseUrlTrait
         }
         return $this->redirectUrl($url);
     }
-    
+
     /**
      * Redirect to the current URL
      */
@@ -26,13 +26,13 @@ trait ResponseUrlTrait
         $url = $this->request()->getUrl($removeParameters);
         return $this->redirectUrl($url);
     }
-    
+
     /**
      * Redirect to a full URL
      */
     final protected function redirectUrl($url)
     {
-        return new \WebServCo\Framework\Libraries\HttpResponse(
+        return new \WebServCo\Framework\HttpResponse(
             null,
             302,
             ['Location' => $url]
