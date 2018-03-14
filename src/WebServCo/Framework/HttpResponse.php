@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework\Libraries;
+namespace WebServCo\Framework;
 
 use WebServCo\Framework\Http;
 use WebServCo\Framework\Libraries\Request;
