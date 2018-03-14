@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Framework;
+
 trait RequestServerTrait
 {
     public function getAcceptLanguage()
@@ -41,7 +43,7 @@ trait RequestServerTrait
 
     public function getSchema()
     {
-        if (\WebServCo\Framework\Framework::isCLI()) {
+        if (Framework::isCLI()) {
             return null;
         }
 
@@ -63,5 +65,13 @@ trait RequestServerTrait
             return false;
         }
         return $this->server['SERVER_PROTOCOL'];
+    }
+
+    public function getRemoteAddress()
+    {
+        if (Framework::isCLI()) {
+            return gethostbyname(php_uname('n'));
+        }
+        return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : false;
     }
 }
