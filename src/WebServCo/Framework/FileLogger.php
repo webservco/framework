@@ -22,9 +22,6 @@ final class FileLogger implements \WebServCo\Framework\Interfaces\LoggerInterfac
         }
         $this->logPath = sprintf('%s%s.log', $logDir, $this->channel);
 
-        if (!($requestInterface instanceof RequestInterface)) {
-            throw new ApplicationException('Missing RequestInterface');
-        }
         $this->requestInterface = $requestInterface;
     }
 
