@@ -24,6 +24,11 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
         $this->setContent($content);
     }
 
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
     public function setStatus($statusCode)
     {
         if (!isset(Http::$statusCodes[$statusCode])) {
