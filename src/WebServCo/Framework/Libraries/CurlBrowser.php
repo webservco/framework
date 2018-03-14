@@ -90,7 +90,7 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
         return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
     }
 
-    protected function parseHeaders($headerString)
+    protected function parseResponseHeaders($headerString)
     {
         $headers = [];
         $lines = explode("\r\n", $headerString);
@@ -102,6 +102,15 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
             $headers[$key] = $value;
         }
         return $headers;
+    }
+
+    protected function parseRequestHeaders($headers)
+    {
+        $data = [];
+        foreach ($headers as $k => $v) {
+            $data[] = sprintf('%s: %s', $k, $v);
+        }
+        return $data;
     }
 
     protected function retrieve($url)
@@ -118,8 +127,12 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
                 CURLOPT_FOLLOWLOCATION => true /* follow redirects */
             ]
         );
-        if ($this->setting('userAgent', false)) {
-            curl_setopt($this->curl, CURLOPT_USERAGENT, $this->setting('userAgent'));
+        if ($this->setting('headers', false)) {
+            curl_setopt(
+                $this->curl,
+                CURLOPT_HTTPHEADER,
+                $this->parseRequestHeaders($this->setting('headers'))
+            );
         }
 
         $this->debugDo();
@@ -145,7 +158,7 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
         list($headerString, $body) = explode("\r\n\r\n", $this->response, 2);
 
         $body = trim($body);
-        $headers = $this->parseHeaders($headerString);
+        $headers = $this->parseResponseHeaders($headerString);
 
         $this->debugFinish();
 
