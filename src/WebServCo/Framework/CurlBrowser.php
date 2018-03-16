@@ -169,7 +169,13 @@ final class CurlBrowser implements
 
         curl_close($this->curl);
 
-        list($headerString, $body) = explode("\r\n\r\n", $this->response, 2);
+        /**
+         * For redirects, the response will contain evey header/body pair.
+         * The last header/body will be at the end of the response.
+         */
+        $responseParts = explode("\r\n\r\n", $this->response);
+        $body = array_pop($responseParts);
+        $headerString = array_pop($responseParts);
 
         $body = trim($body);
         $headers = $this->parseResponseHeaders($headerString);
