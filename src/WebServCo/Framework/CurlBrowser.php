@@ -1,14 +1,17 @@
 <?php
-namespace WebServCo\Framework\Libraries;
+namespace WebServCo\Framework;
 
 use WebServCo\Framework\Http;
 use WebServCo\Framework\Exceptions\ApplicationException;
-use WebServCo\Framework\Interfaces\LoggerInterface;
 
-final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
+final class CurlBrowser implements
     \WebServCo\Framework\Interfaces\HttpBrowserInterface
 {
+    protected $debug = true;
+    protected $requestHeaders = [];
+
     protected $method;
+    protected $postData;
 
     protected $curl;
     protected $debugStderr;
@@ -16,11 +19,21 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
     protected $debugInfo;
     protected $response;
 
-    protected $loggerInterface;
+    protected $logger;
 
-    public function setLogger(LoggerInterface $loggerInterface)
+    public function __construct($logDir, \WebServCo\Framework\Interfaces\RequestInterface $requestInterface)
     {
-        $this->loggerInterface = $loggerInterface;
+        $this->logger = new \WebServCo\Framework\FileLogger(
+            'CurlBrowser',
+            $logDir,
+            $requestInterface
+        );
+        $this->logger->clear();
+    }
+
+    public function setRequestHeaders(array $requestHeaders)
+    {
+        $this->requestHeaders = $requestHeaders;
     }
 
     public function get($url)
@@ -29,10 +42,10 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
         return $this->retrieve($url);
     }
 
-    public function post($url, $data = [])
+    public function post($url, $postData = [])
     {
         $this->setMethod(Http::METHOD_POST);
-        $this->setData('post', $data);
+        $this->setPostData($postData);
         return $this->retrieve($url);
     }
 
@@ -45,9 +58,14 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
+    protected function setPostData(array $postData)
+    {
+        $this->postData = $postData;
+    }
+
     protected function debugInit()
     {
-        if ($this->setting('debug', true)) {
+        if ($this->debug) {
             ob_start();
             $this->debugStderr = fopen('php://output', 'w');
             return true;
@@ -57,7 +75,7 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
 
     protected function debugDo()
     {
-        if ($this->setting('debug', true)) {
+        if ($this->debug) {
             //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
             curl_setopt($this->curl, CURLOPT_VERBOSE, 1);
             curl_setopt($this->curl, CURLOPT_STDERR, $this->debugStderr);
@@ -68,17 +86,13 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
 
     protected function debugFinish()
     {
-        if ($this->setting('debug', true)) {
+        if ($this->debug) {
             fclose($this->debugStderr);
             $this->debugOutput = ob_get_clean();
 
-            if (!($this->loggerInterface instanceof LoggerInterface)) {
-                throw new ApplicationException('No LoggerInterface specified');
-            }
-
-            $this->loggerInterface->debug('CURL INFO:', $this->debugInfo);
-            $this->loggerInterface->debug('CURL VERBOSE:', $this->debugOutput);
-            $this->loggerInterface->debug('CURL RESPONSE:', $this->response);
+            $this->logger->debug('CURL INFO:', $this->debugInfo);
+            $this->logger->debug('CURL VERBOSE:', $this->debugOutput);
+            $this->logger->debug('CURL RESPONSE:', $this->response);
 
             return true;
         }
@@ -127,11 +141,11 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
                 CURLOPT_FOLLOWLOCATION => true /* follow redirects */
             ]
         );
-        if ($this->setting('headers', false)) {
+        if (!empty($this->requestHeaders)) {
             curl_setopt(
                 $this->curl,
                 CURLOPT_HTTPHEADER,
-                $this->parseRequestHeaders($this->setting('headers'))
+                $this->parseRequestHeaders($this->requestHeaders)
             );
         }
 
@@ -139,8 +153,8 @@ final class CurlBrowser extends \WebServCo\Framework\AbstractLibrary implements
 
         if ($this->method == Http::METHOD_POST) {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            if ($this->data('post', [])) {
-                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->data('post', []));
+            if (!empty($this->postData)) {
+                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
             }
         }
 
