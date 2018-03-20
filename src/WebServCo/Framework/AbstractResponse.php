@@ -8,7 +8,7 @@ abstract class AbstractResponse
 
     public function setContent($content)
     {
-        $this->content = (string) $content;
+        $this->content = $content;
     }
 
     public function getContent()
