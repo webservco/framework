@@ -6,7 +6,7 @@
 
 ### `__construct`:
 ```php
-$this->progressBar = new \WebServCo\Framework\ProgressBar(30); //size
+$this->progressBar = new \WebServCo\Framework\ProgressBar(20); //size
 $this->progressBar->setType('single_line'); //single_line, multi_line
 ```
 
