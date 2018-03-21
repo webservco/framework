@@ -9,7 +9,12 @@ A PHP Framework
 
 ## Documentation
 
-* [CLI Response](docs/Libraries/CliResponse.md)
+### Framework classes
+* [CLI Response](docs/CliResponse.md)
+* [CliRunner](docs/CliRunner.md)
+* [ProgressBar](docs/ProgressBar.md)
+
+### Libraries
 * [Cookie](docs/Libraries/Cookie.md)
 * [Internationalization](docs/Libraries/I18n.md)
 * [Database (PDO)](docs/Libraries/PdoDatabase.md)
