@@ -4,37 +4,45 @@ namespace WebServCo\Framework;
 final class CliRunner
 {
     protected $workDir;
-    protected $script;
-    protected $pid = [];
+    protected $token;
+    protected $pids = [];
 
     public function __construct($workDir)
     {
         $this->workDir = $workDir;
     }
 
-    public function start($script)
+    public function start($token)
     {
-        $this->pid[$script] = sprintf(
+        $this->pids[$token] = sprintf(
             '%s%s%s.pid',
             realpath($this->workDir),
             DIRECTORY_SEPARATOR,
-            md5($script)
+            md5($token)
         );
-        touch($this->pid[$script]);
+        touch($this->pids[$token]);
         return true;
     }
 
-    public function hasPid($script)
+    public function hasPid($token)
     {
-        return is_readable($this->pid[$script]);
+        return is_readable($this->pids[$token]);
     }
 
-    public function finish($script)
+    public function getPid($token)
     {
-        if (is_file($this->pid[$script]) &&
-            is_readable($this->pid[$script])
+        if (!$this->hasPid($token)) {
+            return false;
+        }
+        return $this->pids[$token];
+    }
+
+    public function finish($token)
+    {
+        if (is_file($this->pids[$token]) &&
+            is_readable($this->pids[$token])
         ) {
-            unlink($this->pid[$script]);
+            unlink($this->pids[$token]);
             return true;
         }
         return false;
