@@ -15,11 +15,11 @@ final class ProgressBar
     protected $outPad;
     protected $outMessage;
 
-    public function __construct($width = 50)
+    public function __construct($width = 20)
     {
         $this->type = 'single_line';
         $this->width = $width;
-        $this->padding = 15;
+        $this->padding = 25;
         $this->total = 100;
         $this->item = 1;
     }
@@ -71,7 +71,7 @@ final class ProgressBar
             "%s%% [%s>%s] %s",
             $percent,
             str_repeat('=', $bar),
-            str_repeat(' ', $this->width-$bar),
+            str_repeat(' ', round($this->width-$bar)),
             $this->item . '/' . $this->total
         );
         $this->outMessage = $message;
