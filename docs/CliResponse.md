@@ -1,6 +1,6 @@
 # CLI Response
 
-## \WebServCo\Framework\Libraries\CliResponse
+## \WebServCo\Framework\CliResponse
 
 ## Usage
 
