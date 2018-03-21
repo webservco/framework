@@ -31,6 +31,11 @@ final class CurlBrowser implements
         $this->logger->clear();
     }
 
+    public function setDebug(bool $debug)
+    {
+        $this->debug = $debug;
+    }
+
     public function setRequestHeaders(array $requestHeaders)
     {
         $this->requestHeaders = $requestHeaders;
