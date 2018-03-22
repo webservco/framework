@@ -18,6 +18,7 @@ final class CurlBrowser implements
     protected $debugOutput;
     protected $debugInfo;
     protected $response;
+    protected $responseHeaders;
 
     protected $logger;
 
@@ -41,9 +42,20 @@ final class CurlBrowser implements
         $this->requestHeaders = $requestHeaders;
     }
 
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
+    }
+
     public function get($url)
     {
         $this->setMethod(Http::METHOD_GET);
+        return $this->retrieve($url);
+    }
+
+    public function head($url)
+    {
+        $this->setMethod(Http::METHOD_HEAD);
         return $this->retrieve($url);
     }
 
@@ -156,11 +168,16 @@ final class CurlBrowser implements
 
         $this->debugDo();
 
-        if ($this->method == Http::METHOD_POST) {
-            curl_setopt($this->curl, CURLOPT_POST, true);
-            if (!empty($this->postData)) {
-                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
-            }
+        switch ($this->method) {
+            case Http::METHOD_POST:
+                curl_setopt($this->curl, CURLOPT_POST, true);
+                if (!empty($this->postData)) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
+                }
+                break;
+            case Http::METHOD_HEAD:
+                curl_setopt($this->curl, CURLOPT_NOBODY, true);
+                break;
         }
 
         $this->response = curl_exec($this->curl);
@@ -179,18 +196,18 @@ final class CurlBrowser implements
          * The last header/body will be at the end of the response.
          */
         $responseParts = explode("\r\n\r\n", $this->response);
-        $body = array_pop($responseParts);
-        $headerString = array_pop($responseParts);
+        $body = trim(array_pop($responseParts));
 
-        $body = trim($body);
-        $headers = $this->parseResponseHeaders($headerString);
+        foreach ($responseParts as $item) {
+            $this->responseHeaders[] = $this->parseResponseHeaders($item);
+        }
 
         $this->debugFinish();
 
         return new \WebServCo\Framework\HttpResponse(
             $body,
             $httpCode,
-            $headers
+            end($this->responseHeaders)
         );
     }
 }
