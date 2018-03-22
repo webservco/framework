@@ -147,6 +147,7 @@ final class CurlBrowser implements
     protected function retrieve($url)
     {
         $this->debugInit();
+        $this->responseHeaders = [];
 
         $this->curl = curl_init();
         curl_setopt_array(
