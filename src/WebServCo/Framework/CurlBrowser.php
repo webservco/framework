@@ -8,6 +8,7 @@ final class CurlBrowser implements
     \WebServCo\Framework\Interfaces\HttpBrowserInterface
 {
     protected $debug = true;
+    protected $skipSslVerification = false;
     protected $requestHeaders = [];
 
     protected $method;
@@ -35,6 +36,11 @@ final class CurlBrowser implements
     public function setDebug(bool $debug)
     {
         $this->debug = $debug;
+    }
+
+    public function setSkipSSlVerification(bool $skipSslVerification)
+    {
+        $this->skipSslVerification = $skipSslVerification;
     }
 
     public function setRequestHeaders(array $requestHeaders)
@@ -156,9 +162,15 @@ final class CurlBrowser implements
                 CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
                 CURLOPT_URL => $url,
                 CURLOPT_HEADER => true, /* include the header in the output */
-                CURLOPT_FOLLOWLOCATION => true /* follow redirects */
+                CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
             ]
         );
+        if ($this->skipSslVerification) {
+            // stop cURL from verifying the peer's certificate
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+            // don't check the existence of a common name in the SSL peer certificate
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         if (!empty($this->requestHeaders)) {
             curl_setopt(
                 $this->curl,
