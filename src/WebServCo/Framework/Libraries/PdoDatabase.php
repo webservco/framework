@@ -148,12 +148,13 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             case 'NULL':
                 return \PDO::PARAM_NULL;
                 break;
-            case 'boolean':
-                return \PDO::PARAM_BOOL;
-                break;
             case 'integer':
                 return \PDO::PARAM_INT;
                 break;
+            case 'boolean':
+                // casuses data not to be inserted
+                //return \PDO::PARAM_BOOL;
+                //break;
             case 'string':
             case 'double':
             case 'array':
@@ -161,6 +162,7 @@ final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
             case 'resource':
             case 'resource (closed)':
             case 'unknown type':
+            default:
                 return \PDO::PARAM_STR;
                 break;
         }

@@ -170,6 +170,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
             case 'resource':
             case 'resource (closed)':
             case 'unknown type':
+            default:
                 return 's';
                 break;
         }
