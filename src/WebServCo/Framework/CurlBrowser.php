@@ -189,6 +189,8 @@ final class CurlBrowser implements
                 CURLOPT_URL => $url,
                 CURLOPT_HEADER => true, /* include the header in the output */
                 CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
+                CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
+                CURLOPT_TIMEOUT => 60, // The maximum number of seconds to allow cURL functions to execute.
             ]
         );
         if ($this->skipSslVerification) {
