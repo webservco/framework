@@ -159,11 +159,11 @@ final class CurlBrowser implements
                 if ('Set-Cookie' == $key) {
                     $parts = explode('=', $value, 2);
                     $cookieName = $parts[0];
-                    foreach ($headers[$key] as $index => $existing) {
+                    foreach ($headers[$key] as $cookieIndex => $existingCookie) {
                         //check if we already have a cookie with the same name
-                        if (0 === mb_stripos($existing, $cookieName)) {
+                        if (0 === mb_stripos($existingCookie, $cookieName)) {
                             // remove previous cookie with the same name
-                            unset($headers[$key][$index]);
+                            unset($headers[$key][$cookieIndex]);
                         }
                     }
                 }
