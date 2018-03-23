@@ -48,6 +48,7 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
                 break;
             default:
                 $this->headers[$name] = $value;
+                break;
         }
     }
 
@@ -58,22 +59,29 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
         return $this->statusCode;
     }
 
+    protected function sendHeader($name, $value, $statusCode)
+    {
+        header(
+            sprintf('%s: %s', $name, $value),
+            true,
+            $statusCode
+        );
+        return true;
+    }
+
     protected function sendHeaders(Request $request)
     {
         foreach ($this->headers as $name => $value) {
-            header(
-                sprintf('%s: %s', $name, $value),
-                true,
-                $this->statusCode
-            );
+            if (is_array($value)) {
+                foreach ($value as $item) {
+                    $this->sendHeader($name, $item, $this->statusCode);
+                }
+            } else {
+                $this->sendHeader($name, $value, $this->statusCode);
+            }
         }
 
-        $contentLength = strlen($this->content);
-        header(
-            sprintf('Content-length: %s', $contentLength),
-            true,
-            $this->statusCode
-        );
+        $this->sendHeader('Content-length', strlen($this->content), $this->statusCode);
 
         $serverProtocol = $request->getServerProtocol();
         if (!empty($serverProtocol)) {

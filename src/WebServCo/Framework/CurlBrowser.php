@@ -127,6 +127,21 @@ final class CurlBrowser implements
         return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
     }
 
+    protected function parseRequestHeaders($headers)
+    {
+        $data = [];
+        foreach ($headers as $k => $v) {
+            if (is_array($v)) {
+                foreach ($v as $item) {
+                    $data[] = sprintf('%s: %s', $k, $item);
+                }
+            } else {
+                $data[] = sprintf('%s: %s', $k, $v);
+            }
+        }
+        return $data;
+    }
+
     protected function parseResponseHeaders($headerString)
     {
         $headers = [];
@@ -136,24 +151,35 @@ final class CurlBrowser implements
                 continue; /* we'll get the status code elsewhere */
             }
             list($key, $value) = explode(': ', $line);
-            $headers[$key] = $value;
+            if (isset($headers[$key])) {
+                if (!is_array($headers[$key])) {
+                    $headers[$key] = [$headers[$key]];
+                }
+                // check cookies
+                if ('Set-Cookie' == $key) {
+                    $parts = explode('=', $value, 2);
+                    $cookieName = $parts[0];
+                    foreach ($headers[$key] as $index => $existing) {
+                        //check if we already have a cookie with the same name
+                        if (0 === mb_stripos($existing, $cookieName)) {
+                            // remove previous cookie with the same name
+                            unset($headers[$key][$index]);
+                        }
+                    }
+                }
+                $headers[$key][] = $value;
+                $headers[$key] = array_values($headers[$key]); // re-index array
+            } else {
+                $headers[$key] = $value;
+            }
         }
         return $headers;
-    }
-
-    protected function parseRequestHeaders($headers)
-    {
-        $data = [];
-        foreach ($headers as $k => $v) {
-            $data[] = sprintf('%s: %s', $k, $v);
-        }
-        return $data;
     }
 
     protected function retrieve($url)
     {
         $this->debugInit();
-        $this->responseHeaders = [];
+
 
         $this->curl = curl_init();
         curl_setopt_array(
@@ -211,6 +237,7 @@ final class CurlBrowser implements
         $responseParts = explode("\r\n\r\n", $this->response);
         $body = trim(array_pop($responseParts));
 
+        $this->responseHeaders = [];
         foreach ($responseParts as $item) {
             $this->responseHeaders[] = $this->parseResponseHeaders($item);
         }
