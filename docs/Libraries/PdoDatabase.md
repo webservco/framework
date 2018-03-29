@@ -143,3 +143,7 @@ $this->db()->query("SELECT <col> FROM <table>");
 return $this->db()->numRows();
 ```
 
+### Check if value exists
+```php
+return $this->db()->valueExists('<table>', '<col>', <val>);
+```
