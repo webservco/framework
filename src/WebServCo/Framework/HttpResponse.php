@@ -7,7 +7,7 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
     protected $statusText;
-    protected $headers;
+    protected $headers = [];
     protected $charset;
 
     public function __construct($content = null, $statusCode = 200, $headers = [])
