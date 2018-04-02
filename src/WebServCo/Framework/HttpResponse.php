@@ -82,18 +82,11 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
 
         $this->sendHeader('Content-length', strlen($this->content), $this->statusCode);
 
-
-        if (!empty($serverProtocol)) {
-            header(
-                sprintf(
-                    'HTTP/1.1 %s %s',
-                    $this->statusCode,
-                    $this->statusText
-                ),
-                true,
-                $this->statusCode
-            );
-        }
+        header(
+            sprintf('HTTP/1.1 %s %s', $this->statusCode, $this->statusText),
+            true,
+            $this->statusCode
+        );
     }
 
     protected function sendContent()
