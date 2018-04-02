@@ -99,7 +99,7 @@ abstract class AbstractApplication
             $statusCode,
             ['Content-Type' => 'text/html']
         );
-        $response->send($this->request());
+        $response->send();
         return true;
     }
 
@@ -114,7 +114,7 @@ abstract class AbstractApplication
             $output,
             1
         );
-        $response->send($this->request());
+        $response->send();
         return true;
     }
 }

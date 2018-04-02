@@ -7,7 +7,7 @@ interface ResponseInterface
 
     public function setContent($content);
 
-    public function send(\WebServCo\Framework\Libraries\Request $request);
+    public function send();
 
     public function getContent();
 

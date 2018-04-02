@@ -20,7 +20,7 @@ final class CliResponse extends \WebServCo\Framework\AbstractResponse implements
         $this->statusCode = $statusCode;
     }
 
-    public function send(\WebServCo\Framework\Libraries\Request $request)
+    public function send()
     {
         if (!empty($this->content)) {
             echo $this->content;

@@ -2,7 +2,6 @@
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Http;
-use WebServCo\Framework\Libraries\Request;
 
 final class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
@@ -52,9 +51,9 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
         }
     }
 
-    public function send(Request $request)
+    public function send()
     {
-        $this->sendHeaders($request);
+        $this->sendHeaders();
         $this->sendContent();
         return $this->statusCode;
     }
@@ -69,7 +68,7 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
         return true;
     }
 
-    protected function sendHeaders(Request $request)
+    protected function sendHeaders()
     {
         foreach ($this->headers as $name => $value) {
             if (is_array($value)) {
@@ -83,12 +82,11 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
 
         $this->sendHeader('Content-length', strlen($this->content), $this->statusCode);
 
-        $serverProtocol = $request->getServerProtocol();
+
         if (!empty($serverProtocol)) {
             header(
                 sprintf(
-                    '%s %s %s',
-                    $serverProtocol,
+                    'HTTP/1.1 %s %s',
                     $this->statusCode,
                     $this->statusText
                 ),

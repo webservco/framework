@@ -78,7 +78,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $response = $this->execute();
             if ($response instanceof
                 \WebServCo\Framework\Interfaces\ResponseInterface) {
-                $statusCode = $response->send($this->request());
+                $statusCode = $response->send();
                 $this->shutdown(
                     null,
                     true,
