@@ -8,7 +8,7 @@ final class Utils
         return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
     }
 
-    public static function isDate(string $date, $format = 'Y-m-d')
+    public static function isDate($date, $format = 'Y-m-d')
     {
         $dateTime = \DateTime::createFromFormat($format, $date);
         return $dateTime && $dateTime->format($format) == $date;
