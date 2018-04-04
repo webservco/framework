@@ -7,7 +7,7 @@ abstract class AbstractFile
     protected $fileData;
     protected $contentType;
 
-    public function __construct(string $fileName, string $fileData, string $contentType = 'application/octet-stream')
+    public function __construct($fileName, $fileData, $contentType = 'application/octet-stream')
     {
         $this->fileName = $fileName;
         $this->fileData = $fileData;
@@ -32,6 +32,22 @@ abstract class AbstractFile
                 'Content-Type' => $this->contentType,
                 'Content-Transfer-Encoding' => 'binary',
                 'Connection' => 'close',
+            ]
+        );
+    }
+
+    public function getOutputResponse()
+    {
+        return new \WebServCo\Framework\HttpResponse(
+            $this->fileData,
+            200,
+            [
+                'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
+                'ETag' => md5($this->fileData),
+                'Accept-Ranges' => 'bytes',
+                'Cache-Control' => 'public',
+                'Content-Type' => $this->contentType,
+                'Content-Transfer-Encoding' => 'binary',
             ]
         );
     }
