@@ -8,6 +8,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
+    use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
 
     protected $mysqliResult;

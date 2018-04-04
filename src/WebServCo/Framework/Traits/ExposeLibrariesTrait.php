@@ -30,9 +30,9 @@ trait ExposeLibrariesTrait
         return Fw::library('MysqliDatabase');
     }
 
-    final protected function pdoDb()
+    final protected function mysqlPdoDb()
     {
-        return Fw::library('PdoDatabase');
+        return Fw::library('MysqlPdoDatabase');
     }
 
     final protected function request()

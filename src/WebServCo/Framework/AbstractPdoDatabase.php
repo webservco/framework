@@ -1,28 +1,29 @@
 <?php
-namespace WebServCo\Framework\Libraries;
+namespace WebServCo\Framework;
 
-use WebServCo\Framework\Settings as S;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-final class PdoDatabase extends \WebServCo\Framework\AbstractDatabase implements
-    \WebServCo\Framework\Interfaces\DatabaseInterface
+abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractDatabase
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
-    use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
+    use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
+
+    abstract protected function getDataSourceName($host, $port, $dbname);
 
     public function __construct($settings = [])
     {
         parent::__construct($settings);
 
         try {
+            $dsn = $this->getDataSourceName(
+                $this->setting('connection/host', '127.0.0.1'),
+                $this->setting('connection/port', null),
+                $this->setting('connection/dbname', 'test')
+            );
             $this->db = new \PDO(
-                $this->setting('driver', 'mysql') .
-                ':host=' . $this->setting(sprintf('connection%shost', S::DIVIDER), '127.0.0.1') .
-                ';dbname=' . $this->setting(sprintf('connection%sdbname', S::DIVIDER), 'test') .
-                ';port=' . $this->setting(sprintf('connection%sport', S::DIVIDER), 3306) .
-                ';charset=utf8mb4',
-                $this->setting(sprintf('connection%susername', S::DIVIDER), 'root'),
-                $this->setting(sprintf('connection%spasswd', S::DIVIDER), ''),
+                $dsn,
+                $this->setting('connection/username', 'root'),
+                $this->setting('connection/passwd', ''),
                 [
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
