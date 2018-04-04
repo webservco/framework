@@ -6,6 +6,7 @@ use WebServCo\Framework\AbstractDatabase as Db;
 trait DatabaseTrait
 {
     abstract public function escapeIdentifier($string);
+    abstract protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = []);
     abstract public function getColumn($query, $params = [], $columnNumber = 0);
     abstract public function query($query, $values = []);
 
