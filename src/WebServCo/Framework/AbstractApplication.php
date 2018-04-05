@@ -30,7 +30,7 @@ abstract class AbstractApplication
             $errorInfo['message'] = $exception->getMessage();
             $errorInfo['file'] = $exception->getFile();
             $errorInfo['line'] = $exception->getLine();
-            $errorInfo['trace'] = $exception->getTraceAsString();
+            $errorInfo['trace'] = $exception->getTrace();
         } else {
             $last_error = error_get_last();
             if (!empty($last_error['message'])) {
@@ -79,20 +79,53 @@ abstract class AbstractApplication
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oups</title>
     <style>
-    * {background: #f2dede; color: #a94442;}
-    .o {display: table; position: absolute; height: 100%; width: 100%;}
-    .m {display: table-cell; vertical-align: middle;}
-    .i {margin-left: auto; margin-right: auto; width: 680px; text-align: center;}
-    small {font-size: 0.7em;}
+    * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
+    .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
+    small {font-size: 0.8em;}
     </style>
 </head>
-<body><div class="o"><div class="m"><div class="i">' .
+<body><div class="i"><br>' .
         "<h1>{$title}</h1>";
         if (Env::ENV_PROD !== $this->config()->getEnv()) {
-            $output .= "<p>$errorInfo[message]</p>" .
-            "<p><small>$errorInfo[file]:$errorInfo[line]</small></p>";
+            $output .= sprintf(
+                '<p><i>%s</i></p><p>%s:%s</p>',
+                $errorInfo['message'],
+                basename($errorInfo['file']),
+                $errorInfo['line']
+            );
+            if (!empty($errorInfo['trace'])) {
+                $output .= "<p>";
+                $output .= "<small>";
+                foreach ($errorInfo['trace'] as $item) {
+                    if (!empty($item['class'])) {
+                        $output .= sprintf(
+                            '%s%s',
+                            $item['class'],
+                            $item['type']
+                        );
+                        $output .= "";
+                    }
+                    if (!empty($item['function'])) {
+                        $output .= sprintf(
+                            '%s',
+                            $item['function']
+                        );
+                        $output .= "";
+                    }
+                    if (!empty($item['file'])) {
+                        $output .= sprintf(
+                            ' [%s:%s]',
+                            basename($item['file']),
+                            $item['line']
+                        );
+                        $output .= " ";
+                    }
+                    $output .= "<br>";
+                }
+                $output .= "</small></p>";
+            }
         }
-        $output .= '</div></div></div></body></html>';
+        $output .= '</div></body></html>';
 
         $response = new \WebServCo\Framework\HttpResponse(
             $output,
