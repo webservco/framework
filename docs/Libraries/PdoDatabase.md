@@ -1,6 +1,7 @@
 # Database (PDO)
 
-## \WebServCo\Framework\Libraries\PdoDatabase
+## \WebServCo\Framework\Libraries\MysqlPdoDatabase
+## \WebServCo\Framework\Libraries\PgsqlPdoDatabase
 
 ## Initialization
 
