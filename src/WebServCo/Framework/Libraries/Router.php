@@ -15,7 +15,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
             }
             return $defaultRoute;
         }
-        
+
         $parts = explode('/', $routeString, 3);
 
         if (empty($parts[1])) {
@@ -27,7 +27,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         $controller = $parts[0];
         $action = $parts[1];
         $args = [];
-        
+
         if (!empty($parts['2'])) {
             $args = explode('/', $parts[2]);
         }
@@ -38,7 +38,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         }
         return [$controller, $action, $args];
     }
-    
+
     private function parseCustomRoutes($requestCustom, $routes)
     {
         if (is_array($routes)) {
