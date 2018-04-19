@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
 final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase implements
@@ -22,11 +22,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
 
         try {
             $this->db = new \mysqli(
-                $this->setting(sprintf('connection%shost', S::DIVIDER), '127.0.0.1'),
-                $this->setting(sprintf('connection%susername', S::DIVIDER), 'root'),
-                $this->setting(sprintf('connection%spasswd', S::DIVIDER), ''),
-                $this->setting(sprintf('connection%sdbname', S::DIVIDER), 'test'),
-                $this->setting(sprintf('connection%sport', S::DIVIDER), 3306)
+                $this->setting(sprintf('connection%shost', Settings::DIVIDER), '127.0.0.1'),
+                $this->setting(sprintf('connection%susername', Settings::DIVIDER), 'root'),
+                $this->setting(sprintf('connection%spasswd', Settings::DIVIDER), ''),
+                $this->setting(sprintf('connection%sdbname', Settings::DIVIDER), 'test'),
+                $this->setting(sprintf('connection%sport', Settings::DIVIDER), 3306)
             );
             $this->db->set_charset('utf8mb4');
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception

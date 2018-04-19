@@ -1,10 +1,9 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Settings as S;
-use WebServCo\Framework\Framework as Fw;
-use WebServCo\Framework\Environment as Env;
-use WebServCo\Framework\ErrorHandler as Err;
+use WebServCo\Framework\ErrorHandler;
+use WebServCo\Framework\Framework;
+use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Exceptions\NotFoundException;
 
@@ -25,8 +24,8 @@ class Application extends \WebServCo\Framework\AbstractApplication
             );
         }
 
-        $this->config()->set(sprintf('app%1$spath%1$sweb', S::DIVIDER), $publicPath);
-        $this->config()->set(sprintf('app%1$spath%1$sproject', S::DIVIDER), $this->projectPath);
+        $this->config()->set(sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
+        $this->config()->set(sprintf('app%1$spath%1$sproject', Settings::DIVIDER), $this->projectPath);
     }
 
     /**
@@ -48,7 +47,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     final public function start()
     {
         try {
-            Err::set();
+            ErrorHandler::set();
             register_shutdown_function([$this, 'shutdown']);
 
             $this->setEnvironmentValue();
@@ -82,7 +81,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
                 $this->shutdown(
                     null,
                     true,
-                    Fw::isCLI() ? $statusCode : 0
+                    Framework::isCLI() ? $statusCode : 0
                 );
             }
         } catch (\Throwable $e) { // php7
@@ -94,7 +93,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
     final protected function execute()
     {
-        $classType = Fw::isCLI() ? 'Command' : 'Controller';
+        $classType = Framework::isCLI() ? 'Command' : 'Controller';
         $route = $this->router()->getRoute(
             $this->request()->getTarget(),
             $this->router()->setting('routes'),
@@ -140,7 +139,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
              * Warning: this part will always be executed,
              * independent of the outcome of the script.
              */
-            Err::restore();
+            ErrorHandler::restore();
         }
         exit($statusCode);
     }

@@ -1,57 +1,57 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\Framework as Fw;
+use WebServCo\Framework\Framework;
 
 trait ExposeLibrariesTrait
 {
     final protected function config()
     {
-        return Fw::library('Config');
+        return Framework::library('Config');
     }
 
     final protected function date()
     {
-        return Fw::library('Date');
+        return Framework::library('Date');
     }
 
     final protected function cookie()
     {
-        return Fw::library('Cookie');
+        return Framework::library('Cookie');
     }
 
     final protected function i18n()
     {
-        return Fw::library('I18n');
+        return Framework::library('I18n');
     }
 
     final protected function mysqliDb()
     {
-        return Fw::library('MysqliDatabase');
+        return Framework::library('MysqliDatabase');
     }
 
     final protected function mysqlPdoDb()
     {
-        return Fw::library('MysqlPdoDatabase');
+        return Framework::library('MysqlPdoDatabase');
     }
 
     final protected function request()
     {
-        return Fw::library('Request');
+        return Framework::library('Request');
     }
 
     final protected function router()
     {
-        return Fw::library('Router');
+        return Framework::library('Router');
     }
 
     final protected function security()
     {
-        return Fw::library('Security');
+        return Framework::library('Security');
     }
 
     final protected function session()
     {
-        return Fw::library('Session');
+        return Framework::library('Session');
     }
 }

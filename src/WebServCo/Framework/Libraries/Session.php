@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
 
 final class Session extends \WebServCo\Framework\AbstractLibrary
@@ -70,11 +70,11 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         ini_set('session.gc_probability', 1);
 
         session_set_cookie_params(
-            $this->setting(sprintf('cookie%slifetime', S::DIVIDER), 60 * 60 * 24 * 14),
-            $this->setting(sprintf('cookie%spath', S::DIVIDER), '/'),
-            $this->setting(sprintf('cookie%sdomain', S::DIVIDER), ''),
-            $this->setting(sprintf('cookie%ssecure', S::DIVIDER), false),
-            $this->setting(sprintf('cookie%shttponly', S::DIVIDER), true)
+            $this->setting(sprintf('cookie%slifetime', Settings::DIVIDER), 60 * 60 * 24 * 14),
+            $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
+            $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
+            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
+            $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
         );
 
         session_name('webservco');
@@ -93,10 +93,10 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
             session_name(),
             '',
             time() - 3600,
-            $this->setting(sprintf('cookie%spath', S::DIVIDER), '/'),
-            $this->setting(sprintf('cookie%sdomain', S::DIVIDER), ''),
-            $this->setting(sprintf('cookie%ssecure', S::DIVIDER), false),
-            $this->setting(sprintf('cookie%shttponly', S::DIVIDER), true)
+            $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
+            $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
+            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
+            $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
         );
         session_destroy();
         return true;

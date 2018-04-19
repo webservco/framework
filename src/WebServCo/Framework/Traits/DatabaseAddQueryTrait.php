@@ -1,32 +1,32 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\AbstractDatabase as Db;
+use WebServCo\Framework\AbstractDatabase;
 
 trait DatabaseAddQueryTrait
 {
     abstract public function escapeIdentifier($string);
-    
+
     final protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
     {
         $multiDimensional = is_array($addData[key($addData)]);
-        
+
         list($keys, $data) = $this->getKeysValues($addData);
-        
+
         $query = $this->generateAddQueryPrefix($queryType);
         $query .= ' ' . $this->escapeIdentifier($tableName);
         $query .= $this->generateAddQueryFieldsPart($keys);
         $query .= $this->generateAddQueryValuesPart($data, $multiDimensional);
-        
+
         if ($multiDimensional) {
             return $query;
         }
-        
+
         $query .= $this->generateAddQueryUpdatePart($updateData);
-        
+
         return $query;
     }
-    
+
     final protected function getKeysValues($data = [])
     {
         $multiDimensional = is_array($data[key($data)]);
@@ -40,28 +40,28 @@ trait DatabaseAddQueryTrait
         } else {
             $keys = array_keys($data);
         }
-        
+
         return [$keys, $data];
     }
-    
+
     final protected function generateAddQueryPrefix($queryType)
     {
         switch ($queryType) {
-            case Db::QUERY_TYPE_REPLACE:
-                $query = Db::QUERY_TYPE_REPLACE . ' INTO';
+            case AbstractDatabase::QUERY_TYPE_REPLACE:
+                $query = AbstractDatabase::QUERY_TYPE_REPLACE . ' INTO';
                 break;
-            case Db::QUERY_TYPE_INSERT_IGNORE:
-                $query = Db::QUERY_TYPE_INSERT_IGNORE . ' INTO';
+            case AbstractDatabase::QUERY_TYPE_INSERT_IGNORE:
+                $query = AbstractDatabase::QUERY_TYPE_INSERT_IGNORE . ' INTO';
                 break;
-            case Db::QUERY_TYPE_INSERT:
+            case AbstractDatabase::QUERY_TYPE_INSERT:
             default:
-                $query = Db::QUERY_TYPE_INSERT . ' INTO';
+                $query = AbstractDatabase::QUERY_TYPE_INSERT . ' INTO';
                 break;
         }
-        
+
         return $query;
     }
-    
+
     final protected function generateAddQueryFieldsPart($fields)
     {
         return ' (' . implode(
@@ -70,7 +70,7 @@ trait DatabaseAddQueryTrait
         ) .
         ')';
     }
-    
+
     final protected function generateAddQueryValuesPart($data, $multiDimensional)
     {
         $query = ' VALUES';
@@ -85,23 +85,23 @@ trait DatabaseAddQueryTrait
         }
         return $query;
     }
-    
+
     final protected function generateAddQueryUpdatePart($data = [])
     {
         if (empty($data)) {
             return false;
         }
-        
+
         $strings = [];
         foreach ($data as $k => $v) {
             $strings[] = sprintf('%s = ?', $this->escapeIdentifier($k));
         }
-        
+
         $query = " ON DUPLICATE KEY UPDATE ";
         $query .= implode(', ', $strings);
         return $query;
     }
-    
+
     final protected function generateValuesString($data)
     {
         return ' (' . implode(', ', array_map(function () {
