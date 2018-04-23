@@ -71,6 +71,13 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->valid;
     }
 
+    final public function clear()
+    {
+        $this->data = [];
+        $this->filtered = [];
+        $this->errors = [];
+    }
+
     final public function toArray()
     {
         return [
