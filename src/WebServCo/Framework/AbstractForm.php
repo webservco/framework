@@ -7,11 +7,13 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     protected $filtered;
 
+    protected $submitFields;
+
     protected $valid;
 
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
-    public function __construct($settings, $defaultData = [])
+    public function __construct($settings, $defaultData = [], $submitFields = [])
     {
         parent::__construct($settings);
 
@@ -32,6 +34,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
         $this->filtered = $this->filter();
 
+        $this->submitFields = $submitFields;
+
         if ($this->isSent()) {
             $this->valid = $this->validate();
         }
@@ -51,7 +55,15 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     final public function isSent()
     {
-        return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+        if (!empty($this->submitFields)) {
+            foreach ($this->submitFields as $field) {
+                if ($this->request()->data($field)) {
+                    return true;
+                }
+            }
+        } else {
+            return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+        }
     }
 
     final public function isValid()
