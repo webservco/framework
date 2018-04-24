@@ -17,7 +17,7 @@ final class ArrayStorage
         }
         return $setting;
     }
-    
+
     /**
      * Retrieve a value from a storage array.
      *
@@ -31,11 +31,11 @@ final class ArrayStorage
     public static function get($storage, $setting = null, $defaultValue = false)
     {
         $setting = self::parseSetting($setting);
-        
+
         if (empty($setting) || empty($storage)) {
             return $defaultValue;
         }
-        
+
         /**
          * If $setting is an array, process it recursively.
          */
@@ -69,20 +69,20 @@ final class ArrayStorage
              */
             return $defaultValue;
         }
-        
+
         /**
          * If we arrive here, $setting must be a simple string.
          */
         if (array_key_exists($setting, $storage)) {
             return $storage[$setting];
         }
-        
+
         /**
          * If we got this far, there is no data to return.
          */
         return $defaultValue;
     }
-    
+
     /**
      * Sets a value in a storage array.
      *
@@ -104,6 +104,9 @@ final class ArrayStorage
         if (is_array($setting)) {
             $reference = &$storage;
             foreach ($setting as $item) {
+                if (!is_array($reference)) {
+                    $reference = [];
+                }
                 $reference = &$reference[$item];
             }
             $reference = $value;
@@ -113,7 +116,7 @@ final class ArrayStorage
         $storage[$setting] = $value;
         return $storage;
     }
-    
+
     /**
      * Append data to a storage array.
      *
@@ -139,7 +142,7 @@ final class ArrayStorage
         }
         return $storage;
     }
-    
+
     /**
      * Removes a setting from a storage array.
      *
@@ -156,13 +159,13 @@ final class ArrayStorage
         if (!is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified');
         }
-        
+
         $setting = self::parseSetting($setting);
-        
+
         if (empty($setting)) {
             throw new ArrayStorageException('Empty setting');
         }
-        
+
         if (is_array($setting)) {
             return self::removeByIndex($storage, $setting);
         }
@@ -174,7 +177,7 @@ final class ArrayStorage
         unset($storage[$setting]);
         return $storage;
     }
-    
+
     /**
      * Remove index from multi-dimensional array.
      *
