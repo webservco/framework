@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Files;
 
 final class CsvFile extends AbstractFile
 {

@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Files;
 
 use WebServCo\Framework\Exceptions\ApplicationException;
 
@@ -20,7 +20,7 @@ final class CsvCreator
             throw new ApplicationException('Empty data');
         }
         $csvData = $this->getCsvData($data, $addHeader);
-        return new \WebServCo\Framework\CsvFile($fileName, $csvData);
+        return new \WebServCo\Framework\Files\CsvFile($fileName, $csvData);
     }
 
     public function getCsvData(array $data, bool $addHeader = true)
