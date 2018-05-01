@@ -17,6 +17,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         parent::__construct($settings);
 
+        $this->submitFields = $submitFields;
+
         /**
          * Set form data
          */
@@ -32,8 +34,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         $this->errors = [];
 
         $this->filtered = $this->filter();
-
-        $this->submitFields = $submitFields;
 
         if ($this->isSent()) {
             $this->valid = $this->validate();
@@ -60,9 +60,9 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
                     return true;
                 }
             }
-        } else {
-            return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+            return false;
         }
+        return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
     }
 
     final public function isValid()
