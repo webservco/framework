@@ -21,13 +21,12 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
          * Set form data
          */
         foreach ($this->setting('meta', []) as $field => $title) {
-            $this->setData(
-                $field,
-                $this->request()->data( // from POST
-                    $field,
-                    \WebServCo\Framework\Utils::arrayKey($field, $defaultData, null) // default data
-                )
-            );
+            if ($this->isSent()) {
+                $data = $this->request()->data($field);
+            } else {
+                $data = \WebServCo\Framework\Utils::arrayKey($field, $defaultData, null);
+            }
+            $this->setData($field, $data);
         }
 
         $this->errors = [];
