@@ -150,7 +150,11 @@ final class CurlBrowser implements
             if (0 === $index) {
                 continue; /* we'll get the status code elsewhere */
             }
-            list($key, $value) = explode(': ', $line);
+            $parts = explode(': ', $line, 2);
+            if (!isset($parts[1])) {
+                continue; // invalid header (missing colon)
+            }
+            list($key, $value) = $parts;
             if (isset($headers[$key])) {
                 if (!is_array($headers[$key])) {
                     $headers[$key] = [$headers[$key]];
