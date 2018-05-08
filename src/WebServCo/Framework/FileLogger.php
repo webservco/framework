@@ -30,6 +30,11 @@ final class FileLogger implements \WebServCo\Framework\Interfaces\LoggerInterfac
         return $this->log(\WebServCo\Framework\LogLevel::DEBUG, $message, $context);
     }
 
+    public function error($message, $context = [])
+    {
+        return $this->log(\WebServCo\Framework\LogLevel::ERROR, $message, $context);
+    }
+
     public function log($level, $message, $context = [])
     {
         $data = sprintf(
