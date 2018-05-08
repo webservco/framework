@@ -23,6 +23,8 @@ final class CurlBrowser implements
 
     protected $logger;
 
+    protected $curlError;
+
     public function __construct($logDir, \WebServCo\Framework\Interfaces\RequestInterface $requestInterface)
     {
         $this->logger = new \WebServCo\Framework\FileLogger(
@@ -226,15 +228,20 @@ final class CurlBrowser implements
         }
 
         $this->response = curl_exec($this->curl);
+        $this->curlError = curl_error($this->curl);
         if (false === $this->response) {
-            throw new ApplicationException(curl_error($this->curl));
+            throw new ApplicationException(sprintf("cURL error: %s", $this->curlError));
         }
 
         $this->debugInfo = curl_getinfo($this->curl);
 
+        curl_close($this->curl);
+
         $httpCode = $this->getHttpCode();
 
-        curl_close($this->curl);
+        if (empty($httpCode)) {
+            throw new ApplicationException(sprintf("Empty HTTP status code. cURL error: %s", $this->curlError));
+        }
 
         /**
          * For redirects, the response will contain evey header/body pair.
