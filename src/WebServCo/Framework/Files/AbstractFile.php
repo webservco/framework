@@ -52,6 +52,11 @@ abstract class AbstractFile
         );
     }
 
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
     public function getFileData()
     {
         return $this->fileData;
