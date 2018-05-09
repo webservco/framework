@@ -6,8 +6,8 @@ final class XmlFile extends AbstractFile
     public function __construct(string $fileName, string $fileData, $formatOutput = false)
     {
         $domDocument = new \DOMDocument;
+        $domDocument->preserveWhiteSpace = false;
         if ($formatOutput) {
-            $domDocument->preserveWhiteSpace = false;
             $domDocument->formatOutput = true;
         }
         $domDocument->loadXML($fileData);
