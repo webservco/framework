@@ -9,6 +9,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     protected $submitFields;
 
+    protected $submitField;
+
     protected $valid;
 
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
@@ -57,12 +59,21 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
                 if ($this->request()->data($field)) {
+                    $this->submitField = $field;
                     return true;
                 }
             }
             return false;
         }
         return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+    }
+
+    final public function getSubmitField()
+    {
+        if (!$this->isSent() || empty($this->submitFields)) {
+            return false;
+        }
+        return $this->submitField;
     }
 
     final public function isValid()
