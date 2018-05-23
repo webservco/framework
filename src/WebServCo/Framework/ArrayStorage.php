@@ -83,6 +83,13 @@ final class ArrayStorage
         return $defaultValue;
     }
 
+    public static function has($storage, $setting)
+    {
+        $value = 'WSFW_NOEXIST';
+        $check = self::get($storage, $setting, $value);
+        return $check !== $value;
+    }
+
     /**
      * Sets a value in a storage array.
      *
