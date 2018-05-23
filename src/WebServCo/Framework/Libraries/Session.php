@@ -1,6 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
+use WebServCo\Framework\ArrayStorage;
 use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
 
@@ -111,7 +112,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
     {
         $this->checkSession();
 
-        $_SESSION = \WebServCo\Framework\ArrayStorage::set(
+        $_SESSION = ArrayStorage::set(
             $_SESSION,
             $setting,
             $value
@@ -123,7 +124,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
     {
         $this->checkSession();
 
-        return \WebServCo\Framework\ArrayStorage::get(
+        return ArrayStorage::get(
             $_SESSION,
             $setting,
             $defaultValue
@@ -132,14 +133,19 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
 
     public function has($setting)
     {
-        return (bool) $this->get($setting);
+        $this->checkSession();
+
+        return ArrayStorage::has(
+            $_SESSION,
+            $setting
+        );
     }
 
     public function remove($setting)
     {
         $this->checkSession();
 
-        $_SESSION = \WebServCo\Framework\ArrayStorage::remove(
+        $_SESSION = ArrayStorage::remove(
             $_SESSION,
             $setting
         );
