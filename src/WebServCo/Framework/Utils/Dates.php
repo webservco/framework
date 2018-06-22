@@ -1,13 +1,8 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Utils;
 
-final class Utils
+final class Dates
 {
-    public static function arrayKey($key, $array, $defaultValue = false)
-    {
-        return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
-    }
-
     public static function isDate($date, $format = 'Y-m-d')
     {
         $dateTime = \DateTime::createFromFormat($format, $date);
