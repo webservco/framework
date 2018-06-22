@@ -28,7 +28,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             if ($this->isSent()) {
                 $data = $this->request()->data($field);
             } else {
-                $data = \WebServCo\Framework\Utils::arrayKey($field, $defaultData, null);
+                $data = \WebServCo\Framework\Utils\Arrays::get($defaultData, $field, null);
             }
             $this->setData($field, $data);
         }
