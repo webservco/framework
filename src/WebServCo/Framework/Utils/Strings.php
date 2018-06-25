@@ -13,4 +13,15 @@ final class Strings
 
         return 0 === $function($haystack, $needle);
     }
+
+    public static function contains($haystack, $needle, $ignoreCase = true)
+    {
+        if (false !== $ignoreCase) {
+            $function = function_exists('mb_stripos') ? 'mb_stripos' : 'stripos';
+        } else {
+            $function = function_exists('mb_strpos') ? 'mb_strpos' : 'strpos';
+        }
+
+        return false !== $function($haystack, $needle);
+    }
 }
