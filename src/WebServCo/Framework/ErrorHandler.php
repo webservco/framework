@@ -41,7 +41,7 @@ final class ErrorHandler
      * @param string $errfile Filename the error was raised in
      * @param int $errline Line number the error was raised at
      *
-     * @throws ErrorException
+     * @throws \ErrorException
      */
     public static function throwErrorException($errno, $errstr, $errfile, $errline)
     {
