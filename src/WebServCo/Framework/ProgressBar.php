@@ -66,12 +66,12 @@ final class ProgressBar
     protected function prefixProgress($message)
     {
         $percent = round($this->item * 100 / $this->total);
-        $bar = round($this->width * $percent / 100);
+        $bar = (int) round($this->width * $percent / 100);
         $this->outBar = sprintf(
             "%s%% [%s>%s] %s",
             $percent,
             str_repeat('=', $bar),
-            str_repeat(' ', round($this->width-$bar)),
+            str_repeat(' ', (int) round($this->width-$bar)),
             $this->item . '/' . $this->total
         );
         $this->outMessage = $message;
