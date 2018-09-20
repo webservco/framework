@@ -7,30 +7,44 @@ trait ResponseUrlTrait
 
     /**
      * Redirect to an application location (Request target).
+     * This method returns a HttpResponse object that needs to be in turn returned to the application.
      */
-    final protected function redirect($location, $addSuffix = true)
+    final protected function getRedirectResponse($location, $addSuffix = true)
     {
         $url = $this->request()->getAppUrl();
         $url .= $location;
         if ($addSuffix) {
             $url .= $this->request()->getSuffix();
         }
-        return $this->redirectUrl($url);
+        return $this->getRedirectUrlResponse($url);
     }
 
     /**
-     * Redirect to the current URL
+     * Redirect to an application location (Request target).
+     * This method sends a HttpRequest, forcing a redirect.
+    */
+    final protected function forceRedirect($location, $addSuffix = true)
+    {
+        $response = $this->getRedirectResponse($location, $addSuffix);
+        $response->send();
+        exit;
+    }
+
+    /**
+     * Redirect to the current URL.
+     * This method returns a HttpResponse object that needs to be in turn returned to the application.
      */
-    final protected function reload($removeParameters = [])
+    final protected function getReloadResponse($removeParameters = [])
     {
         $url = $this->request()->getUrl($removeParameters);
-        return $this->redirectUrl($url);
+        return $this->getRedirectUrlResponse($url);
     }
 
     /**
-     * Redirect to a full URL
+     * Redirect to a full URL.
+     * This method returns a HttpResponse object that needs to be in turn returned to the application.
      */
-    final protected function redirectUrl($url)
+    final protected function getRedirectUrlResponse($url)
     {
         return new \WebServCo\Framework\HttpResponse(
             null,
