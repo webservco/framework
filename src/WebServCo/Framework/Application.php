@@ -36,7 +36,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         /**
          * Env file existence is verified in the controller.
          */
-        $this->config()->setEnv(trim(file_get_contents($this->projectPath . '.env')));
+        $this->config()->setEnv(trim((string)file_get_contents($this->projectPath . '.env')));
 
         return true;
     }
@@ -115,11 +115,15 @@ class Application extends \WebServCo\Framework\AbstractApplication
         }
         $object = new $className;
         $parent = get_parent_class($object);
-        if (method_exists($parent, $method) ||
+        if (method_exists((string) $parent, $method) ||
             !is_callable([$className, $method])) {
             throw new NotFoundException('No matching Action found');
         }
-        return call_user_func_array([$object, $method], $args);
+        $callable = [$object, $method];
+        if (is_callable($callable)) {
+            return call_user_func_array($callable, $args);
+        }
+        throw new ApplicationException('Method not found');
     }
 
     /**

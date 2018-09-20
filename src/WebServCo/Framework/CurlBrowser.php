@@ -188,6 +188,9 @@ final class CurlBrowser implements
 
 
         $this->curl = curl_init();
+        if (!is_resource($this->curl)) {
+            throw new ApplicationException('Not a valid resource');
+        }
         curl_setopt_array(
             $this->curl,
             [
@@ -247,8 +250,8 @@ final class CurlBrowser implements
          * For redirects, the response will contain evey header/body pair.
          * The last header/body will be at the end of the response.
          */
-        $responseParts = explode("\r\n\r\n", $this->response);
-        $body = trim(array_pop($responseParts));
+        $responseParts = explode("\r\n\r\n", (string) $this->response);
+        $body = trim((string) array_pop($responseParts));
 
         $this->responseHeaders = [];
         foreach ($responseParts as $item) {

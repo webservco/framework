@@ -77,7 +77,7 @@ final class ProgressBar
         $this->outMessage = $message;
 
         $padLen = ($this->width + $this->padding) - strlen($this->outBar);
-        $this->outPad = (0 < $padLen) ? str_repeat(' ', $padLen) : null;
+        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : null;
         return $this->outBar.$this->outPad.$this->outMessage;
     }
 

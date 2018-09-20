@@ -148,8 +148,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase impleme
         foreach ($values as &$v) {
             $args[] = &$v;
         }
-
-        return call_user_func_array([$this->stmt, 'bind_param'], $args);
+        $callable = [$this->stmt, 'bind_param'];
+        if (is_callable($callable)) {
+            return call_user_func_array($callable, $args);
+        }
+        throw new DatabaseException('Method not found');
     }
 
     protected function getDataType($variable)

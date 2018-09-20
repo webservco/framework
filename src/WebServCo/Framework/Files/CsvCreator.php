@@ -29,6 +29,10 @@ final class CsvCreator
             // temporary memory wrapper; if bigger than 5MB will be written to temp file.
             $handle = fopen('php://temp/maxmemory: ' . (5*1024*1024), 'r+');
 
+            if (!is_resource($handle)) {
+                throw new ApplicationException('Not a valid resource');
+            }
+
             if ($addHeader) {
                 fputcsv($handle, array_keys(current($data)), $this->delimiter, $this->enclosure);
             }
