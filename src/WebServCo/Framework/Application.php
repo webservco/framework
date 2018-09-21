@@ -120,10 +120,10 @@ class Application extends \WebServCo\Framework\AbstractApplication
             throw new NotFoundException('No matching Action found');
         }
         $callable = [$object, $method];
-        if (is_callable($callable)) {
-            return call_user_func_array($callable, $args);
+        if (!is_callable($callable)) {
+            throw new ApplicationException('Method not found');
         }
-        throw new ApplicationException('Method not found');
+        return call_user_func_array($callable, $args);
     }
 
     /**
