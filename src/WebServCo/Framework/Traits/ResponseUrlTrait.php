@@ -27,7 +27,7 @@ trait ResponseUrlTrait
     {
         $response = $this->getRedirectResponse($location, $addSuffix);
         $response->send();
-        exit;
+        return;
     }
 
     /**
