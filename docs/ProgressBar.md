@@ -33,5 +33,5 @@ $this->outputCli($this->progressBar->suffix($result), false); // pb suffix
 
 ### After loop:
 ```php
-$this->outputCli(null, true); // pb eol
+$this->progressBar->finish(); //pb finish
 ```

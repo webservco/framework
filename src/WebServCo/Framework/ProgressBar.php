@@ -112,4 +112,9 @@ final class ProgressBar
 
         return $output;
     }
+
+    public function finish()
+    {
+        return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
+    }
 }
