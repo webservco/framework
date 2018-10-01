@@ -13,6 +13,7 @@ A PHP Framework
 * [CLI Response](docs/CliResponse.md)
 * [CliRunner](docs/CliRunner.md)
 * [ProgressBar](docs/ProgressBar.md)
+* [ProgressLine](docs/ProgressLine.md)
 
 ### Libraries
 * [Cookie](docs/Libraries/Cookie.md)
