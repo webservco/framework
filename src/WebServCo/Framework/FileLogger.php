@@ -1,40 +1,8 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Interfaces\RequestInterface;
-use WebServCo\Framework\Exceptions\ApplicationException;
-
-final class FileLogger implements \WebServCo\Framework\Interfaces\LoggerInterface
+final class FileLogger extends AbstractLogger implements \WebServCo\Framework\Interfaces\LoggerInterface
 {
-    protected $channel;
-    protected $logPath;
-    protected $requestInterface;
-
-    public function __construct($channel, $logDir, RequestInterface $requestInterface)
-    {
-        $this->channel = $channel;
-
-        if (!is_readable($logDir)) {
-            throw new ApplicationException('Log dir not readable');
-        }
-        if (!is_writable($logDir)) {
-            throw new ApplicationException('Log dir not writeable');
-        }
-        $this->logPath = sprintf('%s%s.log', $logDir, $this->channel);
-
-        $this->requestInterface = $requestInterface;
-    }
-
-    public function debug($message, $context = [])
-    {
-        return $this->log(\WebServCo\Framework\LogLevel::DEBUG, $message, $context);
-    }
-
-    public function error($message, $context = [])
-    {
-        return $this->log(\WebServCo\Framework\LogLevel::ERROR, $message, $context);
-    }
-
     public function log($level, $message, $context = [])
     {
         $data = sprintf(

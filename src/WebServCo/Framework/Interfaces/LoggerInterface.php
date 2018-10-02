@@ -5,4 +5,5 @@ interface LoggerInterface
 {
     public function log($level, $message, $context = []);
     public function debug($message, $context = []);
+    public function error($message, $context = []);
 }
