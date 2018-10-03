@@ -22,7 +22,7 @@ trait RequestServerTrait
         } elseif (!empty($this->server['HOSTNAME'])) {
             return $this->server['HOSTNAME']; //CLI
         }
-        return null;
+        return '';
     }
 
     public function getHostExtension()
