@@ -26,8 +26,8 @@ trait ResponseUrlTrait
     final protected function forceRedirect($location, $addSuffix = true)
     {
         $response = $this->getRedirectResponse($location, $addSuffix);
-        $response->send();
-        return;
+        $statusCode = $response->send();
+        exit;
     }
 
     /**
