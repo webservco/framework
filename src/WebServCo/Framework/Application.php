@@ -9,37 +9,7 @@ use WebServCo\Framework\Exceptions\NotFoundException;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
-    protected $projectPath;
-
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
-
-    public function __construct($publicPath, $projectPath)
-    {
-        $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-
-        if (!is_readable($publicPath . 'index.php') || !is_readable($this->projectPath . '.env')) {
-            throw new ApplicationException(
-                'Invalid paths specified when initializing Application.'
-            );
-        }
-
-        $this->config()->set(sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
-        $this->config()->set(sprintf('app%1$spath%1$sproject', Settings::DIVIDER), $this->projectPath);
-    }
-
-    /**
-     * Sets the env value from the project .env file.
-     */
-    final public function setEnvironmentValue()
-    {
-        /**
-         * Env file existence is verified in the controller.
-         */
-        $this->config()->setEnv(trim((string)file_get_contents($this->projectPath . '.env')));
-
-        return true;
-    }
 
     /**
      * Starts the execution of the application.
@@ -107,7 +77,8 @@ class Application extends \WebServCo\Framework\AbstractApplication
         if (empty($class) || empty($method)) {
             throw new ApplicationException("Invalid route");
         }
-        $className = "\\Project\\Domain\\{$class}\\{$class}{$classType}";
+
+        $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
         if (!class_exists($className)) {
             throw new NotFoundException(
                 sprintf('No matching %s found', $classType)
