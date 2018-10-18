@@ -20,17 +20,6 @@ trait ResponseUrlTrait
     }
 
     /**
-     * Redirect to an application location (Request target).
-     * This method sends a HttpRequest, forcing a redirect.
-    */
-    final protected function forceRedirect($location, $addSuffix = true)
-    {
-        $response = $this->getRedirectResponse($location, $addSuffix);
-        $statusCode = $response->send();
-        exit;
-    }
-
-    /**
      * Redirect to the current URL.
      * This method returns a HttpResponse object that needs to be in turn returned to the application.
      */
