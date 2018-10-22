@@ -74,4 +74,12 @@ trait RequestServerTrait
         }
         return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : false;
     }
+
+    public function getServerVariable($index)
+    {
+        if (!array_key_exists($index, $this->server)) {
+            throw new \OutOfBoundsException('Requested key does not exist');
+        }
+        return $this->server[$index];
+    }
 }
