@@ -10,7 +10,7 @@ final class HttpResponse extends \WebServCo\Framework\AbstractResponse implement
     protected $headers = [];
     protected $charset;
 
-    public function __construct($content = null, $statusCode = 200, $headers = [])
+    public function __construct(string $content = null, int $statusCode = 200, array $headers = [])
     {
         $this->setStatus($statusCode);
 
