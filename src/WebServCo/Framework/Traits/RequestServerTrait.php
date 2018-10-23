@@ -5,6 +5,28 @@ use WebServCo\Framework\Framework;
 
 trait RequestServerTrait
 {
+    public function getAcceptContentTypes()
+    {
+        if (!isset($this->server['HTTP_ACCEPT'])) {
+            return false;
+        }
+        $acceptTypes = [];
+        $httpAccept = strtolower(str_replace(' ', '', $this->server['HTTP_ACCEPT']));
+        $parts = explode(',', $httpAccept);
+
+        foreach ($parts as $item) {
+            $q = 1; // the default quality is 1.
+            if (strpos($item, ';q=')) { // check if there is a different quality
+                // divide "mime/type;q=X" into two parts: "mime/type" i "X"
+                list($item, $q) = explode(';q=', $item);
+            }
+            // WARNING: $q == 0 means, that mime-type isn’t supported!
+            $acceptTypes[$q] = $item;
+        }
+        asort($acceptTypes);
+        return $acceptTypes;
+    }
+
     public function getAcceptLanguage()
     {
         if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
