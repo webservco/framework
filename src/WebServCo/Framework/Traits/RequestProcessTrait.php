@@ -6,7 +6,7 @@ use WebServCo\Framework\RequestUtils;
 trait RequestProcessTrait
 {
     abstract public function setting($key, $defaultValue = false);
-    
+
     public function sanitize($data)
     {
         if (is_array($data)) {
@@ -18,17 +18,17 @@ trait RequestProcessTrait
         }
         return RequestUtils::sanitizeString($data);
     }
-    
+
     protected function init($server, $post = [])
     {
         $this->server = $this->sanitize($server);
-        
+
         $this->setMethod();
         $this->setFilename();
         $this->setPath();
 
         $this->process();
-        
+
         switch ($this->method) {
             case \WebServCo\Framework\Http::METHOD_GET:
             case \WebServCo\Framework\Http::METHOD_HEAD:
@@ -41,7 +41,7 @@ trait RequestProcessTrait
             $this->clearGlobals();
         }
     }
-    
+
     protected function setMethod()
     {
         if (empty($this->server['REQUEST_METHOD']) ||
@@ -54,7 +54,7 @@ trait RequestProcessTrait
         $this->method = $this->server['REQUEST_METHOD'];
         return true;
     }
-    
+
     protected function setFilename()
     {
         if (empty($this->server['SCRIPT_NAME'])) {
@@ -63,13 +63,13 @@ trait RequestProcessTrait
         $this->filename = basename($this->server['SCRIPT_NAME']);
         return true;
     }
-    
+
     protected function setPath()
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
-        
+
         $this->path = rtrim(
             str_replace(
                 $this->filename,
@@ -78,10 +78,10 @@ trait RequestProcessTrait
             ),
             DIRECTORY_SEPARATOR
         );
-        
+
         return true;
     }
-    
+
     protected function clearGlobals()
     {
         if (!empty($_GET)) {
@@ -95,7 +95,7 @@ trait RequestProcessTrait
         }
         return true;
     }
-    
+
     protected function processPost($post = [])
     {
         $this->data = [];
@@ -104,16 +104,16 @@ trait RequestProcessTrait
         }
         return true;
     }
-    
+
     protected function process()
     {
         if (\WebServCo\Framework\Framework::isCLI()) {
             return $this->processCli();
         }
-        
+
         return $this->processHttp();
     }
-    
+
     protected function processCli()
     {
         if (isset($this->server['argv'][1])) {
@@ -129,7 +129,7 @@ trait RequestProcessTrait
         }
         return true;
     }
-    
+
     protected function processHttp()
     {
         $string = null;
