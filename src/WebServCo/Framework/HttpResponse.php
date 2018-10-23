@@ -3,7 +3,7 @@ namespace WebServCo\Framework;
 
 use WebServCo\Framework\Http;
 
-final class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
+class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
     protected $statusText;
