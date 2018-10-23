@@ -53,6 +53,7 @@ abstract class AbstractApplication
             'file' => null,
             'line' => null,
             'trace' => null,
+            'exception' => null,
         ];
         if ($exception instanceof \Throwable ||
             $exception instanceof \Exception
@@ -62,6 +63,7 @@ abstract class AbstractApplication
             $errorInfo['file'] = $exception->getFile();
             $errorInfo['line'] = $exception->getLine();
             $errorInfo['trace'] = $exception->getTrace();
+            $errorInfo['exception'] = $exception;
         } else {
             $last_error = error_get_last();
             if (!empty($last_error['message'])) {
