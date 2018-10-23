@@ -11,7 +11,7 @@ final class Http
     const METHOD_CONNECT = 'CONNECT';
     const METHOD_OPTIONS = 'OPTIONS';
     const METHOD_TRACE = 'TRACE';
-    
+
     public static $statusCodes = [
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -73,7 +73,7 @@ final class Http
         510 => 'Not Extended',
         511 => 'Network Authentication Required',
     ];
-    
+
     /**
      * Retrieve list of supported HTTP methods.
      *
@@ -81,6 +81,15 @@ final class Http
      */
     public static function getMethods()
     {
-        return [self::METHOD_GET, self::METHOD_HEAD, self::METHOD_POST];
+        return [
+            self::METHOD_GET,
+            self::METHOD_HEAD,
+            self::METHOD_POST,
+            self::METHOD_PUT,
+            self::METHOD_DELETE,
+            self::METHOD_CONNECT,
+            self::METHOD_OPTIONS,
+            self::METHOD_TRACE
+        ];
     }
 }
