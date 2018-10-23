@@ -1,9 +1,9 @@
 <?php
 namespace WebServCo\Framework\Exceptions;
 
-final class NotFoundException extends HttpException
+class MethodNotAllowedException extends HttpException
 {
-    const CODE = 404;
+    const CODE = 405;
 
     public function __construct($message, \Exception $previous = null)
     {
