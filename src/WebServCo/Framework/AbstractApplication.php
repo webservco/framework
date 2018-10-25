@@ -102,7 +102,7 @@ abstract class AbstractApplication
             case 0: //default
             default:
                 $statusCode = 500;
-                $title = 'The App made a boo boo';
+                $title = 'Boo boo';
                 break;
         }
 
@@ -171,7 +171,7 @@ abstract class AbstractApplication
 
     protected function haltCli($errorInfo = [])
     {
-        $output = 'The App made a boo boo' . PHP_EOL;
+        $output = 'Boo boo' . PHP_EOL;
         if (Environment::ENV_PROD !== $this->config()->getEnv()) {
             $output .= $errorInfo['message'] . PHP_EOL;
             $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
