@@ -35,7 +35,7 @@ trait DatabaseAddQueryTrait
             // fill any missing keys with empty data
             $key_pair = array_combine($keys, array_fill(0, count($keys), null));
             $data = array_map(function ($e) use ($key_pair) {
-                return array_merge($key_pair, $e);
+                return array_merge((array) $key_pair, $e);
             }, $data);
         } else {
             $keys = array_keys($data);
