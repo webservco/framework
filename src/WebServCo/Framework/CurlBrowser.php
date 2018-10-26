@@ -25,14 +25,9 @@ final class CurlBrowser implements
 
     protected $curlError;
 
-    public function __construct($logDir, \WebServCo\Framework\Interfaces\RequestInterface $requestInterface)
+    public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
     {
-        $this->logger = new \WebServCo\Framework\FileLogger(
-            'CurlBrowser',
-            $logDir,
-            $requestInterface
-        );
-        $this->logger->clear();
+        $this->logger = $logger;
         $this->debug = false;
         $this->skipSslVerification = false;
         $this->requestHeaders = [];
