@@ -7,9 +7,9 @@ use WebServCo\Framework\Exceptions\ApplicationException;
 final class CurlBrowser implements
     \WebServCo\Framework\Interfaces\HttpBrowserInterface
 {
-    protected $debug = true;
-    protected $skipSslVerification = false;
-    protected $requestHeaders = [];
+    protected $debug;
+    protected $skipSslVerification;
+    protected $requestHeaders;
 
     protected $method;
     protected $postData;
@@ -33,6 +33,9 @@ final class CurlBrowser implements
             $requestInterface
         );
         $this->logger->clear();
+        $this->debug = false;
+        $this->skipSslVerification = false;
+        $this->requestHeaders = [];
     }
 
     public function setDebug(bool $debug)
@@ -43,6 +46,11 @@ final class CurlBrowser implements
     public function setSkipSSlVerification(bool $skipSslVerification)
     {
         $this->skipSslVerification = $skipSslVerification;
+    }
+
+    public function setRequestHeader($name, $value)
+    {
+        $this->requestHeaders[$name] = $value;
     }
 
     public function setRequestHeaders(array $requestHeaders)
