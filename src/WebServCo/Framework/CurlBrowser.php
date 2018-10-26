@@ -48,11 +48,6 @@ final class CurlBrowser implements
         $this->requestHeaders[$name] = $value;
     }
 
-    public function setRequestHeaders(array $requestHeaders)
-    {
-        $this->requestHeaders = $requestHeaders;
-    }
-
     public function getResponseHeaders()
     {
         return $this->responseHeaders;
