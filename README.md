@@ -1,9 +1,10 @@
 # webservco/framework
 
 [![license](https://img.shields.io/github/license/webservco/framework.svg)](https://github.com/webservco/framework)
+[![PHP](https://img.shields.io/packagist/php-v/webservco/framework.svg)](https://www.php.net)
 [![PDS Skeleton](https://img.shields.io/badge/pds-skeleton-blue.svg)](https://github.com/php-pds/skeleton)
-[![Build Status](https://travis-ci.org/webservco/framework.svg?branch=9.0-dev)](https://travis-ci.org/webservco/framework)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/webservco/framework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/webservco/framework/?branch=master)
+[![Build Status](https://travis-ci.org/webservco/framework.svg)](https://travis-ci.org/webservco/framework)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/webservco/framework/badges/quality-score.png)](https://scrutinizer-ci.com/g/webservco/framework/)
 
 A PHP Framework
 
