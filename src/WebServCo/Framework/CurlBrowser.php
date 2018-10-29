@@ -88,7 +88,12 @@ final class CurlBrowser implements
 
     protected function setPostData(array $postData)
     {
-        $this->postData = $postData;
+        foreach ($postData as $key => $value) {
+            if (is_array($value)) {
+                throw new \InvalidArgumentException('POST value can not be an array');
+            }
+            $this->postData[$key] = $value;
+        }
     }
 
     protected function debugInit()
