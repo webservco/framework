@@ -104,5 +104,6 @@ abstract class AbstractOutputLoader
         if ($eol) {
             echo PHP_EOL;
         }
+        return true;
     }
 }
