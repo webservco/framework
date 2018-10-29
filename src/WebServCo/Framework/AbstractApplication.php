@@ -119,7 +119,7 @@ abstract class AbstractApplication
 </head>
 <body><div class="i"><br>' .
         "<h1>{$title}</h1>";
-        if (Environment::ENV_PROD !== $this->config()->getEnv()) {
+        if (Environment::ENV_DEV == $this->config()->getEnv()) {
             $output .= sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],
@@ -172,7 +172,7 @@ abstract class AbstractApplication
     protected function haltCli($errorInfo = [])
     {
         $output = 'Boo boo' . PHP_EOL;
-        if (Environment::ENV_PROD !== $this->config()->getEnv()) {
+        if (Environment::ENV_DEV == $this->config()->getEnv()) {
             $output .= $errorInfo['message'] . PHP_EOL;
             $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         }
