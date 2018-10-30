@@ -35,6 +35,14 @@ trait RequestServerTrait
         return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
 
+    public function getContentType()
+    {
+        if (!isset($this->server['CONTENT_TYPE'])) {
+            return false;
+        }
+        return $this->server['CONTENT_TYPE'];
+    }
+
     public function getHost()
     {
         if (!empty($this->server['HTTP_HOST'])) {
