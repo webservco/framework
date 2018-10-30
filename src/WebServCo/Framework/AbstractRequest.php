@@ -42,4 +42,8 @@ abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
      * Dummy file extension used in the URL
      */
     protected $suffix;
+    /**
+     * Request body raw data.
+     */
+    protected $body;
 }

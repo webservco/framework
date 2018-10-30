@@ -23,6 +23,7 @@ trait RequestProcessTrait
     {
         $this->server = $this->sanitize($server);
 
+        $this->setBody();
         $this->setMethod();
         $this->setFilename();
         $this->setPath();
@@ -40,6 +41,11 @@ trait RequestProcessTrait
         if ($this->setting('clear_globals', true)) {
             $this->clearGlobals();
         }
+    }
+
+    protected function setBody()
+    {
+        $this->body = file_get_contents('php://input');
     }
 
     protected function setMethod()
