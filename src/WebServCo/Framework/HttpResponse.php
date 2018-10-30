@@ -8,10 +8,12 @@ class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
 {
     protected $statusText;
     protected $headers = [];
+    protected $appendCharset;
     protected $charset;
 
     public function __construct(string $content = null, int $statusCode = 200, array $headers = [])
     {
+        $this->appendCharset = false;
         $this->setStatus($statusCode);
 
         $this->charset = 'utf-8';
@@ -41,14 +43,14 @@ class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
 
     public function setHeader($name, $value)
     {
-        switch ($name) {
-            case 'Content-Type':
-                $this->headers[$name] = $value . '; charset=' . $this->charset;
-                break;
-            default:
-                $this->headers[$name] = $value;
-                break;
+        if ($this->appendCharset) {
+            switch ($name) {
+                case 'Content-Type':
+                    $value .= '; charset=' . $this->charset;
+                    break;
+            }
         }
+        $this->headers[$name] = $value;
     }
 
     public function send()
