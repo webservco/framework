@@ -70,7 +70,7 @@ final class CurlBrowser implements
         return $this->retrieve($url);
     }
 
-    public function post($url, $postData = [])
+    public function post($url, $postData = null)
     {
         $this->setMethod(Http::METHOD_POST);
         $this->setPostData($postData);
@@ -86,14 +86,20 @@ final class CurlBrowser implements
         return true;
     }
 
-    protected function setPostData(array $postData)
+    protected function setPostData($postData)
     {
-        foreach ($postData as $key => $value) {
-            if (is_array($value)) {
-                throw new \InvalidArgumentException('POST value can not be an array');
+        if (is_array($postData)) {
+            $this->postData = [];
+            foreach ($postData as $key => $value) {
+                if (is_array($value)) {
+                    throw new \InvalidArgumentException('POST value can not be an array');
+                }
+                $this->postData[$key] = $value;
             }
-            $this->postData[$key] = $value;
+            return true;
         }
+        $this->postData = $postData;
+        return true;
     }
 
     protected function debugInit()
@@ -218,13 +224,6 @@ final class CurlBrowser implements
             // don't check the existence of a common name in the SSL peer certificate
             curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
         }
-        if (!empty($this->requestHeaders)) {
-            curl_setopt(
-                $this->curl,
-                CURLOPT_HTTPHEADER,
-                $this->parseRequestHeaders($this->requestHeaders)
-            );
-        }
 
         $this->debugDo();
 
@@ -233,11 +232,22 @@ final class CurlBrowser implements
                 curl_setopt($this->curl, CURLOPT_POST, true);
                 if (!empty($this->postData)) {
                     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
+                    if (!is_array($this->postData)) {
+                        $this->setRequestHeader('Content-Length', mb_strlen($this->postData));
+                    }
                 }
                 break;
             case Http::METHOD_HEAD:
                 curl_setopt($this->curl, CURLOPT_NOBODY, true);
                 break;
+        }
+
+        if (!empty($this->requestHeaders)) {
+            curl_setopt(
+                $this->curl,
+                CURLOPT_HTTPHEADER,
+                $this->parseRequestHeaders($this->requestHeaders)
+            );
         }
 
         $this->response = curl_exec($this->curl);
