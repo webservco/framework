@@ -22,4 +22,9 @@ final class Ansi
         $result .= $string . sprintf("\e[%sm", Sgr::RESET);
         return $result;
     }
+
+    public static function clear()
+    {
+        return "\e[H\e[J";
+    }
 }
