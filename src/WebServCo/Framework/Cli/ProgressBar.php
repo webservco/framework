@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Cli;
 
 //https://gist.github.com/mayconbordin/2860547
 final class ProgressBar
