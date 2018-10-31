@@ -1,7 +1,7 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Cli;
 
-final class CliRunner
+final class Runner
 {
     protected $workDir;
     protected $token;

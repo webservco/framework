@@ -1,25 +1,25 @@
-# CliRunner
+# Runner
 
-## \WebServCo\Framework\CliRunner
+## \WebServCo\Framework\Cli\Runner
 
 ## Usage
 
 ### `__construct`:
 ```php
-$this->cliRunner = new \WebServCo\Framework\CliRunner(
+$this->runner = new \WebServCo\Framework\Cli\Runner(
     sprintf('%svar/run/', $this->data('path/project'))
 );
 ```
 
 ### Method start:
 ```php
-$this->cliRunner->start(__METHOD__); // cli start
-$this->outputCli(sprintf('pid: %s', $this->cliRunner->getPid(__METHOD__))); // cli pid
+$this->runner->start(__METHOD__); // cli start
+$this->outputCli(sprintf('pid: %s', $this->runner->getPid(__METHOD__))); // cli pid
 ```
 
 ### During loop:
 ```php
-if (!$this->cliRunner->hasPid(__METHOD__)) { // cli check
+if (!$this->runner->hasPid(__METHOD__)) { // cli check
     $this->outputCli('Interrupt detected, stopping');
     break;
 }
@@ -28,6 +28,6 @@ if (!$this->cliRunner->hasPid(__METHOD__)) { // cli check
 
 ### Method end:
 ```php
-return $this->cliRunner->finish(__METHOD__); // cli finish
+return $this->runner->finish(__METHOD__); // cli finish
 ```
 > return will be false if interrupted, true otherwise
