@@ -1,6 +1,6 @@
 # ProgressLine
 
-## \WebServCo\Framework\ProgressLine
+## \WebServCo\Framework\Cli\ProgressLine
 
 Show a simple single line progress bar with a custom message.
 
@@ -8,7 +8,7 @@ Show a simple single line progress bar with a custom message.
 
 ### `__construct`:
 ```php
-$this->progressLine = new \WebServCo\Framework\ProgressLine();
+$this->progressLine = new \WebServCo\Framework\Cli\ProgressLine();
 # optional: don't show result
 $this->progressLine->setShowResult(false);
 ```
