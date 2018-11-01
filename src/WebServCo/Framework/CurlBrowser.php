@@ -33,19 +33,10 @@ final class CurlBrowser implements
         $this->requestHeaders = [];
     }
 
-    public function setDebug(bool $debug)
+    public function get($url)
     {
-        $this->debug = $debug;
-    }
-
-    public function setSkipSSlVerification(bool $skipSslVerification)
-    {
-        $this->skipSslVerification = $skipSslVerification;
-    }
-
-    public function setRequestHeader($name, $value)
-    {
-        $this->requestHeaders[$name] = $value;
+        $this->setMethod(Http::METHOD_GET);
+        return $this->retrieve($url);
     }
 
     public function getRequestHeaders()
@@ -56,12 +47,6 @@ final class CurlBrowser implements
     public function getResponseHeaders()
     {
         return $this->responseHeaders;
-    }
-
-    public function get($url)
-    {
-        $this->setMethod(Http::METHOD_GET);
-        return $this->retrieve($url);
     }
 
     public function head($url)
@@ -77,128 +62,7 @@ final class CurlBrowser implements
         return $this->retrieve($url);
     }
 
-    protected function setMethod($method)
-    {
-        if (!in_array($method, Http::getMethods())) {
-            throw new ApplicationException('Unsupported method');
-        }
-        $this->method = $method;
-        return true;
-    }
-
-    protected function setPostData($postData)
-    {
-        if (is_array($postData)) {
-            $this->postData = [];
-            foreach ($postData as $key => $value) {
-                if (is_array($value)) {
-                    throw new \InvalidArgumentException('POST value can not be an array');
-                }
-                $this->postData[$key] = $value;
-            }
-            return true;
-        }
-        $this->postData = $postData;
-        return true;
-    }
-
-    protected function debugInit()
-    {
-        if ($this->debug) {
-            ob_start();
-            $this->debugStderr = fopen('php://output', 'w');
-            return true;
-        }
-        return false;
-    }
-
-    protected function debugDo()
-    {
-        if ($this->debug) {
-            //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
-            curl_setopt($this->curl, CURLOPT_VERBOSE, 1);
-            curl_setopt($this->curl, CURLOPT_STDERR, $this->debugStderr);
-            return false;
-        }
-        return false;
-    }
-
-    protected function debugFinish()
-    {
-        if ($this->debug) {
-            fclose($this->debugStderr);
-            $this->debugOutput = ob_get_clean();
-
-            $this->logger->debug('CURL INFO:', $this->debugInfo);
-            $this->logger->debug('CURL VERBOSE:', $this->debugOutput);
-            $this->logger->debug('CURL RESPONSE:', $this->response);
-
-            return true;
-        }
-        return false;
-    }
-
-    protected function getHttpCode()
-    {
-        return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
-    }
-
-    protected function parseRequestHeaders($headers)
-    {
-        $data = [];
-        foreach ($headers as $k => $v) {
-            if (is_array($v)) {
-                foreach ($v as $item) {
-                    $data[] = sprintf('%s: %s', $k, $item);
-                }
-            } else {
-                $data[] = sprintf('%s: %s', $k, $v);
-            }
-        }
-        return $data;
-    }
-
-    protected function parseResponseHeaders($headerString)
-    {
-        $headers = [];
-        $lines = explode("\r\n", $headerString);
-        foreach ($lines as $index => $line) {
-            if (0 === $index) {
-                continue; /* we'll get the status code elsewhere */
-            }
-            $parts = explode(': ', $line, 2);
-            if (!isset($parts[1])) {
-                continue; // invalid header (missing colon)
-            }
-            list($key, $value) = $parts;
-            if (isset($headers[$key])) {
-                if (!is_array($headers[$key])) {
-                    $headers[$key] = [$headers[$key]];
-                }
-                // check cookies
-                if ('Set-Cookie' == $key) {
-                    $parts = explode('=', $value, 2);
-                    $cookieName = $parts[0];
-                    if (is_array($headers[$key])) {
-                        foreach ($headers[$key] as $cookieIndex => $existingCookie) {
-                            //check if we already have a cookie with the same name
-                            if (0 === mb_stripos($existingCookie, $cookieName)) {
-                                // remove previous cookie with the same name
-                                unset($headers[$key][$cookieIndex]);
-                            }
-                        }
-                    }
-                }
-                $headers[$key][] = $value;
-                $headers[$key] = array_values((array) $headers[$key]); // re-index array
-            } else {
-                $headers[$key] = $value;
-            }
-        }
-        return $headers;
-    }
-
-    protected function retrieve($url)
+    public function retrieve($url)
     {
         $this->debugInit();
 
@@ -285,5 +149,141 @@ final class CurlBrowser implements
             $httpCode,
             end($this->responseHeaders)
         );
+    }
+
+    public function setDebug(bool $debug)
+    {
+        $this->debug = $debug;
+    }
+
+    public function setMethod($method)
+    {
+        if (!in_array($method, Http::getMethods())) {
+            throw new ApplicationException('Unsupported method');
+        }
+        $this->method = $method;
+        return true;
+    }
+
+    public function setPostData($postData)
+    {
+        if (is_array($postData)) {
+            $this->postData = [];
+            foreach ($postData as $key => $value) {
+                if (is_array($value)) {
+                    throw new \InvalidArgumentException('POST value can not be an array');
+                }
+                $this->postData[$key] = $value;
+            }
+            return true;
+        }
+        $this->postData = $postData;
+        return true;
+    }
+
+    public function setRequestHeader($name, $value)
+    {
+        $this->requestHeaders[$name] = $value;
+    }
+
+    public function setSkipSSlVerification(bool $skipSslVerification)
+    {
+        $this->skipSslVerification = $skipSslVerification;
+    }
+
+    protected function debugDo()
+    {
+        if ($this->debug) {
+            //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
+            curl_setopt($this->curl, CURLOPT_VERBOSE, 1);
+            curl_setopt($this->curl, CURLOPT_STDERR, $this->debugStderr);
+            return false;
+        }
+        return false;
+    }
+
+    protected function debugFinish()
+    {
+        if ($this->debug) {
+            fclose($this->debugStderr);
+            $this->debugOutput = ob_get_clean();
+
+            $this->logger->debug('CURL INFO:', $this->debugInfo);
+            $this->logger->debug('CURL VERBOSE:', $this->debugOutput);
+            $this->logger->debug('CURL RESPONSE:', $this->response);
+
+            return true;
+        }
+        return false;
+    }
+
+    protected function debugInit()
+    {
+        if ($this->debug) {
+            ob_start();
+            $this->debugStderr = fopen('php://output', 'w');
+            return true;
+        }
+        return false;
+    }
+
+    protected function getHttpCode()
+    {
+        return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
+    }
+
+    protected function parseRequestHeaders($headers)
+    {
+        $data = [];
+        foreach ($headers as $k => $v) {
+            if (is_array($v)) {
+                foreach ($v as $item) {
+                    $data[] = sprintf('%s: %s', $k, $item);
+                }
+            } else {
+                $data[] = sprintf('%s: %s', $k, $v);
+            }
+        }
+        return $data;
+    }
+
+    protected function parseResponseHeaders($headerString)
+    {
+        $headers = [];
+        $lines = explode("\r\n", $headerString);
+        foreach ($lines as $index => $line) {
+            if (0 === $index) {
+                continue; /* we'll get the status code elsewhere */
+            }
+            $parts = explode(': ', $line, 2);
+            if (!isset($parts[1])) {
+                continue; // invalid header (missing colon)
+            }
+            list($key, $value) = $parts;
+            if (isset($headers[$key])) {
+                if (!is_array($headers[$key])) {
+                    $headers[$key] = [$headers[$key]];
+                }
+                // check cookies
+                if ('Set-Cookie' == $key) {
+                    $parts = explode('=', $value, 2);
+                    $cookieName = $parts[0];
+                    if (is_array($headers[$key])) {
+                        foreach ($headers[$key] as $cookieIndex => $existingCookie) {
+                            //check if we already have a cookie with the same name
+                            if (0 === mb_stripos($existingCookie, $cookieName)) {
+                                // remove previous cookie with the same name
+                                unset($headers[$key][$cookieIndex]);
+                            }
+                        }
+                    }
+                }
+                $headers[$key][] = $value;
+                $headers[$key] = array_values((array) $headers[$key]); // re-index array
+            } else {
+                $headers[$key] = $value;
+            }
+        }
+        return $headers;
     }
 }
