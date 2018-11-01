@@ -15,7 +15,7 @@ trait OutputTrait
         return $this->outputLoader;
     }
 
-    final protected function outputCli($string, $eol = true)
+    final protected function outputCli($string = '', $eol = true)
     {
         return $this->output()->cli($string, $eol);
     }
