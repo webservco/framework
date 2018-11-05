@@ -3,6 +3,8 @@ namespace WebServCo\Framework;
 
 abstract class AbstractLogger
 {
+    abstract public function clear();
+    
     abstract public function log($level, $message, $context = []);
 
     public function debug($message, $context = [])
