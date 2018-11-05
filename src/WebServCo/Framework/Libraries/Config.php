@@ -1,18 +1,19 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-final class Config extends \WebServCo\Framework\AbstractLibrary
+final class Config extends \WebServCo\Framework\AbstractLibrary implements
+    \WebServCo\Framework\Interfaces\ConfigInterface
 {
     /**
      * Stores configuration data.
      */
     private $config = [];
-    
+
     /**
      * Application environment.
      */
     private $env;
-    
+
     /**
      * Add base setting data.
      *
@@ -30,7 +31,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         );
         return true;
     }
-    
+
     /**
      * Load configuration data from a file.
      *
@@ -48,7 +49,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         $data = (include $pathFull);
         return is_array($data) ? $data : false;
     }
-    
+
     /**
      * Sets a configuration value.
      *
@@ -67,12 +68,12 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         $this->config = \WebServCo\Framework\ArrayStorage::set($this->config, $setting, $value);
         return true;
     }
-    
+
     public function get($setting, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
     }
-    
+
     /**
      * Set application environment value.
      *
@@ -87,10 +88,10 @@ final class Config extends \WebServCo\Framework\AbstractLibrary
         } else {
             $this->env = \WebServCo\Framework\Environment::ENV_DEV;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Get application environment value.
      *
