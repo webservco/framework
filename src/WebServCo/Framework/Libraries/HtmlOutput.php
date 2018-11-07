@@ -6,21 +6,22 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
 {
     private $path;
     private $template;
-    
+
     public function setPath($path)
     {
         $this->path = $path;
         return true;
     }
-    
+
     public function setTemplate($template)
     {
         $this->template = $template;
         return true;
     }
-    
+
     public function render()
     {
+        ob_start();
         try {
             $templatePath = "{$this->path}{$this->template}.php";
             if (!is_file($templatePath)) {
@@ -28,7 +29,6 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
                     sprintf('Template "%s" not found', $this->template)
                 );
             }
-            ob_start();
             include $templatePath;
             $output = ob_get_clean();
         } catch (\Throwable $e) { // php7
