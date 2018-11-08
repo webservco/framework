@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 interface RequestInterface
 {
     public function getAcceptContentTypes();
+    public function getAppUrl();
     public function getContentType();
     public function getArgs();
     public function getBody();
