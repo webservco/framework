@@ -1,12 +1,12 @@
 # ProgressBar
 
-## \WebServCo\Framework\Cli\ProgressBar
+## \WebServCo\Framework\Cli\Progress\Bar
 
 ## Usage
 
 ### `__construct`:
 ```php
-$this->progressBar = new \WebServCo\Framework\Cli\ProgressBar(20); //size
+$this->progressBar = new \WebServCo\Framework\Cli\Progress\Bar(20); //size
 $this->progressBar->setType('single_line'); //single_line, multi_line
 ```
 

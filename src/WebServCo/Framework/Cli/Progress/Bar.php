@@ -1,8 +1,8 @@
 <?php
-namespace WebServCo\Framework\Cli;
+namespace WebServCo\Framework\Cli\Progress;
 
 //https://gist.github.com/mayconbordin/2860547
-final class ProgressBar
+final class Bar
 {
     protected $type;
 

@@ -1,7 +1,7 @@
 <?php
-namespace WebServCo\Framework\Cli;
+namespace WebServCo\Framework\Cli\Progress;
 
-final class ProgressLine
+final class Line
 {
     protected $padding;
 
