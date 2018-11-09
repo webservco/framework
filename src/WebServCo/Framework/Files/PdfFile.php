@@ -1,10 +1,12 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-final class PdfFile extends AbstractFile
+class PdfFile extends AbstractFile
 {
+    const CONTENT_TYPE = 'application/pdf';
+
     public function __construct(string $fileName, string $fileData)
     {
-        parent::__construct($fileName, $fileData, 'application/pdf');
+        parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
     }
 }

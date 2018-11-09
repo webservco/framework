@@ -1,10 +1,12 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-final class CsvFile extends AbstractFile
+class CsvFile extends AbstractFile
 {
+    const CONTENT_TYPE = 'text/csv';
+
     public function __construct(string $fileName, string $fileData)
     {
-        parent::__construct($fileName, $fileData, 'text/csv');
+        parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
     }
 }

@@ -1,8 +1,10 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-final class XmlFile extends AbstractFile
+class XmlFile extends AbstractFile
 {
+    const CONTENT_TYPE = 'text/xml';
+
     public function __construct(string $fileName, string $fileData, $formatOutput = false)
     {
         $domDocument = new \DOMDocument;
@@ -13,6 +15,6 @@ final class XmlFile extends AbstractFile
         $domDocument->loadXML($fileData);
         $fileData = $domDocument->saveXML();
 
-        parent::__construct($fileName, $fileData, 'text/xml');
+        parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
     }
 }

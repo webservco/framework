@@ -1,9 +1,9 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-final class File extends AbstractFile
+class File extends AbstractFile
 {
-    public function __construct($fileName, $fileData, $contentType = 'application/octet-stream')
+    public function __construct($fileName, $fileData, $contentType = self::CONTENT_TYPE)
     {
         if (is_null($fileName)) {
             throw new \WebServCo\Framework\Exceptions\FileException('File name is NULL');
