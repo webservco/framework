@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-class XmlFile extends AbstractFile
+class XmlFile extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
     const CONTENT_TYPE = 'text/xml';
 

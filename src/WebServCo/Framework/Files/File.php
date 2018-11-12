@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Files;
 
-class File extends AbstractFile
+class File extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
     public function __construct($fileName, $fileData, $contentType = self::CONTENT_TYPE)
     {

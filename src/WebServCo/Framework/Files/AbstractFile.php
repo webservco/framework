@@ -16,6 +16,11 @@ abstract class AbstractFile
         $this->contentType = $contentType;
     }
 
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
     public function getDownloadResponse()
     {
         return new \WebServCo\Framework\HttpResponse(
@@ -38,6 +43,16 @@ abstract class AbstractFile
         );
     }
 
+    public function getFileData()
+    {
+        return $this->fileData;
+    }
+
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
     public function getOutputResponse()
     {
         return new \WebServCo\Framework\HttpResponse(
@@ -52,15 +67,5 @@ abstract class AbstractFile
                 'Content-Transfer-Encoding' => 'binary',
             ]
         );
-    }
-
-    public function getFileName()
-    {
-        return $this->fileName;
-    }
-
-    public function getFileData()
-    {
-        return $this->fileData;
     }
 }
