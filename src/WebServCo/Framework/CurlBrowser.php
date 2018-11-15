@@ -151,9 +151,9 @@ final class CurlBrowser implements
         );
     }
 
-    public function setDebug(bool $debug)
+    public function setDebug($debug)
     {
-        $this->debug = $debug;
+        $this->debug = (bool) $debug;
     }
 
     public function setMethod($method)
@@ -186,9 +186,9 @@ final class CurlBrowser implements
         $this->requestHeaders[$name] = $value;
     }
 
-    public function setSkipSSlVerification(bool $skipSslVerification)
+    public function setSkipSSlVerification($skipSslVerification)
     {
-        $this->skipSslVerification = $skipSslVerification;
+        $this->skipSslVerification = (bool) $skipSslVerification;
     }
 
     protected function debugDo()

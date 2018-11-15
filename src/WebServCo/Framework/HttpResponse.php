@@ -11,7 +11,7 @@ class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
     protected $appendCharset;
     protected $charset;
 
-    public function __construct(string $content = null, int $statusCode = 200, array $headers = [])
+    public function __construct($content = null, $statusCode = 200, array $headers = [])
     {
         $this->appendCharset = false;
         $this->setStatus($statusCode);

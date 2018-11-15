@@ -5,7 +5,7 @@ class PdfFile extends AbstractFile implements \WebServCo\Framework\Interfaces\Fi
 {
     const CONTENT_TYPE = 'application/pdf';
 
-    public function __construct(string $fileName, string $fileData)
+    public function __construct($fileName, $fileData)
     {
         parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
     }

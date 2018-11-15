@@ -14,7 +14,7 @@ final class CsvCreator
         $this->enclosure = $enclosure;
     }
 
-    public function getCsvFile(string $fileName, array $data, bool $addHeader = true)
+    public function getCsvFile($fileName, array $data, $addHeader = true)
     {
         if (empty($data)) {
             throw new ApplicationException('Empty data');
@@ -23,7 +23,7 @@ final class CsvCreator
         return new \WebServCo\Framework\Files\CsvFile($fileName, $csvData);
     }
 
-    public function getCsvData(array $data, bool $addHeader = true)
+    public function getCsvData(array $data, $addHeader = true)
     {
         try {
             // temporary memory wrapper; if bigger than 5MB will be written to temp file.

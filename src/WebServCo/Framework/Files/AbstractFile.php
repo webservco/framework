@@ -11,7 +11,7 @@ abstract class AbstractFile
 
     public function __construct($fileName, $fileData, $contentType = self::CONTENT_TYPE)
     {
-        $this->fileName = $fileName;
+        $this->fileName = (string) $fileName;
         $this->fileData = $fileData;
         $this->contentType = $contentType;
     }

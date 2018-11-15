@@ -5,8 +5,8 @@ class CsvFile extends AbstractFile implements \WebServCo\Framework\Interfaces\Fi
 {
     const CONTENT_TYPE = 'text/csv';
 
-    public function __construct(string $fileName, string $fileData)
+    public function __construct($fileName, $fileData)
     {
-        parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
+        parent::__construct($fileName, (string) $fileData, self::CONTENT_TYPE);
     }
 }
