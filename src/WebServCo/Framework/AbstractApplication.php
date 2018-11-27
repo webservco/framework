@@ -84,7 +84,7 @@ abstract class AbstractApplication
 
     final protected function halt($errorInfo = [])
     {
-        if (\WebServCo\Framework\Framework::isCLI()) {
+        if (\WebServCo\Framework\Framework::isCli()) {
             return $this->haltCli($errorInfo);
         } else {
             return $this->haltHttp($errorInfo);

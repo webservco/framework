@@ -139,7 +139,7 @@ final class Framework
     /**
      * Checks if interface type is CLI
      */
-    public static function isCLI()
+    public static function isCli()
     {
         return 'cli' === PHP_SAPI;
     }

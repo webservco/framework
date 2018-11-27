@@ -5,20 +5,20 @@ trait RequestUrlTrait
 {
     abstract public function getHost();
     abstract public function getSchema();
-    
+
     public function getSuffix()
     {
         return $this->suffix;
     }
-    
+
     public function getTarget()
     {
         return $this->target;
     }
-    
+
     public function getAppUrl()
     {
-        if (\WebServCo\Framework\Framework::isCLI()) {
+        if (\WebServCo\Framework\Framework::isCli()) {
             return false;
         }
         return $this->getSchema() .
@@ -27,7 +27,7 @@ trait RequestUrlTrait
         $this->path .
         DIRECTORY_SEPARATOR;
     }
-    
+
     public function getShortUrl()
     {
         $url = $this->getAppUrl();
@@ -35,7 +35,7 @@ trait RequestUrlTrait
         $url .= $this->getSuffix();
         return $url;
     }
-    
+
     public function getUrl($removeParameters = [])
     {
         $url = $this->getShortUrl();
@@ -48,12 +48,12 @@ trait RequestUrlTrait
         $url .= $this->queryToString($query);
         return $url;
     }
-    
+
     public function getQuery()
     {
         return $this->query;
     }
-    
+
     public function query($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
@@ -62,7 +62,7 @@ trait RequestUrlTrait
             $defaultValue
         );
     }
-    
+
     public function queryToString($query = [])
     {
         if (empty($query)) {

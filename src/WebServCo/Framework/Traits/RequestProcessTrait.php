@@ -113,7 +113,7 @@ trait RequestProcessTrait
 
     protected function process()
     {
-        if (\WebServCo\Framework\Framework::isCLI()) {
+        if (\WebServCo\Framework\Framework::isCli()) {
             return $this->processCli();
         }
 

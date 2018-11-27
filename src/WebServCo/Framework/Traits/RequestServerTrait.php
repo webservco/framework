@@ -73,7 +73,7 @@ trait RequestServerTrait
 
     public function getSchema()
     {
-        if (Framework::isCLI()) {
+        if (Framework::isCli()) {
             return null;
         }
 
@@ -99,7 +99,7 @@ trait RequestServerTrait
 
     public function getRemoteAddress()
     {
-        if (Framework::isCLI()) {
+        if (Framework::isCli()) {
             return gethostbyname(php_uname('n'));
         }
         return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : false;

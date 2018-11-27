@@ -6,7 +6,7 @@ use WebServCo\Framework\Framework as Fw;
 
 final class FrameworkTest extends TestCase
 {
-    
+
     /**
      * @test
      */
@@ -14,15 +14,15 @@ final class FrameworkTest extends TestCase
     {
         $this->assertInternalType('string', Fw::getPath());
     }
-    
+
     /**
      * @test
      */
     public function getCliReturnsBoolean()
     {
-        $this->assertInternalType('bool', Fw::isCLI());
+        $this->assertInternalType('bool', Fw::isCli());
     }
-    
+
     /**
      * @test
      */

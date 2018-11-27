@@ -51,7 +51,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
                 $this->shutdown(
                     null,
                     true,
-                    Framework::isCLI() ? $statusCode : 0
+                    Framework::isCli() ? $statusCode : 0
                 );
             }
         } catch (\Throwable $e) { // php7
@@ -63,7 +63,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
     final protected function execute()
     {
-        $classType = Framework::isCLI() ? 'Command' : 'Controller';
+        $classType = Framework::isCli() ? 'Command' : 'Controller';
         $route = $this->router()->getRoute(
             $this->request()->getTarget(),
             $this->router()->setting('routes'),
