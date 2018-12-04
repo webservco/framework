@@ -12,9 +12,9 @@ A PHP Framework
 
 ### Framework classes
 * [CLI Response](docs/CliResponse.md)
-* [Cli\Runner](docs/Cli/Runner.md)
-* [Cli\ProgressBar](docs/Cli/ProgressBar.md)
-* [Cli\ProgressLine](docs/Cli/ProgressLine.md)
+* [Cli\ProgressBar](docs/Cli/Progress/Bar.md)
+* [Cli\ProgressLine](docs/Cli/Progress/Line.md)
+* [Cli\Runner](docs/Cli/Runner/Runner.md)
 
 ### Libraries
 * [Cookie](docs/Libraries/Cookie.md)
