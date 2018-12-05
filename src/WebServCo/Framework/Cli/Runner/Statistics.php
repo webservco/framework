@@ -5,6 +5,7 @@ final class Statistics
 {
     protected $duration; // <seconds>.<microseconds>
     protected $memoryPeakUsage; // K
+    protected $result;
     protected $timeStart;
     protected $timeFinish;
     protected $timeZone;
@@ -14,8 +15,9 @@ final class Statistics
         $this->timeZone = date_default_timezone_get();
     }
 
-    public function finish()
+    public function finish($result)
     {
+        $this->result = $result;
         $this->timeFinish = $this->createCurrentTimeObject();
         $this->duration = $this->timeFinish->format("U.u") - $this->timeStart->format("U.u");
         $this->memoryPeakUsage = memory_get_peak_usage(true) / 1024;
@@ -29,6 +31,11 @@ final class Statistics
     public function getMemoryPeakUsage()
     {
         return $this->memoryPeakUsage;
+    }
+
+    public function getResult()
+    {
+        return $this->result;
     }
 
     public function start()
