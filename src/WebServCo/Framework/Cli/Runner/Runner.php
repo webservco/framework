@@ -19,13 +19,15 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
 
     public function finish()
     {
-        $this->statistics->finish();
         if (empty($this->pid) || !is_file($this->pid) || !is_readable($this->pid)) {
-            return false;
+            $result = false;
+        } else {
+            unlink($this->pid);
+            $this->pid = null;
+            $result = true;
         }
-        unlink($this->pid);
-        $this->pid = null;
-        return true;
+        $this->statistics->finish($result);
+        return $result;
     }
 
     public function getPid()
