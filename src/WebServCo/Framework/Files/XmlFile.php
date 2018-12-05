@@ -14,6 +14,7 @@ class XmlFile extends AbstractFile implements \WebServCo\Framework\Interfaces\Fi
         }
         $domDocument->loadXML((string) $fileData);
         $fileData = $domDocument->saveXML();
+        $domDocument = null;
 
         parent::__construct($fileName, $fileData, self::CONTENT_TYPE);
     }
