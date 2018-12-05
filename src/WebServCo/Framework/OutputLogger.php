@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
-final class OutputLogger extends AbstractLogger implements \WebServCo\Framework\Interfaces\LoggerInterface
+final class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\Interfaces\OutputLoggerInterface
 {
     public function clear()
     {
@@ -10,6 +10,6 @@ final class OutputLogger extends AbstractLogger implements \WebServCo\Framework\
 
     public function log($level, $message, $context = [])
     {
-        echo $message;
+        $this->output($message, true);
     }
 }
