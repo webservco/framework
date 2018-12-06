@@ -1,5 +1,5 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Log;
 
 final class CliOutputLogger extends AbstractOutputLogger implements
     \WebServCo\Framework\Interfaces\OutputLoggerInterface

@@ -1,19 +1,19 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Log;
 
 abstract class AbstractLogger
 {
     abstract public function clear();
-    
+
     abstract public function log($level, $message, $context = []);
 
     public function debug($message, $context = [])
     {
-        return $this->log(\WebServCo\Framework\LogLevel::DEBUG, $message, $context);
+        return $this->log(LogLevel::DEBUG, $message, $context);
     }
 
     public function error($message, $context = [])
     {
-        return $this->log(\WebServCo\Framework\LogLevel::ERROR, $message, $context);
+        return $this->log(LogLevel::ERROR, $message, $context);
     }
 }
