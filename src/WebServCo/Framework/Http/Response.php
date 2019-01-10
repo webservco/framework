@@ -1,9 +1,7 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Http;
 
-use WebServCo\Framework\Http;
-
-class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
+class Response extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
     protected $statusText;
@@ -32,13 +30,14 @@ class HttpResponse extends \WebServCo\Framework\AbstractResponse implements
 
     public function setStatus($statusCode)
     {
-        if (!isset(Http::$statusCodes[$statusCode])) {
+        $statusCodes = StatusCode::getSupported();
+        if (!isset($statusCodes[$statusCode])) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
                     sprintf('Invalid HTTP status code: %s', $statusCode)
                 );
         }
         $this->statusCode = $statusCode;
-        $this->statusText = Http::$statusCodes[$statusCode];
+        $this->statusText = $statusCodes[$statusCode];
     }
 
     public function setHeader($name, $value)

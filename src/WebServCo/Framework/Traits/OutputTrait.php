@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Http\Response;
+
 trait OutputTrait
 {
     protected $outputLoader;
@@ -22,7 +24,7 @@ trait OutputTrait
 
     protected function outputHtml($data, $pageTemplate, $mainTemplate = null)
     {
-        return new \WebServCo\Framework\HttpResponse(
+        return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
             200,
             ['Content-Type' => 'text/html']
@@ -35,7 +37,7 @@ trait OutputTrait
             'result' => $result,
             'data' => $content,
         ];
-        return new \WebServCo\Framework\HttpResponse(
+        return new Response(
             $this->output()->json($data),
             200,
             ['Content-Type' => 'application/json']

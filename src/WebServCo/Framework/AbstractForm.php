@@ -65,7 +65,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             }
             return false;
         }
-        return $this->request()->getMethod() === \WebServCo\Framework\Http::METHOD_POST;
+        return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
     }
 
     final public function getSubmitField()

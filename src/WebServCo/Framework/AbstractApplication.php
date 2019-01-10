@@ -160,7 +160,7 @@ abstract class AbstractApplication
         }
         $output .= '</div></body></html>';
 
-        $response = new \WebServCo\Framework\HttpResponse(
+        $response = new \WebServCo\Framework\Http\Response(
             $output,
             $statusCode,
             ['Content-Type' => 'text/html']

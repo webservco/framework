@@ -1,6 +1,8 @@
 <?php
 namespace WebServCo\Framework\Files;
 
+use WebServCo\Framework\Http\Response;
+
 abstract class AbstractFile
 {
     protected $fileName;
@@ -23,7 +25,7 @@ abstract class AbstractFile
 
     public function getDownloadResponse()
     {
-        return new \WebServCo\Framework\HttpResponse(
+        return new Response(
             $this->fileData,
             200,
             [
@@ -55,7 +57,7 @@ abstract class AbstractFile
 
     public function getOutputResponse()
     {
-        return new \WebServCo\Framework\HttpResponse(
+        return new Response(
             $this->fileData,
             200,
             [

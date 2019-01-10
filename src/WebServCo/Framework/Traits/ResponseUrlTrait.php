@@ -7,7 +7,7 @@ trait ResponseUrlTrait
 
     /**
      * Redirect to an application location (Request target).
-     * This method returns a HttpResponse object that needs to be in turn returned to the application.
+     * This method returns a Response object that needs to be in turn returned to the application.
      */
     final protected function getRedirectResponse($location, $addSuffix = true)
     {
@@ -21,7 +21,7 @@ trait ResponseUrlTrait
 
     /**
      * Redirect to the current URL.
-     * This method returns a HttpResponse object that needs to be in turn returned to the application.
+     * This method returns a Response object that needs to be in turn returned to the application.
      */
     final protected function getReloadResponse($removeParameters = [])
     {
@@ -31,11 +31,11 @@ trait ResponseUrlTrait
 
     /**
      * Redirect to a full URL.
-     * This method returns a HttpResponse object that needs to be in turn returned to the application.
+     * This method returns a Response object that needs to be in turn returned to the application.
      */
     final protected function getRedirectUrlResponse($url)
     {
-        return new \WebServCo\Framework\HttpResponse(
+        return new \WebServCo\Framework\Http\Response(
             null,
             302,
             ['Location' => $url]

@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Http;
+use WebServCo\Framework\Http\Method;
 use WebServCo\Framework\Exceptions\ApplicationException;
 
 final class CurlBrowser implements
@@ -35,7 +35,7 @@ final class CurlBrowser implements
 
     public function get($url)
     {
-        $this->setMethod(Http::METHOD_GET);
+        $this->setMethod(Method::GET);
         return $this->retrieve($url);
     }
 
@@ -51,13 +51,13 @@ final class CurlBrowser implements
 
     public function head($url)
     {
-        $this->setMethod(Http::METHOD_HEAD);
+        $this->setMethod(Method::HEAD);
         return $this->retrieve($url);
     }
 
     public function post($url, $postData = null)
     {
-        $this->setMethod(Http::METHOD_POST);
+        $this->setMethod(Method::POST);
         $this->setPostData($postData);
         return $this->retrieve($url);
     }
@@ -92,7 +92,7 @@ final class CurlBrowser implements
         $this->debugDo();
 
         switch ($this->method) {
-            case Http::METHOD_POST:
+            case Method::POST:
                 curl_setopt($this->curl, CURLOPT_POST, true);
                 if (!empty($this->postData)) {
                     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
@@ -101,7 +101,7 @@ final class CurlBrowser implements
                     }
                 }
                 break;
-            case Http::METHOD_HEAD:
+            case Method::HEAD:
                 curl_setopt($this->curl, CURLOPT_NOBODY, true);
                 break;
         }
@@ -144,7 +144,7 @@ final class CurlBrowser implements
 
         $this->debugFinish();
 
-        return new \WebServCo\Framework\HttpResponse(
+        return new \WebServCo\Framework\Http\Response(
             $body,
             $httpCode,
             end($this->responseHeaders)
@@ -158,7 +158,7 @@ final class CurlBrowser implements
 
     public function setMethod($method)
     {
-        if (!in_array($method, Http::getMethods())) {
+        if (!in_array($method, Method::getSupported())) {
             throw new ApplicationException('Unsupported method');
         }
         $this->method = $method;

@@ -1,6 +1,7 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Http\Method;
 use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
@@ -31,10 +32,10 @@ trait RequestProcessTrait
         $this->process();
 
         switch ($this->method) {
-            case \WebServCo\Framework\Http::METHOD_GET:
-            case \WebServCo\Framework\Http::METHOD_HEAD:
+            case Method::GET:
+            case Method::HEAD:
                 break;
-            case \WebServCo\Framework\Http::METHOD_POST:
+            case Method::POST:
                 $this->processPost($post);
                 break;
         }
@@ -53,7 +54,7 @@ trait RequestProcessTrait
         if (empty($this->server['REQUEST_METHOD']) ||
         !in_array(
             $this->server['REQUEST_METHOD'],
-            \WebServCo\Framework\Http::getMethods()
+            Method::getSupported()
         )) {
             return false;
         }
