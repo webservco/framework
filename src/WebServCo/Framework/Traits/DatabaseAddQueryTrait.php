@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\AbstractDatabase;
+use WebServCo\Framework\Database\QueryType;
 
 trait DatabaseAddQueryTrait
 {
@@ -47,15 +47,15 @@ trait DatabaseAddQueryTrait
     final protected function generateAddQueryPrefix($queryType)
     {
         switch ($queryType) {
-            case AbstractDatabase::QUERY_TYPE_REPLACE:
-                $query = AbstractDatabase::QUERY_TYPE_REPLACE . ' INTO';
+            case QueryType::REPLACE:
+                $query = QueryType::REPLACE . ' INTO';
                 break;
-            case AbstractDatabase::QUERY_TYPE_INSERT_IGNORE:
-                $query = AbstractDatabase::QUERY_TYPE_INSERT_IGNORE . ' INTO';
+            case QueryType::INSERT_IGNORE:
+                $query = QueryType::INSERT_IGNORE . ' INTO';
                 break;
-            case AbstractDatabase::QUERY_TYPE_INSERT:
+            case QueryType::INSERT:
             default:
-                $query = AbstractDatabase::QUERY_TYPE_INSERT . ' INTO';
+                $query = QueryType::INSERT . ' INTO';
                 break;
         }
 

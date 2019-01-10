@@ -1,9 +1,9 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Database;
 
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractDatabase
+abstract class AbstractPdoDatabase extends AbstractDatabase
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;

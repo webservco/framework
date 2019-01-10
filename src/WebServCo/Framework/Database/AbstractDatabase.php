@@ -1,17 +1,13 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Database;
 
 abstract class AbstractDatabase extends \WebServCo\Framework\AbstractLibrary
 {
-    const QUERY_TYPE_INSERT = 'INSERT';
-    const QUERY_TYPE_INSERT_IGNORE = 'INSERT IGNORE';
-    const QUERY_TYPE_REPLACE = 'REPLACE';
-    
     protected $db;
     protected $stmt;
     protected $lastInsertId;
     protected $rows;
-    
+
     /**
      * Get last inserted Id.
      *

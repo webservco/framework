@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Libraries;
 use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-final class MysqliDatabase extends \WebServCo\Framework\AbstractDatabase implements
+final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
     use \WebServCo\Framework\Traits\DatabaseTrait;

@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-final class PgsqlPdoDatabase extends \WebServCo\Framework\AbstractPdoDatabase implements
+final class PgsqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
     use \WebServCo\Framework\Traits\PgsqlDatabaseTrait;
