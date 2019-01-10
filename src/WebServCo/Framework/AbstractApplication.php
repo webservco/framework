@@ -176,7 +176,7 @@ abstract class AbstractApplication
             $output .= $errorInfo['message'] . PHP_EOL;
             $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         }
-        $response = new \WebServCo\Framework\CliResponse(
+        $response = new \WebServCo\Framework\Cli\Response(
             $output,
             1
         );

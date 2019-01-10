@@ -1,7 +1,7 @@
 <?php
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Cli;
 
-final class CliResponse extends \WebServCo\Framework\AbstractResponse implements
+final class Response extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
     public function __construct($content = null, $exitStatus = 0)
