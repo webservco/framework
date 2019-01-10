@@ -9,9 +9,4 @@ final class DatabaseException extends ApplicationException
     {
         parent::__construct($message, $code, $previous);
     }
-
-    public function __toString()
-    {
-        return sprintf("%s: [%s]: %s\n", __CLASS__, $this->code, $this->message);
-    }
 }
