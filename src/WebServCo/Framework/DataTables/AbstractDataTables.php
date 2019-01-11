@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\DataTables;
 
-use WebServCo\Framework\Database\Order;
+use WebServCo\Framework\Database\Order as DatabaseOrder;
 
 abstract class AbstractDataTables
 {
@@ -81,7 +81,7 @@ abstract class AbstractDataTables
                     $items[] = sprintf(
                         ' %s %s',
                         $this->getDatabaseColumnName($columnArrayObject[$order->getColumn()]->getData()),
-                        in_array($dir, [Order::ASC, Order::DESC]) ? $dir : Order::ASC
+                        in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC
                     );
                 }
             }
