@@ -23,7 +23,7 @@ class Items
 
     public function remove($index)
     {
-        $this->arrayObject->offsetUnset();
+        $this->arrayObject->offsetUnset($index);
         $this->rebuildIndex();
         return true;
     }
