@@ -11,13 +11,13 @@ A PHP Framework
 ## Documentation
 
 ### Framework classes
-* [CLI Response](docs/CliResponse.md)
-* [Cli\ProgressBar](docs/Cli/Progress/Bar.md)
-* [Cli\ProgressLine](docs/Cli/Progress/Line.md)
-* [Cli\Runner](docs/Cli/Runner/Runner.md)
+* [CLI Response](/docs/CliResponse.md)
+* [Cli\ProgressBar](/docs/Cli/Progress/Bar.md)
+* [Cli\ProgressLine](/docs/Cli/Progress/Line.md)
+* [Cli\Runner](/docs/Cli/Runner/Runner.md)
 
 ### Libraries
-* [Cookie](docs/Libraries/Cookie.md)
-* [Internationalization](docs/Libraries/I18n.md)
-* [Database (PDO)](docs/Libraries/PdoDatabase.md)
-* [Session](docs/Libraries/Session.md)
+* [Cookie](/docs/Libraries/Cookie.md)
+* [Internationalization](/docs/Libraries/I18n.md)
+* [Database (PDO)](/docs/Libraries/PdoDatabase.md)
+* [Session](/docs/Libraries/Session.md)
