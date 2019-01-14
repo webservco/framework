@@ -8,3 +8,9 @@
 - Individual columns search
 
 ---
+
+## Usage
+
+For an example implementation please see the project [webservco/webapp-skeleton](https://github.com/webservco/webapp-skeleton).
+
+---
