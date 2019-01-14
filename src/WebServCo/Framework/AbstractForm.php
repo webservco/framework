@@ -58,7 +58,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
-                if ($this->request()->data($field)) {
+                if (false !== $this->request()->data($field)) {
                     $this->submitField = $field;
                     return true;
                 }
