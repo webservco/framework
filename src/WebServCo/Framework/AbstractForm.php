@@ -15,6 +15,17 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
+    abstract protected function db();
+    /**
+     * @return bool
+     */
+    abstract protected function filter();
+
+    /**
+     * @return bool
+     */
+    abstract protected function validate();
+
     public function __construct($settings, $defaultData = [], $submitFields = [])
     {
         parent::__construct($settings);
@@ -41,18 +52,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             $this->valid = $this->validate();
         }
     }
-
-    abstract protected function db();
-
-    /**
-     * @return bool
-     */
-    abstract protected function filter();
-
-    /**
-     * @return bool
-     */
-    abstract protected function validate();
 
     final public function isSent()
     {
