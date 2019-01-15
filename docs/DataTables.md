@@ -11,6 +11,6 @@
 
 ## Usage
 
-For an example implementation please see the project [webservco/webapp-skeleton](https://github.com/webservco/webapp-skeleton).
+For additional information and example implementations please see the project [webservco/webapp-skeleton](https://github.com/webservco/webapp-skeleton).
 
 ---

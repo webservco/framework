@@ -8,16 +8,33 @@
 
 A PHP Framework
 
-## Documentation
+---
 
-### Framework classes
-* [CLI Response](/docs/CliResponse.md)
-* [Cli\ProgressBar](/docs/Cli/Progress/Bar.md)
-* [Cli\ProgressLine](/docs/Cli/Progress/Line.md)
-* [Cli\Runner](/docs/Cli/Runner/Runner.md)
+## Documentation
 
 ### Libraries
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
 * [Database (PDO)](/docs/Libraries/PdoDatabase.md)
 * [Session](/docs/Libraries/Session.md)
+
+### Framework functionality
+
+### CLI
+* [CLI Response](/docs/CliResponse.md)
+* [Cli\Progress\Bar](/docs/Cli/Progress/Bar.md)
+* [Cli\Progress\Line](/docs/Cli/Progress/Line.md)
+* [Cli\Runner](/docs/Cli/Runner/Runner.md)
+
+### DataTables
+* [DataTables](/docs/DataTables.md)
+
+---
+
+## Related projects
+
+### [webservco/webapp-skeleton](https://github.com/webservco/webapp-skeleton)
+A simple webservco/framework Web Application Skeleton to help start a new project fast.
+
+### [webservco/api](https://github.com/webservco/api)
+A PHP RESTful API Framework
