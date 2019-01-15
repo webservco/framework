@@ -7,7 +7,6 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 {
     protected $db;
 
-    abstract protected function getDatabaseColumnName($dataTablesColumnName);
     abstract protected function getQuery($searchQuery, $orderQuery, $limitQuery);
     abstract protected function getRecordsTotalQuery();
 
@@ -69,6 +68,11 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $data;
     }
 
+    protected function getDatabaseColumnName($dataTablesColumnName)
+    {
+        return $dataTablesColumnName;
+    }
+
     protected function getOrderQuery(ColumnArrayObject $columnArrayObject, OrderArrayObject $orderArrayObject)
     {
         $orderQuery = null;
@@ -117,10 +121,10 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
                 $searchValue = $search->getValue();
                 if (!empty($searchValue)) {
                     $query .= sprintf(
-                        " AND %s REGEXP ?",
+                        " AND %s LIKE ?",
                         $this->getDatabaseColumnName($column->getData())
                     );
-                    $params[] = $searchValue;
+                    $params[] = sprintf('%%%s%%', $searchValue);
                 }
             }
         }
