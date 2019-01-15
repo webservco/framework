@@ -7,7 +7,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 {
     protected $db;
 
-    abstract protected function getQuery($searchQuery, $orderQuery, $limitQuery);
+    abstract protected function getQuery($searchQueryPart, $orderQueryPart, $limitQuery);
     abstract protected function getRecordsTotalQuery();
 
     public function __construct(\WebServCo\Framework\Interfaces\DatabaseInterface $db)
@@ -22,11 +22,11 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
         $columnArrayObject = $request->getColumns();
 
-        list($searchQuery, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
+        list($searchQueryPart, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
         $params = array_merge($params, $searchParams);
 
         $orderArrayObject = $request->getOrder();
-        $orderQuery = $this->getOrderQuery($columnArrayObject, $orderArrayObject);
+        $orderQueryPart = $this->getOrderQueryPart($columnArrayObject, $orderArrayObject);
 
         $length = $request->getLength();
         if (-1 != $length) {
@@ -36,7 +36,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         }
 
         $pdoStatement = $this->db->query(
-            $this->getQuery($searchQuery, $orderQuery, $limitQuery),
+            $this->getQuery($searchQueryPart, $orderQueryPart, $limitQuery),
             $params
         );
 
@@ -44,7 +44,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
         $recordsFiltered = $this->getRecordsFiltered();
 
-        $recordsTotal = $this->getRecordsTotal($recordsFiltered, $searchQuery);
+        $recordsTotal = $this->getRecordsTotal($recordsFiltered, $searchQueryPart);
 
         return new Response(
             $request->getDraw(),
@@ -73,12 +73,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $dataTablesColumnName;
     }
 
-    protected function getOrderQuery(ColumnArrayObject $columnArrayObject, OrderArrayObject $orderArrayObject)
+    protected function getOrderQueryPart(ColumnArrayObject $columnArrayObject, OrderArrayObject $orderArrayObject)
     {
-        $orderQuery = null;
+        $query = null;
         $orderTotal = $orderArrayObject->count();
         if (0 < $orderTotal) {
-            $orderQuery = "ORDER BY";
+            $query = "ORDER BY";
             $items = [];
             foreach ($orderArrayObject as $order) {
                 if ($columnArrayObject[$order->getColumn()]->getOrderable()) {
@@ -90,9 +90,9 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
                     );
                 }
             }
-            $orderQuery .= implode(",", $items);
+            $query .= implode(",", $items);
         }
-        return $orderQuery;
+        return $query;
     }
 
     protected function getRecordsFiltered()
@@ -100,9 +100,9 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
     }
 
-    protected function getRecordsTotal($recordsFiltered, $searchQuery)
+    protected function getRecordsTotal($recordsFiltered, $searchQueryPart)
     {
-        if (empty($searchQuery)) {
+        if (empty($searchQueryPart)) {
             return $recordsFiltered;
         }
         return $this->db->getColumn( // grand total - query without the search, order, limits
