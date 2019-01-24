@@ -52,6 +52,15 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
+    final public function errors($key, $defaultValue = false)
+    {
+        return \WebServCo\Framework\ArrayStorage::get(
+            $this->errors,
+            $key,
+            $defaultValue
+        );
+    }
+
     final public function isSent()
     {
         if (!empty($this->submitFields)) {
