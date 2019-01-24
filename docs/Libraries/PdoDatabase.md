@@ -11,7 +11,19 @@
 
 ### Standalone initialization
 
-[TODO]
+```
+$db = new \WebServCo\Framework\Libraries\MysqlPdoDatabase(
+    [
+        'connection' => [
+            'host' => '',
+            'username' => '',
+            'passwd' => '',
+            'dbname' => '',
+            'port' => '',
+        ],
+    ]
+);
+```
 
 ## Usage
 
