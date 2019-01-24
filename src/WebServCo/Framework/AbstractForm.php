@@ -15,7 +15,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
-    abstract protected function db();
     /**
      * @return bool
      */
