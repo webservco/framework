@@ -1,6 +1,6 @@
-# CLI Response
+# Response
 
-## \WebServCo\Framework\CliResponse
+## \WebServCo\Framework\Cli\Response
 
 ## Usage
 
@@ -22,7 +22,7 @@ Error:
 return new \WebServCo\Framework\Libraries\CliResponse('Error!' . PHP_EOL, 1);
 ```
 
-It's also possilbe to use booleans for the status code:
+It's also possible to use boolean for the status code:
 
 ```php
 return new \WebServCo\Framework\Libraries\CliResponse('Hello World' . PHP_EOL, true);
@@ -32,7 +32,7 @@ return new \WebServCo\Framework\Libraries\CliResponse('Hello World' . PHP_EOL, t
 return new \WebServCo\Framework\Libraries\CliResponse('Error!' . PHP_EOL, false);
 ```
 
-To simply return the object after sucessful custom output:
+To simply return the object after successful custom output:
 ```php
 return new \WebServCo\Framework\Libraries\CliResponse();
 ```

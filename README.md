@@ -21,7 +21,7 @@ A PHP Framework
 ### Framework functionality
 
 ### CLI
-* [CLI Response](/docs/CliResponse.md)
+* [CLI\Response](/docs/Cli/Response.md)
 * [Cli\Progress\Bar](/docs/Cli/Progress/Bar.md)
 * [Cli\Progress\Line](/docs/Cli/Progress/Line.md)
 * [Cli\Runner](/docs/Cli/Runner/Runner.md)
