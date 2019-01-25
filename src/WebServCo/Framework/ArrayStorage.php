@@ -36,6 +36,10 @@ final class ArrayStorage
             return $defaultValue;
         }
 
+        if (!is_array($storage)) {
+            return $storage;
+        }
+
         /**
          * If $setting is an array, process it recursively.
          */
