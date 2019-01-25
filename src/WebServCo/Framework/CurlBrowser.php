@@ -20,6 +20,8 @@ final class CurlBrowser implements
     protected $debugInfo;
     protected $response;
     protected $responseHeaders;
+    protected $responseHeadersArray;
+    protected $responseHeaderArray;
 
     protected $logger;
 
@@ -68,59 +70,20 @@ final class CurlBrowser implements
     {
         $this->debugInit();
 
-
         $this->curl = curl_init();
         if (!is_resource($this->curl)) {
             throw new ApplicationException('Not a valid resource');
         }
-        curl_setopt_array(
-            $this->curl,
-            [
-                CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
-                CURLOPT_URL => $url,
-                CURLOPT_HEADER => true, /* include the header in the output */
-                CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
-                CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
-                CURLOPT_TIMEOUT => 60, // The maximum number of seconds to allow cURL functions to execute.
-            ]
-        );
-        if ($this->skipSslVerification) {
-            // stop cURL from verifying the peer's certificate
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-            // don't check the existence of a common name in the SSL peer certificate
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
-        }
+
+        $this->setCurlOptions($url);
 
         $this->debugDo();
 
-        switch ($this->method) {
-            case Method::POST:
-                curl_setopt($this->curl, CURLOPT_POST, true);
-                if (!empty($this->postData)) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
-                    if (!is_array($this->postData)) {
-                        $this->setRequestHeader('Content-Length', mb_strlen($this->postData));
-                    }
-                }
-                break;
-            case Method::HEAD:
-                curl_setopt($this->curl, CURLOPT_NOBODY, true);
-                break;
-        }
+        $this->handleRequestMethod();
 
-        if (!empty($this->requestHeaders)) {
-            curl_setopt(
-                $this->curl,
-                CURLOPT_HTTPHEADER,
-                $this->parseRequestHeaders($this->requestHeaders)
-            );
-        }
+        $this->setRequestHeaders();
 
-        $this->response = curl_exec($this->curl);
-        $this->curlError = curl_error($this->curl);
-        if (false === $this->response) {
-            throw new ApplicationException(sprintf("cURL error: %s", $this->curlError));
-        }
+        $this->processResponse();
 
         $this->debugInfo = curl_getinfo($this->curl);
 
@@ -132,17 +95,9 @@ final class CurlBrowser implements
             throw new ApplicationException(sprintf("Empty HTTP status code. cURL error: %s", $this->curlError));
         }
 
-        /**
-         * For redirects, the response will contain evey header/body pair.
-         * The last header/body will be at the end of the response.
-         */
-        $responseParts = explode("\r\n\r\n", (string) $this->response);
-        $body = trim((string) array_pop($responseParts));
+        $body = trim($this->response);
 
-        $this->responseHeaders = [];
-        foreach ($responseParts as $item) {
-            $this->responseHeaders[] = $this->parseResponseHeaders($item);
-        }
+        $this->processResponseHeaders();
 
         $this->debugFinish();
 
@@ -234,6 +189,40 @@ final class CurlBrowser implements
         return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
     }
 
+    protected function handleRequestMethod()
+    {
+        if (!is_resource($this->curl)) {
+            throw new ApplicationException('Not a valid resource');
+        }
+
+        switch ($this->method) {
+            case Method::POST:
+                curl_setopt($this->curl, CURLOPT_POST, true);
+                if (!empty($this->postData)) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
+                    if (!is_array($this->postData)) {
+                        $this->setRequestHeader('Content-Length', mb_strlen($this->postData));
+                    }
+                }
+                break;
+            case Method::HEAD:
+                curl_setopt($this->curl, CURLOPT_NOBODY, true);
+                break;
+        }
+    }
+
+    protected function headerCallback($curlResource, $headerData)
+    {
+        $headerDataTrimmed = trim($headerData);
+        if (empty($headerDataTrimmed)) {
+            $this->responseHeadersArray[] = $this->responseHeaderArray;
+            $this->responseHeaderArray = [];
+        }
+        $this->responseHeaderArray[] = $headerData;
+
+        return strlen($headerData);
+    }
+
     protected function parseRequestHeaders($headers)
     {
         $data = [];
@@ -249,11 +238,11 @@ final class CurlBrowser implements
         return $data;
     }
 
-    protected function parseResponseHeaders($headerString)
+    protected function parseResponseHeadersArray($responseHeadersArray = [])
     {
         $headers = [];
-        $lines = explode("\r\n", $headerString);
-        foreach ($lines as $index => $line) {
+
+        foreach ($responseHeadersArray as $index => $line) {
             if (0 === $index) {
                 continue; /* we'll get the status code elsewhere */
             }
@@ -280,12 +269,75 @@ final class CurlBrowser implements
                         }
                     }
                 }
-                $headers[$key][] = $value;
+                $headers[$key][] = trim($value);
                 $headers[$key] = array_values((array) $headers[$key]); // re-index array
             } else {
-                $headers[$key] = $value;
+                $headers[$key] = trim($value);
             }
         }
         return $headers;
+    }
+
+    protected function processResponse()
+    {
+        $this->response = curl_exec($this->curl);
+        $this->curlError = curl_error($this->curl);
+        if (false === $this->response) {
+            throw new ApplicationException(sprintf("cURL error: %s", $this->curlError));
+        }
+    }
+
+    protected function processResponseHeaders()
+    {
+        $this->responseHeaders = [];
+        foreach ($this->responseHeadersArray as $item) {
+            $this->responseHeaders[] = $this->parseResponseHeadersArray($item);
+        }
+    }
+
+    protected function setCurlOptions($url)
+    {
+        if (!is_resource($this->curl)) {
+            throw new ApplicationException('Not a valid resource');
+        }
+
+        // set options
+        curl_setopt_array(
+            $this->curl,
+            [
+                CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
+                CURLOPT_URL => $url,
+                CURLOPT_HEADER => false, /* do not include the header in the output */
+                CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
+                CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
+                CURLOPT_TIMEOUT => 60, // The maximum number of seconds to allow cURL functions to execute.
+            ]
+        );
+        // check if we should ignore ssl errors
+        if ($this->skipSslVerification) {
+            // stop cURL from verifying the peer's certificate
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+            // don't check the existence of a common name in the SSL peer certificate
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+    }
+
+    protected function setRequestHeaders()
+    {
+        if (!is_resource($this->curl)) {
+            throw new ApplicationException('Not a valid resource');
+        }
+
+        // set headers
+        if (!empty($this->requestHeaders)) {
+            curl_setopt(
+                $this->curl,
+                CURLOPT_HTTPHEADER,
+                $this->parseRequestHeaders($this->requestHeaders)
+            );
+        }
+
+        // Callback to process response headers
+        curl_setopt($this->curl, CURLOPT_HEADERFUNCTION, [$this, 'headerCallback']);
     }
 }
