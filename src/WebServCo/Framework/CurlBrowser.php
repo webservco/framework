@@ -58,7 +58,9 @@ final class CurlBrowser implements
     public function post($url, $postData = null)
     {
         $this->setMethod(Method::POST);
-        $this->setPostData($postData);
+        if (!empty($postData)) {
+            $this->setPostData($postData);
+        }
         return $this->retrieve($url);
     }
 
