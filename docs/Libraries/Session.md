@@ -17,7 +17,7 @@ To use the library in another place:
 ```php
 final public function session()
 {
-    return \\WebServCo\Framework\Framework::getLibrary('Session');
+    return \WebServCo\Framework\Framework::getLibrary('Session');
 }
 ```
 
