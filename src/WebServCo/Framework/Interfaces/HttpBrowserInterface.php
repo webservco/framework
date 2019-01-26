@@ -7,5 +7,7 @@ interface HttpBrowserInterface
 
     public function post($url, $data = []);
 
+    public function setDebug($debug);
+
     public function setRequestHeader($name, $value);
 }
