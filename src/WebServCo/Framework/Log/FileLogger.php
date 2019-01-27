@@ -15,10 +15,10 @@ final class FileLogger extends AbstractLogger implements \WebServCo\Framework\In
         $this->channel = $channel;
 
         if (!is_readable($logDir)) {
-            throw new ApplicationException('Log dir not readable');
+            throw new ApplicationException('Log directory not readable');
         }
         if (!is_writable($logDir)) {
-            throw new ApplicationException('Log dir not writeable');
+            throw new ApplicationException('Log directory not writeable');
         }
         $this->logPath = sprintf('%s%s.log', $logDir, $this->channel);
 
