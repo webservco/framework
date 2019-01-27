@@ -21,7 +21,7 @@ final class ArrayStorage
     /**
      * Retrieve a value from a storage array.
      *
-     * @param array $storage
+     * @param mixed $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
