@@ -23,6 +23,14 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         $this->setContent($content);
     }
 
+    public function getHeader($name)
+    {
+        if (array_key_exists($name, $this->headers)) {
+            return $this->headers[$name];
+        }
+        return false;
+    }
+
     public function getHeaders()
     {
         return $this->headers;
