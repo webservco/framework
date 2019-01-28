@@ -39,7 +39,7 @@ trait RequestProcessTrait
                 $this->processPost($post);
                 break;
         }
-        if ($this->setting('clear_globals', true)) {
+        if ($this->setting('clear_globals', false)) {
             $this->clearGlobals();
         }
     }
