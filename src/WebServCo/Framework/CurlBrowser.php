@@ -7,26 +7,22 @@ use WebServCo\Framework\Exceptions\ApplicationException;
 final class CurlBrowser implements
     \WebServCo\Framework\Interfaces\HttpBrowserInterface
 {
+    protected $curl;
+    protected $curlError;
     protected $debug;
-    protected $skipSslVerification;
+    protected $debugInfo;
+    protected $debugOutput;
+    protected $debugStderr;
+    protected $logger;
+    protected $method;
+    protected $requestData;
     protected $requestHeaders;
     protected $requestContentType;
-
-    protected $method;
-    protected $postData;
-
-    protected $curl;
-    protected $debugStderr;
-    protected $debugOutput;
-    protected $debugInfo;
+    protected $skipSslVerification;
     protected $response;
     protected $responseHeaders;
-    protected $responseHeadersArray;
     protected $responseHeaderArray;
-
-    protected $logger;
-
-    protected $curlError;
+    protected $responseHeadersArray;
 
     public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
     {
@@ -60,11 +56,11 @@ final class CurlBrowser implements
         return $this->retrieve($url);
     }
 
-    public function post($url, $postData = null)
+    public function post($url, $data = null)
     {
         $this->setMethod(Method::POST);
-        if (!empty($postData)) {
-            $this->setPostData($postData);
+        if (!empty($data)) {
+            $this->setRequestData($data);
         }
         return $this->retrieve($url);
     }
@@ -125,19 +121,19 @@ final class CurlBrowser implements
         return true;
     }
 
-    public function setPostData($postData)
+    public function setRequestData($data)
     {
-        if (is_array($postData)) {
-            $this->postData = [];
-            foreach ($postData as $key => $value) {
+        if (is_array($data)) {
+            $this->requestData = [];
+            foreach ($data as $key => $value) {
                 if (is_array($value)) {
                     throw new \InvalidArgumentException('POST value can not be an array');
                 }
-                $this->postData[$key] = $value;
+                $this->requestData[$key] = $value;
             }
             return true;
         }
-        $this->postData = $postData;
+        $this->requestData = $data;
         return true;
     }
 
@@ -211,13 +207,14 @@ final class CurlBrowser implements
                 * curl_setopt($this->curl, CURLOPT_POST, true);
                 */
                 curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $this->method);
-                if (!empty($this->postData)) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
-                    if (is_array($this->postData)) {
+                if (!empty($this->requestData)) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->requestData);
+                    if (is_array($this->requestData)) {
                         $this->setRequestHeader('Content-Type', 'multipart/form-data');
                     } else {
                         $this->setRequestHeader('Content-Type', $this->requestContentType);
-                        $this->setRequestHeader('Content-Length', mb_strlen($this->postData));
+                        // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
+                        $this->setRequestHeader('Content-Length', strlen($this->requestData));
                     }
                 }
                 break;
