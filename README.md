@@ -20,13 +20,15 @@ A PHP Framework
 
 ### Framework functionality
 
-### CLI
+* [CurlBrowser](/docs/CurlBrowser.md)
+
+#### CLI
 * [CLI\Response](/docs/Cli/Response.md)
 * [Cli\Progress\Bar](/docs/Cli/Progress/Bar.md)
 * [Cli\Progress\Line](/docs/Cli/Progress/Line.md)
 * [Cli\Runner](/docs/Cli/Runner/Runner.md)
 
-### DataTables
+#### DataTables
 * [DataTables](/docs/DataTables.md)
 
 ---
