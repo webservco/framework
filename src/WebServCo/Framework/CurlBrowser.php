@@ -10,6 +10,7 @@ final class CurlBrowser implements
     protected $debug;
     protected $skipSslVerification;
     protected $requestHeaders;
+    protected $requestContentType;
 
     protected $method;
     protected $postData;
@@ -33,6 +34,8 @@ final class CurlBrowser implements
         $this->debug = false;
         $this->skipSslVerification = false;
         $this->requestHeaders = [];
+        // Default Content-Type for
+        $this->requestContentType = 'application/x-www-form-urlencoded';
     }
 
     public function get($url)
@@ -138,6 +141,11 @@ final class CurlBrowser implements
         return true;
     }
 
+    public function setRequestContentType($contentType)
+    {
+        $this->requestContentType = $contentType;
+    }
+
     public function setRequestHeader($name, $value)
     {
         $this->requestHeaders[$name] = $value;
@@ -197,10 +205,18 @@ final class CurlBrowser implements
 
         switch ($this->method) {
             case Method::POST:
-                curl_setopt($this->curl, CURLOPT_POST, true);
+                /*
+                * This sets the header application/x-www-form-urlencoded
+                * Use custom request instead and handle headers manually
+                * curl_setopt($this->curl, CURLOPT_POST, true);
+                */
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $this->method);
                 if (!empty($this->postData)) {
                     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->postData);
-                    if (!is_array($this->postData)) {
+                    if (is_array($this->postData)) {
+                        $this->setRequestHeader('Content-Type', 'multipart/form-data');
+                    } else {
+                        $this->setRequestHeader('Content-Type', $this->requestContentType);
                         $this->setRequestHeader('Content-Length', mb_strlen($this->postData));
                     }
                 }
