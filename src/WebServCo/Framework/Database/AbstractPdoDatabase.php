@@ -126,6 +126,10 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
             return false;
         }
 
+        if (!is_array($data)) {
+            throw new DatabaseException('"Parameters" is not an array.');
+        }
+
         $i = 1;
         foreach ($data as $item) {
             if (is_array($item)) {
