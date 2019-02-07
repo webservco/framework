@@ -5,8 +5,8 @@ final class ArrayStorageException extends ApplicationException
 {
     const CODE = 0;
 
-    public function __construct($message, $code = self::CODE, \Exception $previous = null)
+    public function __construct($message, \Exception $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, self::CODE, $previous);
     }
 }
