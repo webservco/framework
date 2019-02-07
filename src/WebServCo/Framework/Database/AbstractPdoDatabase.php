@@ -57,8 +57,10 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
             }
             $this->setLastInsertId();
             return $this->stmt;
-        } catch (\Exception $e) { //PDOException/RuntimeException/Exception
-            throw new DatabaseException($e->getMessage());
+        } catch (\PDOException $e) {
+            throw new DatabaseException($e->getMessage(), $e);
+        } catch (\RuntimeException $e) {
+            throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
@@ -134,13 +136,23 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
         foreach ($data as $item) {
             if (is_array($item)) {
                 foreach ($item as $v) {
+                    $this->validateParam($v);
                     $this->stmt->bindValue($i, $v, $this->getDataType($v));
                     $i++;
                 }
             } else {
+                $this->validateParam($item);
                 $this->stmt->bindValue($i, $item, $this->getDataType($item));
                 $i++;
             }
+        }
+        return true;
+    }
+
+    protected function validateParam($param)
+    {
+        if (is_array($param)) {
+            throw new DatabaseException('Parameter is an array.');
         }
         return true;
     }
