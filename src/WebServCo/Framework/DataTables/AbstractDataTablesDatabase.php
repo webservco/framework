@@ -70,7 +70,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     protected function getDatabaseColumnName($dataTablesColumnName)
     {
-        return $dataTablesColumnName;
+        return $this->db->escapeIdentifier($dataTablesColumnName);
     }
 
     protected function getOrderQueryPart(ColumnArrayObject $columnArrayObject, OrderArrayObject $orderArrayObject)
