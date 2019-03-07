@@ -78,12 +78,25 @@ class Application extends \WebServCo\Framework\AbstractApplication
             throw new ApplicationException("Invalid route");
         }
 
-        $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
+        $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
         if (!class_exists($className)) {
+            /* enable in V10 *
             throw new NotFoundException(
                 sprintf('No matching %s found', $classType)
             );
+            /* enable in V10 */
+
+            /* remove in V10 */
+            // check for v9 class name
+            $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
+            if (!class_exists($className)) {
+                throw new NotFoundException(
+                    sprintf('No matching %s found', $classType)
+                );
+            }
+            /* remove in V10 */
         }
+
         $object = new $className;
         $parent = get_parent_class($object);
         if (method_exists((string) $parent, $method) ||
