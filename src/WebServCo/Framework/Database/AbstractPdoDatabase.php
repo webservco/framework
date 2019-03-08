@@ -77,9 +77,11 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
             }
             $this->db->commit();
             return true;
-        } catch (\Exception $e) { //PDOException/RuntimeException/Exception
+        // \WebServCo\Framework\Exceptions\DatabaseException
+        // PDOException/RuntimeException/Exception
+        } catch (\Exception $e) {
             $this->db->rollBack();
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
