@@ -72,11 +72,15 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         /**
          * Do not use LC_ALL, in order to skip LC_NUMERIC.
          */
-        setlocale(LC_COLLATE, $locale);
-        setlocale(LC_CTYPE, $locale);
-        setlocale(LC_MONETARY, $locale);
-        setlocale(LC_TIME, $locale);
-        setlocale(LC_MESSAGES, $locale);
+        if (defined('LC_MESSAGES')) {
+            setlocale(LC_COLLATE, $locale);
+            setlocale(LC_CTYPE, $locale);
+            setlocale(LC_MONETARY, $locale);
+            setlocale(LC_TIME, $locale);
+            setlocale(LC_MESSAGES, $locale);
+        } else { // Windows
+            setlocale(LC_ALL, $locale);
+        }
 
         return true;
     }
