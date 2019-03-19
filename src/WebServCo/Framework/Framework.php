@@ -44,7 +44,11 @@ final class Framework
      */
     public static function getPath()
     {
-        return str_replace('src/WebServCo/Framework', '', __DIR__);
+        return str_replace(
+          sprintf('src%sWebServCo%sFramework', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+          '',
+          __DIR__
+        );
     }
 
     private static function loadLibraryConfiguration($configName)
@@ -100,7 +104,16 @@ final class Framework
 
     protected static function loadHelper($className)
     {
-        $path = self::getPath() . 'src/WebServCo/Framework/Helpers/' . $className . 'Helper.php';
+        $path = sprintf(
+            '%ssrc%sWebServCo%sFramework%sHelpers%s%sHelper.php',
+            self::getPath(),
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            $className
+        );
+
         if (!is_readable($path)) {
             throw new ApplicationException(
                 sprintf('Helper for %s Library not found', $className)
