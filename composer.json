@@ -32,8 +32,8 @@
         }
     },
     "scripts" : {
-        "test" : "vendor/bin/phpunit --colors=always",
-        "test:d" : "vendor/bin/phpunit --testdox",
+        "test" : "phpunit --colors=always",
+        "test:d" : "phpunit --testdox",
         "check:structure" : "pds-skeleton validate .",
         "check" : "phpcs --standard=PSR2 --extensions=php src tests",
         "s:1": "phpstan analyse src tests --level=1 --ansi -c phpstan.neon",
