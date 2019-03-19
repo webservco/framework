@@ -21,11 +21,13 @@ trait RequestUrlTrait
         if (\WebServCo\Framework\Framework::isCli()) {
             return false;
         }
-        return $this->getSchema() .
-        '://' .
-        $this->getHost() .
-        $this->path .
-        DIRECTORY_SEPARATOR;
+        $url = sprintf(
+            '%s://%s%s',
+            $this->getSchema(),
+            $this->getHost(),
+            $this->path
+        );
+        return rtrim($url, '/') . '/';
     }
 
     public function getShortUrl()
