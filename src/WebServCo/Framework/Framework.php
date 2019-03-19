@@ -45,9 +45,9 @@ final class Framework
     public static function getPath()
     {
         return str_replace(
-          sprintf('src%sWebServCo%sFramework', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
-          '',
-          __DIR__
+            sprintf('src%sWebServCo%sFramework', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+            '',
+            __DIR__
         );
     }
 
