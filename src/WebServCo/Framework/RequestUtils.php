@@ -12,13 +12,13 @@ final class RequestUtils
         }
         return [$string, null];
     }
-    
+
     public static function transform($string)
     {
         $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
         return trim($string, ' /');
     }
-    
+
     public static function format($string)
     {
         $data = [];
@@ -30,14 +30,14 @@ final class RequestUtils
         }
         return $data;
     }
-    
+
     public static function split($string)
     {
         $parts = explode('/', $string);
         $parts = array_map('urldecode', $parts);
         return array_diff($parts, ['']);
     }
-    
+
     public static function removeSuffix($string, $suffixes = [])
     {
         if (is_array($suffixes)) {
@@ -52,7 +52,7 @@ final class RequestUtils
         }
         return [$string, null];
     }
-    
+
     public static function sanitizeString($string)
     {
         // Strip tags, optionally strip or encode special characters.
@@ -86,10 +86,10 @@ final class RequestUtils
             //")",
             "\$"
         ];
-        $string = str_replace($unwanted, '', $string);
+        $string = str_replace($unwanted, '', (string) $string);
         return $string;
     }
-    
+
     public static function parse($string, $path, $filename, $suffixes)
     {
         $pathLen = strlen($path);
