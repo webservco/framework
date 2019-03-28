@@ -32,4 +32,9 @@ final class Strings
 
         return false !== $function($haystack, $needle);
     }
+
+    public static function stripNonDigits($haystack)
+    {
+        return preg_replace("/\D+/", '', $haystack);
+    }
 }
