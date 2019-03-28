@@ -127,7 +127,7 @@ final class CurlBrowser implements
             $this->requestData = [];
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
-                    throw new \InvalidArgumentException('POST value can not be an array');
+                    throw new \InvalidArgumentException('Request data value can not be an array');
                 }
                 $this->requestData[$key] = $value;
             }
