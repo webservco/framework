@@ -172,10 +172,8 @@ abstract class AbstractApplication
     protected function haltCli($errorInfo = [])
     {
         $output = 'Boo boo' . PHP_EOL;
-        if (Environment::ENV_DEV == $this->config()->getEnv()) {
-            $output .= $errorInfo['message'] . PHP_EOL;
-            $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
-        }
+        $output .= $errorInfo['message'] . PHP_EOL;
+        $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
         $response = new \WebServCo\Framework\Cli\Response(
             $output,
             1
