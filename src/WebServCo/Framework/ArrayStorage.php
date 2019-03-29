@@ -37,7 +37,7 @@ final class ArrayStorage
         }
 
         if (!is_array($storage)) {
-            return $storage;
+            return $defaultValue;
         }
 
         /**
@@ -59,7 +59,7 @@ final class ArrayStorage
                  * current configuration data.
                  */
                 if (empty($setting)) {
-                    return $storage[$key];
+                    return false !== $storage[$key] ? $storage[$key] : $defaultValue;
                 }
                 /**
                  * Go down one element in the configuration data
