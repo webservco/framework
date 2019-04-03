@@ -31,6 +31,9 @@ A PHP Framework
 #### DataTables
 * [DataTables](/docs/DataTables.md)
 
+#### JSON
+* [JSON](/docs/Json.md)
+
 ---
 
 ## Related projects
