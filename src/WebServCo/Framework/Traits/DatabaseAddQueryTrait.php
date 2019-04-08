@@ -104,8 +104,7 @@ trait DatabaseAddQueryTrait
 
     final protected function generateValuesString($data)
     {
-        return ' (' . implode(', ', array_map(function () {
-            return '?';
-        }, $data)) . ')';
+        $placeholdersString = \WebServCo\Framework\Database\Utils\PreparedStatements::generatePlaceholdersString($data);
+        return ' (' . $placeholdersString . ')';
     }
 }
