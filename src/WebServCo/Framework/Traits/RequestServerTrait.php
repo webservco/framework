@@ -71,6 +71,11 @@ trait RequestServerTrait
         return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
     }
 
+    public function getRefererHost()
+    {
+        return parse_url($this->getReferer(), PHP_URL_HOST);
+    }
+
     public function getSchema()
     {
         if (Framework::isCli()) {
