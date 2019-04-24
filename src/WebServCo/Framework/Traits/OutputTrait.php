@@ -22,6 +22,15 @@ trait OutputTrait
         return $this->output()->cli($string, $eol);
     }
 
+    protected function outputHtmlPartial($data, $template)
+    {
+        return new Response(
+            $this->output()->html($data, $template),
+            200,
+            ['Content-Type' => 'text/html']
+        );
+    }
+
     protected function outputHtml($data, $pageTemplate, $mainTemplate = null)
     {
         return new Response(
