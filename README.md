@@ -12,6 +12,9 @@ A PHP Framework
 
 ## Documentation
 
+### Output
+* [Methods](/docs/Output/Methods.md)
+
 ### Libraries
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
