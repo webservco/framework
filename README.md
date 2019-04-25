@@ -15,10 +15,13 @@ A PHP Framework
 ### Output
 * [Methods](/docs/Output/Methods.md)
 
+### Database
+* [Abstract Object](/docs/Database/AbstractObject.md)
+* [PDO](/docs/Database/PdoDatabase.md)
+
 ### Libraries
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
-* [Database (PDO)](/docs/Libraries/PdoDatabase.md)
 * [Session](/docs/Libraries/Session.md)
 
 ### Framework functionality
