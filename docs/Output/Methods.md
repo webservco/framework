@@ -2,6 +2,10 @@
 
 > Available in each controller
 
+## `output()`
+
+Direct access to the Output Loader object.
+
 ## `outputCli($string = '', $eol = true)`
 
 Echoes the string and optional `PHP_EOL`.
