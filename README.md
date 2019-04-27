@@ -27,7 +27,7 @@ A PHP Framework
 
 ### Http
 * [CurlBrowser](/docs/CurlBrowser.md)
-* [X-Sendfile Response](/docs/Http/XSendFileResponse.md)
+* [X-Sendfile](/docs/Http/XSendFile.md)
 
 ### JSON
 * [JSON](/docs/Json.md)
