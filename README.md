@@ -12,33 +12,33 @@ A PHP Framework
 
 ## Documentation
 
-### Output
-* [Methods](/docs/Output/Methods.md)
+### CLI
+* [CLI\Response](/docs/Cli/Response.md)
+* [Cli\Progress\Bar](/docs/Cli/Progress/Bar.md)
+* [Cli\Progress\Line](/docs/Cli/Progress/Line.md)
+* [Cli\Runner](/docs/Cli/Runner/Runner.md)
 
 ### Database
 * [Abstract Object](/docs/Database/AbstractObject.md)
 * [PDO](/docs/Database/PdoDatabase.md)
+
+### DataTables
+* [DataTables](/docs/DataTables.md)
+
+### Http
+* [CurlBrowser](/docs/CurlBrowser.md)
+* [X-Sendfile Response](/docs/Http/XSendFileResponse.md)
+
+### JSON
+* [JSON](/docs/Json.md)
 
 ### Libraries
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
 * [Session](/docs/Libraries/Session.md)
 
-### Framework functionality
-
-* [CurlBrowser](/docs/CurlBrowser.md)
-
-#### CLI
-* [CLI\Response](/docs/Cli/Response.md)
-* [Cli\Progress\Bar](/docs/Cli/Progress/Bar.md)
-* [Cli\Progress\Line](/docs/Cli/Progress/Line.md)
-* [Cli\Runner](/docs/Cli/Runner/Runner.md)
-
-#### DataTables
-* [DataTables](/docs/DataTables.md)
-
-#### JSON
-* [JSON](/docs/Json.md)
+### Output
+* [Methods](/docs/Output/Methods.md)
 
 ---
 
