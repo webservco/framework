@@ -45,15 +45,12 @@ class Application extends \WebServCo\Framework\AbstractApplication
     {
         try {
             $response = $this->execute();
+            $statusCode = 0;
             if ($response instanceof
                 \WebServCo\Framework\Interfaces\ResponseInterface) {
                 $statusCode = $response->send();
-                $this->shutdown(
-                    null,
-                    true,
-                    Framework::isCli() ? $statusCode : 0
-                );
             }
+            $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
         } catch (\Exception $e) { // php5
