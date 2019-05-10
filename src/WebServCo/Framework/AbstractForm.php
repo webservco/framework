@@ -101,6 +101,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             'meta' => $this->setting('meta', []),
             'help' => $this->setting('help', []),
             'required' => array_fill_keys($this->setting('required', []), true),
+            'custom' => $this->setting('custom', []),
             'data' => $this->data,
             'errors' => $this->errors,
         ];
