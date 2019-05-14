@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Utils;
 
 final class Strings
 {
-    public static function startsWith($haystack, $needle, $ignoreCase = true)
+    public static function contains($haystack, $needle, $ignoreCase = true)
     {
         if (false !== $ignoreCase) {
             $function = function_exists('mb_stripos') ? 'mb_stripos' : 'stripos';
@@ -11,7 +11,7 @@ final class Strings
             $function = function_exists('mb_strpos') ? 'mb_strpos' : 'strpos';
         }
 
-        return 0 === $function($haystack, $needle);
+        return false !== $function($haystack, $needle);
     }
 
     public static function endsWith($haystack, $needle)
@@ -22,7 +22,7 @@ final class Strings
         return $check == $needle;
     }
 
-    public static function contains($haystack, $needle, $ignoreCase = true)
+    public static function startsWith($haystack, $needle, $ignoreCase = true)
     {
         if (false !== $ignoreCase) {
             $function = function_exists('mb_stripos') ? 'mb_stripos' : 'stripos';
@@ -30,7 +30,7 @@ final class Strings
             $function = function_exists('mb_strpos') ? 'mb_strpos' : 'strpos';
         }
 
-        return false !== $function($haystack, $needle);
+        return 0 === $function($haystack, $needle);
     }
 
     public static function stripNonDigits($haystack)
