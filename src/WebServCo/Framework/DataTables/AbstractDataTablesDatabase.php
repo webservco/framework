@@ -35,10 +35,8 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             $params[] = $length;
         }
 
-        $pdoStatement = $this->db->query(
-            $this->getQuery($searchQueryPart, $orderQueryPart, $limitQuery),
-            $params
-        );
+        $query = $this->getQuery($searchQueryPart, $orderQueryPart, $limitQuery);
+        $pdoStatement = $this->db->query($query, $params);
 
         $data = $this->getData($columnArrayObject, $pdoStatement);
 
