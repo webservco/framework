@@ -11,4 +11,5 @@ interface RequestInterface
     public function getMethod();
     public function getQuery();
     public function getRemoteAddress();
+    public function getUrl($removeParameters = []);
 }
