@@ -25,6 +25,9 @@ A PHP Framework
 ### DataTables
 * [DataTables](/docs/DataTables.md)
 
+### Files
+* [File upload](/docs/Files/Upload)
+
 ### Http
 * [CurlBrowser](/docs/CurlBrowser.md)
 * [X-Sendfile](/docs/Http/XSendFile.md)
