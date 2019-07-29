@@ -15,9 +15,9 @@ class Upload extends \WebServCo\Framework\Files\Upload\AbstractUpload
 
 ```php
 $allowedExtensions = [
-    'image/jpeg' => '.jpg',
-    'image/pjpeg' => '.jpg',
-    'image/x-citrix-jpeg' => '.jpg',
+    'image/jpeg' => 'jpg',
+    'image/pjpeg' => 'jpg',
+    'image/x-citrix-jpeg' => 'jpg',
     'image/png' => 'png',
     'image/x-png' => 'png',
     'image/x-citrix-png' => 'png',
