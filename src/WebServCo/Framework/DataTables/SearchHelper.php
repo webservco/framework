@@ -9,7 +9,7 @@ class SearchHelper extends AbstractHelper
 
         foreach (['value', 'regex'] as $item) {
             if (!isset($data[$item])) {
-                throw new \InvalidArgumentException(sprintf('Missing parameter: %s', $item));
+                throw new \InvalidArgumentException(sprintf('Missing search parameter: %s', $item));
             }
         }
 
