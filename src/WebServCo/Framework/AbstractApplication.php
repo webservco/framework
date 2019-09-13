@@ -1,8 +1,6 @@
 <?php
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Environment;
-
 abstract class AbstractApplication
 {
     protected $projectNamespace;
