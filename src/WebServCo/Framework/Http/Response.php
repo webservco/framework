@@ -17,7 +17,11 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         $this->charset = 'utf-8';
 
         foreach ($headers as $name => $value) {
-            $this->setHeader($name, $value);
+            /*
+            Make sure header names are lower case, to prevent inconsistency problems.
+            https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+            */
+            $this->setHeader(strtolower($name), $value);
         }
 
         $this->setContent($content);
@@ -25,6 +29,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
 
     public function getHeader($name)
     {
+        $name = strtolower($name);
         if (array_key_exists($name, $this->headers)) {
             return $this->headers[$name];
         }
