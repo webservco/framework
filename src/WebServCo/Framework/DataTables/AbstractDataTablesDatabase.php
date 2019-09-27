@@ -81,10 +81,14 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             foreach ($orderArrayObject as $order) {
                 if ($columnArrayObject[$order->getColumn()]->getOrderable()) {
                     $dir = strtoupper($order->getDir());
+                    $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC;
+                    $columnName = $this->getDatabaseColumnName($columnArrayObject[$order->getColumn()]->getData());
                     $items[] = sprintf(
-                        ' %s %s',
-                        $this->getDatabaseColumnName($columnArrayObject[$order->getColumn()]->getData()),
-                        in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC
+                        ' LENGTH(%s) %s , %s %s', // mimic natural sorting
+                        $columnName,
+                        $dir,
+                        $columnName,
+                        $dir
                     );
                 }
             }
