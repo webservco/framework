@@ -117,7 +117,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             if ($column->getSearchable()) {
                 $search = $column->getSearch();
                 $searchValue = $search->getValue();
-                if (!empty($searchValue)) {
+                if ('' !== $searchValue) { // make sure it works also for "0"
                     $query .= sprintf(
                         " AND %s LIKE ?",
                         $this->getDatabaseColumnName($column->getData())
