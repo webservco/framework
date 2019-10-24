@@ -40,5 +40,5 @@ $curlBrowser->setMethod(\WebServCo\Framework\Http\Method::POST);
 $curlBrowser->setRequestContentType('application/json');
 $curlBrowser->setRequestHeader('Accept', 'application/json');
 $curlBrowser->setRequestData('{"foo": "bar"}');
-$response = $curlBrowser->retrieve($url);
+$response = $curlBrowser->retrieve($url); // \WebServCo\Framework\Http\Response
 ```
