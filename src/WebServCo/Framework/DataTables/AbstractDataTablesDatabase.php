@@ -84,9 +84,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
                     $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC;
                     $columnName = $this->getDatabaseColumnName($columnArrayObject[$order->getColumn()]->getData());
                     $items[] = sprintf(
-                        ' LENGTH(%s) %s , %s %s', // mimic natural sorting
-                        $columnName,
-                        $dir,
+                        ' %s %s',
                         $columnName,
                         $dir
                     );
