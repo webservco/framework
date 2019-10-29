@@ -1,7 +1,9 @@
 <?php
 namespace WebServCo\Framework;
 
-abstract class AbstractLibrary
+abstract class AbstractLibrary implements
+    \WebServCo\Framework\Interfaces\DataInterface,
+    \WebServCo\Framework\Interfaces\SettingsInterface
 {
     private $settings = [];
     protected $data = [];
@@ -11,6 +13,27 @@ abstract class AbstractLibrary
         if (is_array($settings)) {
             $this->settings = $settings;
         }
+    }
+
+    /**
+     * Returns data if exists, $defaultValue otherwise.
+     *
+     * @param string $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function data($key, $defaultValue = false)
+    {
+        return \WebServCo\Framework\ArrayStorage::get(
+            $this->data,
+            $key,
+            $defaultValue
+        );
+    }
+
+    final public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -47,31 +70,10 @@ abstract class AbstractLibrary
         return true;
     }
 
-    final public function getData()
-    {
-        return $this->data;
-    }
-
     final public function setting($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
             $this->settings,
-            $key,
-            $defaultValue
-        );
-    }
-
-    /**
-     * Returns data if exists, $defaultValue otherwise.
-     *
-     * @param string $key
-     * @param mixed $defaultValue
-     * @return mixed
-     */
-    final public function data($key, $defaultValue = false)
-    {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->data,
             $key,
             $defaultValue
         );
