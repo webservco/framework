@@ -12,14 +12,18 @@ abstract class AbstractLibrary implements
     public function __construct($settings = [])
     {
         $this->clearData();
-        $this->settings = (array) $settings;
+
+        $this->settings = [];
+        if (is_array($settings)) { // check instead of cast to prevent unexpected results
+            $this->settings = $settings;
+        }
     }
 
     final public function clearData()
     {
         $this->data = [];
     }
-    
+
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
