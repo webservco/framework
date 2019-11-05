@@ -2,11 +2,12 @@
 namespace WebServCo\Framework;
 
 abstract class AbstractLibrary implements
+    \WebServCo\Framework\Interfaces\ArrayInterface,
     \WebServCo\Framework\Interfaces\DataInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
     private $settings = [];
-    protected $data = [];
+    private $data = [];
 
     public function __construct($settings = [])
     {
@@ -79,6 +80,13 @@ abstract class AbstractLibrary implements
         );
     }
 
+    public function toArray()
+    {
+        return [
+            'data' => $this->data,
+            'settings' => $this->settings,
+        ];
+    }
     /**
      * Returns data if not empty, $defaultValue otherwise.
      *
