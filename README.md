@@ -36,6 +36,7 @@ A PHP Framework
 * [JSON](/docs/Json.md)
 
 ### Libraries
+* [AbstractLibrary](/docs/Libraries/AbstractLibrary.md)
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
 * [Session](/docs/Libraries/Session.md)
