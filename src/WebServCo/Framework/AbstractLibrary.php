@@ -19,6 +19,7 @@ abstract class AbstractLibrary implements
     {
         $this->data = [];
     }
+    
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
@@ -90,6 +91,7 @@ abstract class AbstractLibrary implements
             'settings' => $this->settings,
         ];
     }
+
     /**
      * Returns data if not empty, $defaultValue otherwise.
      *
