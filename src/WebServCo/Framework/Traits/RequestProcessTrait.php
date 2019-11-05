@@ -6,6 +6,7 @@ use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
+    abstract public function clearData();
     abstract public function setting($key, $defaultValue = false);
 
     public function sanitize($data)
@@ -105,9 +106,9 @@ trait RequestProcessTrait
 
     protected function processPost($post = [])
     {
-        $this->data = [];
+        $this->clearData();
         foreach ($post as $k => $v) {
-            $this->data[$this->sanitize($k)] = $v;
+            $this->setData($this->sanitize($k), $v);
         }
         return true;
     }

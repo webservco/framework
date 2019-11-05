@@ -90,7 +90,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     final public function clear()
     {
-        $this->data = [];
+        $this->clearData();
         $this->filtered = [];
         $this->errors = [];
     }
@@ -102,7 +102,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             'help' => $this->setting('help', []),
             'required' => array_fill_keys($this->setting('required', []), true),
             'custom' => $this->setting('custom', []),
-            'data' => $this->data,
+            'data' => $this->getData(),
             'errors' => $this->errors,
         ];
     }

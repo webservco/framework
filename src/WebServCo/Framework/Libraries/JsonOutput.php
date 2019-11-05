@@ -8,9 +8,9 @@ final class JsonOutput extends \WebServCo\Framework\AbstractLibrary implements
     {
         return false;
     }
-    
+
     public function render()
     {
-        return json_encode($this->data);
+        return json_encode($this->getData());
     }
 }
