@@ -77,3 +77,5 @@ $data = $myLibrary->getData();
 $array = $myLibrary->toArray(); // ['data'=> [...], 'settings' => [...]]
 
 ```
+
+---
