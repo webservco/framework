@@ -6,16 +6,19 @@ abstract class AbstractLibrary implements
     \WebServCo\Framework\Interfaces\DataInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
-    private $settings = [];
-    private $data = [];
+    private $settings;
+    private $data;
 
     public function __construct($settings = [])
     {
-        if (is_array($settings)) {
-            $this->settings = $settings;
-        }
+        $this->clearData();
+        $this->settings = (array) $settings;
     }
 
+    final public function clearData()
+    {
+        $this->data = [];
+    }
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
