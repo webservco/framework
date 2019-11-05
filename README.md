@@ -54,5 +54,11 @@ A PHP Framework
 ### [webservco/webapp-skeleton](https://github.com/webservco/webapp-skeleton)
 A simple webservco/framework Web Application Skeleton to help start a new project fast.
 
+### [webservco/project-skeleton](https://github.com/webservco/project-skeleton)
+A simple webservco/framework Project Skeleton.
+This is a blank project with no initial functionality.
+
 ### [webservco/api](https://github.com/webservco/api)
 A PHP RESTful API Framework
+
+---
