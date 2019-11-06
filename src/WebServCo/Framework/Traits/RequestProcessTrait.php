@@ -7,6 +7,7 @@ use WebServCo\Framework\RequestUtils;
 trait RequestProcessTrait
 {
     abstract public function clearData();
+    abstract public function setData($key, $value);
     abstract public function setting($key, $defaultValue = false);
 
     public function sanitize($data)
