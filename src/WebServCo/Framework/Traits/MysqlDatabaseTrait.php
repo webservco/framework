@@ -7,4 +7,17 @@ trait MysqlDatabaseTrait
     {
         return '`' . str_replace('`', '``', $string) . '`';
     }
+
+    public function escapeTableName($string)
+    {
+        $parts = explode('.', $string);
+        if (!empty($parts[1])) {
+            return sprintf(
+                '%s.%s',
+                $this->escapeIdentifier($parts[0]),
+                $this->escapeIdentifier($parts[1]),
+            );
+        }
+        return $this->escapeIdentifier($parts[0]);
+    }
 }

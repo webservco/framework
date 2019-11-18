@@ -7,4 +7,10 @@ trait PgsqlDatabaseTrait
     {
         return '"' . str_replace('"', '""', $string) . '"';
     }
+
+    public function escapeTableName($string)
+    {
+        // @TODO Fix.
+        throw new \WebServCo\Framework\Exceptions\DatabaseException('Method not implemented.');
+    }
 }

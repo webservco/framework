@@ -7,6 +7,7 @@ use WebServCo\Framework\Utils\Arrays;
 trait DatabaseAddQueryTrait
 {
     abstract public function escapeIdentifier($string);
+    abstract public function escapeTableName($string);
 
     final protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
     {
@@ -15,7 +16,7 @@ trait DatabaseAddQueryTrait
         list($keys, $data) = $this->getKeysValues($addData);
 
         $query = $this->generateAddQueryPrefix($queryType);
-        $query .= ' ' . $this->escapeIdentifier($tableName);
+        $query .= ' ' . $this->escapeTableName($tableName);
         $query .= $this->generateAddQueryFieldsPart($keys);
         $query .= $this->generateAddQueryValuesPart($data, $multiDimensional);
 

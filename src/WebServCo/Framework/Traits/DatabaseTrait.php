@@ -6,6 +6,7 @@ use WebServCo\Framework\Database\QueryType;
 trait DatabaseTrait
 {
     abstract public function escapeIdentifier($string);
+    abstract public function escapeTableName($string);
     abstract protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = []);
     abstract public function getColumn($query, $params = [], $columnNumber = 0);
     abstract public function query($query, $values = []);
@@ -49,7 +50,7 @@ trait DatabaseTrait
         return (bool) $this->getColumn(
             sprintf(
                 "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
-                $this->escapeIdentifier($table),
+                $this->escapeTableName($table),
                 $this->escapeIdentifier($field)
             ),
             [$value]
@@ -58,11 +59,8 @@ trait DatabaseTrait
 
     final public function tableExists($table, $database = null)
     {
-        $name = $this->escapeIdentifier($table);
-        if (!empty($database)) {
-            $name = sprintf('%s.%s', $this->escapeIdentifier($database), $this->escapeIdentifier($table));
-        }
-
+        $name = $this->escapeTableName($table);
+        
         try {
             $this->query(sprintf('SELECT 1 FROM %s LIMIT 1', $name));
             return true;
