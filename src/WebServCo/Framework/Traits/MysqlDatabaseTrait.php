@@ -15,7 +15,7 @@ trait MysqlDatabaseTrait
             return sprintf(
                 '%s.%s',
                 $this->escapeIdentifier($parts[0]),
-                $this->escapeIdentifier($parts[1]),
+                $this->escapeIdentifier($parts[1])
             );
         }
         return $this->escapeIdentifier($parts[0]);
