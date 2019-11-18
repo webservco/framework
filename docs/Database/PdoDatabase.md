@@ -158,5 +158,10 @@ return $this->db->numRows();
 
 ### Check if value exists
 ```php
-return $this->db->valueExists('<table>', '<col>', <val>);
+return $this->db->valueExists('<table>', '<col>', '<val>');
+```
+
+### Check if table exists
+```php
+return $this->db->tableExists('<table>');
 ```
