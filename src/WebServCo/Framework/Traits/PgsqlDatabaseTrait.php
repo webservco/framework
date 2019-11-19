@@ -11,6 +11,8 @@ trait PgsqlDatabaseTrait
     public function escapeTableName($string)
     {
         // @TODO Fix.
-        throw new \WebServCo\Framework\Exceptions\DatabaseException('Method not implemented.');
+        throw new \WebServCo\Framework\Exceptions\DatabaseException(
+            sprintf('Method not implemented. String: %s', $string)
+        );
     }
 }
