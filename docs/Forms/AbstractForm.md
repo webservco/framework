@@ -34,6 +34,10 @@ class MyForm extends \WebServCo\Framework\AbstractForm
                 'custom_string_replace' => [
                     'name',
                 ],
+                'minimumLength' => [
+                    'name' => 2,
+                    'email' => 5,
+                ],
             ], // settings
             $defaultData,
             ['submitFieldName1', 'submitFieldName2'] // submitFields
@@ -56,6 +60,14 @@ class MyForm extends \WebServCo\Framework\AbstractForm
         foreach ($this->setting('required', []) as $item) {
             if (empty($this->data($item))) {
                 $this->errors[$item][] = sprintf(__('This field is mandatory: %s'), $this->setting('meta/'.$item));
+            }
+        }
+        foreach ($this->setting('minimumLength', []) as $item => $minimumLength) {
+            if (mb_strlen($this->data($item)) < $minimumLength) {
+                $this->errors[$item][] = sprintf(
+                    __('This field is too short: %s'),
+                    $this->setting('meta/'.$item)
+                );
             }
         }
 
