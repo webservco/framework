@@ -57,10 +57,10 @@ trait DatabaseTrait
         );
     }
 
-    final public function tableExists($table, $database = null)
+    final public function tableExists($table)
     {
         $name = $this->escapeTableName($table);
-        
+
         try {
             $this->query(sprintf('SELECT 1 FROM %s LIMIT 1', $name));
             return true;
