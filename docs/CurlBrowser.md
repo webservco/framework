@@ -34,6 +34,8 @@ For using a specific `Content-Type`, please use a custom request.
 
 If request data is a string, the `Content-Length` Header is set automatically.
 
+#### JSON Example
+
 ```php
 $curlBrowser->setDebug(true);
 $curlBrowser->setMethod(\WebServCo\Framework\Http\Method::POST);
@@ -41,4 +43,7 @@ $curlBrowser->setRequestContentType('application/json');
 $curlBrowser->setRequestHeader('Accept', 'application/json');
 $curlBrowser->setRequestData('{"foo": "bar"}');
 $response = $curlBrowser->retrieve($url); // \WebServCo\Framework\Http\Response
+return json_decode($response->getContent(), true);
 ```
+
+---
