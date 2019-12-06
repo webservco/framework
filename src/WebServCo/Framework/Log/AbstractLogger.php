@@ -17,6 +17,11 @@ abstract class AbstractLogger
         return $this->log(LogLevel::ERROR, $message, $context);
     }
 
+    public function info($message, $context = [])
+    {
+        return $this->log(LogLevel::INFO, $message, $context);
+    }
+
     public function warning($message, $context = [])
     {
         return $this->log(LogLevel::WARNING, $message, $context);
