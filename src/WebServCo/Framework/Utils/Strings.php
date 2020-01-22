@@ -22,6 +22,23 @@ final class Strings
         return $check == $needle;
     }
 
+    public static function getSlug($string)
+    {
+        $transliterator = \Transliterator::createFromRules(
+            ':: Any-Latin;'
+            . ':: NFD;'
+            . ':: [:Nonspacing Mark:] Remove;'
+            . ':: NFC;'
+            . ':: [:Punctuation:] Remove;'
+            . ':: Lower();'
+            . '[:Separator:] > \'-\''
+        );
+        if (!($transliterator instanceof \Transliterator)) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Transliterator error.');
+        }
+        return $transliterator->transliterate($string);
+    }
+
     public static function startsWith($haystack, $needle, $ignoreCase = true)
     {
         if (false !== $ignoreCase) {
