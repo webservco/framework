@@ -21,6 +21,10 @@ Check if a string contains another string.
 
 Check if a string ends with another string.
 
+### `getContextAsString($context)`
+
+Get string representation of variable (usually an array or an object).
+
 ### `getSlug($string)`
 
 Create a web friendly URL slug from a string.

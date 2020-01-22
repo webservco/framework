@@ -22,6 +22,13 @@ final class Strings
         return $check == $needle;
     }
 
+    public static function getContextAsString($context)
+    {
+        ob_start();
+        var_dump($context);
+        return ob_get_clean();
+    }
+
     public static function getSlug($string)
     {
         $transliterator = \Transliterator::createFromRules(
