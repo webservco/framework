@@ -52,7 +52,8 @@ final class FileLogger extends AbstractLogger implements \WebServCo\Framework\In
             PHP_EOL
         );
         if (!empty($context)) {
-            $data .= sprintf('%s%s', var_export($context, true), PHP_EOL);
+            $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
+            $data .= sprintf('Context: %s%s', $contextAsString, PHP_EOL);
         }
         return file_put_contents($this->logPath, $data, FILE_APPEND);
     }

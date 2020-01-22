@@ -13,7 +13,8 @@ final class CliOutputLogger extends AbstractOutputLogger implements
     {
         $this->output($message, true);
         if (!empty($context)) {
-            $this->output(var_export($context, true), true);
+            $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
+            $this->output(sprintf('Context: %s%s', $contextAsString, PHP_EOL), true);
         }
     }
 }
