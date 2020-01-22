@@ -3,6 +3,40 @@ namespace WebServCo\Framework;
 
 final class ErrorHandler
 {
+    public static function getErrorInfo($exception = null)
+    {
+        $errorInfo = [
+            'code' => 0,
+            'message' => null,
+            'file' => null,
+            'line' => null,
+            'trace' => null,
+            'exception' => null,
+        ];
+        if ($exception instanceof \Throwable ||
+            $exception instanceof \Exception
+        ) {
+            $errorInfo['code'] = $exception->getCode();
+            $errorInfo['message'] = $exception->getMessage();
+            $errorInfo['file'] = $exception->getFile();
+            $errorInfo['line'] = $exception->getLine();
+            $errorInfo['trace'] = $exception->getTrace();
+            $errorInfo['exception'] = $exception;
+        } else {
+            $last_error = error_get_last();
+            if (!empty($last_error['message'])) {
+                $errorInfo['message'] = $last_error['message'];
+            }
+            if (!empty($last_error['file'])) {
+                $errorInfo['file'] = $last_error['file'];
+            }
+            if (!empty($last_error['line'])) {
+                $errorInfo['line'] = $last_error['line'];
+            }
+        }
+        return $errorInfo;
+    }
+
     public static function getErrorTypeString($type)
     {
         switch ($type) {
