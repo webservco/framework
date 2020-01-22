@@ -47,6 +47,9 @@ A PHP Framework
 ### Forms
 * [Abstract Form](/docs/Forms/AbstractForm.md)
 
+### Utils
+* [Strings](/docs/Utils/Strings.md)
+
 ---
 
 ## Related projects
