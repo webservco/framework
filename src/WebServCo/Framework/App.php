@@ -28,7 +28,7 @@ class App extends Application
 
     protected function logError($errorInfo, $isCli = false)
     {
-        $logger = new FileLogger(
+        $logger = new \WebServCo\Framework\Log\FileLogger(
             sprintf('error%s', $isCli ? 'CLI' : ''),
             $this->config()->get('app/path/log'),
             $this->request()
