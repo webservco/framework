@@ -41,6 +41,9 @@ A PHP Framework
 * [Internationalization](/docs/Libraries/I18n.md)
 * [Session](/docs/Libraries/Session.md)
 
+### Objects
+* [Objects](/docs/Objects.md)
+
 ### Output
 * [Methods](/docs/Output/Methods.md)
 
