@@ -9,21 +9,21 @@ Add a log when an error occurs.
 class App extends Application
 {
     /**
-     * Handle HTTP errors.
-     */
-    protected function haltHttp($errorInfo = [])
-    {
-        $this->logError($errorInfo, false);
-        return parent::haltHttp($errorInfo);
-    }
-
-    /**
      * Handle CLI errors
      */
     protected function haltCli($errorInfo = [])
     {
         $this->logError($errorInfo, true);
         return parent::haltCli($errorInfo);
+    }
+
+    /**
+     * Handle HTTP errors.
+     */
+    protected function haltHttp($errorInfo = [])
+    {
+        $this->logError($errorInfo, false);
+        return parent::haltHttp($errorInfo);
     }
 
     protected function logError($errorInfo, $isCli = false)
