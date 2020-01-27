@@ -25,7 +25,7 @@ final class Strings
     public static function getContextAsString($context)
     {
         ob_start();
-        /** @scrutinizer ignore-call */var_dump($context);
+        var_dump($context);
         return ob_get_clean();
     }
 
