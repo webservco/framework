@@ -11,9 +11,9 @@ class CliOutputLogger extends AbstractOutputLogger implements
 
     public function log($level, $message, $context = [])
     {
-        $this->output($message, true);
         if (!empty($context)) {
-            $this->output('[context not outputted]', true);
+            $message = sprintf('[context not outputted] %s', $message);
         }
+        $this->output($message, true);
     }
 }
