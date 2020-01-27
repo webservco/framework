@@ -43,20 +43,28 @@ final class FileLogger extends AbstractLogger implements \WebServCo\Framework\In
 
     public function log($level, $message, $context = [])
     {
+        $dateTime = new \DateTime();
+        $id = $dateTime->format('Ymd.His.u');
+
+        $contextInfo = null;
+        if (!empty($context)) {
+            $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
+            file_put_contents(sprintf('%s/%s.context', $this->logDir, $id), $contextAsString);
+            $contextInfo = '[context saved] ';
+        }
+
         $data = sprintf(
-            '[%s] [%s] [%s] %s',
-            date('Y-m-d H:i:s'),
+            '[%s] %s %s %s%s%s',
+            $id,
             $this->requestInterface->getRemoteAddress(),
             $level,
-            $message
+            $contextInfo,
+            $message,
+            PHP_EOL
         );
-        if (!empty($context)) {
-            $contextId = microtime(true);
-            $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
-            file_put_contents(sprintf('%s/%s.context', $this->logDir, $contextId), $contextAsString);
-            $data .= sprintf(' / context id: %s', $contextId);
-        }
-        $data .= PHP_EOL;
-        return file_put_contents($this->logPath, $data, FILE_APPEND);
+
+        file_put_contents($this->logPath, $data, FILE_APPEND);
+
+        return $id;
     }
 }
