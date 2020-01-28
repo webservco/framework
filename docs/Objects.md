@@ -3,17 +3,19 @@
 ## From array
 
 ```php
-class MyClass extends \WebServCo\Framework\AbstractClassFromArray
+class MyClass
 {
     public $foo;
     public $bar;
+
+    use \WebServCo\Framework\Traits\FromArrayTrait;
 }
 
 $array = [
     'foo' => 'value 1',
     'bar' => 'value2',
 ];
-$object = new MyClass($array);
+$object = MyClass::fromArray($array);
 ```
 
 ---
@@ -21,7 +23,7 @@ $object = new MyClass($array);
 ## To array
 
 ```php
-class MyClass
+class MyClass implements \WebServCo\Framework\Interfaces\ArrayInterface
 {
     public $foo;
     public $bar;
