@@ -35,7 +35,7 @@ abstract class AbstractFile
                 'Cache-Control' => 'public',
                 'Content-Description' => 'File Transfer',
                 'Content-Disposition' => sprintf(
-                    'attachment; filename=%s',
+                    'attachment; filename="%s"',
                     $this->fileName
                 ),
                 'Content-Type' => $this->contentType,
