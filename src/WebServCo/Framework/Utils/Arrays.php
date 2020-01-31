@@ -18,4 +18,13 @@ final class Arrays
         }
         return is_array($array[key($array)]);
     }
+
+    public static function nullToEmptyString($array = [])
+    {
+        foreach ($array as $key => $value) {
+            if (is_null($value)) {
+                $array[$key] = '';
+            }
+        }
+    }
 }

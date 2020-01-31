@@ -1,17 +1,16 @@
 # Utils - Strings
 
-## Usage
-
 ---
+
+## Usage
 
 ```php
 $result = \WebServCo\Framework\Utils\Strings::method($arguments);
 ```
 
-
-## Static methods.
-
 ---
+
+## Static methods
 
 ### `contains($haystack, $needle, $ignoreCase = true)`
 
