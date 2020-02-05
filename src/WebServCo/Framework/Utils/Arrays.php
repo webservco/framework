@@ -26,5 +26,6 @@ final class Arrays
                 $array[$key] = '';
             }
         }
+        return $array;
     }
 }
