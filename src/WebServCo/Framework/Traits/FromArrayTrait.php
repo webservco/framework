@@ -6,7 +6,7 @@ trait FromArrayTrait
     /**
     * Returns an instance of the current class
     */
-    public static function fromArray($data)
+    public static function fromArray($data = [])
     {
         $object = new static();
         foreach (get_object_vars($object) as $property => $default) {
