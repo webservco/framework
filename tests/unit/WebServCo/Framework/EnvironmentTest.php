@@ -2,7 +2,7 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Environment as Env;
+use WebServCo\Framework\Environment;
 
 final class EnvironmentTest extends TestCase
 {
@@ -11,30 +11,30 @@ final class EnvironmentTest extends TestCase
      */
     public function constantEnvDevHasExpectedValue()
     {
-        $this->assertEquals('dev', Env::ENV_DEV);
+        $this->assertEquals('dev', Environment::DEV);
     }
-    
+
     /**
      * @test
      */
     public function constantEnvTestHasExpectedValue()
     {
-        $this->assertEquals('test', Env::ENV_TEST);
+        $this->assertEquals('test', Environment::TEST);
     }
-    
+
     /**
      * @test
      */
     public function constantEnvProdHasExpectedValue()
     {
-        $this->assertEquals('prod', Env::ENV_PROD);
+        $this->assertEquals('prod', Environment::PROD);
     }
-    
+
     /**
      * @test
      */
     public function getOptionsReturnsExpectedValues()
     {
-        $this->assertEquals(['dev','test','prod'], Env::getOptions());
+        $this->assertEquals(['dev','test','prod'], Environment::getOptions());
     }
 }

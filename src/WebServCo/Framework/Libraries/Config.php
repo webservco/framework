@@ -86,7 +86,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
         if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
             $this->env = $env;
         } else {
-            $this->env = \WebServCo\Framework\Environment::ENV_DEV;
+            $this->env = \WebServCo\Framework\Environment::DEV;
         }
 
         return true;
@@ -99,6 +99,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function getEnv()
     {
-        return $this->env ?: \WebServCo\Framework\Environment::ENV_DEV;
+        return $this->env ?: \WebServCo\Framework\Environment::DEV;
     }
 }
