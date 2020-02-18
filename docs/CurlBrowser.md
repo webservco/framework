@@ -1,6 +1,6 @@
 # CurlBrowser
 
-## \WebServCo\Framework\CurlBrowser
+## `\WebServCo\Framework\CurlBrowser`
 
 Requires `\WebServCo\Framework\Interfaces\LoggerInterface`.
 

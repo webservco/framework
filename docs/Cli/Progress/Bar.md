@@ -1,6 +1,6 @@
 # ProgressBar
 
-## \WebServCo\Framework\Cli\Progress\Bar
+## `\WebServCo\Framework\Cli\Progress\Bar`
 
 ## Usage
 

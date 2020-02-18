@@ -1,6 +1,6 @@
 # ProgressLine
 
-## \WebServCo\Framework\Cli\Progress\Line
+## `\WebServCo\Framework\Cli\Progress\Line`
 
 Show a simple single line progress bar with a custom message.
 

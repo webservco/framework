@@ -1,6 +1,6 @@
 # JSON
 
-## \WebServCo\Framework\Json\Data
+## `\WebServCo\Framework\Json\Data`
 
 A basic JSON data object, implementing `\WebServCo\Framework\Interfaces\JsonInterface`.
 
