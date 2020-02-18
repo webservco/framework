@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-final class I18n extends \WebServCo\Framework\AbstractLibrary
+final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebServCo\Framework\Interfaces\I18nInterface
 {
     protected $langs;
     protected $domain;
@@ -20,6 +20,15 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         $this->domain = $this->setting('domain', 'messages');
     }
 
+    /**
+    * After calling init(), a custom language/domain can be set by calling setLanguage with full arguments.
+    * Call this function afterwards to restore the oriignal language/domain.
+    */
+    public function reset()
+    {
+        $this->setLanguage($this->lang, $this->translationsPath);
+    }
+
     public function init($projectPath, $lang = null)
     {
         $this->translationsPath = $projectPath . 'resources/translations';
@@ -30,7 +39,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
 
-    public function setLanguage($lang)
+    public function setLanguage($lang, $translationsPath = null)
     {
         if (!array_key_exists($lang, $this->langs)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
@@ -42,7 +51,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary
         $this->locale = $this->langs[$this->lang]['locale'];
 
         $this->setLocale($this->locale);
-        $this->setDomain($this->domain, $this->translationsPath);
+        $this->setDomain($this->domain, $translationsPath ?? $this->translationsPath);
 
         return true;
     }
