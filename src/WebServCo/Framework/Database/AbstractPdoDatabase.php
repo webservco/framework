@@ -3,8 +3,12 @@ namespace WebServCo\Framework\Database;
 
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-abstract class AbstractPdoDatabase extends AbstractDatabase
+abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 {
+    protected $db;
+    protected $stmt;
+    protected $rows;
+
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
 
@@ -36,9 +40,67 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
         }
     }
 
+    public function affectedRows()
+    {
+        if (!($this->stmt instanceof \PDOStatement)) {
+            throw new DatabaseException('No Statement object available.');
+        }
+        return $this->stmt->rowCount();
+    }
+
     public function escape($string)
     {
         return $this->db->quote($string);
+    }
+
+    public function getColumn($query, $params = [], $columnNumber = 0)
+    {
+        $this->query($query, $params);
+        return $this->stmt->fetchColumn($columnNumber);
+    }
+
+    public function getRow($query, $params = [])
+    {
+        $this->query($query, $params);
+        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function getRows($query, $params = [])
+    {
+        $this->query($query, $params);
+        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->rows;
+    }
+
+    /*
+    * Get last inserted Id.
+    *
+    * https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id
+    * If you insert multiple rows using a single INSERT statement,
+    * LAST_INSERT_ID() returns the value generated for the first inserted row only.
+    * The reason for this is to make it possible to reproduce easily the same
+    * INSERT statement against some other server.
+    *
+    * PDO:
+    * Returns the ID of the last inserted row, or the last value from a sequence object,
+    * depending on the underlying driver.
+    * For example, PDO_PGSQL requires you to specify the name of a sequence object for the name parameter.
+    */
+    public function lastInsertId($name = null)
+    {
+        return $this->db->lastInsertId($name);
+    }
+
+    public function numRows()
+    {
+        if (!($this->stmt instanceof \PDOStatement)) {
+            throw new DatabaseException('No Statement object available.');
+        }
+        if ('mysql' == $this->setting('driver')) {
+            return $this->stmt->rowCount();
+        }
+        $rows = $this->rows ?: $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return count($rows);
     }
 
     public function query($query, $params = [])
@@ -55,7 +117,6 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
             } else {
                 $this->stmt = $this->db->query($query);
             }
-            $this->setLastInsertId();
             return $this->stmt;
         } catch (\PDOException $e) {
             throw new DatabaseException($e->getMessage(), $e);
@@ -85,45 +146,6 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
         }
     }
 
-    public function numRows()
-    {
-        if (!($this->stmt instanceof \PDOStatement)) {
-            throw new DatabaseException('No Statement object available.');
-        }
-        if ('mysql' == $this->setting('driver')) {
-            return $this->stmt->rowCount();
-        }
-        $rows = $this->rows ?: $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return count($rows);
-    }
-
-    public function affectedRows()
-    {
-        if (!($this->stmt instanceof \PDOStatement)) {
-            throw new DatabaseException('No Statement object available.');
-        }
-        return $this->stmt->rowCount();
-    }
-
-    public function getRows($query, $params = [])
-    {
-        $this->query($query, $params);
-        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $this->rows;
-    }
-
-    public function getRow($query, $params = [])
-    {
-        $this->query($query, $params);
-        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    public function getColumn($query, $params = [], $columnNumber = 0)
-    {
-        $this->query($query, $params);
-        return $this->stmt->fetchColumn($columnNumber);
-    }
-
     protected function bindParams($data)
     {
         if (empty($data)) {
@@ -151,14 +173,6 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
         return true;
     }
 
-    protected function validateParam($param)
-    {
-        if (is_array($param)) {
-            throw new DatabaseException('Parameter is an array.');
-        }
-        return true;
-    }
-
     protected function getDataType($variable)
     {
         $type = gettype($variable);
@@ -171,7 +185,7 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
                 return \PDO::PARAM_INT;
                 break;
             case 'boolean':
-                // casuses data not to be inserted
+                // causes data not to be inserted
                 //return \PDO::PARAM_BOOL;
                 //break;
             case 'string':
@@ -187,8 +201,11 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
         }
     }
 
-    protected function setLastInsertId()
+    protected function validateParam($param)
     {
-        $this->lastInsertId = $this->db->lastInsertId();
+        if (is_array($param)) {
+            throw new DatabaseException('Parameter is an array.');
+        }
+        return true;
     }
 }

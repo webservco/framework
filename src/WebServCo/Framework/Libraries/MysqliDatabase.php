@@ -4,9 +4,13 @@ namespace WebServCo\Framework\Libraries;
 use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabase implements
+final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
+    protected $db;
+    protected $stmt;
+    protected $rows;
+
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
@@ -30,13 +34,70 @@ final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabas
             );
             $this->db->set_charset('utf8mb4');
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e);
         }
+    }
+
+    public function affectedRows()
+    {
+        if (!($this->stmt instanceof \mysqli_stmt)) {
+            throw new DatabaseException('No Statement object available.');
+        }
+        return $this->stmt->affected_rows;
     }
 
     public function escape($string)
     {
         return $this->db->real_escape_string($string);
+    }
+
+    public function getColumn($query, $params = [], $columnNumber = 0)
+    {
+        $this->query($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
+        return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
+    }
+
+    public function getRow($query, $params = [])
+    {
+        $this->query($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        return $this->mysqliResult->fetch_assoc();
+    }
+
+    public function getRows($query, $params = [])
+    {
+        $this->query($query, $params);
+        $this->mysqliResult = $this->stmt->get_result();
+        $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
+        return $this->rows;
+    }
+
+    /**
+     * Get last inserted Id.
+     *
+     * https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id
+     * If you insert multiple rows using a single INSERT statement,
+     * LAST_INSERT_ID() returns the value generated for the first inserted row only.
+     * The reason for this is to make it possible to reproduce easily the same
+     * INSERT statement against some other server.
+     */
+    public function lastInsertId()
+    {
+        return (int) $this->db->insert_id;
+    }
+
+    public function numRows()
+    {
+        /**
+         * @TODO Fix.
+         * "$this->stmt->num_rows" will be 0 because we can't use
+         * "$this->stmt->store_result();"
+         * We could count "$this->mysqliResult" but that would mean
+         * the method will only work if getRow*() was called before.
+         */
+        throw new DatabaseException('Method not implemented.');
     }
 
     public function query($query, $params = [])
@@ -52,7 +113,6 @@ final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabas
             $this->stmt = $this->db->prepare($query);
             $this->bindParams($params);
             $this->stmt->execute();
-            $this->setLastInsertId();
             return $this->stmt;
         } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
             throw new DatabaseException($e->getMessage());
@@ -76,49 +136,6 @@ final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabas
             $this->db->rollback();
             throw new DatabaseException($e->getMessage());
         }
-    }
-
-    public function numRows()
-    {
-        /**
-         * @TODO Fix.
-         * "$this->stmt->num_rows" will be 0 because we can't use
-         * "$this->stmt->store_result();"
-         * We could count "$this->mysqliResult" but that would mean
-         * the method will only work if getRow*() was called before.
-         */
-        throw new DatabaseException('Method not implemented.');
-    }
-
-    public function affectedRows()
-    {
-        if (!($this->stmt instanceof \mysqli_stmt)) {
-            throw new DatabaseException('No Statement object available.');
-        }
-        return $this->stmt->affected_rows;
-    }
-
-    public function getRows($query, $params = [])
-    {
-        $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
-        $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
-        return $this->rows;
-    }
-
-    public function getRow($query, $params = [])
-    {
-        $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
-        return $this->mysqliResult->fetch_assoc();
-    }
-
-    public function getColumn($query, $params = [], $columnNumber = 0)
-    {
-        $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
-        $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
-        return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
     }
 
     protected function bindParams($params = [])
@@ -178,10 +195,5 @@ final class MysqliDatabase extends \WebServCo\Framework\Database\AbstractDatabas
                 return 's';
                 break;
         }
-    }
-
-    protected function setLastInsertId()
-    {
-        $this->lastInsertId = $this->db->insert_id;
     }
 }
