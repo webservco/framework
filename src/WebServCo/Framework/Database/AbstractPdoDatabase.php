@@ -32,7 +32,7 @@ abstract class AbstractPdoDatabase extends AbstractDatabase
                 ]
             );
         } catch (\Exception $e) { // PDOException/RuntimeException/Exception
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
