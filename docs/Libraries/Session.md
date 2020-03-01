@@ -49,6 +49,12 @@ $this->session()->start();
 
 ## Usage
 
+### Checking if a value exists in session
+
+```php
+$result = $this->session()->has('user/name');
+```
+
 ### Setting a value
 
 ```php
@@ -67,6 +73,8 @@ $this->session()->clear('user/name');
 ### Removing a value
 
 The key is deleted from session storage.
+
+Use `has()` to check if the key exists before removing.
 
 ```php
 $this->session()->remove($setting);
