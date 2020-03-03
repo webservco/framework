@@ -96,6 +96,9 @@ if ($form->isSent() && $form->isValid()) {
     // use a form field named "email"
     $email = $form->data('email');
 }
+
+// get the errors for a field named email
+echo $this->form->errors('email');
 ```
 
 ---
