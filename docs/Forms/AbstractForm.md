@@ -31,9 +31,6 @@ class MyForm extends \WebServCo\Framework\AbstractForm
                     'name',
                     'email',
                 ],
-                'custom_string_replace' => [
-                    'name',
-                ],
                 'minimumLength' => [
                     'name' => 2,
                     'email' => 5,
@@ -49,8 +46,11 @@ class MyForm extends \WebServCo\Framework\AbstractForm
         foreach ($this->setting('trim', []) as $item) {
             $this->setData($item, trim($this->data($item)));
         }
-        foreach ($this->setting('custom_string_replace', []) as $item) {
-            $this->setData($item, $this->customStringReplace($this->data($item)));
+        foreach ($this->setting('filterNumeric', []) as $item) {
+            $this->setData($item, preg_replace('/[^0-9]/', '', $this->data($item)));
+        }
+        foreach ($this->setting('numberFix', []) as $item) {
+            $this->setData($item, floatval(str_replace(',', '.', $this->data($item))) ?: '');
         }
         return true;
     }
@@ -70,7 +70,6 @@ class MyForm extends \WebServCo\Framework\AbstractForm
                 );
             }
         }
-
         if (!empty($this->errors)) {
             return false;
         }
