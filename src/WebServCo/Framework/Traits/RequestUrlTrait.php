@@ -40,6 +40,10 @@ trait RequestUrlTrait
 
     public function getUrl($removeParameters = [])
     {
+        if (!is_array($removeParameters)) {
+            throw new \InvalidArgumentException('Agument must be an array.');
+        }
+
         $url = $this->getShortUrl();
         $query = $this->getQuery();
         foreach ($removeParameters as $item) {
