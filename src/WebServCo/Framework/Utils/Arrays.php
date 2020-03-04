@@ -3,6 +3,14 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
+    public function has($array, $value)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
+        return in_array($value, $array);
+    }
+
     public static function get($array, $key, $defaultValue = false)
     {
         if (!is_array($array)) {
