@@ -1,6 +1,6 @@
 <?php
 namespace {
-        
+
     if (!function_exists('__')) {
         /**
          * Gettext / dgetttext wrapper.
@@ -13,12 +13,12 @@ namespace {
             return gettext($msg);
         }
     }
-        
+
     if (!function_exists('___')) {
         /**
          * Ngettext / dngettext wrapper.
          */
-        function ___($msgSingular, $msgPlural, $msgNumber, $domain)
+        function ___($msgSingular, $msgPlural, $msgNumber, $domain = null)
         {
             if (!empty($domain)) {
                 return dngettext($domain, $msgSingular, $msgPlural, $msgNumber);
