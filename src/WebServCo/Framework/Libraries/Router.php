@@ -10,7 +10,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
             $defaultRoute = $this->setting('default_route');
             if (!isset($defaultRoute[1])) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    "Default route missing or not valid"
+                    "Default route missing or not valid."
                 );
             }
             return $defaultRoute;
@@ -20,7 +20,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
 
         if (empty($parts[1])) {
             throw new \WebServCo\Framework\Exceptions\NotFoundException(
-                sprintf('The requested resource "%s" was not found', $routeString)
+                sprintf('The requested resource "%s" was not found.', $routeString)
             );
         }
 

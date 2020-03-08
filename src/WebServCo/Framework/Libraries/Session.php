@@ -29,7 +29,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
             if ($this->setting('strict_custom_path', true)) {
                 throw new ApplicationException(
                     'Unable to set custom session storage path. ' .
-                    sprintf('Current path: %s', $actualStoragePath)
+                    sprintf('Current path: %s.', $actualStoragePath)
                 );
             }
             return false;
@@ -81,7 +81,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         session_name('webservco');
 
         if (!session_start()) {
-            throw new ApplicationException('Unable to start session');
+            throw new ApplicationException('Unable to start session.');
         }
 
         return true;

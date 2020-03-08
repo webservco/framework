@@ -11,7 +11,7 @@ class RequestHelper extends AbstractHelper
 
         foreach (['columns', 'order', 'search'] as $item) {
             if (!is_array($data[$item])) {
-                throw new \InvalidArgumentException(sprintf('Invalid parameter: %s', $item));
+                throw new \InvalidArgumentException(sprintf('Invalid parameter: %s.', $item));
             }
         }
 

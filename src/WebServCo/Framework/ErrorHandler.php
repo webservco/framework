@@ -113,7 +113,7 @@ final class ErrorHandler
     {
         if (error_reporting() & $errno) { //check if error level is set
             throw new \ErrorException(
-                sprintf('%s: %s', self::getErrorTypeString($errno), $errstr),
+                sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr),
                 0,
                 $errno,
                 $errfile,

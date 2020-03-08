@@ -17,7 +17,7 @@ final class CsvCreator
     public function getCsvFile($fileName, array $data, $addHeader = true)
     {
         if (empty($data)) {
-            throw new ApplicationException('Empty data');
+            throw new ApplicationException('Empty data.');
         }
         $csvData = $this->getCsvData($data, $addHeader);
         return new \WebServCo\Framework\Files\CsvFile($fileName, $csvData);
@@ -30,7 +30,7 @@ final class CsvCreator
             $handle = fopen('php://temp/maxmemory: ' . (5*1024*1024), 'r+');
 
             if (!is_resource($handle)) {
-                throw new ApplicationException('Not a valid resource');
+                throw new ApplicationException('Not a valid resource.');
             }
 
             if ($addHeader) {

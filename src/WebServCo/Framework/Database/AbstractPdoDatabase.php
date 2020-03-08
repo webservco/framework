@@ -106,7 +106,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function query($query, $params = [])
     {
         if (empty($query)) {
-            throw new DatabaseException('No query specified');
+            throw new DatabaseException('No query specified.');
         }
 
         try {
@@ -131,7 +131,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             $this->db->beginTransaction();
             foreach ($queries as $item) {
                 if (!isset($item[0])) {
-                    throw new DatabaseException('No query specified');
+                    throw new DatabaseException('No query specified.');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
                 $this->query($item[0], $params);

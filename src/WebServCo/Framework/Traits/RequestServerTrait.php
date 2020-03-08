@@ -113,7 +113,7 @@ trait RequestServerTrait
     public function getServerVariable($index)
     {
         if (!array_key_exists($index, $this->server)) {
-            throw new \OutOfBoundsException('Requested key does not exist');
+            throw new \OutOfBoundsException('Requested key does not exist.');
         }
         return $this->server[$index];
     }

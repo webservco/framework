@@ -46,7 +46,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         $statusCodes = StatusCode::getSupported();
         if (!isset($statusCodes[$statusCode])) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    sprintf('Invalid HTTP status code: %s', $statusCode)
+                    sprintf('Invalid HTTP status code: %s.', $statusCode)
                 );
         }
         $this->statusCode = $statusCode;

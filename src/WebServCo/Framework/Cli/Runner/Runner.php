@@ -10,7 +10,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
     public function __construct($workDir)
     {
         if (!is_readable($workDir)) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Working directory not readable');
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Working directory not readable.');
         }
 
         $this->statistics = new Statistics();

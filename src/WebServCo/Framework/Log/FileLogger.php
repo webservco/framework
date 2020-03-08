@@ -17,14 +17,14 @@ class FileLogger extends AbstractLogger implements \WebServCo\Framework\Interfac
         $this->logDir = $logDir;
 
         if (empty($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not set for channel "%s"', $channel));
+            throw new ApplicationException(sprintf('Log directory not set for channel "%s".', $channel));
         }
 
         if (!is_readable($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not readable: %s', $this->logDir));
+            throw new ApplicationException(sprintf('Log directory not readable: %s.', $this->logDir));
         }
         if (!is_writable($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not writeable: %s', $this->logDir));
+            throw new ApplicationException(sprintf('Log directory not writeable: %s.', $this->logDir));
         }
         $this->logPath = sprintf('%s%s.log', $this->logDir, $this->channel);
 

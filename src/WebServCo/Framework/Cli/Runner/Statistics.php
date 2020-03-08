@@ -48,7 +48,7 @@ final class Statistics
         $dateTime = \DateTime::createFromFormat('U.u', (string) microtime(true));
         if (!($dateTime instanceof \DateTime)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                'Error initializing DateTime object'
+                'Error initializing DateTime object.'
             );
         }
         $dateTime->setTimezone(new \DateTimeZone($this->timeZone));

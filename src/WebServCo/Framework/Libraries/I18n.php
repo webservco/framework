@@ -43,7 +43,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     {
         if (!array_key_exists($lang, $this->langs)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                sprintf('Language not available: %s', $lang)
+                sprintf('Language not available: %s.', $lang)
             );
         }
 

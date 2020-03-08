@@ -72,14 +72,14 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $args = isset($route[2]) ? $route[2] : [];
 
         if (empty($class) || empty($method)) {
-            throw new ApplicationException("Invalid route");
+            throw new ApplicationException("Invalid route.");
         }
 
         $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
         if (!class_exists($className)) {
             /* enable in V10 *
             throw new NotFoundException(
-                sprintf('No matching %s found', $classType)
+                sprintf('No matching %s found.', $classType)
             );
             /* enable in V10 */
 
@@ -88,7 +88,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
             if (!class_exists($className)) {
                 throw new NotFoundException(
-                    sprintf('No matching %s found', $classType)
+                    sprintf('No matching %s found.', $classType)
                 );
             }
             /* remove in V10 */
@@ -98,11 +98,11 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $parent = get_parent_class($object);
         if (method_exists((string) $parent, $method) ||
             !is_callable([$className, $method])) {
-            throw new NotFoundException('No matching Action found');
+            throw new NotFoundException('No matching Action found.');
         }
         $callable = [$object, $method];
         if (!is_callable($callable)) {
-            throw new ApplicationException('Method not found');
+            throw new ApplicationException('Method not found.');
         }
         return call_user_func_array($callable, $args);
     }

@@ -109,7 +109,7 @@ final class ArrayStorage
     public static function set($storage, $setting, $value)
     {
         if (!is_array($storage) || empty($setting)) {
-            throw new ArrayStorageException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified.');
         }
         $setting = self::parseSetting($setting);
         if (is_array($setting)) {
@@ -139,7 +139,7 @@ final class ArrayStorage
     public static function append($storage, $data = [])
     {
         if (!is_array($storage) || !is_array($data)) {
-            throw new ArrayStorageException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified.');
         }
         foreach ($data as $setting => $value) {
             if (array_key_exists($setting, $storage) &&
@@ -168,13 +168,13 @@ final class ArrayStorage
     public static function remove($storage, $setting)
     {
         if (!is_array($storage) || empty($setting)) {
-            throw new ArrayStorageException('Invalid parameters specified');
+            throw new ArrayStorageException('Invalid parameters specified.');
         }
 
         $setting = self::parseSetting($setting);
 
         if (empty($setting)) {
-            throw new ArrayStorageException('Empty setting');
+            throw new ArrayStorageException('Empty setting.');
         }
 
         if (is_array($setting)) {
@@ -182,7 +182,7 @@ final class ArrayStorage
         }
         if (!array_key_exists($setting, $storage)) {
             throw new ArrayStorageException(
-                sprintf('setting "%s" does not exist in storage object', $setting)
+                sprintf('setting "%s" does not exist in storage object.', $setting)
             );
         }
         unset($storage[$setting]);
@@ -215,7 +215,7 @@ final class ArrayStorage
             // Make sure the index to go down for deletion actually exists.
             if (!array_key_exists($indices[$i], $a)) {
                 throw new ArrayStorageException(
-                    sprintf('"%s" does not exist in storage object', $indices[$i])
+                    sprintf('"%s" does not exist in storage object.', $indices[$i])
                 );
             }
             // This is the target if we reached the last index that was passed.
@@ -226,7 +226,7 @@ final class ArrayStorage
                 $a = &$a[$indices[$i]];
             } else {
                 throw new ArrayStorageException(
-                    sprintf('"%s" does not exist in storage object', $indices[$i])
+                    sprintf('"%s" does not exist in storage object.', $indices[$i])
                 );
             }
         }

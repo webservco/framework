@@ -6,7 +6,7 @@ class XSendFileResponse extends Response
     public function __construct($filePath, $outputFilename)
     {
         if (!is_readable($filePath)) {
-            throw new \WebServCo\Framework\Exceptions\NotFoundException('File not found');
+            throw new \WebServCo\Framework\Exceptions\NotFoundException('File not found.');
         }
 
         parent::__construct(

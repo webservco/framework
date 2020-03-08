@@ -71,7 +71,7 @@ final class CurlBrowser implements
 
         $this->curl = curl_init();
         if (!is_resource($this->curl)) {
-            throw new ApplicationException('Not a valid resource');
+            throw new ApplicationException('Not a valid resource.');
         }
 
         $this->setCurlOptions($url);
@@ -91,7 +91,7 @@ final class CurlBrowser implements
         $httpCode = $this->getHttpCode();
 
         if (empty($httpCode)) {
-            throw new ApplicationException(sprintf("Empty HTTP status code. cURL error: %s", $this->curlError));
+            throw new ApplicationException(sprintf("Empty HTTP status code. cURL error: %s.", $this->curlError));
         }
 
         $body = trim($this->response);
@@ -115,7 +115,7 @@ final class CurlBrowser implements
     public function setMethod($method)
     {
         if (!in_array($method, Method::getSupported())) {
-            throw new ApplicationException('Unsupported method');
+            throw new ApplicationException('Unsupported method.');
         }
         $this->method = $method;
         return true;
@@ -127,7 +127,7 @@ final class CurlBrowser implements
             $this->requestData = [];
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
-                    throw new \InvalidArgumentException('Request data value can not be an array');
+                    throw new \InvalidArgumentException('Request data value can not be an array.');
                 }
                 $this->requestData[$key] = $value;
             }
@@ -199,7 +199,7 @@ final class CurlBrowser implements
     protected function handleRequestMethod()
     {
         if (!is_resource($this->curl)) {
-            throw new ApplicationException('Not a valid resource');
+            throw new ApplicationException('Not a valid resource.');
         }
 
         switch ($this->method) {
@@ -299,7 +299,7 @@ final class CurlBrowser implements
         $this->response = curl_exec($this->curl);
         $this->curlError = curl_error($this->curl);
         if (false === $this->response) {
-            throw new ApplicationException(sprintf("cURL error: %s", $this->curlError));
+            throw new ApplicationException(sprintf("cURL error: %s.", $this->curlError));
         }
     }
 
@@ -314,7 +314,7 @@ final class CurlBrowser implements
     protected function setCurlOptions($url)
     {
         if (!is_resource($this->curl)) {
-            throw new ApplicationException('Not a valid resource');
+            throw new ApplicationException('Not a valid resource.');
         }
 
         // set options
@@ -341,7 +341,7 @@ final class CurlBrowser implements
     protected function setRequestHeaders()
     {
         if (!is_resource($this->curl)) {
-            throw new ApplicationException('Not a valid resource');
+            throw new ApplicationException('Not a valid resource.');
         }
 
         // set headers

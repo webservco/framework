@@ -22,24 +22,24 @@ final class Codes
                 break;
             case self::INI_SIZE:
             case self::FORM_SIZE:
-                return __('Uploaded file size exceeds maximum file size allowed');
+                return __('Uploaded file size exceeds maximum file size allowed.');
                 break;
             case self::PARTIAL:
-                return __('The uploaded file was only partially uploaded');
+                return __('The uploaded file was only partially uploaded.');
                 break;
             case self::NO_FILE:
-                return __('No file was uploaded');
+                return __('No file was uploaded.');
                 break;
             case self::TYPE_NOT_ALLOWED:
-                return __('File type not allowed');
+                return __('File type not allowed.');
                 break;
             case self::CANT_WRITE:
-                return __('Error saving uploaded file');
+                return __('Error saving uploaded file.');
                 break;
             case self::NO_TMP_DIR:
             case self::EXTENSION:
             default:
-                return __('Upload error');
+                return __('Upload error.');
                 break;
         }
     }

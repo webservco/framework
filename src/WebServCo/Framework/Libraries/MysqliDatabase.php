@@ -103,7 +103,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
     public function query($query, $params = [])
     {
         if (empty($query)) {
-            throw new DatabaseException('No query specified');
+            throw new DatabaseException('No query specified.');
         }
 
         try {
@@ -125,7 +125,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
             $this->db->autocommit(false);
             foreach ($queries as $item) {
                 if (!isset($item[0])) {
-                    throw new DatabaseException('No query specified');
+                    throw new DatabaseException('No query specified.');
                 }
                 $params = isset($item[1]) ? $item[1] : [];
                 $this->query($item[0], $params);
@@ -167,7 +167,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         }
         $callable = [$this->stmt, 'bind_param'];
         if (!is_callable($callable)) {
-            throw new DatabaseException('Method not found');
+            throw new DatabaseException('Method not found.');
         }
         return call_user_func_array($callable, $args);
     }

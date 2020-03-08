@@ -72,7 +72,7 @@ final class Framework
     {
         if (!class_exists($fullClassName)) {
             throw new ApplicationException(
-                sprintf('Library %s not found', $fullClassName)
+                sprintf('Library %s not found.', $fullClassName)
             );
         }
 
@@ -116,7 +116,7 @@ final class Framework
 
         if (!is_readable($path)) {
             throw new ApplicationException(
-                sprintf('Helper for %s Library not found', $className)
+                sprintf('Helper for %s Library not found.', $className)
             );
         }
         require $path;

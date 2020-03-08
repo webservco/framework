@@ -29,7 +29,7 @@ trait DatabaseTrait
     final protected function add($queryType, $tableName, $addData = [], $updateData = [])
     {
         if (empty($tableName)) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified');
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }
 
         $query = $this->generateAddQuery($queryType, $tableName, $addData, $updateData);

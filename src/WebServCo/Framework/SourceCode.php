@@ -14,7 +14,7 @@ final class SourceCode
             case self::TYPE_XML:
                 break;
             default:
-                throw new \WebServCo\Framework\Exceptions\ApplicationException('Type not implemented');
+                throw new \WebServCo\Framework\Exceptions\ApplicationException('Type not implemented.');
                 break;
         }
         $this->type = $type;
