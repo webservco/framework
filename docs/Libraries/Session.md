@@ -29,6 +29,8 @@ $session = new \WebServCo\Framework\Libraries\Session($configurationArray);
 
 ## Starting the session
 
+Note: sessions is not started in CLI mode.
+
 In your Controller's `__construct()` method:
 
 ### with custom storage directory (recommended):
