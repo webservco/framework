@@ -40,7 +40,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
     public function start($storagePath = null)
     {
         if (\WebServCo\Framework\Framework::isCli()) {
-            throw new SessionException('Not starting session in CLI mode.')
+            throw new SessionException('Not starting session in CLI mode.');
         }
 
         if (session_status() === \PHP_SESSION_ACTIVE) {
