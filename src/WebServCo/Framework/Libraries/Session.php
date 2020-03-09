@@ -2,7 +2,6 @@
 namespace WebServCo\Framework\Libraries;
 
 use WebServCo\Framework\ArrayStorage;
-use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Exceptions\SessionException;
 use WebServCo\Framework\Settings;
 
@@ -11,7 +10,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
     protected function checkSession()
     {
         if (session_status() === \PHP_SESSION_NONE) {
-            throw new ApplicationException(
+            throw new SessionException(
                 'Session is not started.'
             );
         }
@@ -28,7 +27,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
 
         if ($actualStoragePath != $storagePath) {
             if ($this->setting('strict_custom_path', true)) {
-                throw new ApplicationException(
+                throw new SessionException(
                     'Unable to set custom session storage path. ' .
                     sprintf('Current path: %s.', $actualStoragePath)
                 );
@@ -45,7 +44,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         }
 
         if (session_status() === \PHP_SESSION_ACTIVE) {
-            throw new ApplicationException(
+            throw new SessionException(
                 'Unable to start session: already started.'
             );
         }
@@ -86,7 +85,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         session_name('webservco');
 
         if (!session_start()) {
-            throw new ApplicationException('Unable to start session.');
+            throw new SessionException('Unable to start session.');
         }
 
         return true;
