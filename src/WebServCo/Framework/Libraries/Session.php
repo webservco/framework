@@ -2,8 +2,9 @@
 namespace WebServCo\Framework\Libraries;
 
 use WebServCo\Framework\ArrayStorage;
-use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Exceptions\SessionException;
+use WebServCo\Framework\Settings;
 
 final class Session extends \WebServCo\Framework\AbstractLibrary
 {
@@ -39,6 +40,10 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
 
     public function start($storagePath = null)
     {
+        if (\WebServCo\Framework\Framework::isCli()) {
+            throw new SessionException('Not starting session in CLI mode.')
+        }
+
         if (session_status() === \PHP_SESSION_ACTIVE) {
             throw new ApplicationException(
                 'Unable to start session: already started.'
