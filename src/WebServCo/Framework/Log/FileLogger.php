@@ -4,7 +4,9 @@ namespace WebServCo\Framework\Log;
 use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Interfaces\RequestInterface;
 
-class FileLogger extends AbstractLogger implements \WebServCo\Framework\Interfaces\FileLoggerInterface
+class FileLogger extends AbstractLogger implements
+    \WebServCo\Framework\Interfaces\LoggerInterface,
+    \WebServCo\Framework\Interfaces\FileLoggerInterface
 {
     protected $channel;
     protected $logDir;
