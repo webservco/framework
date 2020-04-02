@@ -171,10 +171,10 @@ final class CurlBrowser implements
 
             $this->logger->debug('CURL INFO:', $this->debugInfo);
             $this->logger->debug('CURL VERBOSE:', $this->debugOutput);
-            $this->logger->debug('CURL RESPONSE:', $this->response);
             if (!empty($this->requestData)) {
                 $this->logger->debug('REQUEST DATA:', $this->requestData);
             }
+            $this->logger->debug('CURL RESPONSE:', $this->response);
 
             return true;
         }
