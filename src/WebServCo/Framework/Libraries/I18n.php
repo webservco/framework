@@ -20,13 +20,19 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         $this->domain = $this->setting('domain', 'messages');
     }
 
-    /**
-    * After calling init(), a custom language/domain can be set by calling setLanguage with full arguments.
-    * Call this function afterwards to restore the oriignal language/domain.
-    */
-    public function reset()
+    public function getLanguage()
     {
-        $this->setLanguage($this->lang, $this->translationsPath);
+        return $this->lang;
+    }
+
+    public function getLanguages()
+    {
+        return $this->langs;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     public function init($projectPath, $lang = null)
@@ -37,6 +43,15 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         $this->setLanguage($lang);
 
         return true;
+    }
+
+    /**
+    * After calling init(), a custom language/domain can be set by calling setLanguage with full arguments.
+    * Call this function afterwards to restore the original language/domain.
+    */
+    public function reset()
+    {
+        $this->setLanguage($this->lang, $this->translationsPath);
     }
 
     public function setLanguage($lang, $translationsPath = null)
@@ -56,19 +71,13 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return true;
     }
 
-    public function getLanguage()
+    protected function setDomain($domain, $directory)
     {
-        return $this->lang;
-    }
+        bindtextdomain($domain, $directory);
+        textdomain($domain);
+        bind_textdomain_codeset($domain, 'UTF8');
 
-    public function getLanguages()
-    {
-        return $this->langs;
-    }
-
-    public function getLocale()
-    {
-        return $this->locale;
+        return true;
     }
 
     protected function setLocale($locale)
@@ -95,15 +104,6 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         } else { // Windows
             setlocale(LC_ALL, $locale);
         }
-
-        return true;
-    }
-
-    protected function setDomain($domain, $directory)
-    {
-        bindtextdomain($domain, $directory);
-        textdomain($domain);
-        bind_textdomain_codeset($domain, 'UTF8');
 
         return true;
     }
