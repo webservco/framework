@@ -36,4 +36,16 @@ final class Arrays
         }
         return $array;
     }
+
+    public static function toUrlQueryString($array = [])
+    {
+        if (empty($array)) {
+            return null;
+        }
+        $queries = [];
+        foreach ($array as $k => $v) {
+            $queries[] = sprintf('%s=%s', $k, $v);
+        }
+        return '?' . implode('&', $queries);
+    }
 }

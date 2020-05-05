@@ -51,7 +51,7 @@ trait RequestUrlTrait
                 unset($query[$item]);
             }
         }
-        $url .= $this->queryToString($query);
+        $url .= \WebServCo\Framework\Utils\Arrays::toUrlQueryString($query);
         return $url;
     }
 
@@ -67,17 +67,5 @@ trait RequestUrlTrait
             $key,
             $defaultValue
         );
-    }
-
-    public function queryToString($query = [])
-    {
-        if (empty($query)) {
-            return false;
-        }
-        $queries = [];
-        foreach ($query as $k => $v) {
-            $queries[] = sprintf('%s=%s', $k, $v);
-        }
-        return '?' . implode('&', $queries);
     }
 }
