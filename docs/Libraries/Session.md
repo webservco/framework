@@ -2,6 +2,10 @@
 
 ## `\WebServCo\Framework\Libraries\Session`
 
+Implements `\WebServCo\Framework\Interfaces\SessionInterface`.
+
+
+
 ## Instantiation
 
 ### Framework

@@ -5,35 +5,76 @@ use WebServCo\Framework\ArrayStorage;
 use WebServCo\Framework\Exceptions\SessionException;
 use WebServCo\Framework\Settings;
 
-final class Session extends \WebServCo\Framework\AbstractLibrary
+final class Session extends \WebServCo\Framework\AbstractLibrary implements
+    \WebServCo\Framework\Interfaces\SessionInterface
 {
-    protected function checkSession()
+    public function clear($setting)
     {
-        if (session_status() === \PHP_SESSION_NONE) {
-            throw new SessionException(
-                'Session is not started.'
-            );
-        }
+        return $this->set($setting, null);
     }
 
-    protected function setStoragePath($storagePath)
+    public function destroy()
     {
-        if (empty($storagePath)) {
-            return false;
-        }
+        $_SESSION = [];
+        setcookie(
+            session_name(),
+            '',
+            time() - 3600,
+            $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
+            $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
+            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
+            $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
+        );
+        session_destroy();
+        return true;
+    }
 
-        ini_set('session.save_path', $storagePath);
-        $actualStoragePath = session_save_path($storagePath);
+    public function get($setting, $defaultValue = false)
+    {
+        $this->checkSession();
 
-        if ($actualStoragePath != $storagePath) {
-            if ($this->setting('strict_custom_path', true)) {
-                throw new SessionException(
-                    'Unable to set custom session storage path. ' .
-                    sprintf('Current path: %s.', $actualStoragePath)
-                );
-            }
-            return false;
-        }
+        return ArrayStorage::get(
+            $_SESSION,
+            $setting,
+            $defaultValue
+        );
+    }
+
+    public function has($setting)
+    {
+        $this->checkSession();
+
+        return ArrayStorage::has(
+            $_SESSION,
+            $setting
+        );
+    }
+
+    public function regenerate()
+    {
+        return session_regenerate_id(true);
+    }
+
+    public function remove($setting)
+    {
+        $this->checkSession();
+
+        $_SESSION = ArrayStorage::remove(
+            $_SESSION,
+            $setting
+        );
+        return true;
+    }
+
+    public function set($setting, $value)
+    {
+        $this->checkSession();
+
+        $_SESSION = ArrayStorage::set(
+            $_SESSION,
+            $setting,
+            $value
+        );
         return true;
     }
 
@@ -91,73 +132,33 @@ final class Session extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
 
-    public function destroy()
+    protected function checkSession()
     {
-        $_SESSION = [];
-        setcookie(
-            session_name(),
-            '',
-            time() - 3600,
-            $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
-            $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
-            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
-            $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
-        );
-        session_destroy();
+        if (session_status() === \PHP_SESSION_NONE) {
+            throw new SessionException(
+                'Session is not started.'
+            );
+        }
+    }
+
+    protected function setStoragePath($storagePath)
+    {
+        if (empty($storagePath)) {
+            return false;
+        }
+
+        ini_set('session.save_path', $storagePath);
+        $actualStoragePath = session_save_path($storagePath);
+
+        if ($actualStoragePath != $storagePath) {
+            if ($this->setting('strict_custom_path', true)) {
+                throw new SessionException(
+                    'Unable to set custom session storage path. ' .
+                    sprintf('Current path: %s.', $actualStoragePath)
+                );
+            }
+            return false;
+        }
         return true;
-    }
-
-    public function regenerate()
-    {
-        return session_regenerate_id(true);
-    }
-
-    public function set($setting, $value)
-    {
-        $this->checkSession();
-
-        $_SESSION = ArrayStorage::set(
-            $_SESSION,
-            $setting,
-            $value
-        );
-        return true;
-    }
-
-    public function get($setting, $defaultValue = false)
-    {
-        $this->checkSession();
-
-        return ArrayStorage::get(
-            $_SESSION,
-            $setting,
-            $defaultValue
-        );
-    }
-
-    public function has($setting)
-    {
-        $this->checkSession();
-
-        return ArrayStorage::has(
-            $_SESSION,
-            $setting
-        );
-    }
-
-    public function remove($setting)
-    {
-        $this->checkSession();
-
-        $_SESSION = ArrayStorage::remove(
-            $_SESSION,
-            $setting
-        );
-        return true;
-    }
-
-    public function clear($setting)
-    {
-        return $this->set($setting, null);
     }
 }
