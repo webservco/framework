@@ -8,6 +8,7 @@ interface RequestInterface
     public function getContentType();
     public function getArgs();
     public function getBody();
+    public function getHost();
     public function getMethod();
     public function getQuery();
     public function getRemoteAddress();
