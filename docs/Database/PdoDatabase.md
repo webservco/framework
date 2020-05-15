@@ -107,7 +107,7 @@ while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
 ```
 
 ```php
-$this->db->query("DELETE FROM <table> WHERE <col> = ?", [<val>]);
+$this->db->query("DELETE FROM <table> WHERE <col> = ? LIMIT 1", [<val>]);
 return $this->db->affectedRows();
 ```
 
