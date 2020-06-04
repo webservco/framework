@@ -13,9 +13,7 @@ final class ErrorHandler
             'trace' => null,
             'exception' => null,
         ];
-        if ($exception instanceof \Throwable ||
-            $exception instanceof \Exception
-        ) {
+        if ($exception instanceof \Throwable) {
             $errorInfo['code'] = $exception->getCode();
             $errorInfo['message'] = $exception->getMessage();
             $errorInfo['file'] = $exception->getFile();
