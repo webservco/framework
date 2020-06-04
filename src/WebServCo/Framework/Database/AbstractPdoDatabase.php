@@ -180,14 +180,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         switch ($type) {
             case 'NULL':
                 return \PDO::PARAM_NULL;
-                break;
             case 'integer':
                 return \PDO::PARAM_INT;
-                break;
             case 'boolean':
                 // causes data not to be inserted
                 //return \PDO::PARAM_BOOL;
-                //break;
             case 'string':
             case 'double':
             case 'array':
@@ -197,7 +194,6 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             case 'unknown type':
             default:
                 return \PDO::PARAM_STR;
-                break;
         }
     }
 

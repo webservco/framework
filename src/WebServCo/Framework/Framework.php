@@ -27,13 +27,10 @@ final class Framework
         switch ($classType) {
             case self::TYPE_FRAMEWORK:
                 return sprintf('\\%s\\Libraries\\%s', __NAMESPACE__, $className);
-                break;
             case self::TYPE_PROJECT:
                 return sprintf('\\Project\\Libraries\\%s', $className);
-                break;
             default:
                 return $className;
-                break;
         }
     }
 

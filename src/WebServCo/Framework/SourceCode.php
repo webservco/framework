@@ -15,7 +15,6 @@ final class SourceCode
                 break;
             default:
                 throw new \WebServCo\Framework\Exceptions\ApplicationException('Type not implemented.');
-                break;
         }
         $this->type = $type;
         $this->data = $data;
@@ -26,10 +25,8 @@ final class SourceCode
         switch ($this->type) {
             case self::TYPE_XML:
                 return $this->highlightXml($this->data);
-                break;
             default:
                 return false;
-                break;
         }
     }
 

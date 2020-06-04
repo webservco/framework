@@ -179,10 +179,8 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         switch ($type) {
             case 'integer':
                 return 'i';
-                break;
             case 'double':
                 return 'd';
-                break;
             case 'string':
             case 'boolean':
             case 'NULL':
@@ -193,7 +191,6 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
             case 'unknown type':
             default:
                 return 's';
-                break;
         }
     }
 }

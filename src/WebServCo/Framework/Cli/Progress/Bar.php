@@ -47,7 +47,6 @@ final class Bar
             case 'single_line':
             case 'multi_line':
                 return $this->prefixProgress($message);
-                break;
         }
     }
 
@@ -56,10 +55,8 @@ final class Bar
         switch ($this->type) {
             case 'single_line':
                 return $this->suffixSingle($result);
-                break;
             case 'multi_line':
                 return $this->suffixMulti($result);
-                break;
         }
     }
 
