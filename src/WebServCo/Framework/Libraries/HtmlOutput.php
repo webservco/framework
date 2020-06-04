@@ -34,9 +34,6 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
         } catch (\Throwable $e) { // php7
             ob_end_clean();
             throw $e;
-        } catch (\Exception $e) { // php5
-            ob_end_clean();
-            throw $e;
         }
         return $output;
     }

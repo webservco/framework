@@ -33,8 +33,6 @@ class Application extends \WebServCo\Framework\AbstractApplication
             return true;
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
-        } catch (\Exception $e) { // php5
-            $this->shutdown($e, true);
         }
     }
 
@@ -52,8 +50,6 @@ class Application extends \WebServCo\Framework\AbstractApplication
             }
             $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
         } catch (\Throwable $e) { // php7
-            $this->shutdown($e, true);
-        } catch (\Exception $e) { // php5
             $this->shutdown($e, true);
         }
     }
