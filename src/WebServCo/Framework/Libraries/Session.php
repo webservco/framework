@@ -113,7 +113,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         /**
          * Make sure garbage collector visits us.
          */
-        ini_set('session.gc_probability', 1);
+        ini_set('session.gc_probability', '1');
 
         session_set_cookie_params(
             $this->setting(sprintf('cookie%slifetime', Settings::DIVIDER), 60 * 60 * 24 * 14),

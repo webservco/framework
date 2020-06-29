@@ -125,6 +125,6 @@ final class ErrorHandler
      */
     protected static function disableErrorDisplay()
     {
-        ini_set('display_errors', 0);
+        ini_set('display_errors', '0');
     }
 }
