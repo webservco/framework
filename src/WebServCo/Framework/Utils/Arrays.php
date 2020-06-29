@@ -7,7 +7,7 @@ final class Arrays
     * @param array[] $array
     * @param mixed $value
     */
-    public function has(array $array, $value) : bool
+    public function has(?array $array, $value) : bool
     {
         if (!is_array($array)) {
             return false;
@@ -19,8 +19,9 @@ final class Arrays
     * @param array[] $array
     * @param mixed $key
     * @param mixed $defaultValue
+    * @return mixed
     */
-    public static function get(array $array, $key, $defaultValue = false) : bool
+    public static function get(array $array, $key, $defaultValue = false)
     {
         if (!is_array($array)) {
             return $defaultValue;
