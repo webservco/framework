@@ -3,7 +3,11 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
-    public function has($array, $value)
+    /**
+    * @param array[] $array
+    * @param mixed $value
+    */
+    public function has(array $array, $value) : bool
     {
         if (!is_array($array)) {
             return false;
@@ -11,7 +15,12 @@ final class Arrays
         return in_array($value, $array);
     }
 
-    public static function get($array, $key, $defaultValue = false)
+    /**
+    * @param array[] $array
+    * @param mixed $key
+    * @param mixed $defaultValue
+    */
+    public static function get(array $array, $key, $defaultValue = false) : bool
     {
         if (!is_array($array)) {
             return $defaultValue;
@@ -19,7 +28,10 @@ final class Arrays
         return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
     }
 
-    public static function isMultidimensional($array = [])
+    /**
+    * @param array[] $array
+    */
+    public static function isMultidimensional(array $array) : bool
     {
         if (empty($array)) {
             return false;
@@ -27,7 +39,11 @@ final class Arrays
         return is_array($array[key($array)]);
     }
 
-    public static function nullToEmptyString($array = [])
+    /**
+    * @param array<mixed> $array
+    * @return array[]
+    */
+    public static function nullToEmptyString(array $array) : array
     {
         foreach ($array as $key => $value) {
             if (is_null($value)) {
@@ -37,7 +53,10 @@ final class Arrays
         return $array;
     }
 
-    public static function toUrlQueryString($array = [])
+    /**
+    * @param array<mixed> $array
+    */
+    public static function toUrlQueryString(array $array) : ?string
     {
         if (empty($array)) {
             return null;

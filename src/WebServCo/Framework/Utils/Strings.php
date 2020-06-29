@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Utils;
 
 final class Strings
 {
-    public static function contains($haystack, $needle, $ignoreCase = true)
+    public static function contains(string $haystack, string $needle, bool $ignoreCase = true) : bool
     {
         if (false !== $ignoreCase) {
             $function = function_exists('mb_stripos') ? 'mb_stripos' : 'stripos';
@@ -14,7 +14,7 @@ final class Strings
         return false !== $function($haystack, $needle);
     }
 
-    public static function endsWith($haystack, $needle)
+    public static function endsWith(string $haystack, string $needle) : bool
     {
         $functionSubstr = function_exists('mb_substr') ? 'mb_substr' : 'substr';
         $functionStrlen = function_exists('mb_strlen') ? 'mb_strlen' : 'strlen';
@@ -22,14 +22,18 @@ final class Strings
         return $check == $needle;
     }
 
-    public static function getContextAsString($context)
+    /**
+    * @param mixed $context
+    * @return string
+    */
+    public static function getContextAsString($context) : string
     {
         ob_start();
         var_dump($context);
         return ob_get_clean();
     }
 
-    public static function getSlug($string)
+    public static function getSlug(string $string) : string
     {
         $transliterator = \Transliterator::createFromRules(
             ':: Any-Latin;'
@@ -46,7 +50,7 @@ final class Strings
         return $transliterator->transliterate($string);
     }
 
-    public static function startsWith($haystack, $needle, $ignoreCase = true)
+    public static function startsWith(string $haystack, string $needle, bool $ignoreCase = true) : bool
     {
         if (false !== $ignoreCase) {
             $function = function_exists('mb_stripos') ? 'mb_stripos' : 'stripos';
@@ -57,7 +61,7 @@ final class Strings
         return 0 === $function($haystack, $needle);
     }
 
-    public static function stripNonDigits($haystack)
+    public static function stripNonDigits(string $haystack) : string
     {
         return preg_replace("/\D+/", '', $haystack);
     }
