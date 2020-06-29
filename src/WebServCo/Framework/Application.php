@@ -18,6 +18,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     {
         try {
             ErrorHandler::set();
+
             register_shutdown_function([$this, 'shutdown']);
 
             $this->setEnvironmentValue();
@@ -108,7 +109,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
      *
      * This method is also registered as a shutdown handler.
      */
-    final public function shutdown($exception = null, $manual = false, $statusCode = 0)
+    final public function shutdown($exception = null, $manual = false, $statusCode = 0) : void
     {
         $hasError = $this->handleErrors($exception);
         if ($hasError) {
