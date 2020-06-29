@@ -3,7 +3,13 @@ namespace WebServCo\Framework\Utils;
 
 final class Template
 {
-    public static function render($templatePath, $templateName, $data)
+    /**
+    * @param string $templatePath
+    * @param string $templateName
+    * @param array[] $data
+    * @return string
+    */
+    public static function render(string $templatePath, string $templateName, array $data) : string
     {
         $output = new \WebServCo\Framework\Libraries\HtmlOutput();
         foreach ($data as $k => $v) {
