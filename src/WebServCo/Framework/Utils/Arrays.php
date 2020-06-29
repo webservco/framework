@@ -54,6 +54,31 @@ final class Arrays
     }
 
     /**
+    * Array power set (all element combinations)
+    *
+    * Original function credit:
+    * "PHP Cookbook by David Sklar, Adam Trachtenberg"
+    * 4.24. Finding All Element Combinations of an Array
+    * https://www.oreilly.com/library/view/php-cookbook/1565926811/ch04s25.html
+    * @param array[] $array
+    * @return array[]
+    */
+    public static function powerSet(array $array) : array
+    {
+        $results = [[]]; //initialize by adding the empty set
+        foreach ($array as $element) {
+            foreach ($results as $combination) {
+                array_push($results, array_merge([$element], $combination));
+            }
+        }
+        // sort by number of elements descending
+        $array1 = array_map('count', $results);
+        array_multisort($array1, SORT_DESC, $results);
+
+        return array_filter($results); // removes empty elements
+    }
+
+    /**
     * @param array<mixed> $array
     */
     public static function toUrlQueryString(array $array) : ?string
