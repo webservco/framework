@@ -8,7 +8,7 @@ trait RequestServerTrait
     public function getAcceptContentTypes()
     {
         if (!isset($this->server['HTTP_ACCEPT'])) {
-            return false;
+            return null;
         }
         $acceptTypes = [];
         $httpAccept = strtolower(str_replace(' ', '', $this->server['HTTP_ACCEPT']));
@@ -30,7 +30,7 @@ trait RequestServerTrait
     public function getAcceptLanguage()
     {
         if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
-            return false;
+            return null;
         }
         return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
@@ -38,7 +38,7 @@ trait RequestServerTrait
     public function getContentType()
     {
         if (!isset($this->server['CONTENT_TYPE'])) {
-            return false;
+            return null;
         }
         return $this->server['CONTENT_TYPE'];
     }
@@ -59,7 +59,7 @@ trait RequestServerTrait
     {
         $host = $this->getHost();
         if (empty($host)) {
-            return false;
+            return null;
         }
 
         $parts = explode('.', $host);
@@ -97,7 +97,7 @@ trait RequestServerTrait
     public function getServerProtocol()
     {
         if (!isset($this->server['SERVER_PROTOCOL'])) {
-            return false;
+            return null;
         }
         return $this->server['SERVER_PROTOCOL'];
     }
@@ -107,7 +107,7 @@ trait RequestServerTrait
         if (Framework::isCli()) {
             return gethostbyname(php_uname('n'));
         }
-        return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : false;
+        return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : null;
     }
 
     public function getServerVariable($index)
@@ -116,5 +116,13 @@ trait RequestServerTrait
             throw new \OutOfBoundsException('Requested key does not exist.');
         }
         return $this->server[$index];
+    }
+
+    public function getUserAgent()
+    {
+        if (Framework::isCli()) {
+            
+        }
+        return isset($this->server['HTTP_USER_AGENT']) ? $this->server['HTTP_USER_AGENT'] : null;
     }
 }
