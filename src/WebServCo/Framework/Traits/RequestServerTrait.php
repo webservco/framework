@@ -121,7 +121,7 @@ trait RequestServerTrait
     public function getUserAgent()
     {
         if (Framework::isCli()) {
-            
+            return null;
         }
         return isset($this->server['HTTP_USER_AGENT']) ? $this->server['HTTP_USER_AGENT'] : null;
     }
