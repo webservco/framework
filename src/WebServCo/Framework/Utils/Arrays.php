@@ -23,9 +23,6 @@ final class Arrays
     */
     public static function get(array $array, $key, $defaultValue = false)
     {
-        if (!is_array($array)) {
-            return $defaultValue;
-        }
         return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
     }
 
