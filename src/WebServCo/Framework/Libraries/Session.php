@@ -16,13 +16,14 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     public function destroy()
     {
         $_SESSION = [];
-        setcookie(
+        $cookie = \WebServCo\Framework\Framework::library('Cookie');
+        $cookie->set(
             session_name(),
             '',
             time() - 3600,
             $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
             $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
-            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
+            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), true),
             $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
         );
         session_destroy();
@@ -119,7 +120,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
             $this->setting(sprintf('cookie%slifetime', Settings::DIVIDER), 60 * 60 * 24 * 14),
             $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
             $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
-            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), false),
+            $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), true),
             $this->setting(sprintf('cookie%shttponly', Settings::DIVIDER), true)
         );
 

@@ -17,7 +17,7 @@ To use the library in another place:
 ```php
 final public function cookie()
 {
-    return \\WebServCo\Framework\Framework::getLibrary('Cookie');
+    return \WebServCo\Framework\Framework::library('Cookie');
 }
 ```
 

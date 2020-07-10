@@ -9,7 +9,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         $expire = 0,
         $path = '',
         $domain = '',
-        $secure = false,
+        $secure = true,
         $httponly = false
     ) {
         return setcookie(
@@ -22,18 +22,18 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
             $httponly
         );
     }
-    
+
     public function get($name, $defaultValue = false)
     {
         return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
     }
-    
+
     public function remove($name)
     {
         if (!isset($_COOKIE[$name])) {
             return false;
         }
-        
+
         unset($_COOKIE[$name]);
         $this->set($name, false, -1);
         return true;
