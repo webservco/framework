@@ -26,7 +26,8 @@ A PHP Framework
 * [DataTables](/docs/DataTables.md)
 
 ### Files
-* [File upload](/docs/Files/Upload)
+* [CSV](/docs/Files/CSV.md)
+* [File upload](/docs/Files/Upload.md)
 
 ### Http
 * [CurlBrowser](/docs/CurlBrowser.md)
