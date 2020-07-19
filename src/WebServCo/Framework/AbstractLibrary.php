@@ -52,8 +52,11 @@ abstract class AbstractLibrary implements
      */
     final public function dataElse($key, $defaultValue = false)
     {
-        $data = $this->data($key, false);
-        return !empty($data) ? $data : $defaultValue;
+        return \WebServCo\Framework\ArrayStorage::getElse(
+            $this->data,
+            $key,
+            $defaultValue
+        );
     }
 
     final public function getData()

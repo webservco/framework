@@ -87,6 +87,24 @@ final class ArrayStorage
         return $defaultValue;
     }
 
+    /**
+     * Retrieve a value from a storage array.
+     *
+     * Returns $defaultValue if $setting is empty.
+     *
+     * @param mixed $storage
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public static function getElse($storage, $setting = null, $defaultValue = false)
+    {
+        $data = self::get($storage, $setting, $defaultValue);
+        return !empty($data) ? $data : $defaultValue;
+    }
+
     public static function has($storage, $setting)
     {
         $value = 'WSFW_NOEXIST';
