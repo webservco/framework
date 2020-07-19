@@ -32,7 +32,7 @@ final class ArrayStorage
     {
         $setting = self::parseSetting($setting);
 
-        if (empty($setting) || empty($storage)) {
+        if (!isset($setting) || empty($storage)) { // use "!isset" for storage and not "empty" (can be 0)
             return $defaultValue;
         }
 
