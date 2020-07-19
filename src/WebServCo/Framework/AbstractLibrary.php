@@ -41,6 +41,21 @@ abstract class AbstractLibrary implements
         );
     }
 
+    /**
+     * Returns data if not empty, $defaultValue otherwise.
+     * $this->data returns data if it exists (can be empty).
+     * This method returns data if both exists and not empty.
+     *
+     * @param string $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function dataElse($key, $defaultValue = false)
+    {
+        $data = $this->data($key, false);
+        return !empty($data) ? $data : $defaultValue;
+    }
+
     final public function getData()
     {
         return $this->data;
@@ -95,18 +110,5 @@ abstract class AbstractLibrary implements
             'data' => $this->data,
             'settings' => $this->settings,
         ];
-    }
-
-    /**
-     * Returns data if not empty, $defaultValue otherwise.
-     *
-     * @param string $key
-     * @param mixed $defaultValue
-     * @return mixed
-     */
-    final public function when($key, $defaultValue = false)
-    {
-        $data = $this->data($key, false);
-        return !empty($data) ? $data : $defaultValue;
     }
 }

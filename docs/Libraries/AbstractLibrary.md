@@ -62,6 +62,9 @@ $myLibrary->setData('index2', $data['index2']);
 echo $myLibrary->data('index1/a1'); // v1
 // choose a default value if key doesn't exist
 echo $myLibrary->data('noexist', 'bar'); // bar
+// choose a default value if key doesn't exist of it exists but it's empty
+echo $myLibrary->dataElse('noexist', 'bar'); // bar
+
 
 // get all data
 $data = $myLibrary->getData();
