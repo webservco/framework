@@ -10,9 +10,12 @@ final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Fra
         if ($formatOutput) {
             $domDocument->formatOutput = true;
         }
-        $domDocument->appendChild($domElement);
+        $element = $domDocument->importNode($domElement, true);
+        $domDocument->appendChild($element);
         $fileData = $domDocument->saveXML();
+
         $domDocument = null;
+        $element = null;
 
         parent::__construct($fileName, $fileData, XmlFile::CONTENT_TYPE);
     }
