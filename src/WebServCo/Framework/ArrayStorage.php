@@ -32,7 +32,10 @@ final class ArrayStorage
     {
         $setting = self::parseSetting($setting);
 
-        if (!isset($setting) || empty($storage)) { // use "!isset" for storage and not "empty" (can be 0)
+        if (!isset($setting) || is_bool($setting) || empty($storage)) {
+            // use "!isset" for `$setting` and not "empty" (can be 0)
+            // `is_bool` check: handle wrong $setting type
+            //     prevents: "array_key_exists(): The first argument should be either a string or an integer"
             return $defaultValue;
         }
 
