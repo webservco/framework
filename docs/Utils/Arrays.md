@@ -19,6 +19,7 @@ Returns true if `$array` is an array and contains `$value`
 ### `get($array, $key, $defaultValue = false)`
 
 Get a value from an array if it exists, otherwise a specified default value.
+For multi dimensional arrays please see ArrayStorage.
 
 ### `isMultidimensional($array = [])`
 
