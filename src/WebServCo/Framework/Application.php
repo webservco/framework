@@ -40,7 +40,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Runs the application.
      */
-    final public function run()
+    public function run()
     {
         try {
             $response = $this->execute();
