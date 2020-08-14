@@ -30,6 +30,12 @@ Create a web friendly URL slug from a string.
 
 Adapted from https://stackoverflow.com/a/13331948
 
+### `linkify($string)`
+
+Convert URL's into links (adds the <a> tag)
+
+Adapted from https://stackoverflow.com/a/507459
+
 ### `startsWith($haystack, $needle, $ignoreCase = true)`
 
 Check if a string starts with another string.

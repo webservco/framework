@@ -50,6 +50,15 @@ final class Strings
         return $transliterator->transliterate($string);
     }
 
+    public static function linkify($string)
+    {
+        return preg_replace(
+            "~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~",
+            "<a href=\"\\0\">\\0</a>",
+            $string
+        );
+    }
+
     public static function startsWith(string $haystack, string $needle, bool $ignoreCase = true) : bool
     {
         if (false !== $ignoreCase) {
