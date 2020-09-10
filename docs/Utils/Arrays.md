@@ -12,9 +12,13 @@ $result = \WebServCo\Framework\Utils\Arrays::method($arguments);
 
 ## Static methods
 
+### `removeEmptyValues($array)`
+
+Removes empty values from input array (recursive).
+
 ### `has($array, $value)`
 
-Returns true if `$array` is an array and contains `$value`
+Returns true if `$array` is an array and contains `$value`.
 
 ### `get($array, $key, $defaultValue = false)`
 
@@ -23,7 +27,7 @@ For multi dimensional arrays please see ArrayStorage.
 
 ### `isMultidimensional($array = [])`
 
-Check if an array is multidimensional
+Check if an array is multidimensional.
 
 ### `nullToEmptyString($array = [])`
 

@@ -3,6 +3,19 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
+    public function removeEmptyValues(array $array) : array
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = self::removeEmptyValues($array[$key]);
+            }
+            if (empty($array[$key])) {
+                unset($array[$key]);
+            }
+        }
+        return $array;
+    }
+
     /**
     * @param array[] $array
     * @param mixed $value
