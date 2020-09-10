@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
-    public function removeEmptyValues(array $array) : array
+    public static function removeEmptyValues(array $array) : array
     {
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -20,7 +20,7 @@ final class Arrays
     * @param array[] $array
     * @param mixed $value
     */
-    public function has(?array $array, $value) : bool
+    public static function has(?array $array, $value) : bool
     {
         if (!is_array($array)) {
             return false;
