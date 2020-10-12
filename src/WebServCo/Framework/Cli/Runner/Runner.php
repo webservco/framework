@@ -58,7 +58,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
             '%s%s%s.pid',
             realpath($this->workDir),
             DIRECTORY_SEPARATOR,
-            microtime(true)
+            bin2hex(random_bytes(5))
         );
         touch($this->pid);
         return true;
