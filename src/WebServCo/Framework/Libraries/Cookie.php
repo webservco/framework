@@ -6,21 +6,37 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
     public function set(
         $name,
         $value = '',
-        $expire = 0,
+        $expires = 0,
         $path = '',
         $domain = '',
         $secure = true,
-        $httponly = false
+        $httponly = false,
+        $samesite = 'Lax'
     ) {
-        return setcookie(
-            $name,
-            \WebServCo\Framework\RequestUtils::sanitizeString($value),
-            $expire,
-            $path,
-            $domain,
-            $secure,
-            $httponly
-        );
+        if (PHP_VERSION_ID < 70300) {
+            return setcookie(
+                $name,
+                \WebServCo\Framework\RequestUtils::sanitizeString($value),
+                $expires,
+                sprintf('%s; SameSite=%s', $path, $samesite),
+                $domain,
+                $secure,
+                $httponly
+            );
+        } else {
+            return setcookie(
+                $name,
+                \WebServCo\Framework\RequestUtils::sanitizeString($value),
+                [
+                    'expires' => $expires,
+                    'path' => $path,
+                    'domain' => $domain,
+                    'secure' => $secure,
+                    'httponly' => $httponly,
+                    'samesite' => $samesite,
+                ]
+            );
+        }
     }
 
     public function get($name, $defaultValue = false)

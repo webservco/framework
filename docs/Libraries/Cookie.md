@@ -33,7 +33,7 @@ $cookie = new \WebServCo\Framework\Libraries\Cookie($configurationArray);
 > Note: the value is stored sanitized.
 
 ```php
-$this->cookie()->set($name, $value);
+$this->cookie()->set($name, $value, $expires, $path, $domain, $secure, $httponly, $samesite);
 $this->cookie()->set('username', 'Aria');
 ```
 ### Removing a value
