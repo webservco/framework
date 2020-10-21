@@ -165,3 +165,11 @@ return $this->db->valueExists('<table>', '<col>', '<val>');
 ```php
 return $this->db->tableExists('<table>');
 ```
+
+---
+
+## Error Handling
+
+Please see [DatabaseException](/docs/Exceptions/DatabaseException.md).
+
+---

@@ -25,6 +25,9 @@ A PHP Framework
 ### DataTables
 * [DataTables](/docs/DataTables.md)
 
+### Exceptions
+* [DatabaseException](/docs/Exceptions/DatabaseException.md)
+
 ### Files
 * [CSV](/docs/Files/CSV.md)
 * [File upload](/docs/Files/Upload.md)

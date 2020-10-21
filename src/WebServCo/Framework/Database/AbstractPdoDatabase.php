@@ -118,9 +118,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 $this->stmt = $this->db->query($query);
             }
             return $this->stmt;
-        } catch (\PDOException $e) {
-            throw new DatabaseException($e->getMessage(), $e);
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) { // \PDOException, \RuntimeException
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
@@ -138,9 +136,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             }
             $this->db->commit();
             return true;
-        // \WebServCo\Framework\Exceptions\DatabaseException
-        // PDOException/RuntimeException/Exception
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // DatabaseException, \PDOException, \RuntimeException
             $this->db->rollBack();
             throw new DatabaseException($e->getMessage(), $e);
         }

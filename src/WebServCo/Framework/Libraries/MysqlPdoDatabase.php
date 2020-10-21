@@ -1,8 +1,6 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
-use WebServCo\Framework\Exceptions\DatabaseException;
-
 final class MysqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {

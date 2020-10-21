@@ -33,7 +33,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
                 $this->setting(sprintf('connection%sport', Settings::DIVIDER), 3306)
             );
             $this->db->set_charset('utf8mb4');
-        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
+        } catch (\Exception $e) { // \mysqli_sql_exception, \RuntimeException
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
@@ -97,7 +97,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
          * We could count "$this->mysqliResult" but that would mean
          * the method will only work if getRow*() was called before.
          */
-        throw new DatabaseException('Method not implemented.');
+        throw new \WebServCo\Framework\Exceptions\NotImplementedException('Method not implemented.');
     }
 
     public function query($query, $params = [])
@@ -114,7 +114,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
             $this->bindParams($params);
             $this->stmt->execute();
             return $this->stmt;
-        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
+        } catch (\Exception $e) { // \mysqli_sql_exception, \RuntimeException
             throw new DatabaseException($e->getMessage());
         }
     }
@@ -132,7 +132,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
             }
             $this->db->commit();
             return true;
-        } catch (\Exception $e) { // mysqli_sql_exception/RuntimeException/Exception
+        } catch (\Exception $e) { // \mysqli_sql_exception, \RuntimeException
             $this->db->rollback();
             throw new DatabaseException($e->getMessage());
         }
