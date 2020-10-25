@@ -50,6 +50,7 @@ A PHP Framework
 
 ### Output
 * [Methods](/docs/Output/Methods.md)
+* [HtmlOutput](/docs/Output/HtmlOutput.md)
 
 ### Forms
 * [Abstract Form](/docs/Forms/AbstractForm.md)
