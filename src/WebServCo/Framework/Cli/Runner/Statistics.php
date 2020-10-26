@@ -45,10 +45,11 @@ final class Statistics
 
     protected function createCurrentTimeObject()
     {
-        $dateTime = \DateTime::createFromFormat('U.u', (string) microtime(true));
+        $microtime = sprintf('%.4f', microtime(true)); // https://www.php.net/manual/en/function.microtime.php#124984
+        $dateTime = \DateTime::createFromFormat('U.u', $microtime);
         if (!($dateTime instanceof \DateTime)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                'Error initializing DateTime object.'
+                'Error initializing DateTime object:'
             );
         }
         $dateTime->setTimezone(new \DateTimeZone($this->timeZone));
