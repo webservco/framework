@@ -5,10 +5,12 @@ use WebServCo\Framework\Http\Response;
 
 trait OutputTrait
 {
+    protected $outputCode;
     protected $outputLoader;
 
     final protected function setOutputLoader(\WebServCo\Framework\AbstractOutputLoader $outputLoader)
     {
+        $this->outputCode = 200; // default
         $this->outputLoader = $outputLoader;
     }
 
@@ -26,7 +28,7 @@ trait OutputTrait
     {
         return new Response(
             $this->output()->html($data, $template),
-            200,
+            $this->outputCode,
             ['Content-Type' => 'text/html']
         );
     }
@@ -35,7 +37,7 @@ trait OutputTrait
     {
         return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
-            200,
+            $this->outputCode,
             ['Content-Type' => 'text/html']
         );
     }
@@ -48,8 +50,13 @@ trait OutputTrait
         ];
         return new Response(
             $this->output()->json($data),
-            200,
+            $this->outputCode,
             ['Content-Type' => 'application/json']
         );
+    }
+
+    protected function setOutputCode($outputCode)
+    {
+        $this->outputCode = $outputCode;
     }
 }
