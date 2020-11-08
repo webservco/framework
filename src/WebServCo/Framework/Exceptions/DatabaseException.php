@@ -5,7 +5,7 @@ final class DatabaseException extends ApplicationException
 {
     const CODE = 0;
 
-    protected string $sqlState;
+    protected $sqlState;
 
     public function __construct($message, \Exception $previous = null)
     {
