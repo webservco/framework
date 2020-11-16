@@ -58,8 +58,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
     final protected function execute()
     {
         $classType = Framework::isCli() ? 'Command' : 'Controller';
+        $target = $this->request()->getTarget();
         $route = $this->router()->getRoute(
-            $this->request()->getTarget(),
+            $target,
             $this->router()->setting('routes'),
             $this->request()->getArgs()
         );
@@ -69,14 +70,19 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $args = isset($route[2]) ? $route[2] : [];
 
         if (empty($class) || empty($method)) {
-            throw new ApplicationException("Invalid route.");
+            throw new ApplicationException(
+                sprintf(
+                    'Invalid route. Target: "%s".',
+                    $target
+                )
+            );
         }
 
         $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
         if (!class_exists($className)) {
             /* enable in V10 *
             throw new NotFoundException(
-                sprintf('No matching %s found.', $classType)
+                sprintf('No matching %s found. Target: "%s"', $classType, $target)
             );
             /* enable in V10 */
 
@@ -85,7 +91,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
             if (!class_exists($className)) {
                 throw new NotFoundException(
-                    sprintf('No matching %s found.', $classType)
+                    sprintf('No matching %s found. Target: "%s".', $classType, $target)
                 );
             }
             /* remove in V10 */
@@ -95,11 +101,11 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $parent = get_parent_class($object);
         if (method_exists((string) $parent, $method) ||
             !is_callable([$className, $method])) {
-            throw new NotFoundException('No matching Action found.');
+            throw new NotFoundException(sprintf('No matching Action found. Target: "%s".', $target));
         }
         $callable = [$object, $method];
         if (!is_callable($callable)) {
-            throw new ApplicationException('Method not found.');
+            throw new ApplicationException(sprintf('Method not found. Target: "%s"', $target));
         }
         return call_user_func_array($callable, $args);
     }
