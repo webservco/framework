@@ -123,7 +123,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
                 sprintf(
                     '%s; SameSite=%s',
                     $this->setting(sprintf('cookie%spath', Settings::DIVIDER), '/'),
-                    $this->setting(sprintf('cookie%ssamesite', Settings::DIVIDER), 'Lax'),
+                    $this->setting(sprintf('cookie%ssamesite', Settings::DIVIDER), 'Lax')
                 ),
                 $this->setting(sprintf('cookie%sdomain', Settings::DIVIDER), ''),
                 $this->setting(sprintf('cookie%ssecure', Settings::DIVIDER), true),
