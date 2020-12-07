@@ -80,7 +80,7 @@ abstract class AbstractApplication
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oups</title>
+    <title>Oops</title>
     <style>
     * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
     .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
