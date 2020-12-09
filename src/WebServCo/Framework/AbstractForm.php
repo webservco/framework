@@ -52,11 +52,34 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
+    final public function clear()
+    {
+        $this->clearData();
+        $this->filtered = [];
+        $this->errors = [];
+    }
+
     final public function errors($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
             $this->errors,
             $key,
+            $defaultValue
+        );
+    }
+
+    final public function getSubmitField()
+    {
+        if (!$this->isSent() || empty($this->submitFields)) {
+            return false;
+        }
+        return $this->submitField;
+    }
+
+    final public function help($key, $defaultValue = false)
+    {
+        return $this->setting(
+            sprintf('help/%s', $key),
             $defaultValue
         );
     }
@@ -75,32 +98,9 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
     }
 
-    final public function getSubmitField()
-    {
-        if (!$this->isSent() || empty($this->submitFields)) {
-            return false;
-        }
-        return $this->submitField;
-    }
-
     final public function isValid()
     {
         return $this->valid;
-    }
-
-    final public function clear()
-    {
-        $this->clearData();
-        $this->filtered = [];
-        $this->errors = [];
-    }
-
-    final public function help($key, $defaultValue = false)
-    {
-        return $this->setting(
-            sprintf('help/%s', $key),
-            $defaultValue
-        );
     }
 
     final public function meta($key, $defaultValue = false)
