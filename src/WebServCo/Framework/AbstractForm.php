@@ -95,6 +95,30 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         $this->errors = [];
     }
 
+    final public function help($key, $defaultValue = false)
+    {
+        return $this->setting(
+            sprintf('help/%s', $key),
+            $defaultValue
+        );
+    }
+
+    final public function meta($key, $defaultValue = false)
+    {
+        return $this->setting(
+            sprintf('meta/%s', $key),
+            $defaultValue
+        );
+    }
+
+    final public function required($key, $defaultValue = false)
+    {
+        return $this->setting(
+            sprintf('required/%s', $key),
+            $defaultValue
+        );
+    }
+
     final public function toArray()
     {
         return [
