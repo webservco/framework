@@ -95,9 +95,28 @@ if ($form->isSent() && $form->isValid()) {
     // use a form field named "email"
     $email = $form->data('email');
 }
+```
 
-// get the errors for a field named email
-echo $this->form->errors('email');
+### Frontend
+
+```html
+<form id="myForm" class="form " action="" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="email"><?=$form->meta('email')?></label>
+        <input type="text" class="form-control<?=$form->errors('email')?' is-invalid':''?>"
+            id="email" name="email" placeholder="<?=$form->meta('email')?>" aria-describedby="emailHelp"
+            value="<?=$form->data('email')?>"<?=$form->required('email')?' required':''?>>
+        <?php if ($form->errors('email')) { ?>
+            <div class="invalid-feedback text-danger"><?=implode('<br>', $form->errors('email'))?></div>
+        <?php } else { ?>
+            <?php if ($form->help('email')) { ?>
+                <small id="emailHelp" class="form-text text-muted"><?=$form->help('email')?></small>
+            <?php } ?>
+        <?php } ?>
+    </div>
+    <button type="submit" name="Submit">Submit</button>
+</form>
+
 ```
 
 ---
