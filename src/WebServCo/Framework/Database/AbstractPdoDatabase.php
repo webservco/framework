@@ -59,6 +59,30 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return $this->stmt->fetchColumn($columnNumber);
     }
 
+    protected function getDataType($variable)
+    {
+        $type = gettype($variable);
+
+        switch ($type) {
+            case 'NULL':
+                return \PDO::PARAM_NULL;
+            case 'integer':
+                return \PDO::PARAM_INT;
+            case 'boolean':
+            // causes data not to be inserted
+            //return \PDO::PARAM_BOOL;
+            case 'string':
+            case 'double':
+            case 'array':
+            case 'object':
+            case 'resource':
+            case 'resource (closed)':
+            case 'unknown type':
+            default:
+                return \PDO::PARAM_STR;
+        }
+    }
+
     public function getRow($query, $params = [])
     {
         $this->query($query, $params);
@@ -123,6 +147,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
+    public function setAttribute(int $attribute, $value)
+    {
+        return $this->db->setAttribute($attribute, $value);
+    }
+
     public function transaction($queries)
     {
         try {
@@ -167,30 +196,6 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             }
         }
         return true;
-    }
-
-    protected function getDataType($variable)
-    {
-        $type = gettype($variable);
-
-        switch ($type) {
-            case 'NULL':
-                return \PDO::PARAM_NULL;
-            case 'integer':
-                return \PDO::PARAM_INT;
-            case 'boolean':
-                // causes data not to be inserted
-                //return \PDO::PARAM_BOOL;
-            case 'string':
-            case 'double':
-            case 'array':
-            case 'object':
-            case 'resource':
-            case 'resource (closed)':
-            case 'unknown type':
-            default:
-                return \PDO::PARAM_STR;
-        }
     }
 
     protected function validateParam($param)
