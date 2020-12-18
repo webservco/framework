@@ -150,6 +150,34 @@ final class ArrayStorage
     }
 
     /**
+     * Add data to an existing key of a storage array.
+     *
+     * @param array $storage
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $data
+     * @return array
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
+     */
+    public static function add($storage, $setting, $data)
+    {
+        if (!is_array($storage) || empty($setting)) {
+            throw new ArrayStorageException('Invalid parameters specified.');
+        }
+        $setting = self::parseSetting($setting);
+        $newData = [$data];
+        if (self::has($storage, $setting)) {
+            $existingData = self::get($storage, $setting);
+            if (!is_array($existingData)) {
+                throw new ArrayStorageException('Invalid existing data type.');
+            }
+            $newData = array_merge($existingData, $newData);
+        }
+        return self::set($storage, $setting, $newData);
+    }
+
+    /**
      * Append data to a storage array.
      *
      * @param array $storage

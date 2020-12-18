@@ -8,6 +8,18 @@ use WebServCo\Framework\Settings;
 final class Session extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\SessionInterface
 {
+    public function add($setting, $data)
+    {
+        $this->checkSession();
+
+        $_SESSION = ArrayStorage::add(
+            $_SESSION,
+            $setting,
+            $data
+        );
+        return true;
+    }
+
     public function clear($setting)
     {
         return $this->set($setting, null);

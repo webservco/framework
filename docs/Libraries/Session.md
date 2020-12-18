@@ -67,6 +67,16 @@ $result = $this->session()->has('user/name');
 $this->session()->set($setting, $value);
 $this->session()->set('user/name', 'Aria');
 ```
+
+### Adding a value to an already existing key
+
+```php
+$this->session()->add($setting, $data);
+$this->session()->add('user/settings', 'setting1');
+$this->session()->add('user/settings', 'setting2');
+$this->session()->add('user/settings', 'setting3');
+```
+
 ### Clearing a value
 
 The key remains in session storage, however the value will be `null`.
