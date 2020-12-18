@@ -173,3 +173,14 @@ return $this->db->tableExists('<table>');
 Please see [DatabaseException](/docs/Exceptions/DatabaseException.md).
 
 ---
+
+## Unbuffered query example
+
+```php
+$db->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+$stmt = $db->query(...);
+$db->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+while (...)
+```
+
+--
