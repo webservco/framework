@@ -109,7 +109,7 @@ final class ErrorHandler
      */
     public static function throwErrorException($errno, $errstr, $errfile, $errline)
     {
-        if (error_reporting() & $errno) { //check if error level is set
+        if (error_reporting() & $errno) { // check if error level is set
             throw new \ErrorException(
                 sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr),
                 0,

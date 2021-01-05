@@ -122,7 +122,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $statusCode = 1;
         }
 
-        if (!$manual) { //if shutdown handler
+        if (!$manual) { // if shutdown handler
             /**
              * Warning: this part will always be executed,
              * independent of the outcome of the script.
