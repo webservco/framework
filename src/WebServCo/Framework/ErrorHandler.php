@@ -109,15 +109,20 @@ final class ErrorHandler
      */
     public static function throwErrorException($errno, $errstr, $errfile, $errline)
     {
-        if (error_reporting() & $errno) { // check if error level is set
-            throw new \ErrorException(
-                sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr),
-                0,
-                $errno,
-                $errfile,
-                $errline
-            );
+        // https://www.php.net/manual/en/function.set-error-handler.php
+        if (!(error_reporting() & $errno)) { // bitwise operator, not a typo
+            // This error code is not included in error_reporting, so let it fall
+            // through to the standard PHP error handler
+            return false;
         }
+
+        throw new \ErrorException(
+            sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr),
+            0,
+            $errno,
+            $errfile,
+            $errline
+        );
     }
 
     /**
