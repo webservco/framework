@@ -3,6 +3,8 @@ namespace WebServCo\Framework\Interfaces;
 
 interface HttpBrowserInterface
 {
+    public function retrieve($url);
+    
     public function setDebug($debug);
 
     public function setMethod($method);
