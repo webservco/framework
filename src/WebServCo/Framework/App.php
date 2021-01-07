@@ -19,8 +19,10 @@ class App extends Application
 
     /**
      * Handle HTTP errors.
+     * @param array <int, string> $errorInfo
+     * @return bool
      */
-    protected function haltHttp($errorInfo = [])
+    protected function haltHttp(array $errorInfo = []) : bool
     {
         $this->logError($errorInfo, false);
         return parent::haltHttp($errorInfo);
