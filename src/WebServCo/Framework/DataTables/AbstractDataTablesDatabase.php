@@ -2,26 +2,34 @@
 namespace WebServCo\Framework\DataTables;
 
 use WebServCo\Framework\Database\Order as DatabaseOrder;
+use WebServCo\Framework\Interfaces\ArrayObjectInterface;
+use WebServCo\Framework\Interfaces\DatabaseInterface;
 
 abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interfaces\DataTablesInterface
 {
-    protected $db;
+    protected DatabaseInterface $db;
 
-    abstract protected function getQuery($searchQueryPart, $orderQueryPart, $limitQuery);
-    abstract protected function getRecordsTotalQuery();
+    /**
+    * @param array<array<int,mixed>|string> $searchQueryPart
+    * @param string $orderQueryPart,
+    * @param string $limitQuery
+    * @return string
+    */
+    abstract protected function getQuery(array $searchQueryPart, string $orderQueryPart, string $limitQuery) : string;
 
-    public function __construct(\WebServCo\Framework\Interfaces\DatabaseInterface $db)
+    abstract protected function getRecordsTotalQuery() : string;
+
+    public function __construct(DatabaseInterface $db)
     {
         $this->db = $db;
     }
 
-    public function getResponse(Request $request)
+    public function getResponse(Request $request) : Response
     {
         $params = [];
-        $limitQuery = null;
+        $limitQuery = '';
 
         $columnArrayObject = $request->getColumns();
-
         list($searchQueryPart, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
         $params = array_merge($params, $searchParams);
 
@@ -52,8 +60,30 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         );
     }
 
-    protected function getData(ColumnArrayObject $columnArrayObject, \PDOStatement $pdoStatement)
+    protected function assertColumnArrayObject(ArrayObjectInterface $arrayObject) : bool
     {
+        if (!$arrayObject instanceof ColumnArrayObject) {
+            throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
+        }
+        return true;
+    }
+
+    protected function assertOrderArrayObject(ArrayObjectInterface $arrayObject) : bool
+    {
+        if (!$arrayObject instanceof OrderArrayObject) {
+            throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
+        }
+        return true;
+    }
+
+    /**
+    * @param ArrayObjectInterface $columnArrayObject
+    * @param \PDOStatement $pdoStatement
+    * @return array<int,array<int|string,mixed>>
+    */
+    protected function getData(ArrayObjectInterface $columnArrayObject, \PDOStatement $pdoStatement) : array
+    {
+        $this->assertColumnArrayObject($columnArrayObject);
         $data = [];
         while ($row = $pdoStatement->fetch(\PDO::FETCH_ASSOC)) {
             $item = [];
@@ -66,28 +96,36 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $data;
     }
 
-    protected function getDatabaseColumnName($dataTablesColumnName)
+    protected function getDatabaseColumnName(string $dataTablesColumnName) : string
     {
         return $this->db->escapeIdentifier($dataTablesColumnName);
     }
 
-    protected function getOrderQueryPart(ColumnArrayObject $columnArrayObject, OrderArrayObject $orderArrayObject)
-    {
-        $query = null;
+    protected function getOrderQueryPart(
+        ArrayObjectInterface $columnArrayObject,
+        ArrayObjectInterface $orderArrayObject
+    ) : string {
+        $this->assertColumnArrayObject($columnArrayObject);
+        $this->assertOrderArrayObject($orderArrayObject);
+        $query = '';
         $orderTotal = $orderArrayObject->count();
         if (0 < $orderTotal) {
             $query = "ORDER BY";
             $items = [];
             foreach ($orderArrayObject as $order) {
-                if ($columnArrayObject[$order->getColumn()]->getOrderable()) {
-                    $dir = strtoupper($order->getDir());
-                    $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC;
-                    $columnName = $this->getDatabaseColumnName($columnArrayObject[$order->getColumn()]->getData());
-                    $items[] = sprintf(
-                        ' %s %s',
-                        $columnName,
-                        $dir
-                    );
+                $columnKey = (string) $order->getColumn();
+                $column = $columnArrayObject->offsetGet($columnKey);
+                if ($column instanceof Column) {
+                    if ($column->getOrderable()) {
+                        $dir = strtoupper($order->getDir());
+                        $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC;
+                        $columnName = $this->getDatabaseColumnName($column->getData());
+                        $items[] = sprintf(
+                            ' %s %s',
+                            $columnName,
+                            $dir
+                        );
+                    }
                 }
             }
             $query .= implode(",", $items);
@@ -95,24 +133,34 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $query;
     }
 
-    protected function getRecordsFiltered()
+    protected function getRecordsFiltered() : int
     {
-        return $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
+        return (int) $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
     }
 
-    protected function getRecordsTotal($recordsFiltered, $searchQueryPart)
+    /**
+    * @param int $recordsFiltered
+    * @param array<array<int,mixed>|string> $searchQueryPart
+    * @return int
+    */
+    protected function getRecordsTotal(int $recordsFiltered, array $searchQueryPart) : int
     {
         if (empty($searchQueryPart)) {
             return $recordsFiltered;
         }
-        return $this->db->getColumn( // grand total - query without the search, order, limits
+        return (int) $this->db->getColumn( // grand total - query without the search, order, limits
             $this->getRecordsTotalQuery(),
             []
         );
     }
 
-    protected function getSearchQueryPart(ColumnArrayObject $columnArrayObject)
+    /**
+    * @param ArrayObjectInterface $columnArrayObject
+    * @return array<mixed>
+    */
+    protected function getSearchQueryPart(ArrayObjectInterface $columnArrayObject) : array
     {
+        $this->assertColumnArrayObject($columnArrayObject);
         $query = null;
         $params = [];
         foreach ($columnArrayObject as $column) {

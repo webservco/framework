@@ -3,13 +3,13 @@ namespace WebServCo\Framework\Interfaces;
 
 interface ResponseInterface
 {
-    public function setStatus($statusCode);
+    public function setStatus(int $statusCode) : bool;
 
-    public function setContent($content);
+    public function setContent(string $content) : bool;
 
-    public function send();
+    public function send() : int;
 
-    public function getContent();
+    public function getContent() : string;
 
-    public function getStatus();
+    public function getStatus() : int;
 }

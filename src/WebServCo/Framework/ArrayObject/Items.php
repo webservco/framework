@@ -1,34 +1,41 @@
 <?php
 namespace WebServCo\Framework\ArrayObject;
 
+use WebServCo\Framework\Interfaces\ArrayObjectInterface;
+
 class Items
 {
-    protected $arrayObject;
+    protected ArrayObjectInterface $arrayObject;
 
-    public function __construct(\ArrayObject $arrayObject)
+    public function __construct(ArrayObjectInterface $arrayObject)
     {
         $this->arrayObject = $arrayObject;
     }
 
-    public function getArrayObject()
+    public function getArrayObject() : ArrayObjectInterface
     {
         return $this->arrayObject;
     }
 
-    public function set($index, $item)
+    /**
+    * @param int|null|string $index
+    * @param mixed $item
+    * @return bool
+    */
+    public function set($index, $item) : bool
     {
         $this->arrayObject->offsetSet($index, $item);
         return true;
     }
 
-    public function remove($index)
+    public function remove(int $index) : bool
     {
         $this->arrayObject->offsetUnset($index);
         $this->rebuildIndex();
         return true;
     }
 
-    protected function rebuildIndex()
+    protected function rebuildIndex() : bool
     {
         $data = $this->arrayObject->getArrayCopy();
         $this->arrayObject->exchangeArray([]);

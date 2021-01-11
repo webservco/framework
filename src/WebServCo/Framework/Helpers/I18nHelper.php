@@ -5,7 +5,7 @@ namespace {
         /**
          * Gettext / dgetttext wrapper.
          */
-        function __($msg, $domain = null)
+        function __(string $msg, string $domain = null) : string
         {
             if (!empty($domain)) {
                 return dgettext($domain, $msg);
@@ -18,7 +18,7 @@ namespace {
         /**
          * Ngettext / dngettext wrapper.
          */
-        function ___($msgSingular, $msgPlural, $msgNumber, $domain = null)
+        function ___(string $msgSingular, string $msgPlural, int $msgNumber, string $domain = null) : string
         {
             if (!empty($domain)) {
                 return dngettext($domain, $msgSingular, $msgPlural, $msgNumber);

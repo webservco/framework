@@ -6,6 +6,7 @@ use WebServCo\Framework\Framework;
 use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Exceptions\NotFoundException;
+use WebServCo\Framework\Interfaces\ResponseInterface;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
@@ -14,7 +15,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Starts the execution of the application.
      */
-    final public function start()
+    final public function start() : void
     {
         try {
             ErrorHandler::set();
@@ -30,8 +31,6 @@ class Application extends \WebServCo\Framework\AbstractApplication
             /**
              * @todo i18n, log, session (if not cli), users (if not cli)
              */
-
-            return true;
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
         }
@@ -40,13 +39,12 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Runs the application.
      */
-    public function run()
+    public function run() : void
     {
         try {
             $response = $this->execute();
             $statusCode = 0;
-            if ($response instanceof
-                \WebServCo\Framework\Interfaces\ResponseInterface) {
+            if ($response instanceof ResponseInterface) {
                 $statusCode = $response->send();
             }
             $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
@@ -55,7 +53,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         }
     }
 
-    final protected function execute()
+    final protected function execute() : ResponseInterface
     {
         $classType = Framework::isCli() ? 'Command' : 'Controller';
         $target = $this->request()->getTarget();
@@ -65,9 +63,12 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $this->request()->getArgs()
         );
 
-        $class = isset($route[0]) ? $route[0] : null;
-        $method = isset($route[1]) ? $route[1] : null;
+        $class = isset($route[0]) ? strval($route[0]) : null;
+        $method = isset($route[1]) ? strval($route[1]) : null;
         $args = isset($route[2]) ? $route[2] : [];
+        if (!is_array($args)) {
+            $args = [];
+        }
 
         if (empty($class) || empty($method)) {
             throw new ApplicationException(
@@ -107,6 +108,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         if (!is_callable($callable)) {
             throw new ApplicationException(sprintf('Method not found. Target: "%s"', $target));
         }
+
         return call_user_func_array($callable, $args);
     }
 
@@ -115,7 +117,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
      *
      * This method is also registered as a shutdown handler.
      */
-    final public function shutdown($exception = null, $manual = false, $statusCode = 0) : void
+    final public function shutdown(\Throwable $exception = null, bool $manual = false, int $statusCode = 0) : void
     {
         $hasError = $this->handleErrors($exception);
         if ($hasError) {

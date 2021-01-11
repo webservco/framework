@@ -15,9 +15,9 @@ final class Method
     /**
      * Retrieve list of supported HTTP methods.
      *
-     * @return array
+     * @return array  <int,string>
      */
-    public static function getSupported()
+    public static function getSupported() : array
     {
         return [
             self::GET,

@@ -3,23 +3,23 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-    abstract public function getHost();
-    abstract public function getSchema();
+    abstract public function getHost() : ?string;
+    abstract public function getSchema() : ?string;
 
-    public function getSuffix()
+    public function getSuffix() : string
     {
         return $this->suffix;
     }
 
-    public function getTarget()
+    public function getTarget() : string
     {
         return $this->target;
     }
 
-    public function getAppUrl()
+    public function getAppUrl() : string
     {
         if (\WebServCo\Framework\Framework::isCli()) {
-            return false;
+            return '';
         }
         $url = sprintf(
             '%s://%s%s',
@@ -30,15 +30,21 @@ trait RequestUrlTrait
         return rtrim($url, '/') . '/';
     }
 
-    public function getShortUrl()
+    public function getShortUrl() : string
     {
         $url = $this->getAppUrl();
-        $url .= $this->getTarget();
-        $url .= $this->getSuffix();
+        if (!empty($url)) {
+            $url .= $this->getTarget();
+            $url .= $this->getSuffix();
+        }
         return $url;
     }
 
-    public function getUrl($removeParameters = [])
+    /**
+    * @param array<int,string> $removeParameters
+    * @return string
+    */
+    public function getUrl(array $removeParameters = []) : string
     {
         if (!is_array($removeParameters)) {
             throw new \InvalidArgumentException('Agument must be an array.');
@@ -55,11 +61,21 @@ trait RequestUrlTrait
         return $url;
     }
 
-    public function getQuery()
+    /**
+    * @return array<string,mixed>
+    */
+    public function getQuery() : array
     {
         return $this->query;
     }
 
+    /**
+     * @param mixed $key Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     public function query($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(

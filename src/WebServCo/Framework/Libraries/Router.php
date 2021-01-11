@@ -3,7 +3,13 @@ namespace WebServCo\Framework\Libraries;
 
 final class Router extends \WebServCo\Framework\AbstractLibrary
 {
-    public function getRoute($requestCustom, $routes, $extraArgs = [])
+    /**
+    * @param string $requestCustom
+    * @param array<string,string> $routes
+    * @param array<int,string> $extraArgs
+    * @return array<array<int,string>|string>
+    */
+    public function getRoute(string $requestCustom, array $routes, array $extraArgs = []) : array
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString) || 'index' == $routeString) {
@@ -39,7 +45,12 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         return [$controller, $action, $args];
     }
 
-    private function parseCustomRoutes($requestCustom, $routes)
+    /**
+    * @param string $requestCustom
+    * @param array<string,string> $routes
+    * @return string
+    */
+    private function parseCustomRoutes(string $requestCustom, array $routes) : string
     {
         if (is_array($routes)) {
             foreach ($routes as $k => $v) {
@@ -59,7 +70,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
                          */
                          $v = preg_replace("#^{$k}$#", $v, $requestCustom);
                     }
-                    return $v;
+                    return (string) $v;
                 }
             }
         }

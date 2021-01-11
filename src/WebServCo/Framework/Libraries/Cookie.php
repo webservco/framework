@@ -3,16 +3,32 @@ namespace WebServCo\Framework\Libraries;
 
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
+    public function get(string $name, ?string $defaultValue) : string
+    {
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
+    }
+
+    public function remove(string $name) : bool
+    {
+        if (!isset($_COOKIE[$name])) {
+            return false;
+        }
+
+        unset($_COOKIE[$name]);
+        $this->set($name, '', -1);
+        return true;
+    }
+
     public function set(
-        $name,
-        $value = '',
-        $expires = 0,
-        $path = '',
-        $domain = '',
-        $secure = true,
-        $httponly = false,
-        $samesite = 'Lax'
-    ) {
+        string $name,
+        string $value = '',
+        int $expires = 0,
+        string $path = '',
+        string $domain = '',
+        bool $secure = true,
+        bool $httponly = false,
+        string $samesite = 'Lax'
+    ) : bool {
         if (PHP_VERSION_ID < 70300) {
             return setcookie(
                 $name,
@@ -37,21 +53,5 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
                 ]
             );
         }
-    }
-
-    public function get($name, $defaultValue = false)
-    {
-        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
-    }
-
-    public function remove($name)
-    {
-        if (!isset($_COOKIE[$name])) {
-            return false;
-        }
-
-        unset($_COOKIE[$name]);
-        $this->set($name, false, -1);
-        return true;
     }
 }

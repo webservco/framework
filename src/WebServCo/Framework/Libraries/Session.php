@@ -8,7 +8,14 @@ use WebServCo\Framework\Settings;
 final class Session extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\SessionInterface
 {
-    public function add($setting, $data)
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $data
+     * @return bool
+     */
+    public function add($setting, $data) : bool
     {
         $this->checkSession();
 
@@ -20,12 +27,18 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    public function clear($setting)
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @return bool
+     */
+    public function clear($setting) : bool
     {
         return $this->set($setting, null);
     }
 
-    public function destroy()
+    public function destroy() : bool
     {
         $_SESSION = [];
         $cookie = \WebServCo\Framework\Framework::library('Cookie');
@@ -43,6 +56,13 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     public function get($setting, $defaultValue = false)
     {
         $this->checkSession();
@@ -54,7 +74,13 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         );
     }
 
-    public function has($setting)
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @return bool
+     */
+    public function has($setting) : bool
     {
         $this->checkSession();
 
@@ -64,12 +90,18 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         );
     }
 
-    public function regenerate()
+    public function regenerate() : bool
     {
         return session_regenerate_id(true);
     }
 
-    public function remove($setting)
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @return bool
+     */
+    public function remove($setting) : bool
     {
         $this->checkSession();
 
@@ -80,7 +112,15 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    public function set($setting, $value)
+    /**
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $value The value to be stored.
+     *
+     * @return bool
+     */
+    public function set($setting, $value) : bool
     {
         $this->checkSession();
 
@@ -92,7 +132,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    public function start($storagePath = null)
+    public function start(string $storagePath = '') : bool
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             throw new SessionException('Not starting session in CLI mode.');
@@ -161,16 +201,17 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    protected function checkSession()
+    protected function checkSession() : bool
     {
         if (session_status() === \PHP_SESSION_NONE) {
             throw new SessionException(
                 'Session is not started.'
             );
         }
+        return true;
     }
 
-    protected function setStoragePath($storagePath)
+    protected function setStoragePath(string $storagePath) : bool
     {
         if (empty($storagePath)) {
             return false;

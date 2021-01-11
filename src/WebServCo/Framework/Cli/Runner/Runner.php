@@ -3,11 +3,11 @@ namespace WebServCo\Framework\Cli\Runner;
 
 final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
 {
-    protected $pid;
-    protected $statistics;
-    protected $workDir;
+    protected string $pid;
+    protected Statistics $statistics;
+    protected string $workDir;
 
-    public function __construct($workDir)
+    public function __construct(string $workDir)
     {
         if (!is_readable($workDir)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Working directory not readable.');
@@ -17,33 +17,33 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         $this->workDir = $workDir;
     }
 
-    public function finish()
+    public function finish() : bool
     {
         if (empty($this->pid) || !is_file($this->pid) || !is_readable($this->pid)) {
             $result = false;
         } else {
             unlink($this->pid);
-            $this->pid = null;
+            $this->pid = '';
             $result = true;
         }
         $this->statistics->finish($result);
         return $result;
     }
 
-    public function getPid()
+    public function getPid() : ?string
     {
         if (!$this->isRunning()) {
-            return false;
+            return null;
         }
         return $this->pid;
     }
 
-    public function getStatistics()
+    public function getStatistics() : Statistics
     {
         return $this->statistics;
     }
 
-    public function isRunning()
+    public function isRunning() : bool
     {
         if (empty($this->pid)) {
             return false;
@@ -51,7 +51,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         return is_readable($this->pid);
     }
 
-    public function start()
+    public function start() : bool
     {
         $this->statistics->start();
         $this->pid = sprintf(

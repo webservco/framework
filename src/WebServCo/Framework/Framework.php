@@ -2,6 +2,7 @@
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Interfaces\LibraryInterface;
 
 final class Framework
 {
@@ -14,15 +15,17 @@ final class Framework
 
     /**
      * Stores Framework Library instances.
+     * @var array<string,LibraryInterface>
      */
-    private static $frameworkLibraries = [];
+    private static array $frameworkLibraries = [];
 
     /**
      * Stores Project Library instances.
+     * @var array<string,LibraryInterface>
      */
     protected static $projectLibraries = [];
 
-    private static function getFullClassName($className, $classType = null)
+    private static function getFullClassName(string $className, string $classType = null) : string
     {
         switch ($classType) {
             case self::TYPE_FRAMEWORK:
@@ -39,7 +42,7 @@ final class Framework
      *
      * @return string
      */
-    public static function getPath()
+    public static function getPath() : string
     {
         return str_replace(
             sprintf('src%sWebServCo%sFramework', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
@@ -48,10 +51,13 @@ final class Framework
         );
     }
 
-    private static function loadLibraryConfiguration($configName)
+    /**
+    * @return array<mixed>
+    */
+    private static function loadLibraryConfiguration(string $configName) : array
     {
         if ('Config' == $configName) {
-            return false;
+            return [];
         }
         $projectPath = self::library('Config')->get(
             sprintf(
@@ -60,13 +66,19 @@ final class Framework
             )
         );
         if (empty($projectPath)) {
-            return false;
+            return [];
         }
         return self::library('Config')->load($configName, $projectPath);
     }
 
-    private static function loadLibrary($className, $fullClassName, $configName = null)
-    {
+    /**
+    * @return mixed
+    */
+    private static function loadLibrary(
+        string $className,
+        string $fullClassName,
+        string $configName = null
+    ) {
         if (!class_exists($fullClassName)) {
             throw new ApplicationException(
                 sprintf('Library %s not found.', $fullClassName)
@@ -99,7 +111,7 @@ final class Framework
         return $reflection->newInstanceArgs($args);
     }
 
-    protected static function loadHelper($className)
+    protected static function loadHelper(string $className) : bool
     {
         $path = sprintf(
             '%ssrc%sWebServCo%sFramework%sHelpers%s%sHelper.php',
@@ -120,8 +132,14 @@ final class Framework
         return true;
     }
 
-    public static function library($className, $storageKey = null, $configName = null)
-    {
+    /**
+    * @return mixed
+    */
+    public static function library(
+        string $className,
+        string $storageKey = null,
+        string $configName = null
+    ) {
         $fullClassName = self::getFullClassName($className, self::TYPE_FRAMEWORK);
 
         $storageKey = $storageKey ?: $fullClassName;
@@ -133,8 +151,14 @@ final class Framework
         return self::$frameworkLibraries[$storageKey];
     }
 
-    public static function projectLibrary($className, $storageKey = null, $configName = null)
-    {
+    /**
+    * @return mixed
+    */
+    public static function projectLibrary(
+        string $className,
+        string $storageKey = null,
+        string $configName = null
+    ) {
         $fullClassName = self::getFullClassName($className, self::TYPE_PROJECT);
 
         $storageKey = $storageKey ?: $fullClassName;
@@ -149,7 +173,7 @@ final class Framework
     /**
      * Checks if interface type is CLI
      */
-    public static function isCli()
+    public static function isCli() : bool
     {
         return 'cli' === PHP_SAPI;
     }
@@ -157,7 +181,7 @@ final class Framework
     /**
      * Get operating system (if supported).
      */
-    public static function getOS()
+    public static function getOS() : string
     {
         $uname = php_uname('s');
         if (0 === strncasecmp($uname, 'Win', 3)) {

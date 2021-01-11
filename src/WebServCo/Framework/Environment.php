@@ -10,9 +10,9 @@ final class Environment
     /**
      * Retrieve list of all possible environment options.
      *
-     * @return array
+     * @return array<int,string>
      */
-    public static function getOptions()
+    public static function getOptions() : array
     {
         return [self::DEV, self::TEST, self::PROD];
     }

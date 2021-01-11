@@ -3,6 +3,10 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
+    /**
+    * @param array<mixed, mixed> $array
+    * @return array<mixed, mixed>
+    */
     public static function removeEmptyValues(array $array) : array
     {
         foreach ($array as $key => $value) {
@@ -17,7 +21,7 @@ final class Arrays
     }
 
     /**
-    * @param array[] $array
+    * @param array<mixed> $array
     * @param mixed $value
     */
     public static function has(?array $array, $value) : bool
@@ -31,7 +35,7 @@ final class Arrays
     /**
     * Get a value from an array if it exists, otherwise a specified default value.
     * For multi dimensional arrays please see ArrayStorage.
-    * @param array[] $array
+    * @param array<mixed> $array
     * @param mixed $key
     * @param mixed $defaultValue
     * @return mixed
@@ -42,7 +46,7 @@ final class Arrays
     }
 
     /**
-    * @param array[] $array
+    * @param array<mixed> $array
     */
     public static function isMultidimensional(array $array) : bool
     {
@@ -54,7 +58,7 @@ final class Arrays
 
     /**
     * @param array<mixed> $array
-    * @return array[]
+    * @return array<mixed>
     */
     public static function nullToEmptyString(array $array) : array
     {
@@ -73,8 +77,8 @@ final class Arrays
     * "PHP Cookbook by David Sklar, Adam Trachtenberg"
     * 4.24. Finding All Element Combinations of an Array
     * https://www.oreilly.com/library/view/php-cookbook/1565926811/ch04s25.html
-    * @param array[] $array
-    * @return array[]
+    * @param array<mixed> $array
+    * @return array<mixed>
     */
     public static function powerSet(array $array) : array
     {

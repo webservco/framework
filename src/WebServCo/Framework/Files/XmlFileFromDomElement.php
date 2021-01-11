@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Files;
 
 final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
-    public function __construct($fileName, \DOMElement $domElement, $formatOutput = false)
+    public function __construct(string $fileName, \DOMElement $domElement, bool $formatOutput = false)
     {
         $domDocument = new \DOMDocument;
         $domDocument->preserveWhiteSpace = false;
@@ -12,7 +12,7 @@ final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Fra
         }
         $element = $domDocument->importNode($domElement, true);
         $domDocument->appendChild($element);
-        $fileData = $domDocument->saveXML();
+        $fileData = (string) $domDocument->saveXML();
 
         $domDocument = null;
         $element = null;

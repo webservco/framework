@@ -6,11 +6,22 @@ use WebServCo\Framework\Utils\Arrays;
 
 trait DatabaseAddQueryTrait
 {
-    abstract public function escapeIdentifier($string);
-    abstract public function escapeTableName($string);
+    abstract public function escapeIdentifier(string $string) : string;
+    abstract public function escapeTableName(string $string) : string;
 
-    final protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = [])
-    {
+    /**
+    * @param string $queryType
+    * @param string $tableName
+    * @param array<string, float|int|string> $addData
+    * @param array<string, float|int|string> $updateData
+    * @return string
+    */
+    final protected function generateAddQuery(
+        string $queryType,
+        string $tableName,
+        array $addData = [],
+        array $updateData = []
+    ) : string {
         $multiDimensional = Arrays::isMultidimensional($addData);
 
         list($keys, $data) = $this->getKeysValues($addData);
@@ -29,7 +40,11 @@ trait DatabaseAddQueryTrait
         return $query;
     }
 
-    final protected function getKeysValues($data = [])
+    /**
+    * @param array<mixed> $data
+    * @return array<mixed>
+    */
+    final protected function getKeysValues(array $data = []) : array
     {
         $multiDimensional = Arrays::isMultidimensional($data);
         if ($multiDimensional) {
@@ -46,7 +61,7 @@ trait DatabaseAddQueryTrait
         return [$keys, $data];
     }
 
-    final protected function generateAddQueryPrefix($queryType)
+    final protected function generateAddQueryPrefix(string $queryType) : string
     {
         switch ($queryType) {
             case QueryType::REPLACE:
@@ -64,7 +79,11 @@ trait DatabaseAddQueryTrait
         return $query;
     }
 
-    final protected function generateAddQueryFieldsPart($fields)
+    /**
+    * @param array<int,string> $fields
+    * @return string
+    */
+    final protected function generateAddQueryFieldsPart(array $fields) : string
     {
         return ' (' . implode(
             ', ',
@@ -73,7 +92,12 @@ trait DatabaseAddQueryTrait
         ')';
     }
 
-    final protected function generateAddQueryValuesPart($data, $multiDimensional)
+    /**
+    * @param array<mixed> $data
+    * @param bool $multiDimensional
+    * @return string
+    */
+    final protected function generateAddQueryValuesPart(array $data, bool $multiDimensional) : string
     {
         $query = ' VALUES';
         if ($multiDimensional) {
@@ -88,10 +112,14 @@ trait DatabaseAddQueryTrait
         return $query;
     }
 
-    final protected function generateAddQueryUpdatePart($data = [])
+    /**
+    * @param array<string, float|int|string> $data
+    * @return string
+    */
+    final protected function generateAddQueryUpdatePart(array $data = []) : string
     {
         if (empty($data)) {
-            return false;
+            return '';
         }
 
         $strings = [];
@@ -104,7 +132,11 @@ trait DatabaseAddQueryTrait
         return $query;
     }
 
-    final protected function generateValuesString($data)
+    /**
+    * @param array<int, float|int|string> $data
+    * @return string
+    */
+    final protected function generateValuesString(array $data) : string
     {
         $placeholdersString = \WebServCo\Framework\Database\Utils\PreparedStatements::generatePlaceholdersString($data);
         return ' (' . $placeholdersString . ')';

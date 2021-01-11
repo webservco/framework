@@ -3,26 +3,52 @@ namespace WebServCo\Framework\Log;
 
 abstract class AbstractLogger
 {
-    abstract public function clear();
+    abstract public function clear() : bool;
 
-    abstract public function log($level, $message, $context = []);
+    /**
+    * @param string $level
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    abstract public function log(string $level, string $message, $context = null) : bool;
 
-    public function debug($message, $context = [])
+    /**
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    public function debug(string $message, $context = null) : bool
     {
         return $this->log(LogLevel::DEBUG, $message, $context);
     }
 
-    public function error($message, $context = [])
+    /**
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    public function error(string $message, $context = null) : bool
     {
         return $this->log(LogLevel::ERROR, $message, $context);
     }
 
-    public function info($message, $context = [])
+    /**
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    public function info(string $message, $context = null) : bool
     {
         return $this->log(LogLevel::INFO, $message, $context);
     }
 
-    public function warning($message, $context = [])
+    /**
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    public function warning(string $message, $context = null) : bool
     {
         return $this->log(LogLevel::WARNING, $message, $context);
     }

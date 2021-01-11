@@ -5,9 +5,14 @@ use WebServCo\Framework\ArrayObject\Items;
 
 class RequestHelper extends AbstractHelper
 {
-    public static function init($data, $required = [])
+    /**
+    * @param array<string,mixed> $data
+    * @param array<int,string> $required
+    * @return Request
+    */
+    public static function init(array $data, array $required = []) : Request
     {
-        parent::init($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
+        parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 
         foreach (['columns', 'order', 'search'] as $item) {
             if (!is_array($data[$item])) {

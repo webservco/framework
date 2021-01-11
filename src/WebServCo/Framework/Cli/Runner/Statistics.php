@@ -3,47 +3,49 @@ namespace WebServCo\Framework\Cli\Runner;
 
 final class Statistics
 {
-    protected $duration; // <seconds>.<microseconds>
-    protected $memoryPeakUsage; // K
-    protected $result;
-    protected $timeStart;
-    protected $timeFinish;
-    protected $timeZone;
+    protected float $duration; // <seconds>.<microseconds>
+    protected int $memoryPeakUsage; // K
+    protected bool $result;
+    protected \DateTime $timeStart;
+    protected \DateTime $timeFinish;
+    protected string $timeZone;
 
     public function __construct()
     {
         $this->timeZone = date_default_timezone_get();
     }
 
-    public function finish($result)
+    public function finish(bool $result) : bool
     {
         $this->result = $result;
         $this->timeFinish = $this->createCurrentTimeObject();
-        $this->duration = $this->timeFinish->format("U.u") - $this->timeStart->format("U.u");
+        $this->duration = floatval($this->timeFinish->format("U.u")) - floatval($this->timeStart->format("U.u"));
         $this->memoryPeakUsage = memory_get_peak_usage(true) / 1024;
+        return true;
     }
 
-    public function getDuration()
+    public function getDuration() : float
     {
         return $this->duration;
     }
 
-    public function getMemoryPeakUsage()
+    public function getMemoryPeakUsage() : int
     {
         return $this->memoryPeakUsage;
     }
 
-    public function getResult()
+    public function getResult() : bool
     {
         return $this->result;
     }
 
-    public function start()
+    public function start() : bool
     {
         $this->timeStart = $this->createCurrentTimeObject();
+        return true;
     }
 
-    protected function createCurrentTimeObject()
+    protected function createCurrentTimeObject() : \DateTime
     {
         $microtime = sprintf('%.4f', microtime(true)); // https://www.php.net/manual/en/function.microtime.php#124984
         $dateTime = \DateTime::createFromFormat('U.u', $microtime);

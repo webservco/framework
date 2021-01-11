@@ -14,11 +14,11 @@ final class Codes
     /* custom codes */
     const TYPE_NOT_ALLOWED = 91;
 
-    public static function getMessage($errorCode)
+    public static function getMessage(int $errorCode) : string
     {
         switch ($errorCode) {
             case self::OK:
-                return null;
+                return '';
             case self::INI_SIZE:
             case self::FORM_SIZE:
                 return __('Uploaded file size exceeds maximum file size allowed.');

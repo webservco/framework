@@ -1,9 +1,17 @@
 <?php
 namespace WebServCo\Framework\DataTables;
 
-class OrderArrayObject extends \ArrayObject
+/**
+* @extends \ArrayObject<int,Order>
+*/
+class OrderArrayObject extends \ArrayObject implements \WebServCo\Framework\Interfaces\ArrayObjectInterface
 {
-    public function offsetSet($name, $value)
+    /**
+    * @param mixed $name
+    * @param mixed $value
+    * @return void
+    */
+    public function offsetSet($name, $value) : void
     {
         if (!($value instanceof Order)) {
             throw new \InvalidArgumentException('Only Order objects allowed.');

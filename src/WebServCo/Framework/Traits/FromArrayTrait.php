@@ -5,8 +5,10 @@ trait FromArrayTrait
 {
     /**
     * Returns an instance of the current class
+    * @param array<string,mixed>
+    * @return mixed
     */
-    public static function fromArray($data = [])
+    public static function fromArray(array $data = [])
     {
         $object = new static();
         foreach (get_object_vars($object) as $property => $default) {

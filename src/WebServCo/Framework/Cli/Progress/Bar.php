@@ -4,18 +4,18 @@ namespace WebServCo\Framework\Cli\Progress;
 //https://gist.github.com/mayconbordin/2860547
 final class Bar
 {
-    protected $type;
+    protected string $type;
 
-    protected $width;
-    protected $padding;
-    protected $total;
-    protected $item;
+    protected int $width;
+    protected int $padding;
+    protected int $total;
+    protected int $item;
 
-    protected $outBar;
-    protected $outPad;
-    protected $outMessage;
+    protected string $outBar;
+    protected string $outPad;
+    protected string $outMessage;
 
-    public function __construct($width = 20)
+    public function __construct(int $width = 20)
     {
         $this->type = 'single_line';
         $this->width = $width;
@@ -24,43 +24,51 @@ final class Bar
         $this->item = 1;
     }
 
-    public function start($total = 100)
+    public function start(int $total = 100) : bool
     {
         $this->total = $total;
+        return true;
     }
 
-    public function advanceTo($item)
+    public function advanceTo(int $item) : void
     {
         $this->item = $item;
     }
 
-    public function setType($type)
+    public function setType(string $type) : bool
     {
-        if (in_array($type, ['single_line', 'multi_line'])) {
-            $this->type = $type;
+        if (!in_array($type, ['single_line', 'multi_line'])) {
+            throw new \InvalidArgumentException('Invalid type.');
         }
+
+        $this->type = $type;
+        return true;
     }
 
-    public function prefix($message = '')
+    public function prefix(string $message = '') : string
     {
         switch ($this->type) {
             case 'single_line':
             case 'multi_line':
                 return $this->prefixProgress($message);
+            default:
+                throw new \InvalidArgumentException('Invalid type.');
         }
     }
 
-    public function suffix($result = true)
+    public function suffix(bool $result = true) : string
     {
         switch ($this->type) {
             case 'single_line':
                 return $this->suffixSingle($result);
             case 'multi_line':
                 return $this->suffixMulti($result);
+            default:
+                throw new \InvalidArgumentException('Invalid type.');
         }
     }
 
-    protected function prefixProgress($message)
+    protected function prefixProgress(string $message) : string
     {
         $percent = round($this->item * 100 / $this->total);
         $bar = (int) round($this->width * $percent / 100);
@@ -74,11 +82,11 @@ final class Bar
         $this->outMessage = $message;
 
         $padLen = ($this->width + $this->padding) - strlen($this->outBar);
-        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : null;
+        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : '';
         return $this->outBar.$this->outPad.$this->outMessage;
     }
 
-    protected function suffixSingle($result, $overwrite = false)
+    protected function suffixSingle(bool $result, bool $overwrite = false) : string
     {
         $totalLen = strlen($this->outBar.$this->outPad.$this->outMessage);
         $output = null;
@@ -102,7 +110,7 @@ final class Bar
         return $output;
     }
 
-    protected function suffixMulti($result, $overwrite = true)
+    protected function suffixMulti(bool $result, bool $overwrite = true) : string
     {
         $output = $this->suffixSingle($result, $overwrite);
         $output .= PHP_EOL;
@@ -110,7 +118,7 @@ final class Bar
         return $output;
     }
 
-    public function finish()
+    public function finish() : string
     {
         return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }

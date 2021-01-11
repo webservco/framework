@@ -3,12 +3,12 @@ namespace WebServCo\Framework\Cli\Progress;
 
 final class Line
 {
-    protected $padding;
+    protected int $padding;
 
-    protected $outPad;
-    protected $outMessage;
+    protected string $outPad;
+    protected string $outMessage;
 
-    protected $showResult;
+    protected bool $showResult;
 
     public function __construct()
     {
@@ -16,20 +16,21 @@ final class Line
         $this->padding = 0;
     }
 
-    public function setShowResult($showResult)
+    public function setShowResult(bool $showResult) : bool
     {
-        $this->showResult = (bool) $showResult;
+        $this->showResult = $showResult;
+        return true;
     }
 
-    public function prefix($message = '')
+    public function prefix(string $message = '') : string
     {
         $this->outMessage = $message;
 
-        $this->outPad = (0 < $this->padding) ? str_repeat(' ', (int) $this->padding) : null;
+        $this->outPad = (0 < $this->padding) ? str_repeat(' ', (int) $this->padding) : '';
         return $this->outPad.$this->outMessage;
     }
 
-    public function suffix($result = true)
+    public function suffix(bool $result = true) : string
     {
         $totalLen = strlen($this->outPad.$this->outMessage);
         $output = null;
@@ -54,7 +55,7 @@ final class Line
         return $output;
     }
 
-    public function finish()
+    public function finish() : string
     {
         return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }

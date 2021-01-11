@@ -3,9 +3,14 @@ namespace WebServCo\Framework\DataTables;
 
 class SearchHelper extends AbstractHelper
 {
-    public static function init($data, $required = [])
+    /**
+    * @param array<string,mixed> $data
+    * @param array<int,string> $required
+    * @return Search
+    */
+    public static function init(array $data, array $required = []) : Search
     {
-        parent::init($data, ['value', 'regex']);
+        parent::validate($data, ['value', 'regex']);
 
         foreach (['value', 'regex'] as $item) {
             if (!isset($data[$item])) {

@@ -3,23 +3,25 @@ namespace WebServCo\Framework;
 
 final class RequestUtils
 {
-    public static function explode($string)
+    /**
+    * @param string $string
+    * @return array<int,string>
+    */
+    public static function explode(string $string) : array
     {
         if (false !== strpos($string, '?')) {
             return explode('?', $string, 2);
         } elseif (false !== strpos($string, '&')) {
             return explode('&', $string, 2);
         }
-        return [$string, null];
+        return [$string, ''];
     }
 
-    public static function transform($string)
-    {
-        $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
-        return trim($string, ' /');
-    }
-
-    public static function format($string)
+    /**
+    * @param string $string
+    * @return array<string, string|null>
+    */
+    public static function format(string $string) : array
     {
         $data = [];
         $parts = self::split($string);
@@ -31,14 +33,38 @@ final class RequestUtils
         return $data;
     }
 
-    public static function split($string)
+    /**
+    * @param string $string
+    * @param string $path
+    * @param string $filename
+    * @param array<int,string> $suffixes
+    * @return array<int,string>
+    */
+    public static function parse(string $string, string $path, string $filename, array $suffixes) : array
     {
-        $parts = explode('/', $string);
-        $parts = array_map('urldecode', $parts);
-        return array_diff($parts, ['']);
+        $pathLen = strlen($path);
+        if (0 === strncasecmp($path, $string, $pathLen)) {
+            $string = substr($string, $pathLen);
+        }
+        $filenameLen = strlen($filename);
+        if (0 === strncasecmp($filename, $string, $filenameLen)) {
+            $string = substr($string, $filenameLen);
+        }
+        list($target, $query) = self::explode($string);
+        list($target, $suffix) = self::removeSuffix(
+            self::transform($target),
+            $suffixes
+        );
+        $query = self::transform($query);
+        return [$target, $query, $suffix];
     }
 
-    public static function removeSuffix($string, $suffixes = [])
+    /**
+    * @param string $string
+    * @param array<int,string> $suffixes
+    * @return array<int,string>
+    */
+    public static function removeSuffix(string $string, array $suffixes = []) : array
     {
         if (is_array($suffixes)) {
             $stringRev = strrev($string);
@@ -50,10 +76,10 @@ final class RequestUtils
                 }
             }
         }
-        return [$string, null];
+        return [$string, ''];
     }
 
-    public static function sanitizeString($string)
+    public static function sanitizeString(string $string) : string
     {
         // Strip tags, optionally strip or encode special characters.
         $string = filter_var($string, FILTER_SANITIZE_STRING);
@@ -90,22 +116,20 @@ final class RequestUtils
         return $string;
     }
 
-    public static function parse($string, $path, $filename, $suffixes)
+    /**
+    * @param string $string
+    * @return array<int,string>
+    */
+    public static function split(string $string) : array
     {
-        $pathLen = strlen($path);
-        if (0 === strncasecmp($path, $string, $pathLen)) {
-            $string = substr($string, $pathLen);
-        }
-        $filenameLen = strlen($filename);
-        if (0 === strncasecmp($filename, $string, $filenameLen)) {
-            $string = substr($string, $filenameLen);
-        }
-        list($target, $query) = self::explode($string);
-        list($target, $suffix) = self::removeSuffix(
-            self::transform($target),
-            $suffixes
-        );
-        $query = self::transform($query);
-        return [$target, $query, $suffix];
+        $parts = explode('/', $string);
+        $parts = array_map('urldecode', $parts);
+        return array_diff($parts, ['']);
+    }
+
+    public static function transform(string $string) : string
+    {
+        $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
+        return trim($string, ' /');
     }
 }

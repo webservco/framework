@@ -15,6 +15,7 @@ final class Dates
     public static function isDate(string $date, string $format = 'Y-m-d') : bool
     {
         $formattedDate = self::format($date, $format);
+        
         return $formattedDate == $date;
     }
 }

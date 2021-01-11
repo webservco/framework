@@ -1,9 +1,17 @@
 <?php
 namespace WebServCo\Framework\DataTables;
 
-class ColumnArrayObject extends \ArrayObject
+/**
+* @extends \ArrayObject<int,Column>
+*/
+class ColumnArrayObject extends \ArrayObject implements \WebServCo\Framework\Interfaces\ArrayObjectInterface
 {
-    public function offsetSet($name, $value)
+    /**
+    * @param mixed $name
+    * @param mixed $value
+    * @return void
+    */
+    public function offsetSet($name, $value) : void
     {
         if (!($value instanceof Column)) {
             throw new \InvalidArgumentException('Only Column objects allowed.');

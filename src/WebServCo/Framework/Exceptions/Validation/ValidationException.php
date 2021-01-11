@@ -5,7 +5,7 @@ class ValidationException extends \WebServCo\Framework\Exceptions\ApplicationExc
 {
     const CODE = 0;
 
-    public function __construct($message, \Exception $previous = null)
+    public function __construct(string $message, \Exception $previous = null)
     {
         parent::__construct($message, self::CODE, $previous);
     }

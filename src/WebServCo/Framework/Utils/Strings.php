@@ -30,7 +30,7 @@ final class Strings
     {
         ob_start();
         var_dump($context);
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     public static function getSlug(string $string) : string
@@ -47,12 +47,12 @@ final class Strings
         if (!($transliterator instanceof \Transliterator)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Transliterator error.');
         }
-        return $transliterator->transliterate($string);
+        return (string) $transliterator->transliterate($string);
     }
 
-    public static function linkify($string)
+    public static function linkify(string $string) : string
     {
-        return preg_replace(
+        return (string) preg_replace(
             "~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~",
             "<a href=\"\\0\">\\0</a>",
             $string
@@ -72,6 +72,6 @@ final class Strings
 
     public static function stripNonDigits(string $haystack) : string
     {
-        return preg_replace("/\D+/", '', $haystack);
+        return (string) preg_replace("/\D+/", '', $haystack);
     }
 }

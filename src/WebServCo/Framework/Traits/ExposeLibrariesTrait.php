@@ -5,52 +5,47 @@ use WebServCo\Framework\Framework;
 
 trait ExposeLibrariesTrait
 {
-    final protected function config()
+    final protected function config() : \WebServCo\Framework\Interfaces\ConfigInterface
     {
         return Framework::library('Config');
     }
 
-    final protected function date()
+    final protected function date() : \WebServCo\Framework\Libraries\Date
     {
         return Framework::library('Date');
     }
 
-    final protected function cookie()
+    final protected function cookie() : \WebServCo\Framework\Libraries\Cookie
     {
         return Framework::library('Cookie');
     }
 
-    final protected function i18n()
+    final protected function i18n() : \WebServCo\Framework\Interfaces\I18nInterface
     {
         return Framework::library('I18n');
     }
 
-    final protected function mysqliDb()
-    {
-        return Framework::library('MysqliDatabase');
-    }
-
-    final protected function mysqlPdoDb()
+    final protected function mysqlPdoDb() : \WebServCo\Framework\Interfaces\DatabaseInterface
     {
         return Framework::library('MysqlPdoDatabase');
     }
 
-    final protected function request()
+    final protected function request() : \WebServCo\Framework\Interfaces\RequestInterface
     {
         return Framework::library('Request');
     }
 
-    final protected function router()
+    final protected function router() : \WebServCo\Framework\Libraries\Router
     {
         return Framework::library('Router');
     }
 
-    final protected function security()
+    final protected function security() : \WebServCo\Framework\Libraries\Security
     {
         return Framework::library('Security');
     }
 
-    final protected function session()
+    final protected function session() : \WebServCo\Framework\Interfaces\SessionInterface
     {
         return Framework::library('Session');
     }

@@ -3,7 +3,11 @@ namespace WebServCo\Framework;
 
 final class ErrorHandler
 {
-    public static function getErrorInfo($exception = null)
+    /**
+    * @param \Throwable $exception
+    * @return array<string,mixed>
+    */
+    public static function getErrorInfo(\Throwable $exception = null) : array
     {
         $errorInfo = [
             'code' => 0,
@@ -35,7 +39,7 @@ final class ErrorHandler
         return $errorInfo;
     }
 
-    public static function getErrorTypeString($type)
+    public static function getErrorTypeString(int $type) : string
     {
         switch ($type) {
             case E_ERROR: // 1
@@ -90,7 +94,7 @@ final class ErrorHandler
      *
      * @return bool
      */
-    public static function set()
+    public static function set() : bool
     {
         self::disableErrorDisplay();
         set_error_handler(['\WebServCo\Framework\ErrorHandler', 'throwErrorException']);
@@ -106,8 +110,9 @@ final class ErrorHandler
      * @param int $errline Line number the error was raised at
      *
      * @throws \ErrorException
+     * @return bool
      */
-    public static function throwErrorException($errno, $errstr, $errfile, $errline)
+    public static function throwErrorException(int $errno, string $errstr, string $errfile, int $errline) : bool
     {
         // https://www.php.net/manual/en/function.set-error-handler.php
         if (!(error_reporting() & $errno)) { // bitwise operator, not a typo
@@ -128,8 +133,9 @@ final class ErrorHandler
     /**
      * Disable error display.
      */
-    protected static function disableErrorDisplay()
+    protected static function disableErrorDisplay() : bool
     {
         ini_set('display_errors', '0');
+        return true;
     }
 }

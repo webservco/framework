@@ -9,11 +9,11 @@ final class Ansi
     * @see \WebServCo\Framework\Cli\Sgr
     *
     * @param string $string
-    * @param array $parameters ANSI SGR parameters (alterantively use the Sgr class constants)
+    * @param array<int,string> $parameters ANSI SGR parameters (alterantively use the Sgr class constants)
     *
     * @return string
     */
-    public static function sgr($string, array $parameters)
+    public static function sgr(string $string, array $parameters) : string
     {
         $result = '';
         foreach ($parameters as $parameter) {
@@ -23,7 +23,7 @@ final class Ansi
         return $result;
     }
 
-    public static function clear()
+    public static function clear() : string
     {
         return "\e[H\e[J";
     }

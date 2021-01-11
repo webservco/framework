@@ -4,25 +4,33 @@ namespace WebServCo\Framework;
 abstract class AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ArrayInterface,
     \WebServCo\Framework\Interfaces\DataInterface,
+    \WebServCo\Framework\Interfaces\LibraryInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
-    private $data;
-    private $settings;
+    /**
+    * @var array<mixed>
+    */
+    private array $data;
 
-    public function __construct($settings = [])
+    /**
+    * @var array<string,string>
+    */
+    private array $settings;
+
+    /**
+    * @param array<string,string> $settings
+    */
+    public function __construct(array $settings = [])
     {
         $this->clearData();
 
-        if (is_array($settings)) { // check instead of cast to prevent unexpected results
-            $this->settings = $settings;
-        } else {
-            $this->settings = [];
-        }
+        $this->settings = $settings;
     }
 
-    final public function clearData()
+    final public function clearData() : bool
     {
         $this->data = [];
+        return true;
     }
 
     /**
@@ -59,7 +67,10 @@ abstract class AbstractLibrary implements
         );
     }
 
-    final public function getData()
+    /**
+    * @return array<mixed>
+    */
+    final public function getData() : array
     {
         return $this->data;
     }
@@ -72,7 +83,7 @@ abstract class AbstractLibrary implements
      *
      * @return bool True on success and false on failure.
      */
-    final public function setData($key, $value)
+    final public function setData($key, $value) : bool
     {
         if (empty($key)) {
             return false;
@@ -98,6 +109,13 @@ abstract class AbstractLibrary implements
         return true;
     }
 
+    /**
+    * @param mixed $key Can be an array, a string,
+    *                          or a special formatted string
+    *                          (eg 'app/path/project').
+    * @param mixed $defaultValue
+    * @return mixed
+    */
     final public function setting($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
@@ -107,7 +125,10 @@ abstract class AbstractLibrary implements
         );
     }
 
-    public function toArray()
+    /**
+    * @return array<string, array<mixed>>
+    */
+    public function toArray() : array
     {
         return [
             'data' => $this->data,

@@ -3,13 +3,13 @@ namespace WebServCo\Framework;
 
 abstract class AbstractApplication
 {
-    protected $projectNamespace;
-    protected $projectPath;
+    protected string $projectNamespace;
+    protected string $projectPath;
 
-    abstract protected function config();
-    abstract protected function request();
+    abstract protected function config() : \WebServCo\Framework\Interfaces\ConfigInterface;
+    abstract protected function request() : \WebServCo\Framework\Interfaces\RequestInterface;
 
-    public function __construct($publicPath, $projectPath, $projectNamespace = 'Project')
+    public function __construct(string $publicPath, string $projectPath, string $projectNamespace = 'Project')
     {
         $this->projectNamespace = $projectNamespace;
         $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
@@ -28,22 +28,20 @@ abstract class AbstractApplication
     /**
      * Sets the env value from the project .env file.
      */
-    final public function setEnvironmentValue()
+    final public function setEnvironmentValue() : bool
     {
         /**
          * Env file existence is verified in the controller.
          */
-        $this->config()->setEnv(trim((string)file_get_contents($this->projectPath . '.env')));
+        $this->config()->setEnv(trim((string) file_get_contents($this->projectPath . '.env')));
 
         return true;
     }
 
     /**
      * Handle Errors.
-     *
-     * @param mixed $exception An \Error or \Exception object.
      */
-    final protected function handleErrors($exception = null)
+    final protected function handleErrors(\Throwable $exception = null) : bool
     {
         $errorInfo = \WebServCo\Framework\ErrorHandler::getErrorInfo($exception);
         if (!empty($errorInfo['message'])) {
@@ -52,7 +50,11 @@ abstract class AbstractApplication
         return false;
     }
 
-    final protected function halt($errorInfo = [])
+    /**
+    * @param array<string,mixed> $errorInfo
+    * @return bool
+    */
+    final protected function halt(array $errorInfo = []) : bool
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             return $this->haltCli($errorInfo);
@@ -61,7 +63,12 @@ abstract class AbstractApplication
         }
     }
 
-    protected function haltHttp($errorInfo = [])
+    /**
+     * Handle HTTP errors.
+     * @param array<string,mixed> $errorInfo
+     * @return bool
+     */
+    protected function haltHttp(array $errorInfo = []) : bool
     {
         switch ($errorInfo['code']) {
             case 404:
@@ -139,7 +146,11 @@ abstract class AbstractApplication
         return true;
     }
 
-    protected function haltCli($errorInfo = [])
+    /**
+    * @param array<string,mixed> $errorInfo
+    * @return bool
+    */
+    protected function haltCli(array $errorInfo = []) : bool
     {
         $output = 'Boo boo' . PHP_EOL;
         $output .= $errorInfo['message'] . PHP_EOL;

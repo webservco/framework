@@ -5,7 +5,10 @@ use WebServCo\Framework\Framework;
 
 trait RequestServerTrait
 {
-    public function getAcceptContentTypes()
+    /**
+    * @return array<int|string,string>
+    */
+    public function getAcceptContentTypes() : ?array
     {
         if (!isset($this->server['HTTP_ACCEPT'])) {
             return null;
@@ -27,7 +30,7 @@ trait RequestServerTrait
         return $acceptTypes;
     }
 
-    public function getAcceptLanguage()
+    public function getAcceptLanguage() : ?string
     {
         if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
             return null;
@@ -35,7 +38,7 @@ trait RequestServerTrait
         return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
 
-    public function getContentType()
+    public function getContentType() : ?string
     {
         if (!isset($this->server['CONTENT_TYPE'])) {
             return null;
@@ -43,7 +46,7 @@ trait RequestServerTrait
         return $this->server['CONTENT_TYPE'];
     }
 
-    public function getHost()
+    public function getHost() : ?string
     {
         if (!empty($this->server['HTTP_HOST'])) {
             return $this->server['HTTP_HOST'];
@@ -55,7 +58,7 @@ trait RequestServerTrait
         return '';
     }
 
-    public function getHostExtension()
+    public function getHostExtension() : ?string
     {
         $host = $this->getHost();
         if (empty($host)) {
@@ -66,17 +69,17 @@ trait RequestServerTrait
         return end($parts);
     }
 
-    public function getReferer()
+    public function getReferer() : string
     {
-        return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
+        return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : '';
     }
 
-    public function getRefererHost()
+    public function getRefererHost() : ?string
     {
-        return parse_url($this->getReferer(), PHP_URL_HOST);
+        return (string) parse_url($this->getReferer(), PHP_URL_HOST);
     }
 
-    public function getSchema()
+    public function getSchema() : ?string
     {
         if (Framework::isCli()) {
             return null;
@@ -94,7 +97,7 @@ trait RequestServerTrait
         return 'http';
     }
 
-    public function getServerProtocol()
+    public function getServerProtocol() : ?string
     {
         if (!isset($this->server['SERVER_PROTOCOL'])) {
             return null;
@@ -102,7 +105,7 @@ trait RequestServerTrait
         return $this->server['SERVER_PROTOCOL'];
     }
 
-    public function getRemoteAddress()
+    public function getRemoteAddress() : ?string
     {
         if (Framework::isCli()) {
             return gethostbyname(php_uname('n'));
@@ -110,7 +113,7 @@ trait RequestServerTrait
         return isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : null;
     }
 
-    public function getServerVariable($index)
+    public function getServerVariable(string $index) : ?string
     {
         if (!array_key_exists($index, $this->server)) {
             throw new \OutOfBoundsException('Requested key does not exist.');
@@ -118,7 +121,7 @@ trait RequestServerTrait
         return $this->server[$index];
     }
 
-    public function getUserAgent()
+    public function getUserAgent() : ?string
     {
         if (Framework::isCli()) {
             return null;

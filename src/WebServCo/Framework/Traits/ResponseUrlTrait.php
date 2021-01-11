@@ -1,15 +1,17 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Http\Response;
+
 trait ResponseUrlTrait
 {
-    abstract protected function request();
+    abstract protected function request() : \WebServCo\Framework\Interfaces\RequestInterface;
 
     /**
      * Redirect to an application location (Request target).
      * This method returns a Response object that needs to be in turn returned to the application.
      */
-    final protected function getRedirectResponse($location, $addSuffix = true)
+    final protected function getRedirectResponse(string $location, bool $addSuffix = true) : Response
     {
         $url = $this->request()->getAppUrl();
         $url .= $location;
@@ -22,8 +24,10 @@ trait ResponseUrlTrait
     /**
      * Redirect to the current URL.
      * This method returns a Response object that needs to be in turn returned to the application.
+     *
+     * @param array<int,string> $removeParameters
      */
-    final protected function getReloadResponse($removeParameters = [])
+    final protected function getReloadResponse(array $removeParameters = []) : Response
     {
         $url = $this->request()->getUrl($removeParameters);
         // "The HTTP 205 Reset Content response status tells the client to reset the document view,
@@ -40,10 +44,10 @@ trait ResponseUrlTrait
      * When received in response to a POST (or PUT/DELETE), the client should presume that the server has received
      * the data and should issue a new GET request to the given URI."
      */
-    final protected function getRedirectUrlResponse($url, $statusCode = 303)
+    final protected function getRedirectUrlResponse(string $url, int $statusCode = 303) : Response
     {
-        return new \WebServCo\Framework\Http\Response(
-            null,
+        return new Response(
+            '',
             $statusCode,
             ['Location' => $url]
         );

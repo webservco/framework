@@ -6,7 +6,7 @@ use WebServCo\Framework\Interfaces\ConstantValueClassInterface;
 trait ConstantValueClassTrait
 {
     /**
-    * @var array <int, mixed>
+    * @var array<int, mixed>
     */
     private static array $instances = [];
 

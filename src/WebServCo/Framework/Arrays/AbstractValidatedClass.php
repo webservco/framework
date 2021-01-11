@@ -3,9 +3,15 @@ namespace WebServCo\Framework\Arrays;
 
 abstract class AbstractValidatedClass
 {
-    abstract protected function getRequiredProperties();
+    /**
+    * @return array<int,string>
+    */
+    abstract protected function getRequiredProperties() : array;
 
-    public function __construct($data = [])
+    /**
+    * @param array<string,mixed> $data
+    */
+    public function __construct(array $data = [])
     {
         foreach (get_object_vars($this) as $property => $default) {
             if (array_key_exists($property, $data)) {
@@ -15,7 +21,7 @@ abstract class AbstractValidatedClass
         $this->validate();
     }
 
-    protected function validate()
+    protected function validate() : bool
     {
         $required = $this->getRequiredProperties();
         foreach ($required as $item) {

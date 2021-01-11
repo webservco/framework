@@ -3,5 +3,8 @@ namespace WebServCo\Framework\Interfaces;
 
 interface ArrayInterface
 {
-    public function toArray();
+    /**
+    * @return array<mixed>
+    */
+    public function toArray() : array;
 }

@@ -3,16 +3,23 @@ namespace WebServCo\Framework\Libraries;
 
 final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebServCo\Framework\Interfaces\I18nInterface
 {
-    protected $langs;
-    protected $domain;
+    /**
+    * @var array<string, array<string,string>>
+    */
+    protected array $langs;
 
-    protected $lang;
+    protected string $domain;
 
-    protected $locale;
+    protected string $lang;
 
-    protected $translationsPath;
+    protected string $locale;
 
-    public function __construct($settings = [])
+    protected string $translationsPath;
+
+    /**
+    * @param array<string,string> $settings
+    */
+    public function __construct(array $settings = [])
     {
         parent::__construct($settings);
 
@@ -20,22 +27,25 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         $this->domain = $this->setting('domain', 'messages');
     }
 
-    public function getLanguage()
+    public function getLanguage() : string
     {
         return $this->lang;
     }
 
-    public function getLanguages()
+    /**
+    * @return array<string, array<string,string>>
+    */
+    public function getLanguages() : array
     {
         return $this->langs;
     }
 
-    public function getLocale()
+    public function getLocale() : string
     {
         return $this->locale;
     }
 
-    public function init($projectPath, $lang = null)
+    public function init(string $projectPath, string $lang = null) : bool
     {
         $this->translationsPath = $projectPath . 'resources/translations';
 
@@ -49,12 +59,12 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     * After calling init(), a custom language/domain can be set by calling setLanguage with full arguments.
     * Call this function afterwards to restore the original language/domain.
     */
-    public function reset()
+    public function reset() : bool
     {
-        $this->setLanguage($this->lang, $this->translationsPath);
+        return $this->setLanguage($this->lang, $this->translationsPath);
     }
 
-    public function setLanguage($lang, $translationsPath = null)
+    public function setLanguage(string $lang, string $translationsPath = null) : bool
     {
         if (!array_key_exists($lang, $this->langs)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
@@ -71,7 +81,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return true;
     }
 
-    protected function setDomain($domain, $directory)
+    protected function setDomain(string $domain, string $directory) : bool
     {
         bindtextdomain($domain, $directory);
         textdomain($domain);
@@ -80,7 +90,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return true;
     }
 
-    protected function setLocale($locale)
+    protected function setLocale(string $locale) : bool
     {
         /**
          * Rumored to allow using a locale regardless of server locale setup.

@@ -1,30 +1,37 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\AbstractOutputLoader;
 use WebServCo\Framework\Http\Response;
 
 trait OutputTrait
 {
-    protected $outputCode;
-    protected $outputLoader;
+    protected int $outputCode;
+    protected AbstractOutputLoader $outputLoader;
 
-    final protected function setOutputLoader(\WebServCo\Framework\AbstractOutputLoader $outputLoader)
+    final protected function setOutputLoader(AbstractOutputLoader $outputLoader) : bool
     {
         $this->outputCode = 200; // default
         $this->outputLoader = $outputLoader;
+        return true;
     }
 
-    final protected function output()
+    final protected function output() : AbstractOutputLoader
     {
         return $this->outputLoader;
     }
 
-    final protected function outputCli($string = '', $eol = true)
+    final protected function outputCli(string $string = '', bool $eol = true) : bool
     {
         return $this->output()->cli($string, $eol);
     }
 
-    protected function outputHtmlPartial($data, $template)
+    /**
+    * @param array<int|string,mixed> $data
+    * @param string $template
+    * @return Response
+    */
+    protected function outputHtmlPartial(array $data, string $template) : Response
     {
         return new Response(
             $this->output()->html($data, $template),
@@ -33,7 +40,13 @@ trait OutputTrait
         );
     }
 
-    protected function outputHtml($data, $pageTemplate, $mainTemplate = null)
+    /**
+    * @param array<int|string,mixed> $data
+    * @param string $pageTemplate
+    * @param string $mainTemplate
+    * @return Response
+    */
+    protected function outputHtml(array $data, string $pageTemplate, string $mainTemplate = null) : Response
     {
         return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
@@ -42,7 +55,12 @@ trait OutputTrait
         );
     }
 
-    protected function outputJson($content, $result = true)
+    /**
+    * @param array<int|string,mixed> $content
+    * @param bool $result
+    * @return Response
+    */
+    protected function outputJson(array $content, bool $result = true) : Response
     {
         $data = [
             'result' => $result,
@@ -55,8 +73,9 @@ trait OutputTrait
         );
     }
 
-    protected function setOutputCode($outputCode)
+    protected function setOutputCode(int $outputCode) : bool
     {
         $this->outputCode = $outputCode;
+        return true;
     }
 }

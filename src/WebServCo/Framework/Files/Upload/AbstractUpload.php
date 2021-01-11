@@ -5,32 +5,35 @@ use WebServCo\Framework\Exceptions\UploadException;
 
 abstract class AbstractUpload
 {
-    protected $allowedExtensions;
-    protected $fileName;
-    protected $fileMimeType;
-    protected $formFieldName;
-    protected $uploadDirectory;
+    /**
+    * @var array<int,string>
+    */
+    protected array $allowedExtensions;
+    protected string $fileName;
+    protected string $fileMimeType;
+    protected string $formFieldName;
+    protected string $uploadDirectory;
 
-    abstract protected function generateUploadedFileName($uploadFileName, $uploadFileMimeType);
+    abstract protected function generateUploadedFileName(string $uploadFileName, string $uploadFileMimeType) : string;
 
-    public function __construct($uploadDirectory)
+    public function __construct(string $uploadDirectory)
     {
         $this->allowedExtensions = []; // default all
         $this->formFieldName = 'upload';
         $this->uploadDirectory = $uploadDirectory;
     }
 
-    public function getFileName()
+    public function getFileName() : string
     {
         return $this->fileName;
     }
 
-    public function getFileMimeType()
+    public function getFileMimeType() : string
     {
         return $this->fileMimeType;
     }
 
-    final public function do()
+    final public function do() : bool
     {
         if (empty($_FILES)) {
             return false;
@@ -61,17 +64,23 @@ abstract class AbstractUpload
         return true;
     }
 
-    final public function setAllowedExtensions($allowedExtensions)
+    /**
+    * @param array<int,string> $allowedExtensions
+    * @return bool
+    */
+    final public function setAllowedExtensions(array $allowedExtensions) : bool
     {
         $this->allowedExtensions = $allowedExtensions;
+        return true;
     }
 
-    final public function setFormFieldName($formFieldName)
+    final public function setFormFieldName(string $formFieldName) : bool
     {
         $this->formFieldName = $formFieldName;
+        return true;
     }
 
-    final protected function checkAllowedExtensions()
+    final protected function checkAllowedExtensions() : bool
     {
         if (!empty($this->allowedExtensions)) {
             if (!array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {

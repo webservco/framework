@@ -6,7 +6,7 @@ final class Template
     /**
     * @param string $templatePath
     * @param string $templateName
-    * @param array<mixed> $data
+    * @param array<mixed, mixed> $data
     * @return string
     */
     public static function render(string $templatePath, string $templateName, array $data) : string

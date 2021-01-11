@@ -4,17 +4,28 @@ namespace WebServCo\Framework\Http;
 class Response extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
-    protected $statusText;
-    protected $headers = [];
-    protected $appendCharset;
-    protected $charset;
+    protected string $statusText;
 
-    public function __construct($content = null, $statusCode = 200, array $headers = [])
+    /**
+    * @var array<string,array<string,string>|string>
+    */
+    protected array $headers;
+    protected bool $appendCharset;
+    protected string $charset;
+
+    /**
+    * @param string $content
+    * @param int $statusCode
+    * @param array<string,array<string,string>|string> $headers
+    */
+    public function __construct(string $content, int $statusCode = 200, array $headers = [])
     {
         $this->appendCharset = false;
         $this->setStatus($statusCode);
 
         $this->charset = 'utf-8';
+
+        $this->headers = [];
 
         foreach ($headers as $name => $value) {
             /*
@@ -27,21 +38,28 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         $this->setContent($content);
     }
 
-    public function getHeader($name)
+    /**
+    * @param string $name
+    * @return array<string,string>|string|null
+    */
+    public function getHeader(string $name)
     {
         $name = strtolower($name);
         if (array_key_exists($name, $this->headers)) {
             return $this->headers[$name];
         }
-        return false;
+        return null;
     }
 
-    public function getHeaders()
+    /**
+    * @return array<string,array<string,string>|string>
+    */
+    public function getHeaders() : array
     {
         return $this->headers;
     }
 
-    public function setStatus($statusCode)
+    public function setStatus(int $statusCode) : bool
     {
         $statusCodes = StatusCode::getSupported();
         if (!isset($statusCodes[$statusCode])) {
@@ -51,28 +69,37 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         }
         $this->statusCode = $statusCode;
         $this->statusText = $statusCodes[$statusCode];
+        return true;
     }
 
-    public function setHeader($name, $value)
+    /**
+    * @param string $name
+    * @param array<string,string>|string $value
+    * @return bool
+    */
+    public function setHeader(string $name, $value) : bool
     {
         if ($this->appendCharset) {
             switch ($name) {
                 case 'Content-Type':
-                    $value .= '; charset=' . $this->charset;
+                    if (is_string($value)) {
+                        $value .= '; charset=' . $this->charset;
+                    }
                     break;
             }
         }
         $this->headers[$name] = $value;
+        return true;
     }
 
-    public function send()
+    public function send() : int
     {
         $this->sendHeaders();
         $this->sendContent();
         return $this->statusCode;
     }
 
-    protected function sendHeader($name, $value, $statusCode)
+    protected function sendHeader(string $name, string $value, int $statusCode) : bool
     {
         header(
             sprintf('%s: %s', $name, $value),
@@ -82,7 +109,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    protected function sendHeaders()
+    protected function sendHeaders() : bool
     {
         foreach ($this->headers as $name => $value) {
             if (is_array($value)) {
@@ -94,17 +121,19 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
             }
         }
         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
-        $this->sendHeader('Content-length', strlen($this->content), $this->statusCode);
+        $this->sendHeader('Content-length', (string) strlen($this->content), $this->statusCode);
 
         header(
             sprintf('HTTP/1.1 %s %s', $this->statusCode, $this->statusText),
             true,
             $this->statusCode
         );
+        return true;
     }
 
-    protected function sendContent()
+    protected function sendContent() : bool
     {
         echo $this->content;
+        return true;
     }
 }

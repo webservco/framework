@@ -3,29 +3,40 @@ namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 {
-    protected $errors;
+    /**
+    * @var array<string, array<int,string>>
+    */
+    protected array $errors;
 
-    protected $filtered;
+    protected bool $filtered;
 
-    protected $submitFields;
+    /**
+    * @var array<int,string>
+    */
+    protected array $submitFields;
 
-    protected $submitField;
+    protected string $submitField;
 
-    protected $valid;
+    protected bool $valid;
 
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**
      * @return bool
      */
-    abstract protected function filter();
+    abstract protected function filter() : bool;
 
     /**
      * @return bool
      */
-    abstract protected function validate();
+    abstract protected function validate() : bool;
 
-    public function __construct($settings, $defaultData = [], $submitFields = [])
+    /**
+    * @param array<string,string> $settings
+    * @param array<string,mixed> $defaultData
+    * @param array<int,string> $submitFields
+    */
+    public function __construct(array $settings, array $defaultData = [], array $submitFields = [])
     {
         parent::__construct($settings);
 
@@ -52,13 +63,19 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
-    final public function clear()
+    final public function clear() : bool
     {
         $this->clearData();
-        $this->filtered = [];
+        $this->filtered = false;
         $this->errors = [];
+        return true;
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     final public function errors($key, $defaultValue = false)
     {
         return \WebServCo\Framework\ArrayStorage::get(
@@ -68,6 +85,9 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         );
     }
 
+    /**
+    * @return mixed
+    */
     final public function getSubmitField()
     {
         if (!$this->isSent() || empty($this->submitFields)) {
@@ -76,6 +96,11 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->submitField;
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     final public function help($key, $defaultValue = false)
     {
         return $this->setting(
@@ -84,7 +109,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         );
     }
 
-    final public function isSent()
+    final public function isSent() : bool
     {
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
@@ -98,11 +123,16 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
     }
 
-    final public function isValid()
+    final public function isValid() : bool
     {
         return $this->valid;
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     final public function meta($key, $defaultValue = false)
     {
         return $this->setting(
@@ -111,6 +141,11 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         );
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
     final public function required($key, $defaultValue = false)
     {
         return $this->setting(
@@ -119,7 +154,10 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         );
     }
 
-    final public function toArray()
+    /**
+    * @return array<string, array<mixed>>
+    */
+    final public function toArray() : array
     {
         return [
             'meta' => $this->setting('meta', []),

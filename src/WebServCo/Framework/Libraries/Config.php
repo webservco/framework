@@ -6,13 +6,14 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
 {
     /**
      * Stores configuration data.
+     * @var array<mixed>
      */
-    private $config = [];
+    private array $config = [];
 
     /**
      * Application environment.
      */
-    private $env;
+    private string $env = '';
 
     /**
      * Add base setting data.
@@ -22,8 +23,9 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @param string $setting Name of setting to load.
      * @param mixed $data Data to add.
+     * @return bool
      */
-    public function add($setting, $data)
+    public function add(string $setting, $data) : bool
     {
         $this->config = \WebServCo\Framework\ArrayStorage::append(
             $this->config,
@@ -33,21 +35,44 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     }
 
     /**
+     *
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function get($setting, $defaultValue = false)
+    {
+        return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
+    }
+
+    /**
+     * Get application environment value.
+     *
+     * @return string
+     */
+    public function getEnv() : string
+    {
+        return $this->env ?: \WebServCo\Framework\Environment::DEV;
+    }
+
+    /**
      * Load configuration data from a file.
      *
      * @param string $setting Name of setting to load.
      * @param string $pathProject Directory where the file is located.
      *                      File name must be <$setting>.php
-     * @return mixed
+     * @return array<mixed>
      */
-    public function load($setting, $pathProject)
+    public function load(string $setting, string $pathProject) : array
     {
         $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
         if (!is_readable($pathFull)) {
-            return false;
+            return [];
         }
         $data = (include $pathFull);
-        return is_array($data) ? $data : false;
+        return is_array($data) ? $data : [];
     }
 
     /**
@@ -58,20 +83,15 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
      *
-     * @return bool True on success and false on failure.
+     * @return bool true on success and false on failure.
      */
-    public function set($setting, $value)
+    public function set($setting, $value) : bool
     {
         if (empty($setting)) {
             return false;
         }
         $this->config = \WebServCo\Framework\ArrayStorage::set($this->config, $setting, $value);
         return true;
-    }
-
-    public function get($setting, $defaultValue = false)
-    {
-        return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
     }
 
     /**
@@ -81,7 +101,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @return bool
      */
-    public function setEnv($env = null)
+    public function setEnv(string $env) : bool
     {
         if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
             $this->env = $env;
@@ -90,15 +110,5 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
         }
 
         return true;
-    }
-
-    /**
-     * Get application environment value.
-     *
-     * @return string
-     */
-    public function getEnv()
-    {
-        return $this->env ?: \WebServCo\Framework\Environment::DEV;
     }
 }

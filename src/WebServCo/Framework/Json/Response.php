@@ -5,7 +5,7 @@ class Response extends \WebServCo\Framework\Http\Response
 {
     public function __construct(
         \WebServCo\Framework\Interfaces\JsonInterface $jsonObject,
-        $statusCode = 200
+        int $statusCode = 200
     ) {
         parent::__construct(
             $jsonObject->toJson(),

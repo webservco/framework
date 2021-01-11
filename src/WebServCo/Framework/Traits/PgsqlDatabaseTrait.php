@@ -3,12 +3,12 @@ namespace WebServCo\Framework\Traits;
 
 trait PgsqlDatabaseTrait
 {
-    public function escapeIdentifier($string)
+    public function escapeIdentifier(string $string) : string
     {
         return '"' . str_replace('"', '""', $string) . '"';
     }
 
-    public function escapeTableName($string)
+    public function escapeTableName(string $string) : string
     {
         // @TODO Fix.
         throw new \WebServCo\Framework\Exceptions\NotImplementedException(

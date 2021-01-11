@@ -5,10 +5,10 @@ final class SourceCode
 {
     const TYPE_XML = 'XML';
 
-    protected $type;
-    protected $data;
+    protected string $type;
+    protected string $data;
 
-    public function __construct($type, $data)
+    public function __construct(string $type, string $data)
     {
         switch ($type) {
             case self::TYPE_XML:
@@ -20,17 +20,17 @@ final class SourceCode
         $this->data = $data;
     }
 
-    public function highlight()
+    public function highlight() : string
     {
         switch ($this->type) {
             case self::TYPE_XML:
                 return $this->highlightXml($this->data);
             default:
-                return false;
+                throw new \WebServCo\Framework\Exceptions\NotImplementedException('Type not implemented.');
         }
     }
 
-    protected function highlightXml($data)
+    protected function highlightXml(string $data) : string
     {
         $data = htmlentities($data);
         $data = str_replace('&lt;', '<span style="color: purple">&lt;', $data);

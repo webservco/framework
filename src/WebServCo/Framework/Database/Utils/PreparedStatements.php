@@ -3,7 +3,11 @@ namespace WebServCo\Framework\Database\Utils;
 
 final class PreparedStatements
 {
-    public static function generatePlaceholdersString($data = [])
+    /**
+    * @param array<int, float|int|string> $data
+    * @return string
+    */
+    public static function generatePlaceholdersString(array $data = []) : string
     {
         return implode(', ', array_map(function () {
             return '?';

@@ -3,5 +3,5 @@ namespace WebServCo\Framework\Interfaces;
 
 interface FileLoggerInterface extends LoggerInterface
 {
-    public function getLogDirectory();
+    public function getLogDirectory() : string;
 }

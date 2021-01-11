@@ -2,52 +2,59 @@
 namespace WebServCo\Framework\DataTables;
 
 use WebServCo\Framework\ArrayObject\Items;
+use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
 class Request
 {
-    protected $draw;
+    protected int $draw;
 
-    protected $columns;
+    protected Items $columns;
 
-    protected $order;
+    protected Items $order;
 
-    protected $start;
+    protected int $start;
 
-    protected $length;
+    protected int $length;
 
-    protected $search;
+    protected Search $search;
 
-    public function __construct($draw, Items $columns, Items $order, $start, $length, Search $search)
+    public function __construct(int $draw, Items $columns, Items $order, int $start, int $length, Search $search)
     {
-        $this->draw = (int) $draw;
+        $this->draw = $draw;
         $this->columns = $columns;
         $this->order = $order;
-        $this->start = (int) $start;
-        $this->length = (int) $length;
+        $this->start = $start;
+        $this->length = $length;
         $this->search = $search;
     }
 
-    public function getColumns()
+    /**
+    * @return ArrayObjectInterface<ColumnArrayObject>
+    */
+    public function getColumns() : ArrayObjectInterface
     {
         return $this->columns->getArrayObject();
     }
 
-    public function getDraw()
+    public function getDraw() : int
     {
         return $this->draw;
     }
 
-    public function getLength()
+    public function getLength() : int
     {
         return $this->length;
     }
 
-    public function getOrder()
+    /**
+    * @return ArrayObjectInterface<OrderArrayObject>
+    */
+    public function getOrder() : ArrayObjectInterface
     {
         return $this->order->getArrayObject();
     }
 
-    public function getStart()
+    public function getStart() : int
     {
         return $this->start;
     }

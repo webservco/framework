@@ -3,21 +3,21 @@ namespace WebServCo\Framework\DataTables;
 
 class Order
 {
-    protected $column;
-    protected $dir;
+    protected string $column;
+    protected string $dir;
 
-    public function __construct($column, $dir)
+    public function __construct(string $column, string $dir)
     {
         $this->column = $column;
         $this->dir = $dir;
     }
 
-    public function getColumn()
+    public function getColumn() : string
     {
         return $this->column;
     }
 
-    public function getDir()
+    public function getDir() : string
     {
         return $this->dir;
     }

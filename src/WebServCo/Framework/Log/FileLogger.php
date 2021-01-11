@@ -8,12 +8,12 @@ class FileLogger extends AbstractLogger implements
     \WebServCo\Framework\Interfaces\LoggerInterface,
     \WebServCo\Framework\Interfaces\FileLoggerInterface
 {
-    protected $channel;
-    protected $logDir;
-    protected $logPath;
-    protected $requestInterface;
+    protected string $channel;
+    protected string $logDir;
+    protected string $logPath;
+    protected RequestInterface $requestInterface;
 
-    public function __construct($channel, $logDir, RequestInterface $requestInterface)
+    public function __construct(string $channel, string $logDir, RequestInterface $requestInterface)
     {
         $this->channel = $channel;
         $this->logDir = $logDir;
@@ -33,17 +33,23 @@ class FileLogger extends AbstractLogger implements
         $this->requestInterface = $requestInterface;
     }
 
-    public function clear()
+    public function clear() : bool
     {
-        return file_put_contents($this->logPath, null);
+        return (bool) file_put_contents($this->logPath, null);
     }
 
-    public function getLogDirectory()
+    public function getLogDirectory() : string
     {
         return $this->logDir;
     }
 
-    public function log($level, $message, $context = [])
+    /**
+    * @param string $level
+    * @param string $message
+    * @param mixed $context
+    * @return bool
+    */
+    public function log(string $level, string $message, $context = null) : bool
     {
         $dateTime = new \DateTime();
         $id = $dateTime->format('Ymd.His.u');
@@ -67,6 +73,6 @@ class FileLogger extends AbstractLogger implements
 
         file_put_contents($this->logPath, $data, FILE_APPEND);
 
-        return $id;
+        return true;
     }
 }

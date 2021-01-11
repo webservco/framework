@@ -1,33 +1,36 @@
 <?php
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Libraries\HtmlOutput;
+use WebServCo\Framework\Libraries\JsonOutput;
+
 abstract class AbstractOutputLoader
 {
-    protected $projectPath;
-    protected $htmlOutput;
-    protected $jsonOutput;
+    protected string $projectPath;
+    protected HtmlOutput $htmlOutput;
+    protected JsonOutput $jsonOutput;
 
     public function __construct(
-        $projectPath,
-        \WebServCo\Framework\Libraries\HtmlOutput $htmlOutput = null,
-        \WebServCo\Framework\Libraries\JsonOutput $jsonOutput = null
+        string $projectPath,
+        HtmlOutput $htmlOutput,
+        JsonOutput $jsonOutput
     ) {
         $this->projectPath = $projectPath;
         $this->htmlOutput = $htmlOutput;
         $this->jsonOutput = $jsonOutput;
     }
 
-    public function htmlOutput()
+    public function htmlOutput() : HtmlOutput
     {
         return $this->htmlOutput;
     }
 
-    public function jsonOutput()
+    public function jsonOutput() : JsonOutput
     {
         return $this->jsonOutput;
     }
 
-    private function getRenderedHtml($template)
+    private function getRenderedHtml(string $template) : string
     {
         /**
          * Set template path.
@@ -40,7 +43,11 @@ abstract class AbstractOutputLoader
         return $this->htmlOutput()->render();
     }
 
-    protected function setHtmlTemplateData($data)
+    /**
+    * @param array<int|string,mixed> $data
+    * @return bool
+    */
+    protected function setHtmlTemplateData(array $data) : bool
     {
         if (!is_array($data)) {
             return false;
@@ -51,13 +58,24 @@ abstract class AbstractOutputLoader
         return true;
     }
 
-    public function html($data, $template)
+    /**
+    * @param array<int|string,mixed> $data
+    * @param string $template
+    * @return string
+    */
+    public function html(array $data, string $template) : string
     {
         $this->setHtmlTemplateData($data);
         return $this->getRenderedHtml($template);
     }
 
-    public function htmlPage($data, $pageTemplate, $mainTemplate = null)
+    /**
+    * @param array<int|string,mixed> $data
+    * @param string $pageTemplate
+    * @param string $mainTemplate
+    * @return string
+    */
+    public function htmlPage(array $data, string $pageTemplate, string $mainTemplate = null) : string
     {
         /**
          * Set template data.
@@ -88,7 +106,10 @@ abstract class AbstractOutputLoader
         return $this->getRenderedHtml($mainTemplate);
     }
 
-    public function json($data)
+    /**
+    * @param array<string,mixed> $data
+    */
+    public function json(array $data) : string
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -98,7 +119,7 @@ abstract class AbstractOutputLoader
         return $this->jsonOutput()->render();
     }
 
-    public function cli($string, $eol = true)
+    public function cli(string $string, bool $eol = true) : bool
     {
         echo $string;
         if ($eol) {

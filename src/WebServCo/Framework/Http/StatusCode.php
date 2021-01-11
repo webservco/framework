@@ -3,7 +3,10 @@ namespace WebServCo\Framework\Http;
 
 final class StatusCode
 {
-    public static function getSupported()
+    /**
+    * @return array<int,string>
+    */
+    public static function getSupported() : array
     {
         return [
             100 => 'Continue',

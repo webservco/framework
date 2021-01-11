@@ -3,25 +3,58 @@ namespace WebServCo\Framework\Interfaces;
 
 interface DatabaseInterface
 {
-    public function escape($string);
+    public function affectedRows() : int;
 
-    public function query($query, $values = []);
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @param int $columnNumber
+    * @return bool|int|null|string
+    */
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0);
 
-    public function transaction($queries);
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return array<string, float|int|string>
+    */
+    public function getRow(string $query, array $params = []) : array;
 
-    public function numRows();
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return array<string, float|int|string>
+    */
+    public function getRows(string $query, array $params = []) : array;
 
-    public function affectedRows();
+    public function escape(string $string) : string;
 
-    public function getRows($query, $params = []);
+    public function escapeIdentifier(string $string) : string;
 
-    public function getRow($query, $params = []);
+    public function escapeTableName(string $string) : string;
 
-    public function getColumn($query, $params = [], $columnNumber = 0);
+    public function lastInsertId() : string;
 
-    public function lastInsertId();
+    public function numRows() : int;
 
-    public function escapeIdentifier($string);
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return \PDOStatement
+    */
+    public function query(string $query, array $params = []);
 
-    public function escapeTableName($string);
+    /**
+    * @param array<int,array<int,mixed>> $queries
+    * @return bool
+    */
+    public function transaction(array $queries) : bool;
+
+    /**
+    * @param string $table
+    * @param string $field
+    * @param float|int|string $value
+    * @return bool
+    */
+    public function valueExists(string $table, string $field, $value) : bool;
 }

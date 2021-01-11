@@ -3,37 +3,37 @@ namespace WebServCo\Framework\DataTables;
 
 class Column
 {
-    protected $data;
-    protected $name;
-    protected $searchable;
-    protected $orderable;
-    protected $search;
+    protected string $data;
+    protected string $name;
+    protected bool $searchable;
+    protected bool $orderable;
+    protected Search $search;
 
-    public function __construct($data, $name, $searchable, $orderable, Search $search)
+    public function __construct(string $data, string $name, bool $searchable, bool $orderable, Search $search)
     {
         $this->data = $data;
         $this->name = $name;
-        $this->searchable = (bool) $searchable;
-        $this->orderable = (bool) $orderable;
+        $this->searchable = $searchable;
+        $this->orderable = $orderable;
         $this->search = $search;
     }
 
-    public function getData()
+    public function getData() : string
     {
         return $this->data;
     }
 
-    public function getOrderable()
+    public function getOrderable() : bool
     {
         return $this->orderable;
     }
 
-    public function getSearch()
+    public function getSearch() : Search
     {
         return $this->search;
     }
 
-    public function getSearchable()
+    public function getSearchable() : bool
     {
         return $this->searchable;
     }
