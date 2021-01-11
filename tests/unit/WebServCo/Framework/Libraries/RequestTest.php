@@ -17,7 +17,7 @@ final class RequestTest extends TestCase
             Fw::library('Request')
         );
     }
-    
+
     /**
      * @test
      */
@@ -25,15 +25,15 @@ final class RequestTest extends TestCase
     {
         $this->assertNull(Fw::library('Request')->getSchema());
     }
-    
+
     /**
      * @test
      */
-    public function getRefererReturnsNullOnCli()
+    public function getRefererReturnsEmptyStringOnCli()
     {
-        $this->assertNull(Fw::library('Request')->getReferer());
+        $this->assertEquals('', Fw::library('Request')->getReferer());
     }
-    
+
     /**
      * @test
      */
@@ -44,29 +44,29 @@ final class RequestTest extends TestCase
             Fw::library('Request')->getHost()
         );
     }
-    
+
     /**
      * @test
      */
     public function sanitizeRemovesBadChars()
     {
         $this->assertEquals(
-            '?&#39;&#34;?!~#^&*=[]:;||{}()x',
+            ['?&#39;&#34;?!~#^&*=[]:;||{}()x'],
             Fw::library('Request')->sanitize(
-                "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"
+                ["?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]
             )
         );
     }
-    
+
     /**
      * @test
      */
     public function sanitizeRemovesTags()
     {
         $this->assertEquals(
-            'script=alert(&#39;hacked!&#39;).html&key=value',
+            ['script=alert(&#39;hacked!&#39;).html&key=value'],
             Fw::library('Request')->sanitize(
-                "script=<script>alert('hacked!')</script>.html&key=value"
+                ["script=<script>alert('hacked!')</script>.html&key=value"]
             )
         );
     }

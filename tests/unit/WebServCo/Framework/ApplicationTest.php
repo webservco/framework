@@ -9,7 +9,7 @@ final class ApplicationTest extends TestCase
 {
     private static $pathProject = '';
     private static $pathWeb = '';
-    
+
     public static function setUpBeforeClass()
     {
         $pathProject = '/tmp/webservco/project/';
@@ -43,15 +43,15 @@ final class ApplicationTest extends TestCase
         }
         rmdir($pathBase);
     }
-    
+
     public function setUp()
     {
     }
-    
+
     public function tearDown()
     {
     }
-    
+
     /**
     * @test
     */
@@ -59,7 +59,7 @@ final class ApplicationTest extends TestCase
     {
         $this->assertTrue(is_readable(self::$pathProject));
     }
-    
+
     /**
     * @test
     */
@@ -72,20 +72,11 @@ final class ApplicationTest extends TestCase
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
-    public function instantiationWithNullParametersThrowsException()
-    {
-        new App(null, null);
-    }
-     
-    /**
-    * @test
-    * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
-    */
     public function instantiationWithEmptyParametersThrowsException()
     {
         new App('', '');
     }
-     
+
     /**
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
@@ -94,7 +85,7 @@ final class ApplicationTest extends TestCase
     {
         new App('foo', 'bar');
     }
-     
+
     /**
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
@@ -103,7 +94,7 @@ final class ApplicationTest extends TestCase
     {
         new App('/tmp', '/tmp');
     }
-    
+
     /**
     * @test
     * @depends dummyProjectPathIsReadable
@@ -116,7 +107,7 @@ final class ApplicationTest extends TestCase
             new App(self::$pathWeb, self::$pathProject)
         );
     }
-    
+
     /**
     * @test
     * @depends instantiationWithValidParametersWorks
@@ -126,18 +117,18 @@ final class ApplicationTest extends TestCase
         $app = new App(self::$pathWeb, self::$pathProject);
         $this->assertTrue($app->setEnvironmentValue());
     }
-    
+
     /**
     * @test
     *
     * @depends instantiationWithValidParametersWorks
     */
-    public function startReturnsTrue()
+    public function startReturnsNull()
     {
         $app = new App(self::$pathWeb, self::$pathProject);
-        $this->assertTrue($app->start());
+        $this->assertNull($app->start());
     }
-    
+
     /**
      * @test
      */

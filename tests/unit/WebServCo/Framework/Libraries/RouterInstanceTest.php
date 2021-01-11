@@ -8,7 +8,7 @@ final class RouterInstanceTest extends TestCase
 {
     private $object;
     private $cfg;
-    
+
     public function setUp()
     {
         $this->cfg = [
@@ -20,7 +20,7 @@ final class RouterInstanceTest extends TestCase
         ];
         $this->object = new Router($this->cfg);
     }
-    
+
     /**
      * @test
      */
@@ -31,7 +31,7 @@ final class RouterInstanceTest extends TestCase
             $this->object
         );
     }
-    
+
     /**
      * @test
      */
@@ -41,17 +41,17 @@ final class RouterInstanceTest extends TestCase
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
-    
+
     /**
      * @test
      */
     public function getRouteReturnsArrayOnNullData()
     {
-        $route = $this->object->getRoute(null, []);
+        $route = $this->object->getRoute('', []);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
-    
+
     /**
      * @test
      */
@@ -61,7 +61,7 @@ final class RouterInstanceTest extends TestCase
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
-    
+
     /**
      * @test
      */
@@ -74,7 +74,7 @@ final class RouterInstanceTest extends TestCase
         $this->assertEquals('bar', $route[1]);
         $this->assertEquals(['baz'], $route[2]);
     }
-    
+
     /**
      * @test
      */

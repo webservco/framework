@@ -10,7 +10,7 @@ final class RequestInstanceTest extends TestCase
     private $post;
     private $object;
     private $objectPost;
-    
+
     public function setUp()
     {
         $this->cfg = ['suffixes' => ['.htm','.html'],];
@@ -20,11 +20,11 @@ final class RequestInstanceTest extends TestCase
             '<h1>invalid</h1>' => '<tag>tag</tag>',
         ];
         $this->object = new Request($this->cfg, $_SERVER, $this->post);
-        
+
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $this->objectPost = new Request($this->cfg, $_SERVER, $this->post);
     }
-    
+
     /**
      * @test
      */
@@ -35,7 +35,7 @@ final class RequestInstanceTest extends TestCase
             $this->object
         );
     }
-    
+
     /**
      * @test
      */
@@ -43,15 +43,15 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertNull($this->object->getSchema());
     }
-    
+
     /**
      * @test
      */
-    public function getRefererReturnsNullOnCli()
+    public function getRefererReturnsEmptyStringOnCli()
     {
-        $this->assertNull($this->object->getReferer());
+        $this->assertEquals('', $this->object->getReferer());
     }
-    
+
     /**
      * @test
      */
@@ -59,31 +59,31 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertInternalType('string', $this->object->getHost());
     }
-    
+
     /**
      * @test
      */
     public function sanitizeRemovesBadChars()
     {
         $this->assertEquals(
-            '?&#39;&#34;?!~#^&*=[]:;||{}()x',
-            $this->object->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx")
+            ['foo' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
+            $this->object->sanitize(['foo' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"])
         );
     }
-    
+
     /**
      * @test
      */
     public function sanitizeRemovesTags()
     {
         $this->assertEquals(
-            'script=alert(&#39;hacked!&#39;).html&key=value',
+            ['script=alert(&#39;hacked!&#39;).html&key=value'],
             $this->object->sanitize(
-                "script=<script>alert('hacked!')</script>.html&key=value"
+                ["script=<script>alert('hacked!')</script>.html&key=value"]
             )
         );
     }
-    
+
     /**
      * @test
      */
@@ -94,7 +94,7 @@ final class RequestInstanceTest extends TestCase
             $this->objectPost->data('key')
         );
     }
-    
+
     /**
      * @test
      */
@@ -105,7 +105,7 @@ final class RequestInstanceTest extends TestCase
             $this->objectPost->data('script')
         );
     }
-    
+
     /**
      * @test
      */

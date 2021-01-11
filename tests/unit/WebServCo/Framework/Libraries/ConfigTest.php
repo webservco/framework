@@ -9,12 +9,12 @@ use WebServCo\Framework\Settings as S;
 final class ConfigTest extends TestCase
 {
     private static $pathProject = '';
-   
+
     private $settingSimpleString = 'setting';
     private $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
     private $settingSpecialString = 'setting1.setting2.setting3';
     private $value = 'value';
-    
+
     public static function setUpBeforeClass()
     {
         $pathProject = '/tmp/webservco/project/';
@@ -63,7 +63,7 @@ final class ConfigTest extends TestCase
         }
         rmdir($pathBase);
     }
-    
+
     public function setUp()
     {
         /**
@@ -72,7 +72,7 @@ final class ConfigTest extends TestCase
         Fw::library('Config')->set('app', null);
         Fw::library('Config')->set('foo', null);
     }
-    
+
     /**
      * @test
      */
@@ -83,7 +83,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')
         );
     }
-    
+
     /**
      * @test
      */
@@ -91,7 +91,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->set(null, null));
     }
-    
+
     /**
      * @test
      */
@@ -99,7 +99,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->set(false, null));
     }
-    
+
     /**
      * @test
      */
@@ -107,7 +107,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->set('', null));
     }
-     
+
     /**
      * @test
      */
@@ -115,7 +115,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->set('setting', 'value'));
     }
-    
+
     /**
      * @test
      */
@@ -123,7 +123,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->set('key', null));
     }
-    
+
     /**
      * @test
      */
@@ -131,7 +131,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->set('key', false));
     }
-    
+
     /**
      * @test
      */
@@ -139,7 +139,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->set('key', ''));
     }
-    
+
     /**
      * @test
      * @depends validSettingReturnsTrue
@@ -148,7 +148,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertEquals('value', Fw::library('Config')->get('setting'));
     }
-    
+
     /**
      * @test
      */
@@ -156,7 +156,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->get('noexist'));
     }
-    
+
     /**
      * @test
      */
@@ -164,7 +164,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->get(null));
     }
-    
+
     /**
      * @test
      */
@@ -172,7 +172,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->get(false));
     }
-    
+
     /**
      * @test
      */
@@ -180,7 +180,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->get(''));
     }
-    
+
     /**
      * @test
      */
@@ -188,7 +188,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Fw::library('Config')->get([]));
     }
-    
+
     /**
      * @test
      */
@@ -205,7 +205,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')->get($this->settingSimpleString)
         );
     }
-    
+
     /**
      * @test
      */
@@ -222,7 +222,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')->get($this->settingArray)
         );
     }
-    
+
     /**
      * @test
      */
@@ -231,7 +231,7 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::library('Config')->set($this->settingSpecialString, $this->value));
         $this->assertEquals($this->value, Fw::library('Config')->get($this->settingSpecialString));
     }
-    
+
     /**
      * @test
      */
@@ -262,7 +262,7 @@ final class ConfigTest extends TestCase
             )
         );
     }
-    
+
     /**
      * @test
      */
@@ -294,7 +294,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')->get('app')
         );
     }
-    
+
     /**
      * @test
      */
@@ -304,7 +304,7 @@ final class ConfigTest extends TestCase
         $this->assertTrue(Fw::library('Config')->set('foo', 'new value'));
         $this->assertEquals('new value', Fw::library('Config')->get('foo'));
     }
-    
+
     /**
      * @test
      */
@@ -329,7 +329,7 @@ final class ConfigTest extends TestCase
             )
         );
     }
-    
+
     /**
      * @test
      */
@@ -337,13 +337,13 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->add('add', 'dda'));
     }
-    
+
     /**
      * @test
      */
     public function addAppendsDataInsteadOfOverwriting()
     {
-        
+
         $config = [
             'date' => [
                 'timezone' => 'Europe/Budapest',
@@ -372,7 +372,7 @@ final class ConfigTest extends TestCase
             )
         );
         $this->assertTrue(Fw::library('Config')->add('foo', $config));
-        
+
         $this->assertEquals(
             'value',
             Fw::library('Config')->get(
@@ -389,17 +389,18 @@ final class ConfigTest extends TestCase
             )
         );
     }
-    
+
     /**
      * @test
      */
-    public function loadReturnsFalseOnInvalidPath()
+    public function loadReturnsEmptyArrayOnInvalidPath()
     {
-        $this->assertFalse(
+        $this->assertEquals(
+            [],
             Fw::library('Config')->load('foo', '/foo/bar')
         );
     }
-    
+
     /**
      * @test
      */
@@ -409,7 +410,7 @@ final class ConfigTest extends TestCase
             is_readable(self::$pathProject . 'config/dev/foo.php')
         );
     }
-    
+
     /**
      * @test
      * @depends dummyConfigFileExists
@@ -421,7 +422,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')->load('foo', self::$pathProject)
         );
     }
-    
+
     /**
      * @test
      * @depends loadReturnsArrayOnValidPath
@@ -458,7 +459,7 @@ final class ConfigTest extends TestCase
             )
         );
     }
-    
+
     /**
      * @test
      */
@@ -466,7 +467,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(Fw::library('Config')->setEnv('dev'));
     }
-    
+
     /**
      * @test
      */
@@ -475,7 +476,7 @@ final class ConfigTest extends TestCase
         Fw::library('Config')->setEnv('noexist');
         $this->assertEquals('dev', Fw::library('Config')->getEnv());
     }
-    
+
     /**
      * @test
      */
@@ -486,7 +487,7 @@ final class ConfigTest extends TestCase
             Fw::library('Config')->getEnv()
         );
     }
-    
+
     /**
      * @test
      */
