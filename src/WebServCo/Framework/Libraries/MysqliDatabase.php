@@ -7,17 +7,25 @@ use WebServCo\Framework\Exceptions\DatabaseException;
 final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
-    protected $db;
-    protected $stmt;
-    protected $rows;
+    protected \mysqli $db;
+    /**
+    * @var \mysqli_result<mixed>
+    */
+    protected \mysqli_result $mysqliResult;
+    protected \mysqli_stmt $stmt;
+    /**
+    * @var array<int, float|int|string>
+    */
+    protected array $rows;
 
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
 
-    protected $mysqliResult;
-
-    public function __construct($settings = [])
+    /**
+    * @param array<string,string> $settings
+    */
+    public function __construct(array $settings = [])
     {
         parent::__construct($settings);
 
@@ -38,7 +46,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         }
     }
 
-    public function affectedRows()
+    public function affectedRows() : int
     {
         if (!($this->stmt instanceof \mysqli_stmt)) {
             throw new DatabaseException('No Statement object available.');
@@ -46,30 +54,58 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         return $this->stmt->affected_rows;
     }
 
-    public function escape($string)
+    public function escape(string $string) : string
     {
         return $this->db->real_escape_string($string);
     }
 
-    public function getColumn($query, $params = [], $columnNumber = 0)
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @param int $columnNumber
+    * @return null|string
+    */
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0) : ?string
     {
         $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
+        $result = $this->stmt->get_result();
+        if (!$result) {
+            throw new DatabaseException('Error getting result.');
+        }
+        $this->mysqliResult = $result;
         $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
-        return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
+        return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : null;
     }
 
-    public function getRow($query, $params = [])
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return array<string, float|int|string>
+    */
+    public function getRow(string $query, array $params = []) : array
     {
         $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
+        $result = $this->stmt->get_result();
+        if (!$result) {
+            throw new DatabaseException('Error getting result.');
+        }
+        $this->mysqliResult = $result;
         return $this->mysqliResult->fetch_assoc();
     }
 
-    public function getRows($query, $params = [])
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return array<string, float|int|string>
+    */
+    public function getRows(string $query, array $params = []) : array
     {
         $this->query($query, $params);
-        $this->mysqliResult = $this->stmt->get_result();
+        $result = $this->stmt->get_result();
+        if (!$result) {
+            throw new DatabaseException('Error getting result.');
+        }
+        $this->mysqliResult = $result;
         $this->rows = $this->mysqliResult->fetch_all(MYSQLI_ASSOC);
         return $this->rows;
     }
@@ -83,12 +119,12 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
      * The reason for this is to make it possible to reproduce easily the same
      * INSERT statement against some other server.
      */
-    public function lastInsertId()
+    public function lastInsertId() : string
     {
-        return (int) $this->db->insert_id;
+        return (string) $this->db->insert_id;
     }
 
-    public function numRows()
+    public function numRows() : int
     {
         /**
          * @TODO Fix.
@@ -100,7 +136,12 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         throw new \WebServCo\Framework\Exceptions\NotImplementedException('Method not implemented.');
     }
 
-    public function query($query, $params = [])
+    /**
+    * @param string $query
+    * @param array<int, float|int|string> $params
+    * @return \mysqli_stmt
+    */
+    public function query(string $query, array $params = []) : \mysqli_stmt
     {
         if (empty($query)) {
             throw new DatabaseException('No query specified.');
@@ -110,7 +151,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
             /**
              * For simplicity use statements even for simple queries.
              */
-            $this->stmt = $this->db->prepare($query);
+            $stmt = $this->db->prepare($query);;
+            if (!$stmt) {
+                throw new DatabaseException('Error preparing statement.');
+            }
+            $this->stmt = $stmt;
             $this->bindParams($params);
             $this->stmt->execute();
             return $this->stmt;
@@ -119,7 +164,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         }
     }
 
-    public function transaction($queries)
+    /**
+    * @param array<int,array<int,mixed>> $queries
+    * @return bool
+    */
+    public function transaction(array $queries) : bool
     {
         try {
             $this->db->autocommit(false);
@@ -138,7 +187,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         }
     }
 
-    protected function bindParams($params = [])
+    /**
+    * @param array<mixed> $params
+    * @return bool
+    */
+    protected function bindParams(array $params = []) : bool
     {
         if (empty($params)) {
             return false;
@@ -172,7 +225,7 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         return call_user_func_array($callable, $args);
     }
 
-    protected function getDataType($variable)
+    protected function getDataType(string $variable) : string
     {
         $type = gettype($variable);
 
