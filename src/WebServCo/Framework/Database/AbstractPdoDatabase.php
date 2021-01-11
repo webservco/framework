@@ -18,7 +18,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     abstract protected function getDataSourceName(string $host, string $port, string $dbname) : string;
 
     /**
-    * @param array<string,string> $settings
+    * @param array<string,string|array<mixed>> $settings
     */
     public function __construct(array $settings = [])
     {

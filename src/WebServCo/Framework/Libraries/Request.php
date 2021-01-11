@@ -9,7 +9,7 @@ final class Request extends \WebServCo\Framework\AbstractRequest implements
     use \WebServCo\Framework\Traits\RequestUrlTrait;
 
     /**
-    * @param array<string,string> $settings
+    * @param array<string,string|array<mixed>> $settings
     * @param array<string,mixed> $server
     * @param array<string,string> $post
     */

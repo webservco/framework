@@ -17,7 +17,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     protected string $translationsPath;
 
     /**
-    * @param array<string,string> $settings
+    * @param array<string,string|array<mixed>> $settings
     */
     public function __construct(array $settings = [])
     {

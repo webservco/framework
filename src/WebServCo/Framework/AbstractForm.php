@@ -32,7 +32,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     abstract protected function validate() : bool;
 
     /**
-    * @param array<string,string> $settings
+    * @param array<string,string|array<mixed>> $settings
     * @param array<string,mixed> $defaultData
     * @param array<int,string> $submitFields
     */

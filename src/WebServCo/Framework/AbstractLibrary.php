@@ -13,12 +13,12 @@ abstract class AbstractLibrary implements
     private array $data;
 
     /**
-    * @var array<string,string>
+    * @var array<string,string|array<mixed>>
     */
     private array $settings;
 
     /**
-    * @param array<string,string> $settings
+    * @param array<string,string|array<mixed>> $settings
     */
     public function __construct(array $settings = [])
     {
