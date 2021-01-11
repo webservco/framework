@@ -1,7 +1,3 @@
 vendor/
+.phpunit.result.cache
 composer.lock
-
-# Eclipse
-.buildpath
-.project
-.settings/

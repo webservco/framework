@@ -37,7 +37,7 @@ final class RouterTest extends TestCase
     public function getRouteReturnsArrayOnValidData() : void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
     }
 
@@ -47,7 +47,7 @@ final class RouterTest extends TestCase
     public function getRouteReturnsValidData() : void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('foo', $route[0]);
         $this->assertEquals('bar', $route[1]);
@@ -60,7 +60,7 @@ final class RouterTest extends TestCase
     public function getRouteReturnsValidDataWithCustomRoutes() : void
     {
         $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('Content', $route[0]);
         $this->assertEquals('debugSomething', $route[1]);

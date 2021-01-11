@@ -423,10 +423,7 @@ final class ConfigTest extends TestCase
      */
     public function loadReturnsArrayOnValidPath() : void
     {
-        $this->assertInternalType(
-            'array',
-            Fw::library('Config')->load('foo', self::$pathProject)
-        );
+        $this->assertIsArray(Fw::library('Config')->load('foo', self::$pathProject));
     }
 
     /**
@@ -488,10 +485,7 @@ final class ConfigTest extends TestCase
      */
     public function getEnvReturnsString() : void
     {
-        $this->assertInternalType(
-            'string',
-            Fw::library('Config')->getEnv()
-        );
+        $this->assertIsString(Fw::library('Config')->getEnv());
     }
 
     /**

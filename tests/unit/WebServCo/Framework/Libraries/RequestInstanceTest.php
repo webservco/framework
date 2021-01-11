@@ -66,7 +66,7 @@ final class RequestInstanceTest extends TestCase
      */
     public function getHostReturnsString() : void
     {
-        $this->assertInternalType('string', $this->object->getHost());
+        $this->assertIsString($this->object->getHost());
     }
 
     /**

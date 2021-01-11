@@ -39,10 +39,7 @@ final class RequestTest extends TestCase
      */
     public function getHostReturnsString() : void
     {
-        $this->assertInternalType(
-            'string',
-            Fw::library('Request')->getHost()
-        );
+        $this->assertIsString(Fw::library('Request')->getHost());
     }
 
     /**

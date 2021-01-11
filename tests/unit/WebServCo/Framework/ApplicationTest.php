@@ -70,28 +70,28 @@ final class ApplicationTest extends TestCase
 
     /**
     * @test
-    * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
     public function instantiationWithEmptyParametersThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
         new App('', '');
     }
 
     /**
     * @test
-    * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
     public function instantiationWithDummyParametersThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
         new App('foo', 'bar');
     }
 
     /**
     * @test
-    * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
     public function instantiationInvalidParametersThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
         new App('/tmp', '/tmp');
     }
 

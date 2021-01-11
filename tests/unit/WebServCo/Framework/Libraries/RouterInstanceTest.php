@@ -42,7 +42,7 @@ final class RouterInstanceTest extends TestCase
     public function getRouteReturnsArrayOnEmptyData() : void
     {
         $route = $this->object->getRoute('', []);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
     }
 
@@ -52,7 +52,7 @@ final class RouterInstanceTest extends TestCase
     public function getRouteReturnsArrayOnNullData() : void
     {
         $route = $this->object->getRoute('', []);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
     }
 
@@ -62,7 +62,7 @@ final class RouterInstanceTest extends TestCase
     public function getRouteReturnsArrayOnValidData() : void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
     }
 
@@ -72,7 +72,7 @@ final class RouterInstanceTest extends TestCase
     public function getRouteReturnsValidData() : void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('foo', $route[0]);
         $this->assertEquals('bar', $route[1]);
@@ -85,7 +85,7 @@ final class RouterInstanceTest extends TestCase
     public function getRouteReturnsValidDataWithCustomRoutes() : void
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
+        $this->assertIsArray($route);
         $this->assertEquals(3, count($route));
         $this->assertEquals('Content', $route[0]);
         $this->assertEquals('debugSomething', $route[1]);

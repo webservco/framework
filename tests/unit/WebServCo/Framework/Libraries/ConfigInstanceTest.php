@@ -312,7 +312,7 @@ final class ConfigInstanceTest extends TestCase
      */
     public function loadReturnsArrayOnValidPath() : void
     {
-        $this->assertInternalType('array', $this->object->load('foo', self::$pathProject));
+        $this->assertIsArray($this->object->load('foo', self::$pathProject));
     }
 
     /**
@@ -359,7 +359,7 @@ final class ConfigInstanceTest extends TestCase
      */
     public function getEnvReturnsString() : void
     {
-        $this->assertInternalType('string', $this->object->getEnv());
+        $this->assertIsString($this->object->getEnv());
     }
 
     /**

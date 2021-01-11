@@ -12,7 +12,7 @@ final class FrameworkTest extends TestCase
      */
     public function getPathReturnsString() : void
     {
-        $this->assertInternalType('string', Fw::getPath());
+        $this->assertIsString(Fw::getPath());
     }
 
     /**
@@ -20,7 +20,7 @@ final class FrameworkTest extends TestCase
      */
     public function getCliReturnsBoolean() : void
     {
-        $this->assertInternalType('bool', Fw::isCli());
+        $this->assertIsBool(Fw::isCli());
     }
 
     /**
@@ -28,6 +28,6 @@ final class FrameworkTest extends TestCase
      */
     public function getOsReturnsString() : void
     {
-        $this->assertInternalType('string', Fw::getOS());
+        $this->assertIsString(Fw::getOS());
     }
 }

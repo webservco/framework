@@ -53,6 +53,6 @@ final class DateTest extends TestCase
      */
     public function getTimezoneReturnsString() : void
     {
-        $this->assertInternalType('string', Fw::library('Date')->getTimezone());
+        $this->assertIsString(Fw::library('Date')->getTimezone());
     }
 }

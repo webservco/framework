@@ -72,6 +72,6 @@ final class DateInstanceTest extends TestCase
      */
     public function getTimezoneReturnsString() : void
     {
-        $this->assertInternalType('string', $this->object->getTimezone());
+        $this->assertIsString($this->object->getTimezone());
     }
 }

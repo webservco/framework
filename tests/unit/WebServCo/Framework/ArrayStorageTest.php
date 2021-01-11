@@ -29,10 +29,10 @@ final class ArrayStorageTest extends TestCase
 
     /**
      * @test
-     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingTripleSettingThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         $setting = sprintf('foo%1$snotBar%1$sbaz', S::DIVIDER);
         ArrayStorage::remove(
             $this->originalArray,
@@ -42,10 +42,10 @@ final class ArrayStorageTest extends TestCase
 
     /**
      * @test
-     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingDoubleSettingThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         $setting = sprintf('foo%1$snotBar', S::DIVIDER);
         ArrayStorage::remove(
             $this->originalArray,
@@ -55,10 +55,10 @@ final class ArrayStorageTest extends TestCase
 
     /**
      * @test
-     * @expectedException \WebServCo\Framework\Exceptions\ArrayStorageException
      */
     public function unsetWithNonExistingSimpleSettingThrowsException() : void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         ArrayStorage::remove(
             $this->originalArray,
             'noexist'
