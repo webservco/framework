@@ -4,7 +4,7 @@ namespace WebServCo\Framework;
 use WebServCo\Framework\Libraries\HtmlOutput;
 use WebServCo\Framework\Libraries\JsonOutput;
 
-abstract class AbstractOutputLoader
+abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\OutputLoaderInterface
 {
     protected string $projectPath;
     protected HtmlOutput $htmlOutput;
@@ -20,40 +20,11 @@ abstract class AbstractOutputLoader
         $this->jsonOutput = $jsonOutput;
     }
 
-    public function htmlOutput() : HtmlOutput
+    public function cli(string $string, bool $eol = true) : bool
     {
-        return $this->htmlOutput;
-    }
-
-    public function jsonOutput() : JsonOutput
-    {
-        return $this->jsonOutput;
-    }
-
-    private function getRenderedHtml(string $template) : string
-    {
-        /**
-         * Set template path.
-         */
-        $this->htmlOutput()->setPath("{$this->projectPath}resources/views/");
-        /**
-         * Set page template
-         */
-        $this->htmlOutput()->setTemplate($template);
-        return $this->htmlOutput()->render();
-    }
-
-    /**
-    * @param array<int|string,mixed> $data
-    * @return bool
-    */
-    protected function setHtmlTemplateData(array $data) : bool
-    {
-        if (!is_array($data)) {
-            return false;
-        }
-        foreach ($data as $key => $value) {
-            $this->htmlOutput()->setData($key, $value);
+        echo $string;
+        if ($eol) {
+            echo PHP_EOL;
         }
         return true;
     }
@@ -67,6 +38,11 @@ abstract class AbstractOutputLoader
     {
         $this->setHtmlTemplateData($data);
         return $this->getRenderedHtml($template);
+    }
+
+    public function htmlOutput() : HtmlOutput
+    {
+        return $this->htmlOutput;
     }
 
     /**
@@ -119,11 +95,35 @@ abstract class AbstractOutputLoader
         return $this->jsonOutput()->render();
     }
 
-    public function cli(string $string, bool $eol = true) : bool
+    public function jsonOutput() : JsonOutput
     {
-        echo $string;
-        if ($eol) {
-            echo PHP_EOL;
+        return $this->jsonOutput;
+    }
+
+    private function getRenderedHtml(string $template) : string
+    {
+        /**
+         * Set template path.
+         */
+        $this->htmlOutput()->setPath("{$this->projectPath}resources/views/");
+        /**
+         * Set page template
+         */
+        $this->htmlOutput()->setTemplate($template);
+        return $this->htmlOutput()->render();
+    }
+
+    /**
+    * @param array<int|string,mixed> $data
+    * @return bool
+    */
+    protected function setHtmlTemplateData(array $data) : bool
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+        foreach ($data as $key => $value) {
+            $this->htmlOutput()->setData($key, $value);
         }
         return true;
     }

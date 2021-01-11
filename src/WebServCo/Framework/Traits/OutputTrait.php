@@ -1,22 +1,22 @@
 <?php
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\AbstractOutputLoader;
 use WebServCo\Framework\Http\Response;
+use WebServCo\Framework\Interfaces\OutputLoaderInterface;
 
 trait OutputTrait
 {
     protected int $outputCode;
-    protected AbstractOutputLoader $outputLoader;
+    protected OutputLoaderInterface $outputLoader;
 
-    final protected function setOutputLoader(AbstractOutputLoader $outputLoader) : bool
+    final protected function setOutputLoader(OutputLoaderInterface $outputLoader) : bool
     {
         $this->outputCode = 200; // default
         $this->outputLoader = $outputLoader;
         return true;
     }
 
-    final protected function output() : AbstractOutputLoader
+    final protected function output() : OutputLoaderInterface
     {
         return $this->outputLoader;
     }
