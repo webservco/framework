@@ -81,21 +81,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
         $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
         if (!class_exists($className)) {
-            /* enable in V10 *
             throw new NotFoundException(
                 sprintf('No matching %s found. Target: "%s"', $classType, $target)
             );
-            /* enable in V10 */
-
-            /* remove in V10 */
-            // check for v9 class name
-            $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
-            if (!class_exists($className)) {
-                throw new NotFoundException(
-                    sprintf('No matching %s found. Target: "%s".', $classType, $target)
-                );
-            }
-            /* remove in V10 */
         }
 
         $object = new $className;
