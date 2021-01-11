@@ -6,12 +6,21 @@ use WebServCo\Framework\Libraries\Request;
 
 final class RequestInstanceTest extends TestCase
 {
-    private $cfg;
-    private $post;
-    private $object;
-    private $objectPost;
+    /**
+    * @var array<string,array<int,string>>
+    */
+    private array $cfg;
 
-    public function setUp()
+    /**
+    * @var array<string,string>
+    */
+    private array $post;
+
+    private Request $object;
+
+    private Request $objectPost;
+
+    public function setUp() : void
     {
         $this->cfg = ['suffixes' => ['.htm','.html'],];
         $this->post = [
@@ -28,7 +37,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually()
+    public function canBeInstantiatedIndividually() : void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Request',
@@ -39,7 +48,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getSchemaReturnsNullOnCli()
+    public function getSchemaReturnsNullOnCli() : void
     {
         $this->assertNull($this->object->getSchema());
     }
@@ -47,7 +56,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRefererReturnsEmptyStringOnCli()
+    public function getRefererReturnsEmptyStringOnCli() : void
     {
         $this->assertEquals('', $this->object->getReferer());
     }
@@ -55,7 +64,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getHostReturnsString()
+    public function getHostReturnsString() : void
     {
         $this->assertInternalType('string', $this->object->getHost());
     }
@@ -63,7 +72,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function sanitizeRemovesBadChars()
+    public function sanitizeRemovesBadChars() : void
     {
         $this->assertEquals(
             ['foo' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
@@ -74,12 +83,12 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function sanitizeRemovesTags()
+    public function sanitizeRemovesTags() : void
     {
         $this->assertEquals(
-            ['script=alert(&#39;hacked!&#39;).html&key=value'],
+            ['foo' => 'script=alert(&#39;hacked!&#39;).html&key=value'],
             $this->object->sanitize(
-                ["script=<script>alert('hacked!')</script>.html&key=value"]
+                ['foo' => "script=<script>alert('hacked!')</script>.html&key=value"]
             )
         );
     }
@@ -87,7 +96,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function postRequestIsParsedCorrectly()
+    public function postRequestIsParsedCorrectly() : void
     {
         $this->assertEquals(
             'value',
@@ -98,7 +107,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function postRequestTagsNotDisabledInValues()
+    public function postRequestTagsNotDisabledInValues() : void
     {
         $this->assertEquals(
             '<script>hello</script>',
@@ -109,7 +118,7 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function postRequestTagsDisabledInKeys()
+    public function postRequestTagsDisabledInKeys() : void
     {
         $this->assertFalse($this->objectPost->data('<h1>invalid</h1>'));
         $this->assertEquals('<tag>tag</tag>', $this->objectPost->data('invalid'));

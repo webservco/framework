@@ -10,7 +10,7 @@ final class MethodTest extends TestCase
     /**
      * @test
      */
-    public function getMethodsReturnsArray()
+    public function getMethodsReturnsArray() : void
     {
         $this->assertInternalType('array', Method::getSupported());
     }

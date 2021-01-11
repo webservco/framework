@@ -7,10 +7,10 @@ use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
-    private static $pathProject = '';
-    private static $pathWeb = '';
+    private static string $pathProject = '';
+    private static string $pathWeb = '';
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         $pathProject = '/tmp/webservco/project/';
         $pathWeb = "{$pathProject}public/";
@@ -23,7 +23,7 @@ final class ApplicationTest extends TestCase
         self::$pathWeb = $pathWeb;
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass() : void
     {
         $pathBase = '/tmp/webservco/';
         $it = new \RecursiveDirectoryIterator(
@@ -44,18 +44,18 @@ final class ApplicationTest extends TestCase
         rmdir($pathBase);
     }
 
-    public function setUp()
+    public function setUp() : void
     {
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
     }
 
     /**
     * @test
     */
-    public function dummyProjectPathIsReadable()
+    public function dummyProjectPathIsReadable() : void
     {
         $this->assertTrue(is_readable(self::$pathProject));
     }
@@ -63,7 +63,7 @@ final class ApplicationTest extends TestCase
     /**
     * @test
     */
-    public function dummyWebPathIsReadable()
+    public function dummyWebPathIsReadable() : void
     {
         $this->assertTrue(is_readable(self::$pathWeb));
     }
@@ -72,7 +72,7 @@ final class ApplicationTest extends TestCase
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
-    public function instantiationWithEmptyParametersThrowsException()
+    public function instantiationWithEmptyParametersThrowsException() : void
     {
         new App('', '');
     }
@@ -81,7 +81,7 @@ final class ApplicationTest extends TestCase
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
-    public function instantiationWithDummyParametersThrowsException()
+    public function instantiationWithDummyParametersThrowsException() : void
     {
         new App('foo', 'bar');
     }
@@ -90,7 +90,7 @@ final class ApplicationTest extends TestCase
     * @test
     * @expectedException \WebServCo\Framework\Exceptions\ApplicationException
     */
-    public function instantiationInvalidParametersThrowsException()
+    public function instantiationInvalidParametersThrowsException() : void
     {
         new App('/tmp', '/tmp');
     }
@@ -100,7 +100,7 @@ final class ApplicationTest extends TestCase
     * @depends dummyProjectPathIsReadable
     * @depends dummyWebPathIsReadable
     */
-    public function instantiationWithValidParametersWorks()
+    public function instantiationWithValidParametersWorks() : void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Application',
@@ -112,27 +112,16 @@ final class ApplicationTest extends TestCase
     * @test
     * @depends instantiationWithValidParametersWorks
     */
-    public function setEnvironmentValueReturnsTrue()
+    public function setEnvironmentValueReturnsTrue() : void
     {
         $app = new App(self::$pathWeb, self::$pathProject);
         $this->assertTrue($app->setEnvironmentValue());
     }
 
     /**
-    * @test
-    *
-    * @depends instantiationWithValidParametersWorks
-    */
-    public function startReturnsNull()
-    {
-        $app = new App(self::$pathWeb, self::$pathProject);
-        $this->assertNull($app->start());
-    }
-
-    /**
      * @test
      */
-    public function shutdownMethodIsPublic()
+    public function shutdownMethodIsPublic() : void
     {
         $app = new App(self::$pathWeb, self::$pathProject);
         $reflection = new \ReflectionMethod($app, 'shutdown');

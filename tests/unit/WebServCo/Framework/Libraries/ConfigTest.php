@@ -8,14 +8,20 @@ use WebServCo\Framework\Settings as S;
 
 final class ConfigTest extends TestCase
 {
-    private static $pathProject = '';
+    private static string $pathProject = '';
 
-    private $settingSimpleString = 'setting';
+    private string $settingSimpleString = 'setting';
+
+    /**
+    * @var array<int,string>
+    */
     private $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
-    private $settingSpecialString = 'setting1.setting2.setting3';
-    private $value = 'value';
 
-    public static function setUpBeforeClass()
+    private string $settingSpecialString = 'setting1.setting2.setting3';
+
+    private string $value = 'value';
+
+    public static function setUpBeforeClass() : void
     {
         $pathProject = '/tmp/webservco/project/';
         $pathConfig = "{$pathProject}config/dev/";
@@ -43,7 +49,7 @@ final class ConfigTest extends TestCase
         self::$pathProject = $pathProject;
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass() : void
     {
         $pathBase = '/tmp/webservco/';
         $it = new \RecursiveDirectoryIterator(
@@ -64,7 +70,7 @@ final class ConfigTest extends TestCase
         rmdir($pathBase);
     }
 
-    public function setUp()
+    public function setUp() : void
     {
         /**
          * Reset data to prevent phpunit hanging
@@ -76,7 +82,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function canBeAccessedViaFramework()
+    public function canBeAccessedViaFramework() : void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Config',
@@ -87,7 +93,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function nullSettingReturnsFalse()
+    public function nullSettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->set(null, null));
     }
@@ -95,7 +101,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function falseSettingReturnsFalse()
+    public function falseSettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->set(false, null));
     }
@@ -103,7 +109,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function emptySettingReturnsFalse()
+    public function emptySettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->set('', null));
     }
@@ -111,7 +117,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function validSettingReturnsTrue()
+    public function validSettingReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->set('setting', 'value'));
     }
@@ -119,7 +125,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingNullValueReturnsTrue()
+    public function settingNullValueReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->set('key', null));
     }
@@ -127,7 +133,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingFalseValueReturnsTrue()
+    public function settingFalseValueReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->set('key', false));
     }
@@ -135,7 +141,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingEmptyValueReturnsTrue()
+    public function settingEmptyValueReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->set('key', ''));
     }
@@ -144,7 +150,7 @@ final class ConfigTest extends TestCase
      * @test
      * @depends validSettingReturnsTrue
      */
-    public function frameworkAccessUsesSingleInstance()
+    public function frameworkAccessUsesSingleInstance() : void
     {
         $this->assertEquals('value', Fw::library('Config')->get('setting'));
     }
@@ -152,7 +158,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingNonExistentSettingReturnsFalse()
+    public function gettingNonExistentSettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->get('noexist'));
     }
@@ -160,7 +166,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingNullSettingReturnsFalse()
+    public function gettingNullSettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->get(null));
     }
@@ -168,7 +174,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingFalseSettingReturnsFalse()
+    public function gettingFalseSettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->get(false));
     }
@@ -176,7 +182,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingEmptySettingReturnsFalse()
+    public function gettingEmptySettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->get(''));
     }
@@ -184,7 +190,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingEmptyArraySettingReturnsFalse()
+    public function gettingEmptyArraySettingReturnsFalse() : void
     {
         $this->assertFalse(Fw::library('Config')->get([]));
     }
@@ -192,7 +198,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingSimpleStringSettingWorks()
+    public function storingAndRetrievingSimpleStringSettingWorks() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -209,7 +215,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingArraySettingWorks()
+    public function storingAndRetrievingArraySettingWorks() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -226,7 +232,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingSpecialStringSettingWorks()
+    public function storingAndRetrievingSpecialStringSettingWorks() : void
     {
         $this->assertTrue(Fw::library('Config')->set($this->settingSpecialString, $this->value));
         $this->assertEquals($this->value, Fw::library('Config')->get($this->settingSpecialString));
@@ -235,7 +241,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingsTreeIsNoOverwrittenOnSpecialStringSetting()
+    public function settingsTreeIsNoOverwrittenOnSpecialStringSetting() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -266,7 +272,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting()
+    public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -298,7 +304,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingSameKeyTwiceOverwritesTheFirst()
+    public function settingSameKeyTwiceOverwritesTheFirst() : void
     {
         $this->assertTrue(Fw::library('Config')->set('foo', 'old value'));
         $this->assertTrue(Fw::library('Config')->set('foo', 'new value'));
@@ -308,7 +314,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function settingSameMultilevelKeyTwiceOverwritesTheFirst()
+    public function settingSameMultilevelKeyTwiceOverwritesTheFirst() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -333,7 +339,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function addReturnsTrue()
+    public function addReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->add('add', 'dda'));
     }
@@ -341,7 +347,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function addAppendsDataInsteadOfOverwriting()
+    public function addAppendsDataInsteadOfOverwriting() : void
     {
 
         $config = [
@@ -393,7 +399,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function loadReturnsEmptyArrayOnInvalidPath()
+    public function loadReturnsEmptyArrayOnInvalidPath() : void
     {
         $this->assertEquals(
             [],
@@ -404,7 +410,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function dummyConfigFileExists()
+    public function dummyConfigFileExists() : void
     {
         $this->assertTrue(
             is_readable(self::$pathProject . 'config/dev/foo.php')
@@ -415,7 +421,7 @@ final class ConfigTest extends TestCase
      * @test
      * @depends dummyConfigFileExists
      */
-    public function loadReturnsArrayOnValidPath()
+    public function loadReturnsArrayOnValidPath() : void
     {
         $this->assertInternalType(
             'array',
@@ -427,7 +433,7 @@ final class ConfigTest extends TestCase
      * @test
      * @depends loadReturnsArrayOnValidPath
      */
-    public function addDataFromFileWorks()
+    public function addDataFromFileWorks() : void
     {
         $data = Fw::library('Config')->load('foo', self::$pathProject);
         $this->assertTrue(Fw::library('Config')->add('foo', $data));
@@ -442,7 +448,7 @@ final class ConfigTest extends TestCase
      * @test
      * @depends loadReturnsArrayOnValidPath
      */
-    public function loadAppendsDataInsteadOfOverwriting()
+    public function loadAppendsDataInsteadOfOverwriting() : void
     {
         $this->assertTrue(
             Fw::library('Config')->set(
@@ -463,7 +469,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function setEnvReturnsTrue()
+    public function setEnvReturnsTrue() : void
     {
         $this->assertTrue(Fw::library('Config')->setEnv('dev'));
     }
@@ -471,7 +477,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function setEnvDefaultsToDevOnInvalidValue()
+    public function setEnvDefaultsToDevOnInvalidValue() : void
     {
         Fw::library('Config')->setEnv('noexist');
         $this->assertEquals('dev', Fw::library('Config')->getEnv());
@@ -480,7 +486,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getEnvReturnsString()
+    public function getEnvReturnsString() : void
     {
         $this->assertInternalType(
             'string',
@@ -491,7 +497,7 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getEnvDefaultsToDev()
+    public function getEnvDefaultsToDev() : void
     {
         $config = new \WebServCo\Framework\Libraries\Config;
         $this->assertEquals('dev', $config->getEnv());

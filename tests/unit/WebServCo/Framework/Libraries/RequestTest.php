@@ -10,7 +10,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function canBeAccessedViaFramework()
+    public function canBeAccessedViaFramework() : void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Request',
@@ -21,7 +21,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function getSchemaReturnsNullOnCli()
+    public function getSchemaReturnsNullOnCli() : void
     {
         $this->assertNull(Fw::library('Request')->getSchema());
     }
@@ -29,7 +29,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function getRefererReturnsEmptyStringOnCli()
+    public function getRefererReturnsEmptyStringOnCli() : void
     {
         $this->assertEquals('', Fw::library('Request')->getReferer());
     }
@@ -37,7 +37,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function getHostReturnsString()
+    public function getHostReturnsString() : void
     {
         $this->assertInternalType(
             'string',
@@ -48,7 +48,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function sanitizeRemovesBadChars()
+    public function sanitizeRemovesBadChars() : void
     {
         $this->assertEquals(
             ['?&#39;&#34;?!~#^&*=[]:;||{}()x'],
@@ -61,7 +61,7 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function sanitizeRemovesTags()
+    public function sanitizeRemovesTags() : void
     {
         $this->assertEquals(
             ['script=alert(&#39;hacked!&#39;).html&key=value'],

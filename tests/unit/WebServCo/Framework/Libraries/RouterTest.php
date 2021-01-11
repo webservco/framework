@@ -7,9 +7,12 @@ use WebServCo\Framework\Libraries\Router;
 
 final class RouterTest extends TestCase
 {
-    private $cfg;
-    
-    public function setUp()
+    /**
+    * @var array<string,array<mixed>>
+    */
+    private array $cfg;
+
+    public function setUp() : void
     {
         $this->cfg = [
             'default_route' => ['Content', 'home', ['foo', 'bar']],
@@ -19,29 +22,29 @@ final class RouterTest extends TestCase
             ],
         ];
     }
-    
+
     /**
      * @test
      */
-    public function canBeAccessedViaFramework()
+    public function canBeAccessedViaFramework() : void
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::library('Router'));
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnValidData()
+    public function getRouteReturnsArrayOnValidData() : void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
         $this->assertEquals(3, count($route));
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidData()
+    public function getRouteReturnsValidData() : void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
@@ -50,11 +53,11 @@ final class RouterTest extends TestCase
         $this->assertEquals('bar', $route[1]);
         $this->assertEquals(['baz'], $route[2]);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidDataWithCustomRoutes()
+    public function getRouteReturnsValidDataWithCustomRoutes() : void
     {
         $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
         $this->assertInternalType('array', $route);

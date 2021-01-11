@@ -6,10 +6,14 @@ use WebServCo\Framework\Libraries\Router;
 
 final class RouterInstanceTest extends TestCase
 {
-    private $object;
-    private $cfg;
+    /**
+    * @var array<string,array<mixed>>
+    */
+    private array $cfg;
 
-    public function setUp()
+    private Router $object;
+
+    public function setUp() : void
     {
         $this->cfg = [
             'default_route' => ['Content', 'home', ['foo', 'bar']],
@@ -24,7 +28,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually()
+    public function canBeInstantiatedIndividually() : void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Router',
@@ -35,7 +39,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnEmptyData()
+    public function getRouteReturnsArrayOnEmptyData() : void
     {
         $route = $this->object->getRoute('', []);
         $this->assertInternalType('array', $route);
@@ -45,7 +49,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnNullData()
+    public function getRouteReturnsArrayOnNullData() : void
     {
         $route = $this->object->getRoute('', []);
         $this->assertInternalType('array', $route);
@@ -55,7 +59,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnValidData()
+    public function getRouteReturnsArrayOnValidData() : void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
@@ -65,7 +69,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsValidData()
+    public function getRouteReturnsValidData() : void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
@@ -78,7 +82,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsValidDataWithCustomRoutes()
+    public function getRouteReturnsValidDataWithCustomRoutes() : void
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);
         $this->assertInternalType('array', $route);
