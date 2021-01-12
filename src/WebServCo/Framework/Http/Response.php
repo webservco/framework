@@ -7,7 +7,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
     protected string $statusText;
 
     /**
-    * @var array<string,array<string,string>|string>
+    * @var array<string,array<string,bool>>
     */
     protected array $headers;
     protected bool $appendCharset;
@@ -16,7 +16,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
     /**
     * @param string $content
     * @param int $statusCode
-    * @param array<string,array<string,string>|string> $headers
+    * @param array<string,array<int,string>> $headers
     */
     public function __construct(string $content, int $statusCode = 200, array $headers = [])
     {
@@ -27,12 +27,15 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
 
         $this->headers = [];
 
-        foreach ($headers as $name => $value) {
+        foreach ($headers as $name => $data) {
             /*
             Make sure header names are lower case, to prevent inconsistency problems.
             https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
             */
-            $this->setHeader(strtolower($name), $value);
+            $headerName = strtolower($name);
+            foreach ($data as $value) {
+                $this->setHeader($headerName, $value);
+            }
         }
 
         $this->setContent($content);
@@ -40,23 +43,24 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
 
     /**
     * @param string $name
-    * @return array<string,string>|string|null
+    * @return array<int,string>
     */
-    public function getHeader(string $name)
+    public function getHeader(string $name) : array
     {
         $name = strtolower($name);
-        if (array_key_exists($name, $this->headers)) {
-            return $this->headers[$name];
+        if (!array_key_exists($name, $this->headers)) {
+            return [];
         }
-        return null;
+        return array_keys($this->headers[$name]); // because use value as key ...
     }
 
-    /**
-    * @return array<string,array<string,string>|string>
-    */
-    public function getHeaders() : array
+    public function getHeaderLine(string $name) : string
     {
-        return $this->headers;
+        $data = $this->getHeader($name);
+        if (empty($data)) {
+            return '';
+        }
+        return implode(', ', $data);
     }
 
     public function setStatus(int $statusCode) : bool
@@ -72,12 +76,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    /**
-    * @param string $name
-    * @param array<string,string>|string $value
-    * @return bool
-    */
-    public function setHeader(string $name, $value) : bool
+    public function setHeader(string $name, string $value) : bool
     {
         if ($this->appendCharset) {
             switch ($name) {
@@ -88,7 +87,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
                     break;
             }
         }
-        $this->headers[$name] = $value;
+        $this->headers[$name][$value] = true; // use value as key of all values for easier management
         return true;
     }
 
@@ -111,12 +110,8 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
 
     protected function sendHeaders() : bool
     {
-        foreach ($this->headers as $name => $value) {
-            if (is_array($value)) {
-                foreach ($value as $item) {
-                    $this->sendHeader($name, $item, $this->statusCode);
-                }
-            } else {
+        foreach ($this->headers as $name => $data) {
+            foreach ($data as $value => $bool) {
                 $this->sendHeader($name, $value, $this->statusCode);
             }
         }

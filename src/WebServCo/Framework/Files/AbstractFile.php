@@ -29,18 +29,15 @@ abstract class AbstractFile
             $this->fileData,
             200,
             [
-                'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-                'ETag' => md5($this->fileData),
-                'Accept-Ranges' => 'bytes',
-                'Cache-Control' => 'public',
-                'Content-Description' => 'File Transfer',
-                'Content-Disposition' => sprintf(
-                    'attachment; filename="%s"',
-                    $this->fileName
-                ),
-                'Content-Type' => $this->contentType,
-                'Content-Transfer-Encoding' => 'binary',
-                'Connection' => 'close',
+                'Last-Modified' => [gmdate('D, d M Y H:i:s') . ' GMT'],
+                'ETag' => [md5($this->fileData)],
+                'Accept-Ranges' => ['bytes'],
+                'Cache-Control' => ['public'],
+                'Content-Description' => ['File Transfer'],
+                'Content-Disposition' => [sprintf('attachment; filename="%s"', $this->fileName)],
+                'Content-Type' => [$this->contentType],
+                'Content-Transfer-Encoding' => ['binary'],
+                'Connection' => ['close'],
             ]
         );
     }
@@ -61,12 +58,12 @@ abstract class AbstractFile
             $this->fileData,
             200,
             [
-                'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-                'ETag' => md5($this->fileData),
-                'Accept-Ranges' => 'bytes',
-                'Cache-Control' => 'public',
-                'Content-Type' => $this->contentType,
-                'Content-Transfer-Encoding' => 'binary',
+                'Last-Modified' => [gmdate('D, d M Y H:i:s') . ' GMT'],
+                'ETag' => [md5($this->fileData)],
+                'Accept-Ranges' => ['bytes'],
+                'Cache-Control' => ['public'],
+                'Content-Type' => [$this->contentType],
+                'Content-Transfer-Encoding' => ['binary'],
             ]
         );
     }

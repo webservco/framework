@@ -140,7 +140,7 @@ abstract class AbstractApplication
         $response = new \WebServCo\Framework\Http\Response(
             $output,
             $statusCode,
-            ['Content-Type' => 'text/html']
+            ['Content-Type' => ['text/html']]
         );
         $response->send();
         return true;

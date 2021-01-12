@@ -49,7 +49,7 @@ trait ResponseUrlTrait
         return new Response(
             '',
             $statusCode,
-            ['Location' => $url]
+            ['Location' => [$url]]
         );
     }
 }

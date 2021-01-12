@@ -13,12 +13,9 @@ class XSendFileResponse extends Response
             '', // content
             200, // statusCode
             [
-                'Content-Type' => 'application/octet-stream',
-                'Content-Disposition' => sprintf(
-                    'attachment; filename="%s"',
-                    $outputFilename
-                ),
-                'X-Sendfile' => $filePath,
+                'Content-Type' => ['application/octet-stream'],
+                'Content-Disposition' => [sprintf('attachment; filename="%s"', $outputFilename)],
+                'X-Sendfile' => [$filePath],
             ] // headers
         );
     }

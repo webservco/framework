@@ -337,7 +337,7 @@ final class CurlBrowser implements
                     $cookieName = $parts[0];
                     if (is_array($headers[$key])) {
                         foreach ($headers[$key] as $cookieIndex => $existingCookie) {
-                            //check if we already have a cookie with the same name
+                            // check if we already have a cookie with the same name
                             if (0 === mb_stripos($existingCookie, $cookieName)) {
                                 // remove previous cookie with the same name
                                 unset($headers[$key][$cookieIndex]);
@@ -348,7 +348,7 @@ final class CurlBrowser implements
                 $headers[$key][] = trim($value);
                 $headers[$key] = array_values((array) $headers[$key]); // re-index array
             } else {
-                $headers[$key] = trim($value);
+                $headers[$key][] = trim($value);
             }
         }
         return $headers;
