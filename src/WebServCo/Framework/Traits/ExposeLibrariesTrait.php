@@ -10,11 +10,6 @@ trait ExposeLibrariesTrait
         return Framework::library('Config');
     }
 
-    final protected function date() : \WebServCo\Framework\Libraries\Date
-    {
-        return Framework::library('Date');
-    }
-
     final protected function cookie() : \WebServCo\Framework\Libraries\Cookie
     {
         return Framework::library('Cookie');

@@ -23,14 +23,6 @@ class Application extends \WebServCo\Framework\AbstractApplication
             register_shutdown_function([$this, 'shutdown']);
 
             $this->setEnvironmentValue();
-
-            /**
-             * With no argument, timezone will be set from the configuration.
-             */
-            $this->date()->setTimezone();
-            /**
-             * @todo i18n, log, session (if not cli), users (if not cli)
-             */
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
         }
