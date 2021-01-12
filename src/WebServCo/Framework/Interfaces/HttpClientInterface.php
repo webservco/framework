@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Interfaces;
 
-interface HttpBrowserInterface
+interface HttpClientInterface
 {
     public function retrieve(string $url) : \WebServCo\Framework\Http\Response;
 

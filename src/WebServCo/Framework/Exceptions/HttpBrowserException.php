@@ -1,7 +1,7 @@
 <?php
 namespace WebServCo\Framework\Exceptions;
 
-class HttpBrowserException extends HttpException
+class HttpClientException extends HttpException
 {
     const CODE = 500;
 

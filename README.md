@@ -33,7 +33,7 @@ A PHP Framework
 * [File upload](/docs/Files/Upload.md)
 
 ### Http
-* [CurlBrowser](/docs/CurlBrowser.md)
+* [CurlClient](/docs/CurlClients.md)
 * [X-Sendfile](/docs/Http/XSendFile.md)
 
 ### JSON
