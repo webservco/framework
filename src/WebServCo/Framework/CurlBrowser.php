@@ -243,7 +243,7 @@ final class CurlBrowser implements
         return isset($this->debugInfo['http_code']) ? (int) $this->debugInfo['http_code']: 0;
     }
 
-    protected function handleRequestMethod() : void
+    protected function handleRequestMethod() : bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpBrowserException('Not a valid resource.');
@@ -272,6 +272,8 @@ final class CurlBrowser implements
                 curl_setopt($this->curl, CURLOPT_NOBODY, true);
                 break;
         }
+
+        return true;
     }
 
     /**
@@ -354,7 +356,7 @@ final class CurlBrowser implements
         return $headers;
     }
 
-    protected function processResponse() : void
+    protected function processResponse() : bool
     {
         $response = curl_exec($this->curl);
         $this->curlError = curl_error($this->curl);
@@ -362,17 +364,19 @@ final class CurlBrowser implements
             throw new HttpBrowserException(sprintf("cURL error: %s.", $this->curlError));
         }
         $this->response = (string) $response;
+        return true;
     }
 
-    protected function processResponseHeaders() : void
+    protected function processResponseHeaders() : bool
     {
         $this->responseHeaders = [];
         foreach ($this->responseHeadersArray as $item) {
             $this->responseHeaders[] = $this->parseResponseHeadersArray($item);
         }
+        return true;
     }
 
-    protected function setCurlOptions(string $url) : void
+    protected function setCurlOptions(string $url) : bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpBrowserException('Not a valid resource.');
@@ -397,9 +401,10 @@ final class CurlBrowser implements
             // don't check the existence of a common name in the SSL peer certificate
             curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
         }
+        return true;
     }
 
-    protected function setRequestHeaders() : void
+    protected function setRequestHeaders() : bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpBrowserException('Not a valid resource.');
@@ -416,5 +421,7 @@ final class CurlBrowser implements
 
         // Callback to process response headers
         curl_setopt($this->curl, CURLOPT_HEADERFUNCTION, [$this, 'headerCallback']);
+
+        return true;
     }
 }

@@ -30,9 +30,10 @@ final class Bar
         return true;
     }
 
-    public function advanceTo(int $item) : void
+    public function advanceTo(int $item) : bool
     {
         $this->item = $item;
+        return true;
     }
 
     public function setType(string $type) : bool
