@@ -15,10 +15,11 @@ abstract class AbstractApplication
         $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-        if (!is_readable($publicPath . 'index.php') || !is_readable($this->projectPath . '.env')) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                'Invalid paths specified when initializing Application.'
-            );
+        if (!is_readable($publicPath . 'index.php')) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
+        }
+        if (!is_readable($this->projectPath . '.env')) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment file path is not readable.');
         }
 
         $this->config()->set(sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
@@ -31,7 +32,7 @@ abstract class AbstractApplication
     final public function setEnvironmentValue() : bool
     {
         /**
-         * Env file existence is verified in the controller.
+         * Env file existence is verified in the constructor.
          */
         $this->config()->setEnv(trim((string) file_get_contents($this->projectPath . '.env')));
 

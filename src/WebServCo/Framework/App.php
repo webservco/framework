@@ -4,7 +4,7 @@ namespace WebServCo\Framework;
 /*
 An example App implementation.
 Can be copied or extended by projects.
-Add a log when an error occurs.
+Custom functionality in this class: add a log when an error occurs.
 */
 class App extends Application
 {
