@@ -208,7 +208,12 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
-    public function setAttribute(int $attribute, mixed $value) : bool
+    /**
+    * @param int $attribute
+    * @param mixed $value
+    * @return bool
+    */
+    public function setAttribute(int $attribute, $value) : bool
     {
         return $this->db->setAttribute($attribute, $value);
     }
@@ -236,7 +241,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
-    protected function validateParam(mixed $param) : bool
+    /**
+    * @param mixed $param
+    * @return bool
+    */
+    protected function validateParam($param) : bool
     {
         if (is_array($param)) {
             throw new DatabaseException('Parameter is an array.');
