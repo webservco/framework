@@ -3,8 +3,8 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-    abstract public function getHost() : ?string;
-    abstract public function getSchema() : ?string;
+    abstract public function getHost() : string;
+    abstract public function getSchema() : string;
 
     public function getSuffix() : string
     {

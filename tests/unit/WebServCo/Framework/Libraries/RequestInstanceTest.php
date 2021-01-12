@@ -48,9 +48,9 @@ final class RequestInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getSchemaReturnsNullOnCli() : void
+    public function getSchemaReturnsEmptyStringOnCli() : void
     {
-        $this->assertNull($this->object->getSchema());
+        $this->assertEquals('', $this->object->getSchema());
     }
 
     /**

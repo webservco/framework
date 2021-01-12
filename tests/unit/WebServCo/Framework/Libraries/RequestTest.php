@@ -21,9 +21,9 @@ final class RequestTest extends TestCase
     /**
      * @test
      */
-    public function getSchemaReturnsNullOnCli() : void
+    public function getSchemaReturnsEmptyStringOnCli() : void
     {
-        $this->assertNull(Fw::library('Request')->getSchema());
+        $this->assertEquals('', Fw::library('Request')->getSchema());
     }
 
     /**
