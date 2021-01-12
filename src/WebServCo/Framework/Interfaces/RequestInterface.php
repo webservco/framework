@@ -21,14 +21,14 @@ interface RequestInterface
 
     public function getAppUrl() : string;
 
-    public function getContentType() : string;
-
     /**
     * @return array<int,string>
     */
     public function getArgs() : array;
 
     public function getBody() : string;
+
+    public function getContentType() : string;
 
     /**
     * @return array<mixed>
@@ -45,6 +45,8 @@ interface RequestInterface
     public function getQuery() : array;
 
     public function getRemoteAddress() : string;
+
+    public function getSchema() : string;
 
     public function getSuffix() : string;
 
