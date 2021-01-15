@@ -31,11 +31,18 @@ class Shipment
 {
     public function send(Type $type) : bool
     {
-        ...
+        // ...
     }
 }
 $shipment = new Shipment();
 $shipment->send(Type::import());
+
+// or
+$type = 2; // request parameter, user input, etc
+$shipment->send(Type::fromValue($type));
+
+// get value (eg. for form select)
+echo Type::import()->value(); // outputs "1"
 ```
 
 ---
