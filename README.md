@@ -46,7 +46,6 @@ A PHP Framework
 * [Session](/docs/Libraries/Session.md)
 
 ### Objects
-* [Constant Value Class](/docs/ConstantValueClass.md)
 * [Objects](/docs/Objects.md)
 
 ### Output
