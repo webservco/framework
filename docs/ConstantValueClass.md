@@ -43,6 +43,14 @@ $shipment->send(Type::fromValue($type));
 
 // get value (eg. for form select)
 echo Type::import()->value(); // outputs "1"
+
+// comparison
+$import = Type::fromValue(2);
+if (Type::import() === $import) {
+    // === works as long as the object is created in the current script run
+    // not for example created elsewhere and stored serialized in session.
+}
+
 ```
 
 ---
