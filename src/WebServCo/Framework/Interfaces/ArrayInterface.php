@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 interface ArrayInterface
 {
     /**
-    * @return array<mixed>
+    * @return array<string,mixed>
     */
     public function toArray() : array;
 }

@@ -4,8 +4,8 @@ namespace WebServCo\Framework\Traits;
 trait ToArrayTrait
 {
     /**
-    * This works only for public methods.
-    * @return array<mixed>
+    * This works only for public members.
+    * @return array<string,mixed>
     */
     public function toArray() : array
     {
