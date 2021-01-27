@@ -4,8 +4,8 @@ namespace WebServCo\Framework\Utils;
 final class Arrays
 {
     /**
-    * @param array<mixed, mixed> $array
-    * @return array<mixed, mixed>
+    * @param array<int|string,mixed> $array
+    * @return array<int|string,mixed>
     */
     public static function removeEmptyValues(array $array) : array
     {
