@@ -22,6 +22,17 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
 
+    /**
+    * @param string $name,
+    * @param string $value,
+    * @param int $expires,
+    * @param string $path,
+    * @param string $domain,
+    * @param bool $secure,
+    * @param bool $httponly,
+    * @param 'Lax'|'None'|'Strict' $samesite
+    * @return bool
+    */
     public function set(
         string $name,
         string $value = '',
@@ -32,9 +43,13 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         bool $httponly = false,
         string $samesite = 'Lax'
     ): bool {
+        if (!in_array($samesite, ['Lax', 'None', 'Strict'])) {
+            throw new \InvalidArgumentException('Invalid argument: samesite');
+        }
         return setcookie(
             $name,
             \WebServCo\Framework\RequestUtils::sanitizeString($value),
+            // phpstan-ignore-next-line
             [
                 'expires' => $expires,
                 'path' => $path,
