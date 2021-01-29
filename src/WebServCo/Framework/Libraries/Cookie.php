@@ -32,9 +32,6 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         bool $httponly = false,
         string $samesite = 'Lax'
     ): bool {
-        if (!in_array($samesite, ['Lax'])) {
-            throw new \InvalidArgumentException('Invalid argument: samesite.');
-        }
         return setcookie(
             $name,
             \WebServCo\Framework\RequestUtils::sanitizeString($value),
