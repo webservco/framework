@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Cli\Runner;
 
 final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface

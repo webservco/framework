@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\ArrayObject;
 
 use WebServCo\Framework\Interfaces\ArrayObjectInterface;

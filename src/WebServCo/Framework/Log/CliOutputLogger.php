@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Log;
 
 class CliOutputLogger extends AbstractOutputLogger implements

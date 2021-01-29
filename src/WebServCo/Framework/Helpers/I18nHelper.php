@@ -1,6 +1,8 @@
 <?php
 
-//namespace { // global code
+declare(strict_types=1);
+
+namespace { // global code
 
     if (!function_exists('__')) {
         /**
@@ -27,4 +29,4 @@
             return ngettext($msgSingular, $msgPlural, $msgNumber);
         }
     }
-//}
+}

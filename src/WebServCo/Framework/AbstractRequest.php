@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary

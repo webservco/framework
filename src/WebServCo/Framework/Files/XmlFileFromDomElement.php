@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Files;
 
 final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface

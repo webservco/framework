@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractController extends \WebServCo\Framework\AbstractLibrary

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Cli\Progress;
 
 //https://gist.github.com/mayconbordin/2860547

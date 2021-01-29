@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Libraries;
 
 final class PgsqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements
