@@ -160,7 +160,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         /**
          * Set garbage collector timeout (seconds).
          */
-        ini_set('session.gc_maxlifetime', $this->setting('expire', '36000'));
+        ini_set('session.gc_maxlifetime', (string) $this->setting('expire', '36000'));
 
         /**
         * Set custom session storage path.
@@ -206,7 +206,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
             return false;
         }
 
-        ini_set('session.save_path', $storagePath);
+        ini_set('session.save_path', (string) $storagePath);
         $actualStoragePath = session_save_path($storagePath);
 
         if ($actualStoragePath != $storagePath) {
