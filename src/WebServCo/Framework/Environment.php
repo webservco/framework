@@ -12,7 +12,7 @@ final class Environment
      *
      * @return array<int,string>
      */
-    public static function getOptions() : array
+    public static function getOptions(): array
     {
         return [self::DEV, self::TEST, self::PROD];
     }

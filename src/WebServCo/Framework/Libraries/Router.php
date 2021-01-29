@@ -9,7 +9,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
     * @param array<int,string> $extraArgs
     * @return array<array<int,string>|string>
     */
-    public function getRoute(string $requestCustom, array $routes, array $extraArgs = []) : array
+    public function getRoute(string $requestCustom, array $routes, array $extraArgs = []): array
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString) || 'index' == $routeString) {
@@ -50,7 +50,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
     * @param array<string,string> $routes
     * @return string
     */
-    private function parseCustomRoutes(string $requestCustom, array $routes) : string
+    private function parseCustomRoutes(string $requestCustom, array $routes): string
     {
         if (is_array($routes)) {
             foreach ($routes as $k => $v) {

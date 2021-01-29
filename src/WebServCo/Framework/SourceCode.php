@@ -20,7 +20,7 @@ final class SourceCode
         $this->data = $data;
     }
 
-    public function highlight() : string
+    public function highlight(): string
     {
         switch ($this->type) {
             case self::TYPE_XML:
@@ -30,7 +30,7 @@ final class SourceCode
         }
     }
 
-    protected function highlightXml(string $data) : string
+    protected function highlightXml(string $data): string
     {
         $data = htmlentities($data);
         $data = str_replace('&lt;', '<span style="color: purple">&lt;', $data);

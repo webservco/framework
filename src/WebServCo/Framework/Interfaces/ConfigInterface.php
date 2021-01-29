@@ -13,7 +13,7 @@ interface ConfigInterface
      * @param mixed $data Data to add.
      * @return bool
      */
-    public function add(string $setting, $data) : bool;
+    public function add(string $setting, $data): bool;
 
     /**
      *
@@ -25,7 +25,7 @@ interface ConfigInterface
      */
     public function get($setting, $defaultValue = false);
 
-    public function getEnv() : string;
+    public function getEnv(): string;
 
     /**
      * Load configuration data from a file.
@@ -35,7 +35,7 @@ interface ConfigInterface
      *                      File name must be <$setting>.php
      * @return array<mixed>
      */
-    public function load(string $setting, string $pathProject) : array;
+    public function load(string $setting, string $pathProject): array;
 
     /**
      * Sets a configuration value.
@@ -47,7 +47,7 @@ interface ConfigInterface
      *
      * @return bool True on success and false on failure.
      */
-    public function set($setting, $value) : bool;
+    public function set($setting, $value): bool;
 
     /**
      * Set application environment value.
@@ -56,5 +56,5 @@ interface ConfigInterface
      *
      * @return bool
      */
-    public function setEnv(string $env) : bool;
+    public function setEnv(string $env): bool;
 }

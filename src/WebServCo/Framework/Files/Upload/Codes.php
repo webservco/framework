@@ -14,7 +14,7 @@ final class Codes
     /* custom codes */
     const TYPE_NOT_ALLOWED = 91;
 
-    public static function getMessage(int $errorCode) : string
+    public static function getMessage(int $errorCode): string
     {
         switch ($errorCode) {
             case self::OK:

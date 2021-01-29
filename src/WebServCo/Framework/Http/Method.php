@@ -17,7 +17,7 @@ final class Method
      *
      * @return array  <int,string>
      */
-    public static function getSupported() : array
+    public static function getSupported(): array
     {
         return [
             self::GET,

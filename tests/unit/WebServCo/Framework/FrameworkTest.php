@@ -10,7 +10,7 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function getPathReturnsString() : void
+    public function getPathReturnsString(): void
     {
         $this->assertIsString(Fw::getPath());
     }
@@ -18,7 +18,7 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function getCliReturnsBoolean() : void
+    public function getCliReturnsBoolean(): void
     {
         $this->assertIsBool(Fw::isCli());
     }
@@ -26,7 +26,7 @@ final class FrameworkTest extends TestCase
     /**
      * @test
      */
-    public function getOsReturnsString() : void
+    public function getOsReturnsString(): void
     {
         $this->assertIsString(Fw::getOS());
     }

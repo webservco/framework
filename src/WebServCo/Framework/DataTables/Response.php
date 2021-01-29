@@ -31,7 +31,7 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
     /**
     * @return array<string,mixed>
     */
-    public function toArray() : array
+    public function toArray(): array
     {
         $array = [
             'draw' => $this->draw,
@@ -45,7 +45,7 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
         return $array;
     }
 
-    public function toJson() : string
+    public function toJson(): string
     {
         $array = $this->toArray();
         return (string) json_encode($array);

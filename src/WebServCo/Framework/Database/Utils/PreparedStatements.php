@@ -7,7 +7,7 @@ final class PreparedStatements
     * @param array<int, float|int|string> $data
     * @return string
     */
-    public static function generatePlaceholdersString(array $data = []) : string
+    public static function generatePlaceholdersString(array $data = []): string
     {
         return implode(', ', array_map(function () {
             return '?';

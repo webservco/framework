@@ -28,9 +28,9 @@ abstract class AbstractClient
 
     protected bool $skipSslVerification;
 
-    abstract public function retrieve(string $url) : Response;
+    abstract public function retrieve(string $url): Response;
 
-    public function get(string $url) : Response
+    public function get(string $url): Response
     {
         $this->setMethod(Method::GET);
         return $this->retrieve($url);
@@ -39,7 +39,7 @@ abstract class AbstractClient
     /**
     * @return array<string,string>
     */
-    public function getRequestHeaders() : array
+    public function getRequestHeaders(): array
     {
         return $this->requestHeaders;
     }
@@ -47,12 +47,12 @@ abstract class AbstractClient
     /**
     * @return array<int,array<string,mixed>>
     */
-    public function getResponseHeaders() : array
+    public function getResponseHeaders(): array
     {
         return $this->responseHeaders;
     }
 
-    public function head(string $url) : Response
+    public function head(string $url): Response
     {
         $this->setMethod(Method::HEAD);
         return $this->retrieve($url);
@@ -63,7 +63,7 @@ abstract class AbstractClient
     * @param array<mixed>|string $data
     * @return Response
     */
-    public function post(string $url, $data = null) : Response
+    public function post(string $url, $data = null): Response
     {
         $this->setMethod(Method::POST);
         if (!empty($data)) {
@@ -72,13 +72,13 @@ abstract class AbstractClient
         return $this->retrieve($url);
     }
 
-    public function setDebug(bool $debug) : bool
+    public function setDebug(bool $debug): bool
     {
         $this->debug = $debug;
         return true;
     }
 
-    public function setMethod(string $method) : bool
+    public function setMethod(string $method): bool
     {
         if (!in_array($method, Method::getSupported())) {
             throw new HttpClientException('Unsupported method.');
@@ -91,7 +91,7 @@ abstract class AbstractClient
     * @param array<string,mixed>|string $data
     * @return bool
     */
-    public function setRequestData($data) : bool
+    public function setRequestData($data): bool
     {
         if (is_array($data)) {
             $this->requestData = [];
@@ -107,19 +107,19 @@ abstract class AbstractClient
         return true;
     }
 
-    public function setRequestContentType(string $contentType) : bool
+    public function setRequestContentType(string $contentType): bool
     {
         $this->requestContentType = $contentType;
         return true;
     }
 
-    public function setRequestHeader(string $name, string $value) : bool
+    public function setRequestHeader(string $name, string $value): bool
     {
         $this->requestHeaders[$name] = $value;
         return true;
     }
 
-    public function setSkipSSlVerification(bool $skipSslVerification) : bool
+    public function setSkipSSlVerification(bool $skipSslVerification): bool
     {
         $this->skipSslVerification = $skipSslVerification;
         return true;

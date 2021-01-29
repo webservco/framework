@@ -25,7 +25,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      * @param mixed $data Data to add.
      * @return bool
      */
-    public function add(string $setting, $data) : bool
+    public function add(string $setting, $data): bool
     {
         $this->config = \WebServCo\Framework\ArrayStorage::append(
             $this->config,
@@ -52,7 +52,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @return string
      */
-    public function getEnv() : string
+    public function getEnv(): string
     {
         return $this->env ?: \WebServCo\Framework\Environment::DEV;
     }
@@ -65,7 +65,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *                      File name must be <$setting>.php
      * @return array<mixed>
      */
-    public function load(string $setting, string $pathProject) : array
+    public function load(string $setting, string $pathProject): array
     {
         $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
         if (!is_readable($pathFull)) {
@@ -85,7 +85,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @return bool true on success and false on failure.
      */
-    public function set($setting, $value) : bool
+    public function set($setting, $value): bool
     {
         if (empty($setting)) {
             return false;
@@ -101,7 +101,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @return bool
      */
-    public function setEnv(string $env) : bool
+    public function setEnv(string $env): bool
     {
         if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
             $this->env = $env;

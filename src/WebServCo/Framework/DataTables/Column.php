@@ -18,22 +18,22 @@ class Column
         $this->search = $search;
     }
 
-    public function getData() : string
+    public function getData(): string
     {
         return $this->data;
     }
 
-    public function getOrderable() : bool
+    public function getOrderable(): bool
     {
         return $this->orderable;
     }
 
-    public function getSearch() : Search
+    public function getSearch(): Search
     {
         return $this->search;
     }
 
-    public function getSearchable() : bool
+    public function getSearchable(): bool
     {
         return $this->searchable;
     }

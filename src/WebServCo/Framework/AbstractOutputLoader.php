@@ -20,7 +20,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         $this->jsonOutput = $jsonOutput;
     }
 
-    public function cli(string $string, bool $eol = true) : bool
+    public function cli(string $string, bool $eol = true): bool
     {
         echo $string;
         if ($eol) {
@@ -34,13 +34,13 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     * @param string $template
     * @return string
     */
-    public function html(array $data, string $template) : string
+    public function html(array $data, string $template): string
     {
         $this->setHtmlTemplateData($data);
         return $this->getRenderedHtml($template);
     }
 
-    public function htmlOutput() : HtmlOutput
+    public function htmlOutput(): HtmlOutput
     {
         return $this->htmlOutput;
     }
@@ -51,7 +51,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     * @param string $mainTemplate
     * @return string
     */
-    public function htmlPage(array $data, string $pageTemplate, string $mainTemplate = null) : string
+    public function htmlPage(array $data, string $pageTemplate, string $mainTemplate = null): string
     {
         /**
          * Set template data.
@@ -85,7 +85,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     /**
     * @param array<string,mixed> $data
     */
-    public function json(array $data) : string
+    public function json(array $data): string
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -95,12 +95,12 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         return $this->jsonOutput()->render();
     }
 
-    public function jsonOutput() : JsonOutput
+    public function jsonOutput(): JsonOutput
     {
         return $this->jsonOutput;
     }
 
-    private function getRenderedHtml(string $template) : string
+    private function getRenderedHtml(string $template): string
     {
         /**
          * Set template path.
@@ -117,7 +117,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     * @param array<int|string,mixed> $data
     * @return bool
     */
-    protected function setHtmlTemplateData(array $data) : bool
+    protected function setHtmlTemplateData(array $data): bool
     {
         if (!is_array($data)) {
             return false;

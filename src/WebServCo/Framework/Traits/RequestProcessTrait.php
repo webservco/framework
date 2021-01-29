@@ -6,7 +6,7 @@ use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
-    abstract public function clearData() : bool;
+    abstract public function clearData(): bool;
 
     /**
      * @param mixed $key Can be an array, a string,
@@ -16,7 +16,7 @@ trait RequestProcessTrait
      *
      * @return bool True on success and false on failure.
      */
-    abstract public function setData($key, $value) : bool;
+    abstract public function setData($key, $value): bool;
 
     /**
     * @param mixed $key Can be an array, a string,
@@ -34,7 +34,7 @@ trait RequestProcessTrait
     * @param array<string,array<int,string>|string> $data
     * @return array<string,array<int,string>|string>
     */
-    public function sanitize(array $data) : array
+    public function sanitize(array $data): array
     {
         foreach ($data as $key => $value) {
             if (is_string($value)) {
@@ -51,7 +51,7 @@ trait RequestProcessTrait
     * @param array<string,string> $post
     * @return bool
     */
-    protected function init(array $server, array $post = []) : bool
+    protected function init(array $server, array $post = []): bool
     {
         $this->server = $this->sanitize($server);
 
@@ -76,13 +76,13 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function setBody() : bool
+    protected function setBody(): bool
     {
         $this->body = (string) file_get_contents('php://input');
         return true;
     }
 
-    protected function setMethod() : bool
+    protected function setMethod(): bool
     {
         if (empty($this->server['REQUEST_METHOD']) ||
         !in_array(
@@ -95,7 +95,7 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function setFilename() : bool
+    protected function setFilename(): bool
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
@@ -104,7 +104,7 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function setPath() : bool
+    protected function setPath(): bool
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
@@ -122,7 +122,7 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function clearGlobals() : bool
+    protected function clearGlobals(): bool
     {
         if (!empty($_GET)) {
             foreach ($_GET as $k => $v) {
@@ -140,7 +140,7 @@ trait RequestProcessTrait
     * @param array<string,string> $post
     * @return bool
     */
-    protected function processPost(array $post = []) : bool
+    protected function processPost(array $post = []): bool
     {
         $this->clearData();
         foreach ($post as $k => $v) {
@@ -149,7 +149,7 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function process() : bool
+    protected function process(): bool
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             return $this->processCli();
@@ -158,7 +158,7 @@ trait RequestProcessTrait
         return $this->processHttp();
     }
 
-    protected function processCli() : bool
+    protected function processCli(): bool
     {
         if (isset($this->server['argv'][1])) {
             $this->target = $this->server['argv'][1];
@@ -174,7 +174,7 @@ trait RequestProcessTrait
         return true;
     }
 
-    protected function processHttp() : bool
+    protected function processHttp(): bool
     {
         $string = null;
         switch (true) {

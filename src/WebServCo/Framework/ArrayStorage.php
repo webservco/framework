@@ -31,7 +31,7 @@ final class ArrayStorage
      * @return array<mixed>
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function add($storage, $setting, $data) : array
+    public static function add($storage, $setting, $data): array
     {
         if (!is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified.');
@@ -56,7 +56,7 @@ final class ArrayStorage
      * @return array<mixed>
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function append($storage, $data = []) : array
+    public static function append($storage, $data = []): array
     {
         if (!is_array($storage) || !is_array($data)) {
             throw new ArrayStorageException('Invalid parameters specified.');
@@ -171,7 +171,7 @@ final class ArrayStorage
     *                          (eg 'app/path/project').
     * @return bool
     */
-    public static function has($storage, $setting) : bool
+    public static function has($storage, $setting): bool
     {
         $value = 'WSFW_NOEXIST';
         $check = self::get($storage, $setting, $value);
@@ -189,7 +189,7 @@ final class ArrayStorage
      * @return array<mixed> The updated storage array.
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function remove($storage, $setting) : array
+    public static function remove($storage, $setting): array
     {
         if (!is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified.');
@@ -228,7 +228,7 @@ final class ArrayStorage
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      *   If the index does not exist within the array.
      */
-    protected static function removeByIndex($array, $indices) : array
+    protected static function removeByIndex($array, $indices): array
     {
         // Create a reference to the original array.
         $a = &$array;
@@ -269,7 +269,7 @@ final class ArrayStorage
      * @return array<mixed> The storage array with new data.
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function set($storage, $setting, $value) : array
+    public static function set($storage, $setting, $value): array
     {
         if (!is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified.');

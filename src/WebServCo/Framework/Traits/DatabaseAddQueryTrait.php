@@ -6,8 +6,8 @@ use WebServCo\Framework\Utils\Arrays;
 
 trait DatabaseAddQueryTrait
 {
-    abstract public function escapeIdentifier(string $string) : string;
-    abstract public function escapeTableName(string $string) : string;
+    abstract public function escapeIdentifier(string $string): string;
+    abstract public function escapeTableName(string $string): string;
 
     /**
     * @param string $queryType
@@ -21,7 +21,7 @@ trait DatabaseAddQueryTrait
         string $tableName,
         array $addData = [],
         array $updateData = []
-    ) : string {
+    ): string {
         $multiDimensional = Arrays::isMultidimensional($addData);
 
         list($keys, $data) = $this->getKeysValues($addData);
@@ -44,7 +44,7 @@ trait DatabaseAddQueryTrait
     * @param array<mixed> $data
     * @return array<mixed>
     */
-    final protected function getKeysValues(array $data = []) : array
+    final protected function getKeysValues(array $data = []): array
     {
         $multiDimensional = Arrays::isMultidimensional($data);
         if ($multiDimensional) {
@@ -61,7 +61,7 @@ trait DatabaseAddQueryTrait
         return [$keys, $data];
     }
 
-    final protected function generateAddQueryPrefix(string $queryType) : string
+    final protected function generateAddQueryPrefix(string $queryType): string
     {
         switch ($queryType) {
             case QueryType::REPLACE:
@@ -83,7 +83,7 @@ trait DatabaseAddQueryTrait
     * @param array<int,string> $fields
     * @return string
     */
-    final protected function generateAddQueryFieldsPart(array $fields) : string
+    final protected function generateAddQueryFieldsPart(array $fields): string
     {
         return ' (' . implode(
             ', ',
@@ -97,7 +97,7 @@ trait DatabaseAddQueryTrait
     * @param bool $multiDimensional
     * @return string
     */
-    final protected function generateAddQueryValuesPart(array $data, bool $multiDimensional) : string
+    final protected function generateAddQueryValuesPart(array $data, bool $multiDimensional): string
     {
         $query = ' VALUES';
         if ($multiDimensional) {
@@ -116,7 +116,7 @@ trait DatabaseAddQueryTrait
     * @param array<string, float|int|string> $data
     * @return string
     */
-    final protected function generateAddQueryUpdatePart(array $data = []) : string
+    final protected function generateAddQueryUpdatePart(array $data = []): string
     {
         if (empty($data)) {
             return '';
@@ -136,7 +136,7 @@ trait DatabaseAddQueryTrait
     * @param array<int, float|int|string> $data
     * @return string
     */
-    final protected function generateValuesString(array $data) : string
+    final protected function generateValuesString(array $data): string
     {
         $placeholdersString = \WebServCo\Framework\Database\Utils\PreparedStatements::generatePlaceholdersString($data);
         return ' (' . $placeholdersString . ')';

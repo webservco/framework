@@ -1,11 +1,12 @@
 <?php
-namespace {
+
+//namespace { // global code
 
     if (!function_exists('__')) {
         /**
-         * Gettext / dgetttext wrapper.
+         * Wrapper for "gettext / dgetttext".
          */
-        function __(string $msg, string $domain = null) : string
+        function __(string $msg, string $domain = null): string
         {
             if (!empty($domain)) {
                 return dgettext($domain, $msg);
@@ -16,9 +17,9 @@ namespace {
 
     if (!function_exists('___')) {
         /**
-         * Ngettext / dngettext wrapper.
+         * Wrapper for "ngettext / dngettext".
          */
-        function ___(string $msgSingular, string $msgPlural, int $msgNumber, string $domain = null) : string
+        function ___(string $msgSingular, string $msgPlural, int $msgNumber, string $domain = null): string
         {
             if (!empty($domain)) {
                 return dngettext($domain, $msgSingular, $msgPlural, $msgNumber);
@@ -26,4 +27,4 @@ namespace {
             return ngettext($msgSingular, $msgPlural, $msgNumber);
         }
     }
-}
+//}

@@ -5,5 +5,5 @@ interface DataTablesInterface
 {
     public function getResponse(
         \WebServCo\Framework\DataTables\Request $request
-    ) : \WebServCo\Framework\DataTables\Response;
+    ): \WebServCo\Framework\DataTables\Response;
 }

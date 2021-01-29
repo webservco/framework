@@ -15,50 +15,50 @@ interface RequestInterface
     /**
     * @return array<string,string>
     */
-    public function getAcceptContentTypes() : array;
+    public function getAcceptContentTypes(): array;
 
-    public function getAcceptLanguage() : string;
+    public function getAcceptLanguage(): string;
 
-    public function getAppUrl() : string;
+    public function getAppUrl(): string;
 
     /**
     * @return array<int,string>
     */
-    public function getArgs() : array;
+    public function getArgs(): array;
 
-    public function getBody() : string;
+    public function getBody(): string;
 
-    public function getContentType() : string;
+    public function getContentType(): string;
 
     /**
     * @return array<mixed>
     */
-    public function getData() : array;
+    public function getData(): array;
 
-    public function getHost() : string;
+    public function getHost(): string;
 
-    public function getMethod() : string;
+    public function getMethod(): string;
 
     /**
     * @return array<string,mixed>
     */
-    public function getQuery() : array;
+    public function getQuery(): array;
 
-    public function getRemoteAddress() : string;
+    public function getRemoteAddress(): string;
 
-    public function getSchema() : string;
+    public function getSchema(): string;
 
-    public function getSuffix() : string;
+    public function getSuffix(): string;
 
-    public function getTarget() : string;
+    public function getTarget(): string;
 
     /**
     * @param array<int,string> $removeParameters
     * @return string
     */
-    public function getUrl(array $removeParameters = []) : string;
+    public function getUrl(array $removeParameters = []): string;
 
-    public function getUserAgent() : string;
+    public function getUserAgent(): string;
 
     /**
      * @param mixed $key Can be an array, a string,

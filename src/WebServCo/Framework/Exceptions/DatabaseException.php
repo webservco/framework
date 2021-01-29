@@ -24,7 +24,7 @@ final class DatabaseException extends ApplicationException
         parent::__construct($message, $code, $previous);
     }
 
-    public function getSqlState() : string
+    public function getSqlState(): string
     {
         return $this->sqlState;
     }

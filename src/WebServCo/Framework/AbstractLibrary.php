@@ -27,7 +27,7 @@ abstract class AbstractLibrary implements
         $this->settings = $settings;
     }
 
-    final public function clearData() : bool
+    final public function clearData(): bool
     {
         $this->data = [];
         return true;
@@ -70,7 +70,7 @@ abstract class AbstractLibrary implements
     /**
     * @return array<mixed>
     */
-    final public function getData() : array
+    final public function getData(): array
     {
         return $this->data;
     }
@@ -83,7 +83,7 @@ abstract class AbstractLibrary implements
      *
      * @return bool True on success and false on failure.
      */
-    final public function setData($key, $value) : bool
+    final public function setData($key, $value): bool
     {
         if (empty($key)) {
             return false;
@@ -128,7 +128,7 @@ abstract class AbstractLibrary implements
     /**
     * @return array<string, array<mixed>>
     */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             'data' => $this->data,

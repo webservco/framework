@@ -47,7 +47,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         $this->requestContentType = 'application/x-www-form-urlencoded';
     }
 
-    public function retrieve(string $url) : Response
+    public function retrieve(string $url): Response
     {
         $this->debugInit();
 
@@ -89,7 +89,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         );
     }
 
-    protected function debugDo() : bool
+    protected function debugDo(): bool
     {
         if ($this->debug) {
             //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
@@ -100,7 +100,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return false;
     }
 
-    protected function debugFinish() : bool
+    protected function debugFinish(): bool
     {
         if ($this->debug) {
             fclose($this->debugStderr);
@@ -118,7 +118,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return false;
     }
 
-    protected function debugInit() : bool
+    protected function debugInit(): bool
     {
         if ($this->debug) {
             ob_start();
@@ -131,12 +131,12 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return false;
     }
 
-    protected function getHttpCode() : int
+    protected function getHttpCode(): int
     {
         return isset($this->debugInfo['http_code']) ? (int) $this->debugInfo['http_code']: 0;
     }
 
-    protected function handleRequestMethod() : bool
+    protected function handleRequestMethod(): bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpClientException('Not a valid resource.');
@@ -174,7 +174,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     * @param string $headerData
     * @return int
     */
-    protected function headerCallback($curlResource, $headerData) : int
+    protected function headerCallback($curlResource, $headerData): int
     {
         $headerDataTrimmed = trim($headerData);
         if (empty($headerDataTrimmed)) {
@@ -190,7 +190,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     * @param array<string,mixed> $headers
     * @return array<int,string>
     */
-    protected function parseRequestHeaders(array $headers) : array
+    protected function parseRequestHeaders(array $headers): array
     {
         $data = [];
         foreach ($headers as $k => $v) {
@@ -209,7 +209,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     * @param array<int,string> $responseHeadersArray
     * @return array<string,mixed>
     */
-    protected function parseResponseHeadersArray(array $responseHeadersArray = []) : array
+    protected function parseResponseHeadersArray(array $responseHeadersArray = []): array
     {
         $headers = [];
 
@@ -249,7 +249,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return $headers;
     }
 
-    protected function processResponse() : bool
+    protected function processResponse(): bool
     {
         $response = curl_exec($this->curl);
         $this->curlError = curl_error($this->curl);
@@ -260,7 +260,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return true;
     }
 
-    protected function processResponseHeaders() : bool
+    protected function processResponseHeaders(): bool
     {
         $this->responseHeaders = [];
         foreach ($this->responseHeadersArray as $item) {
@@ -269,7 +269,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return true;
     }
 
-    protected function setCurlOptions(string $url) : bool
+    protected function setCurlOptions(string $url): bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpClientException('Not a valid resource.');
@@ -297,7 +297,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return true;
     }
 
-    protected function setRequestHeaders() : bool
+    protected function setRequestHeaders(): bool
     {
         if (!is_resource($this->curl)) {
             throw new HttpClientException('Not a valid resource.');

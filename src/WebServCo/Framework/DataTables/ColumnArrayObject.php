@@ -11,7 +11,7 @@ class ColumnArrayObject extends \ArrayObject implements \WebServCo\Framework\Int
     * @param mixed $value
     * @return void
     */
-    public function offsetSet($name, $value) : void
+    public function offsetSet($name, $value): void
     {
         if (!($value instanceof Column)) {
             throw new \InvalidArgumentException('Only Column objects allowed.');

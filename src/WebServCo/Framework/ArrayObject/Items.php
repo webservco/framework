@@ -12,7 +12,7 @@ class Items
         $this->arrayObject = $arrayObject;
     }
 
-    public function getArrayObject() : ArrayObjectInterface
+    public function getArrayObject(): ArrayObjectInterface
     {
         return $this->arrayObject;
     }
@@ -22,20 +22,20 @@ class Items
     * @param mixed $item
     * @return bool
     */
-    public function set($index, $item) : bool
+    public function set($index, $item): bool
     {
         $this->arrayObject->offsetSet($index, $item);
         return true;
     }
 
-    public function remove(int $index) : bool
+    public function remove(int $index): bool
     {
         $this->arrayObject->offsetUnset($index);
         $this->rebuildIndex();
         return true;
     }
 
-    protected function rebuildIndex() : bool
+    protected function rebuildIndex(): bool
     {
         $data = $this->arrayObject->getArrayCopy();
         $this->arrayObject->exchangeArray([]);

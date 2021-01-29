@@ -16,21 +16,21 @@ final class Line
         $this->padding = 0;
     }
 
-    public function setShowResult(bool $showResult) : bool
+    public function setShowResult(bool $showResult): bool
     {
         $this->showResult = $showResult;
         return true;
     }
 
-    public function prefix(string $message = '') : string
+    public function prefix(string $message = ''): string
     {
         $this->outMessage = $message;
 
-        $this->outPad = (0 < $this->padding) ? str_repeat(' ', (int) $this->padding) : '';
+        $this->outPad = (0 < $this->padding) ? str_repeat(' ', (int) $this->padding): '';
         return $this->outPad.$this->outMessage;
     }
 
-    public function suffix(bool $result = true) : string
+    public function suffix(bool $result = true): string
     {
         $totalLen = strlen($this->outPad.$this->outMessage);
         $output = null;
@@ -55,7 +55,7 @@ final class Line
         return $output;
     }
 
-    public function finish() : string
+    public function finish(): string
     {
         return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }

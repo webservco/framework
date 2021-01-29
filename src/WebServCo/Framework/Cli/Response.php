@@ -11,13 +11,13 @@ final class Response extends \WebServCo\Framework\AbstractResponse implements
         $this->setContent($content);
     }
 
-    public function setStatus(int $statusCode) : bool
+    public function setStatus(int $statusCode): bool
     {
         $this->statusCode = $statusCode;
         return true;
     }
 
-    public function send() : int
+    public function send(): int
     {
         if (!empty($this->content)) {
             echo $this->content;

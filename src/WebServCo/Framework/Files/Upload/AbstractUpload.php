@@ -14,7 +14,7 @@ abstract class AbstractUpload
     protected string $formFieldName;
     protected string $uploadDirectory;
 
-    abstract protected function generateUploadedFileName(string $uploadFileName, string $uploadFileMimeType) : string;
+    abstract protected function generateUploadedFileName(string $uploadFileName, string $uploadFileMimeType): string;
 
     public function __construct(string $uploadDirectory)
     {
@@ -23,17 +23,17 @@ abstract class AbstractUpload
         $this->uploadDirectory = $uploadDirectory;
     }
 
-    public function getFileName() : string
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    public function getFileMimeType() : string
+    public function getFileMimeType(): string
     {
         return $this->fileMimeType;
     }
 
-    final public function do() : bool
+    final public function do(): bool
     {
         if (empty($_FILES)) {
             return false;
@@ -68,19 +68,19 @@ abstract class AbstractUpload
     * @param array<int,string> $allowedExtensions
     * @return bool
     */
-    final public function setAllowedExtensions(array $allowedExtensions) : bool
+    final public function setAllowedExtensions(array $allowedExtensions): bool
     {
         $this->allowedExtensions = $allowedExtensions;
         return true;
     }
 
-    final public function setFormFieldName(string $formFieldName) : bool
+    final public function setFormFieldName(string $formFieldName): bool
     {
         $this->formFieldName = $formFieldName;
         return true;
     }
 
-    final protected function checkAllowedExtensions() : bool
+    final protected function checkAllowedExtensions(): bool
     {
         if (!empty($this->allowedExtensions)) {
             if (!array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {

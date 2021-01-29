@@ -25,7 +25,7 @@ final class Framework
      */
     protected static $projectLibraries = [];
 
-    private static function getFullClassName(string $className, string $classType = null) : string
+    private static function getFullClassName(string $className, string $classType = null): string
     {
         switch ($classType) {
             case self::TYPE_FRAMEWORK:
@@ -42,7 +42,7 @@ final class Framework
      *
      * @return string
      */
-    public static function getPath() : string
+    public static function getPath(): string
     {
         return str_replace(
             sprintf('src%sWebServCo%sFramework', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
@@ -54,7 +54,7 @@ final class Framework
     /**
     * @return array<mixed>
     */
-    private static function loadLibraryConfiguration(string $configName) : array
+    private static function loadLibraryConfiguration(string $configName): array
     {
         if ('Config' == $configName) {
             return [];
@@ -96,7 +96,7 @@ final class Framework
         /**
          * Libraries can have custom parameters to constructor,
          * however the configuration array is always the first.
-         * $args = is_array($args) ? array_merge([$config], $args) : [$config];
+         * $args = is_array($args) ? array_merge([$config], $args): [$config];
          */
         switch ($className) {
             case 'Request':
@@ -111,7 +111,7 @@ final class Framework
         return $reflection->newInstanceArgs($args);
     }
 
-    protected static function loadHelper(string $className) : bool
+    protected static function loadHelper(string $className): bool
     {
         $path = sprintf(
             '%ssrc%sWebServCo%sFramework%sHelpers%s%sHelper.php',
@@ -173,7 +173,7 @@ final class Framework
     /**
      * Checks if interface type is CLI
      */
-    public static function isCli() : bool
+    public static function isCli(): bool
     {
         return 'cli' === PHP_SAPI;
     }
@@ -181,7 +181,7 @@ final class Framework
     /**
      * Get operating system (if supported).
      */
-    public static function getOS() : string
+    public static function getOS(): string
     {
         $uname = php_uname('s');
         if (0 === strncasecmp($uname, 'Win', 3)) {

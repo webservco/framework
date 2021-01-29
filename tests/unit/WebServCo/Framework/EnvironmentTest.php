@@ -9,7 +9,7 @@ final class EnvironmentTest extends TestCase
     /**
      * @test
      */
-    public function constantEnvDevHasExpectedValue() : void
+    public function constantEnvDevHasExpectedValue(): void
     {
         $this->assertEquals('dev', Environment::DEV);
     }
@@ -17,7 +17,7 @@ final class EnvironmentTest extends TestCase
     /**
      * @test
      */
-    public function constantEnvTestHasExpectedValue() : void
+    public function constantEnvTestHasExpectedValue(): void
     {
         $this->assertEquals('test', Environment::TEST);
     }
@@ -25,7 +25,7 @@ final class EnvironmentTest extends TestCase
     /**
      * @test
      */
-    public function constantEnvProdHasExpectedValue() : void
+    public function constantEnvProdHasExpectedValue(): void
     {
         $this->assertEquals('prod', Environment::PROD);
     }
@@ -33,7 +33,7 @@ final class EnvironmentTest extends TestCase
     /**
      * @test
      */
-    public function getOptionsReturnsExpectedValues() : void
+    public function getOptionsReturnsExpectedValues(): void
     {
         $this->assertEquals(['dev','test','prod'], Environment::getOptions());
     }

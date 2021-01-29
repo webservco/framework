@@ -3,7 +3,7 @@ namespace WebServCo\Framework\Log;
 
 class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\Interfaces\OutputLoggerInterface
 {
-    public function clear() : bool
+    public function clear(): bool
     {
         return false;
     }
@@ -14,7 +14,7 @@ class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\
     * @param mixed $context
     * @return bool
     */
-    public function log(string $level, string $message, $context = null) : bool
+    public function log(string $level, string $message, $context = null): bool
     {
         return $this->output($message, true);
     }

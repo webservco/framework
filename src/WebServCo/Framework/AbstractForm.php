@@ -24,12 +24,12 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     /**
      * @return bool
      */
-    abstract protected function filter() : bool;
+    abstract protected function filter(): bool;
 
     /**
      * @return bool
      */
-    abstract protected function validate() : bool;
+    abstract protected function validate(): bool;
 
     /**
     * @param array<string,string|array<mixed>> $settings
@@ -63,7 +63,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
-    final public function clear() : bool
+    final public function clear(): bool
     {
         $this->clearData();
         $this->filtered = false;
@@ -109,7 +109,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         );
     }
 
-    final public function isSent() : bool
+    final public function isSent(): bool
     {
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
@@ -123,7 +123,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
     }
 
-    final public function isValid() : bool
+    final public function isValid(): bool
     {
         return $this->valid;
     }
@@ -157,7 +157,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     /**
     * @return array<string, array<mixed>>
     */
-    final public function toArray() : array
+    final public function toArray(): array
     {
         return [
             'meta' => $this->setting('meta', []),

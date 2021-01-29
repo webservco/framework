@@ -15,7 +15,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
 
-    abstract protected function getDataSourceName(string $host, string $port, string $dbname) : string;
+    abstract protected function getDataSourceName(string $host, string $port, string $dbname): string;
 
     /**
     * @param array<string,string|array<mixed>> $settings
@@ -46,7 +46,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
-    public function affectedRows() : int
+    public function affectedRows(): int
     {
         if (!($this->stmt instanceof \PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
@@ -58,7 +58,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param array<mixed> $data
     * @return bool
     */
-    protected function bindParams(array $data) : bool
+    protected function bindParams(array $data): bool
     {
         if (empty($data)) {
             return false;
@@ -85,7 +85,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return true;
     }
 
-    public function escape(string $string) : string
+    public function escape(string $string): string
     {
         return $this->db->quote($string);
     }
@@ -102,7 +102,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return $this->stmt->fetchColumn($columnNumber);
     }
 
-    protected function getDataType(string $variable) : int
+    protected function getDataType(string $variable): int
     {
         $type = gettype($variable);
 
@@ -131,7 +131,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
     */
-    public function getRow(string $query, array $params = []) : array
+    public function getRow(string $query, array $params = []): array
     {
         $this->query($query, $params);
         return $this->stmt->fetch(\PDO::FETCH_ASSOC);
@@ -142,7 +142,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
     */
-    public function getRows(string $query, array $params = []) : array
+    public function getRows(string $query, array $params = []): array
     {
         $this->query($query, $params);
         $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
@@ -163,12 +163,12 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * depending on the underlying driver.
     * For example, PDO_PGSQL requires you to specify the name of a sequence object for the name parameter.
     */
-    public function lastInsertId(string $name = '') : string
+    public function lastInsertId(string $name = ''): string
     {
         return $this->db->lastInsertId($name);
     }
 
-    public function numRows() : int
+    public function numRows(): int
     {
         if (!($this->stmt instanceof \PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
@@ -184,7 +184,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param array<int,mixed> $params
     * @return \PDOStatement
     */
-    public function query(string $query, array $params = []) : \PDOStatement
+    public function query(string $query, array $params = []): \PDOStatement
     {
         if (empty($query)) {
             throw new DatabaseException('No query specified.');
@@ -213,7 +213,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param mixed $value
     * @return bool
     */
-    public function setAttribute(int $attribute, $value) : bool
+    public function setAttribute(int $attribute, $value): bool
     {
         return $this->db->setAttribute($attribute, $value);
     }
@@ -222,7 +222,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param array<int,array<int,mixed>> $queries
     * @return bool
     */
-    public function transaction(array $queries) : bool
+    public function transaction(array $queries): bool
     {
         try {
             $this->db->beginTransaction();
@@ -245,7 +245,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param mixed $param
     * @return bool
     */
-    protected function validateParam($param) : bool
+    protected function validateParam($param): bool
     {
         if (is_array($param)) {
             throw new DatabaseException('Parameter is an array.');

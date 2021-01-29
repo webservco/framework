@@ -7,7 +7,7 @@ final class RequestUtils
     * @param string $string
     * @return array<int,string>
     */
-    public static function explode(string $string) : array
+    public static function explode(string $string): array
     {
         if (false !== strpos($string, '?')) {
             return explode('?', $string, 2);
@@ -21,7 +21,7 @@ final class RequestUtils
     * @param string $string
     * @return array<string, string|null>
     */
-    public static function format(string $string) : array
+    public static function format(string $string): array
     {
         $data = [];
         $parts = self::split($string);
@@ -40,7 +40,7 @@ final class RequestUtils
     * @param array<int,string> $suffixes
     * @return array<int,string>
     */
-    public static function parse(string $string, string $path, string $filename, array $suffixes) : array
+    public static function parse(string $string, string $path, string $filename, array $suffixes): array
     {
         $pathLen = strlen($path);
         if (0 === strncasecmp($path, $string, $pathLen)) {
@@ -64,7 +64,7 @@ final class RequestUtils
     * @param array<int,string> $suffixes
     * @return array<int,string>
     */
-    public static function removeSuffix(string $string, array $suffixes = []) : array
+    public static function removeSuffix(string $string, array $suffixes = []): array
     {
         if (is_array($suffixes)) {
             $stringRev = strrev($string);
@@ -79,7 +79,7 @@ final class RequestUtils
         return [$string, ''];
     }
 
-    public static function sanitizeString(string $string) : string
+    public static function sanitizeString(string $string): string
     {
         // Strip tags, optionally strip or encode special characters.
         $string = filter_var($string, FILTER_SANITIZE_STRING);
@@ -120,14 +120,14 @@ final class RequestUtils
     * @param string $string
     * @return array<int,string>
     */
-    public static function split(string $string) : array
+    public static function split(string $string): array
     {
         $parts = explode('/', $string);
         $parts = array_map('urldecode', $parts);
         return array_diff($parts, ['']);
     }
 
-    public static function transform(string $string) : string
+    public static function transform(string $string): string
     {
         $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
         return trim($string, ' /');

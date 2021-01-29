@@ -9,19 +9,19 @@ trait OutputTrait
     protected int $outputCode;
     protected OutputLoaderInterface $outputLoader;
 
-    final protected function setOutputLoader(OutputLoaderInterface $outputLoader) : bool
+    final protected function setOutputLoader(OutputLoaderInterface $outputLoader): bool
     {
         $this->outputCode = 200; // default
         $this->outputLoader = $outputLoader;
         return true;
     }
 
-    final protected function output() : OutputLoaderInterface
+    final protected function output(): OutputLoaderInterface
     {
         return $this->outputLoader;
     }
 
-    final protected function outputCli(string $string = '', bool $eol = true) : bool
+    final protected function outputCli(string $string = '', bool $eol = true): bool
     {
         return $this->output()->cli($string, $eol);
     }
@@ -31,7 +31,7 @@ trait OutputTrait
     * @param string $template
     * @return Response
     */
-    protected function outputHtmlPartial(array $data, string $template) : Response
+    protected function outputHtmlPartial(array $data, string $template): Response
     {
         return new Response(
             $this->output()->html($data, $template),
@@ -46,7 +46,7 @@ trait OutputTrait
     * @param string $mainTemplate
     * @return Response
     */
-    protected function outputHtml(array $data, string $pageTemplate, string $mainTemplate = null) : Response
+    protected function outputHtml(array $data, string $pageTemplate, string $mainTemplate = null): Response
     {
         return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
@@ -60,7 +60,7 @@ trait OutputTrait
     * @param bool $result
     * @return Response
     */
-    protected function outputJson(array $content, bool $result = true) : Response
+    protected function outputJson(array $content, bool $result = true): Response
     {
         $data = [
             'result' => $result,
@@ -73,7 +73,7 @@ trait OutputTrait
         );
     }
 
-    protected function setOutputCode(int $outputCode) : bool
+    protected function setOutputCode(int $outputCode): bool
     {
         $this->outputCode = $outputCode;
         return true;

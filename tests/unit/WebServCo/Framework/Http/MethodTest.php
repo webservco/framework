@@ -10,7 +10,7 @@ final class MethodTest extends TestCase
     /**
      * @test
      */
-    public function getMethodsReturnsArray() : void
+    public function getMethodsReturnsArray(): void
     {
         $this->assertIsArray(Method::getSupported());
     }

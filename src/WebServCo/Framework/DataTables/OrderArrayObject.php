@@ -11,7 +11,7 @@ class OrderArrayObject extends \ArrayObject implements \WebServCo\Framework\Inte
     * @param mixed $value
     * @return void
     */
-    public function offsetSet($name, $value) : void
+    public function offsetSet($name, $value): void
     {
         if (!($value instanceof Order)) {
             throw new \InvalidArgumentException('Only Order objects allowed.');

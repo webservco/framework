@@ -3,12 +3,12 @@ namespace WebServCo\Framework\Traits;
 
 trait MysqlDatabaseTrait
 {
-    public function escapeIdentifier(string $string) : string
+    public function escapeIdentifier(string $string): string
     {
         return '`' . str_replace('`', '``', $string) . '`';
     }
 
-    public function escapeTableName(string $string) : string
+    public function escapeTableName(string $string): string
     {
         $parts = explode('.', $string);
         if (!empty($parts[1])) {

@@ -18,12 +18,12 @@ abstract class AbstractFile
         $this->contentType = $contentType;
     }
 
-    public function getContentType() : string
+    public function getContentType(): string
     {
         return $this->contentType;
     }
 
-    public function getDownloadResponse() : Response
+    public function getDownloadResponse(): Response
     {
         return new Response(
             $this->fileData,
@@ -42,17 +42,17 @@ abstract class AbstractFile
         );
     }
 
-    public function getFileData() : string
+    public function getFileData(): string
     {
         return $this->fileData;
     }
 
-    public function getFileName() : string
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    public function getOutputResponse() : Response
+    public function getOutputResponse(): Response
     {
         return new Response(
             $this->fileData,

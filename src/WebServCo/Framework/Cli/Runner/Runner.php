@@ -17,7 +17,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         $this->workDir = $workDir;
     }
 
-    public function finish() : bool
+    public function finish(): bool
     {
         if (empty($this->pid) || !is_file($this->pid) || !is_readable($this->pid)) {
             $result = false;
@@ -30,7 +30,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         return $result;
     }
 
-    public function getPid() : ?string
+    public function getPid(): ?string
     {
         if (!$this->isRunning()) {
             return null;
@@ -38,12 +38,12 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         return $this->pid;
     }
 
-    public function getStatistics() : Statistics
+    public function getStatistics(): Statistics
     {
         return $this->statistics;
     }
 
-    public function isRunning() : bool
+    public function isRunning(): bool
     {
         if (empty($this->pid)) {
             return false;
@@ -51,7 +51,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         return is_readable($this->pid);
     }
 
-    public function start() : bool
+    public function start(): bool
     {
         $this->statistics->start();
         $this->pid = sprintf(

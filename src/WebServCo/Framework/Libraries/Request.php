@@ -23,17 +23,17 @@ final class Request extends \WebServCo\Framework\AbstractRequest implements
     /**
     * @return array<int,string>
     */
-    public function getArgs() : array
+    public function getArgs(): array
     {
         return $this->args;
     }
 
-    public function getBody() : string
+    public function getBody(): string
     {
         return $this->body;
     }
 
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return $this->method;
     }

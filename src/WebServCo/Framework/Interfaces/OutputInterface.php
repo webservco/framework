@@ -11,9 +11,9 @@ interface OutputInterface
      *
      * @return bool True on success and false on failure.
      */
-    public function setData($key, $value) : bool;
+    public function setData($key, $value): bool;
 
-    public function setTemplate(string $template) : bool;
+    public function setTemplate(string $template): bool;
 
-    public function render() : string;
+    public function render(): string;
 }

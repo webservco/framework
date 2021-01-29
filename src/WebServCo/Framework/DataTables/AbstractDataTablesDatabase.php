@@ -15,16 +15,16 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     * @param string $limitQuery
     * @return string
     */
-    abstract protected function getQuery(array $searchQueryPart, string $orderQueryPart, string $limitQuery) : string;
+    abstract protected function getQuery(array $searchQueryPart, string $orderQueryPart, string $limitQuery): string;
 
-    abstract protected function getRecordsTotalQuery() : string;
+    abstract protected function getRecordsTotalQuery(): string;
 
     public function __construct(DatabaseInterface $db)
     {
         $this->db = $db;
     }
 
-    public function getResponse(Request $request) : Response
+    public function getResponse(Request $request): Response
     {
         $params = [];
         $limitQuery = '';
@@ -60,7 +60,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         );
     }
 
-    protected function assertColumnArrayObject(ArrayObjectInterface $arrayObject) : bool
+    protected function assertColumnArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof ColumnArrayObject) {
             throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
@@ -68,7 +68,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return true;
     }
 
-    protected function assertOrderArrayObject(ArrayObjectInterface $arrayObject) : bool
+    protected function assertOrderArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof OrderArrayObject) {
             throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
@@ -81,7 +81,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     * @param \PDOStatement $pdoStatement
     * @return array<int,array<int|string,mixed>>
     */
-    protected function getData(ArrayObjectInterface $columnArrayObject, \PDOStatement $pdoStatement) : array
+    protected function getData(ArrayObjectInterface $columnArrayObject, \PDOStatement $pdoStatement): array
     {
         $this->assertColumnArrayObject($columnArrayObject);
         $data = [];
@@ -96,7 +96,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $data;
     }
 
-    protected function getDatabaseColumnName(string $dataTablesColumnName) : string
+    protected function getDatabaseColumnName(string $dataTablesColumnName): string
     {
         return $this->db->escapeIdentifier($dataTablesColumnName);
     }
@@ -104,7 +104,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected function getOrderQueryPart(
         ArrayObjectInterface $columnArrayObject,
         ArrayObjectInterface $orderArrayObject
-    ) : string {
+    ): string {
         $this->assertColumnArrayObject($columnArrayObject);
         $this->assertOrderArrayObject($orderArrayObject);
         $query = '';
@@ -133,7 +133,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return $query;
     }
 
-    protected function getRecordsFiltered() : int
+    protected function getRecordsFiltered(): int
     {
         return (int) $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
     }
@@ -143,7 +143,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     * @param array<array<int,mixed>|string> $searchQueryPart
     * @return int
     */
-    protected function getRecordsTotal(int $recordsFiltered, array $searchQueryPart) : int
+    protected function getRecordsTotal(int $recordsFiltered, array $searchQueryPart): int
     {
         if (empty($searchQueryPart)) {
             return $recordsFiltered;
@@ -158,7 +158,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     * @param ArrayObjectInterface $columnArrayObject
     * @return array<mixed>
     */
-    protected function getSearchQueryPart(ArrayObjectInterface $columnArrayObject) : array
+    protected function getSearchQueryPart(ArrayObjectInterface $columnArrayObject): array
     {
         $this->assertColumnArrayObject($columnArrayObject);
         $query = null;

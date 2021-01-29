@@ -12,12 +12,12 @@ class Order
         $this->dir = $dir;
     }
 
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }
 
-    public function getDir() : string
+    public function getDir(): string
     {
         return $this->dir;
     }

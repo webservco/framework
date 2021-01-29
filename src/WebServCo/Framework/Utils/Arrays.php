@@ -7,7 +7,7 @@ final class Arrays
     * @param array<int|string,mixed> $array
     * @return array<int|string,mixed>
     */
-    public static function removeEmptyValues(array $array) : array
+    public static function removeEmptyValues(array $array): array
     {
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -24,7 +24,7 @@ final class Arrays
     * @param array<mixed> $array
     * @param mixed $value
     */
-    public static function has(?array $array, $value) : bool
+    public static function has(?array $array, $value): bool
     {
         if (!is_array($array)) {
             return false;
@@ -48,7 +48,7 @@ final class Arrays
     /**
     * @param array<mixed> $array
     */
-    public static function isMultidimensional(array $array) : bool
+    public static function isMultidimensional(array $array): bool
     {
         if (empty($array)) {
             return false;
@@ -60,7 +60,7 @@ final class Arrays
     * @param array<mixed> $array
     * @return array<mixed>
     */
-    public static function nullToEmptyString(array $array) : array
+    public static function nullToEmptyString(array $array): array
     {
         foreach ($array as $key => $value) {
             if (is_null($value)) {
@@ -80,7 +80,7 @@ final class Arrays
     * @param array<mixed> $array
     * @return array<mixed>
     */
-    public static function powerSet(array $array) : array
+    public static function powerSet(array $array): array
     {
         $results = [[]]; //initialize by adding the empty set
         foreach ($array as $element) {
@@ -98,7 +98,7 @@ final class Arrays
     /**
     * @param array<mixed> $array
     */
-    public static function toUrlQueryString(array $array) : ?string
+    public static function toUrlQueryString(array $array): ?string
     {
         if (empty($array)) {
             return null;

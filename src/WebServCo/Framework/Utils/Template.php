@@ -9,7 +9,7 @@ final class Template
     * @param array<int|string,mixed> $data
     * @return string
     */
-    public static function render(string $templatePath, string $templateName, array $data) : string
+    public static function render(string $templatePath, string $templateName, array $data): string
     {
         $output = new \WebServCo\Framework\Libraries\HtmlOutput();
         foreach ($data as $k => $v) {

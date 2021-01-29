@@ -6,8 +6,8 @@ abstract class AbstractApplication
     protected string $projectNamespace;
     protected string $projectPath;
 
-    abstract protected function config() : \WebServCo\Framework\Interfaces\ConfigInterface;
-    abstract protected function request() : \WebServCo\Framework\Interfaces\RequestInterface;
+    abstract protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface;
+    abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
 
     public function __construct(string $publicPath, string $projectPath, string $projectNamespace = 'Project')
     {
@@ -29,7 +29,7 @@ abstract class AbstractApplication
     /**
      * Sets the env value from the project .env file.
      */
-    final public function setEnvironmentValue() : bool
+    final public function setEnvironmentValue(): bool
     {
         /**
          * Env file existence is verified in the constructor.
@@ -42,7 +42,7 @@ abstract class AbstractApplication
     /**
      * Handle Errors.
      */
-    final protected function handleErrors(\Throwable $exception = null) : bool
+    final protected function handleErrors(\Throwable $exception = null): bool
     {
         $errorInfo = \WebServCo\Framework\ErrorHandler::getErrorInfo($exception);
         if (!empty($errorInfo['message'])) {
@@ -55,7 +55,7 @@ abstract class AbstractApplication
     * @param array<string,mixed> $errorInfo
     * @return bool
     */
-    final protected function halt(array $errorInfo = []) : bool
+    final protected function halt(array $errorInfo = []): bool
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             return $this->haltCli($errorInfo);
@@ -69,7 +69,7 @@ abstract class AbstractApplication
      * @param array<string,mixed> $errorInfo
      * @return bool
      */
-    protected function haltHttp(array $errorInfo = []) : bool
+    protected function haltHttp(array $errorInfo = []): bool
     {
         switch ($errorInfo['code']) {
             case 404:
@@ -151,7 +151,7 @@ abstract class AbstractApplication
     * @param array<string,mixed> $errorInfo
     * @return bool
     */
-    protected function haltCli(array $errorInfo = []) : bool
+    protected function haltCli(array $errorInfo = []): bool
     {
         $output = 'Boo boo' . PHP_EOL;
         $output .= $errorInfo['message'] . PHP_EOL;

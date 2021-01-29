@@ -6,7 +6,7 @@ final class StatusCode
     /**
     * @return array<int,string>
     */
-    public static function getSupported() : array
+    public static function getSupported(): array
     {
         return [
             100 => 'Continue',

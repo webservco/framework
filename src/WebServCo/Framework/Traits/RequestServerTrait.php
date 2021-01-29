@@ -8,7 +8,7 @@ trait RequestServerTrait
     /**
     * @return array<int|string,string>
     */
-    public function getAcceptContentTypes() : array
+    public function getAcceptContentTypes(): array
     {
         if (!isset($this->server['HTTP_ACCEPT'])) {
             return [];
@@ -30,7 +30,7 @@ trait RequestServerTrait
         return $acceptTypes;
     }
 
-    public function getAcceptLanguage() : string
+    public function getAcceptLanguage(): string
     {
         if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
             return '';
@@ -38,7 +38,7 @@ trait RequestServerTrait
         return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
 
-    public function getContentType() : string
+    public function getContentType(): string
     {
         if (!isset($this->server['CONTENT_TYPE'])) {
             return '';
@@ -46,7 +46,7 @@ trait RequestServerTrait
         return $this->server['CONTENT_TYPE'];
     }
 
-    public function getHost() : string
+    public function getHost(): string
     {
         if (!empty($this->server['HTTP_HOST'])) {
             return $this->server['HTTP_HOST'];
@@ -58,7 +58,7 @@ trait RequestServerTrait
         return '';
     }
 
-    public function getHostExtension() : string
+    public function getHostExtension(): string
     {
         $host = $this->getHost();
         if (empty($host)) {
@@ -69,17 +69,17 @@ trait RequestServerTrait
         return end($parts);
     }
 
-    public function getReferer() : string
+    public function getReferer(): string
     {
         return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : '';
     }
 
-    public function getRefererHost() : string
+    public function getRefererHost(): string
     {
         return (string) parse_url($this->getReferer(), PHP_URL_HOST);
     }
 
-    public function getSchema() : string
+    public function getSchema(): string
     {
         if (Framework::isCli()) {
             return '';
@@ -97,7 +97,7 @@ trait RequestServerTrait
         return 'http';
     }
 
-    public function getServerProtocol() : string
+    public function getServerProtocol(): string
     {
         if (!isset($this->server['SERVER_PROTOCOL'])) {
             return '';
@@ -105,7 +105,7 @@ trait RequestServerTrait
         return $this->server['SERVER_PROTOCOL'];
     }
 
-    public function getRemoteAddress() : string
+    public function getRemoteAddress(): string
     {
         if (Framework::isCli()) {
             return gethostbyname(php_uname('n'));
@@ -121,7 +121,7 @@ trait RequestServerTrait
         return $this->server[$index];
     }
 
-    public function getUserAgent() : string
+    public function getUserAgent(): string
     {
         if (Framework::isCli()) {
             return '';

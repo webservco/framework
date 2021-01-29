@@ -6,7 +6,7 @@ abstract class AbstractValidatedClass
     /**
     * @return array<int,string>
     */
-    abstract protected function getRequiredProperties() : array;
+    abstract protected function getRequiredProperties(): array;
 
     /**
     * @param array<string,mixed> $data
@@ -21,7 +21,7 @@ abstract class AbstractValidatedClass
         $this->validate();
     }
 
-    protected function validate() : bool
+    protected function validate(): bool
     {
         $required = $this->getRequiredProperties();
         foreach ($required as $item) {

@@ -8,7 +8,7 @@ class SearchHelper extends AbstractHelper
     * @param array<int,string> $required
     * @return Search
     */
-    public static function init(array $data, array $required = []) : Search
+    public static function init(array $data, array $required = []): Search
     {
         parent::validate($data, ['value', 'regex']);
 

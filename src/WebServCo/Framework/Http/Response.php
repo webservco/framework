@@ -45,7 +45,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
     * @param string $name
     * @return array<int,string>
     */
-    public function getHeader(string $name) : array
+    public function getHeader(string $name): array
     {
         $name = strtolower($name);
         if (!array_key_exists($name, $this->headers)) {
@@ -54,7 +54,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return array_keys($this->headers[$name]); // because use value as key ...
     }
 
-    public function getHeaderLine(string $name) : string
+    public function getHeaderLine(string $name): string
     {
         $data = $this->getHeader($name);
         if (empty($data)) {
@@ -63,7 +63,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return implode(', ', $data);
     }
 
-    public function setStatus(int $statusCode) : bool
+    public function setStatus(int $statusCode): bool
     {
         $statusCodes = StatusCode::getSupported();
         if (!isset($statusCodes[$statusCode])) {
@@ -76,7 +76,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    public function setHeader(string $name, string $value) : bool
+    public function setHeader(string $name, string $value): bool
     {
         if ($this->appendCharset) {
             switch ($name) {
@@ -91,14 +91,14 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    public function send() : int
+    public function send(): int
     {
         $this->sendHeaders();
         $this->sendContent();
         return $this->statusCode;
     }
 
-    protected function sendHeader(string $name, string $value, int $statusCode) : bool
+    protected function sendHeader(string $name, string $value, int $statusCode): bool
     {
         header(
             sprintf('%s: %s', $name, $value),
@@ -108,7 +108,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    protected function sendHeaders() : bool
+    protected function sendHeaders(): bool
     {
         foreach ($this->headers as $name => $data) {
             foreach ($data as $value => $bool) {
@@ -126,7 +126,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         return true;
     }
 
-    protected function sendContent() : bool
+    protected function sendContent(): bool
     {
         echo $this->content;
         return true;

@@ -3,20 +3,20 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-    abstract public function getHost() : string;
-    abstract public function getSchema() : string;
+    abstract public function getHost(): string;
+    abstract public function getSchema(): string;
 
-    public function getSuffix() : string
+    public function getSuffix(): string
     {
         return $this->suffix;
     }
 
-    public function getTarget() : string
+    public function getTarget(): string
     {
         return $this->target;
     }
 
-    public function getAppUrl() : string
+    public function getAppUrl(): string
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             return '';
@@ -30,7 +30,7 @@ trait RequestUrlTrait
         return rtrim($url, '/') . '/';
     }
 
-    public function getShortUrl() : string
+    public function getShortUrl(): string
     {
         $url = $this->getAppUrl();
         if (!empty($url)) {
@@ -44,7 +44,7 @@ trait RequestUrlTrait
     * @param array<int,string> $removeParameters
     * @return string
     */
-    public function getUrl(array $removeParameters = []) : string
+    public function getUrl(array $removeParameters = []): string
     {
         if (!is_array($removeParameters)) {
             throw new \InvalidArgumentException('Agument must be an array.');
@@ -64,7 +64,7 @@ trait RequestUrlTrait
     /**
     * @return array<string,mixed>
     */
-    public function getQuery() : array
+    public function getQuery(): array
     {
         return $this->query;
     }

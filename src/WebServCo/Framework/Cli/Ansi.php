@@ -13,7 +13,7 @@ final class Ansi
     *
     * @return string
     */
-    public static function sgr(string $string, array $parameters) : string
+    public static function sgr(string $string, array $parameters): string
     {
         $result = '';
         foreach ($parameters as $parameter) {
@@ -23,7 +23,7 @@ final class Ansi
         return $result;
     }
 
-    public static function clear() : string
+    public static function clear(): string
     {
         return "\e[H\e[J";
     }

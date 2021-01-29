@@ -24,19 +24,19 @@ final class Bar
         $this->item = 1;
     }
 
-    public function start(int $total = 100) : bool
+    public function start(int $total = 100): bool
     {
         $this->total = $total;
         return true;
     }
 
-    public function advanceTo(int $item) : bool
+    public function advanceTo(int $item): bool
     {
         $this->item = $item;
         return true;
     }
 
-    public function setType(string $type) : bool
+    public function setType(string $type): bool
     {
         if (!in_array($type, ['single_line', 'multi_line'])) {
             throw new \InvalidArgumentException('Invalid type.');
@@ -46,7 +46,7 @@ final class Bar
         return true;
     }
 
-    public function prefix(string $message = '') : string
+    public function prefix(string $message = ''): string
     {
         switch ($this->type) {
             case 'single_line':
@@ -57,7 +57,7 @@ final class Bar
         }
     }
 
-    public function suffix(bool $result = true) : string
+    public function suffix(bool $result = true): string
     {
         switch ($this->type) {
             case 'single_line':
@@ -69,7 +69,7 @@ final class Bar
         }
     }
 
-    protected function prefixProgress(string $message) : string
+    protected function prefixProgress(string $message): string
     {
         $percent = round($this->item * 100 / $this->total);
         $bar = (int) round($this->width * $percent / 100);
@@ -83,11 +83,11 @@ final class Bar
         $this->outMessage = $message;
 
         $padLen = ($this->width + $this->padding) - strlen($this->outBar);
-        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : '';
+        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen): '';
         return $this->outBar.$this->outPad.$this->outMessage;
     }
 
-    protected function suffixSingle(bool $result, bool $overwrite = false) : string
+    protected function suffixSingle(bool $result, bool $overwrite = false): string
     {
         $totalLen = strlen($this->outBar.$this->outPad.$this->outMessage);
         $output = null;
@@ -111,7 +111,7 @@ final class Bar
         return $output;
     }
 
-    protected function suffixMulti(bool $result, bool $overwrite = true) : string
+    protected function suffixMulti(bool $result, bool $overwrite = true): string
     {
         $output = $this->suffixSingle($result, $overwrite);
         $output .= PHP_EOL;
@@ -119,7 +119,7 @@ final class Bar
         return $output;
     }
 
-    public function finish() : string
+    public function finish(): string
     {
         return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }

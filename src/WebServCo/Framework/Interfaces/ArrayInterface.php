@@ -6,5 +6,5 @@ interface ArrayInterface
     /**
     * @return array<string,mixed>
     */
-    public function toArray() : array;
+    public function toArray(): array;
 }

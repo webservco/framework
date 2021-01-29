@@ -5,9 +5,9 @@ use WebServCo\Framework\Database\QueryType;
 
 trait DatabaseTrait
 {
-    abstract public function escapeIdentifier(string $string) : string;
+    abstract public function escapeIdentifier(string $string): string;
 
-    abstract public function escapeTableName(string $string) : string;
+    abstract public function escapeTableName(string $string): string;
 
     /**
     * @param string $queryType
@@ -21,7 +21,7 @@ trait DatabaseTrait
         string $tableName,
         array $addData = [],
         array $updateData = []
-    ) : string;
+    ): string;
 
     /**
     * @param string $query
@@ -36,7 +36,7 @@ trait DatabaseTrait
     * @param array<int, float|int|string> $params
     * @return \PDOStatement
     */
-    abstract public function query(string $query, array $params = []) : \PDOStatement;
+    abstract public function query(string $query, array $params = []): \PDOStatement;
 
     /**
     * @param string $tableName
@@ -44,7 +44,7 @@ trait DatabaseTrait
     * @param array<string, float|int|string> $updateData
     * @return \PDOStatement
     */
-    final public function insert(string $tableName, array $addData = [], array $updateData = []) : \PDOStatement
+    final public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement
     {
         return $this->add(QueryType::INSERT, $tableName, $addData, $updateData);
     }
@@ -54,7 +54,7 @@ trait DatabaseTrait
     * @param array<string, float|int|string> $data
     * @return \PDOStatement
     */
-    final public function insertIgnore(string $tableName, array $data = []) : \PDOStatement
+    final public function insertIgnore(string $tableName, array $data = []): \PDOStatement
     {
         return $this->add(QueryType::INSERT_IGNORE, $tableName, $data);
     }
@@ -64,7 +64,7 @@ trait DatabaseTrait
     * @param array<string, float|int|string> $data
     * @return \PDOStatement
     */
-    final public function replace(string $tableName, array $data = []) : \PDOStatement
+    final public function replace(string $tableName, array $data = []): \PDOStatement
     {
         return $this->add(QueryType::REPLACE, $tableName, $data);
     }
@@ -81,7 +81,7 @@ trait DatabaseTrait
         string $tableName,
         array $addData = [],
         array $updateData = []
-    ) : \PDOStatement {
+    ): \PDOStatement {
         if (empty($tableName)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }
@@ -105,7 +105,7 @@ trait DatabaseTrait
     * @param float|int|string $value
     * @return bool
     */
-    final public function valueExists(string $table, string $field, $value) : bool
+    final public function valueExists(string $table, string $field, $value): bool
     {
         return (bool) $this->getColumn(
             sprintf(
@@ -117,7 +117,7 @@ trait DatabaseTrait
         );
     }
 
-    final public function tableExists(string $table) : bool
+    final public function tableExists(string $table): bool
     {
         $name = $this->escapeTableName($table);
 

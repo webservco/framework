@@ -15,7 +15,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Starts the execution of the application.
      */
-    final public function start() : void
+    final public function start(): void
     {
         try {
             ErrorHandler::set();
@@ -31,7 +31,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Runs the application.
      */
-    public function run() : void
+    public function run(): void
     {
         try {
             $response = $this->execute();
@@ -45,7 +45,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
         }
     }
 
-    final protected function execute() : ResponseInterface
+    final protected function execute(): ResponseInterface
     {
         $classType = Framework::isCli() ? 'Command' : 'Controller';
         $target = $this->request()->getTarget();
@@ -55,8 +55,8 @@ class Application extends \WebServCo\Framework\AbstractApplication
             $this->request()->getArgs()
         );
 
-        $class = isset($route[0]) ? strval($route[0]) : null;
-        $method = isset($route[1]) ? strval($route[1]) : null;
+        $class = isset($route[0]) ? strval($route[0]): null;
+        $method = isset($route[1]) ? strval($route[1]): null;
         $args = isset($route[2]) ? $route[2] : [];
         if (!is_array($args)) {
             $args = [];
@@ -97,7 +97,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
      *
      * This method is also registered as a shutdown handler.
      */
-    final public function shutdown(\Throwable $exception = null, bool $manual = false, int $statusCode = 0) : void
+    final public function shutdown(\Throwable $exception = null, bool $manual = false, int $statusCode = 0): void
     {
         $hasError = $this->handleErrors($exception);
         if ($hasError) {

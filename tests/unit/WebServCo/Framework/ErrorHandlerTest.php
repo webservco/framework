@@ -10,7 +10,7 @@ final class ErrorHandlerTest extends TestCase
     /**
      * @test
      */
-    public function setReturnsTrue() : void
+    public function setReturnsTrue(): void
     {
         $this->assertTrue(ErrorHandler::set());
     }
@@ -18,7 +18,7 @@ final class ErrorHandlerTest extends TestCase
     /**
      * @test
      */
-    public function restoreReturnsTrue() : void
+    public function restoreReturnsTrue(): void
     {
         $this->assertTrue(ErrorHandler::restore());
     }
@@ -26,7 +26,7 @@ final class ErrorHandlerTest extends TestCase
     /**
      * @test
      */
-    public function throwsErrorExceptionWorks() : void
+    public function throwsErrorExceptionWorks(): void
     {
         $this->expectException(\ErrorException::class);
         ErrorHandler::throwErrorException(256, 'Custom error message', 'foo/bar.php', 13);

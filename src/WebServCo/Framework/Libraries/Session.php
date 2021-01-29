@@ -15,7 +15,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
      * @param mixed $data
      * @return bool
      */
-    public function add($setting, $data) : bool
+    public function add($setting, $data): bool
     {
         $this->checkSession();
 
@@ -33,12 +33,12 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function clear($setting) : bool
+    public function clear($setting): bool
     {
         return $this->set($setting, null);
     }
 
-    public function destroy() : bool
+    public function destroy(): bool
     {
         $_SESSION = [];
         $cookie = \WebServCo\Framework\Framework::library('Cookie');
@@ -80,7 +80,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function has($setting) : bool
+    public function has($setting): bool
     {
         $this->checkSession();
 
@@ -90,7 +90,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         );
     }
 
-    public function regenerate() : bool
+    public function regenerate(): bool
     {
         return session_regenerate_id(true);
     }
@@ -101,7 +101,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function remove($setting) : bool
+    public function remove($setting): bool
     {
         $this->checkSession();
 
@@ -120,7 +120,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @return bool
      */
-    public function set($setting, $value) : bool
+    public function set($setting, $value): bool
     {
         $this->checkSession();
 
@@ -132,7 +132,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    public function start(string $storagePath = '') : bool
+    public function start(string $storagePath = ''): bool
     {
         if (\WebServCo\Framework\Framework::isCli()) {
             throw new SessionException('Not starting session in CLI mode.');
@@ -201,7 +201,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    protected function checkSession() : bool
+    protected function checkSession(): bool
     {
         if (session_status() === \PHP_SESSION_NONE) {
             throw new SessionException(
@@ -211,7 +211,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         return true;
     }
 
-    protected function setStoragePath(string $storagePath) : bool
+    protected function setStoragePath(string $storagePath): bool
     {
         if (empty($storagePath)) {
             return false;

@@ -10,7 +10,7 @@ class RequestHelper extends AbstractHelper
     * @param array<int,string> $required
     * @return Request
     */
-    public static function init(array $data, array $required = []) : Request
+    public static function init(array $data, array $required = []): Request
     {
         parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 

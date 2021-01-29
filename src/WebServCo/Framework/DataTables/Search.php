@@ -12,7 +12,7 @@ class Search
         $this->regex = $regex;
     }
 
-    public function getValue() : string
+    public function getValue(): string
     {
         return $this->value;
     }

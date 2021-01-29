@@ -16,7 +16,7 @@ class Data implements \WebServCo\Framework\Interfaces\JsonInterface
         $this->data = $data;
     }
 
-    public function toJson() : string
+    public function toJson(): string
     {
         return (string) json_encode($this->data);
     }

@@ -3,19 +3,19 @@ namespace WebServCo\Framework\Interfaces;
 
 interface HttpClientInterface
 {
-    public function retrieve(string $url) : \WebServCo\Framework\Http\Response;
+    public function retrieve(string $url): \WebServCo\Framework\Http\Response;
 
-    public function setDebug(bool $debug) : bool;
+    public function setDebug(bool $debug): bool;
 
-    public function setMethod(string $method) : bool;
+    public function setMethod(string $method): bool;
 
-    public function setRequestContentType(string $contentType) : bool;
+    public function setRequestContentType(string $contentType): bool;
 
     /**
     * @param array<mixed>|string $data
     * @return bool
     */
-    public function setRequestData($data) : bool;
+    public function setRequestData($data): bool;
 
-    public function setRequestHeader(string $name, string $value) : bool;
+    public function setRequestHeader(string $name, string $value): bool;
 }

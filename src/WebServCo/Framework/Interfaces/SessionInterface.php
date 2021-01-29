@@ -10,7 +10,7 @@ interface SessionInterface
      * @param mixed $data
      * @return bool
      */
-    public function add($setting, $data) : bool;
+    public function add($setting, $data): bool;
 
     /**
      * @param mixed $setting Can be an array, a string,
@@ -18,9 +18,9 @@ interface SessionInterface
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function clear($setting) : bool;
+    public function clear($setting): bool;
 
-    public function destroy() : bool;
+    public function destroy(): bool;
 
     /**
      * @param mixed $setting Can be an array, a string,
@@ -37,9 +37,9 @@ interface SessionInterface
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function has($setting) : bool;
+    public function has($setting): bool;
 
-    public function regenerate() : bool;
+    public function regenerate(): bool;
 
 
     /**
@@ -48,7 +48,7 @@ interface SessionInterface
      *                          (eg 'app/path/project').
      * @return bool
      */
-    public function remove($setting) : bool;
+    public function remove($setting): bool;
 
     /**
      * @param mixed $setting Can be an array, a string,
@@ -58,7 +58,7 @@ interface SessionInterface
      *
      * @return bool
      */
-    public function set($setting, $value) : bool;
+    public function set($setting, $value): bool;
 
-    public function start(string $storagePath = '') : bool;
+    public function start(string $storagePath = ''): bool;
 }

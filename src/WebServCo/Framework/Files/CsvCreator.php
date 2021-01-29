@@ -21,7 +21,7 @@ final class CsvCreator
     * @param bool $addHeader
     * @return CsvFile
     */
-    public function getCsvFile(string $fileName, array $data, bool $addHeader = true) : CsvFile
+    public function getCsvFile(string $fileName, array $data, bool $addHeader = true): CsvFile
     {
         if (empty($data)) {
             throw new ApplicationException('Empty data.');
@@ -35,7 +35,7 @@ final class CsvCreator
     * @param bool $addHeader
     * @return string
     */
-    public function getCsvData(array $data, bool $addHeader = true) : string
+    public function getCsvData(array $data, bool $addHeader = true): string
     {
         if (empty($data)) {
             return '';

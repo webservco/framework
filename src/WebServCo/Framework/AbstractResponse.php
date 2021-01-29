@@ -7,17 +7,17 @@ abstract class AbstractResponse
 
     protected int $statusCode;
 
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getStatus() : int
+    public function getStatus(): int
     {
         return $this->statusCode;
     }
 
-    public function setContent(string $content) : bool
+    public function setContent(string $content): bool
     {
         $this->content = $content;
         return true;

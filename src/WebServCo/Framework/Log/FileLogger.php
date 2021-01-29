@@ -33,12 +33,12 @@ class FileLogger extends AbstractLogger implements
         $this->requestInterface = $requestInterface;
     }
 
-    public function clear() : bool
+    public function clear(): bool
     {
         return (bool) file_put_contents($this->logPath, null);
     }
 
-    public function getLogDirectory() : string
+    public function getLogDirectory(): string
     {
         return $this->logDir;
     }
@@ -49,7 +49,7 @@ class FileLogger extends AbstractLogger implements
     * @param mixed $context
     * @return bool
     */
-    public function log(string $level, string $message, $context = null) : bool
+    public function log(string $level, string $message, $context = null): bool
     {
         $dateTime = new \DateTime();
         $id = $dateTime->format('Ymd.His.u');

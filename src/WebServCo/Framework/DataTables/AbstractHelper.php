@@ -8,7 +8,7 @@ abstract class AbstractHelper
     * @param array<int,string> $required
     * @return bool
     */
-    public static function validate(array $data, array $required = []) : bool
+    public static function validate(array $data, array $required = []): bool
     {
         if (!is_array($data)) {
             throw new \InvalidArgumentException('Data is not an array.');

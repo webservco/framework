@@ -14,7 +14,7 @@ class App extends Application
      * @param array<string,mixed> $errorInfo
      * @return bool
      */
-    protected function haltCli(array $errorInfo = []) : bool
+    protected function haltCli(array $errorInfo = []): bool
     {
         $this->logError($errorInfo, true);
         return parent::haltCli($errorInfo);
@@ -26,7 +26,7 @@ class App extends Application
      * @param array<string,mixed> $errorInfo
      * @return bool
      */
-    protected function haltHttp(array $errorInfo = []) : bool
+    protected function haltHttp(array $errorInfo = []): bool
     {
         $this->logError($errorInfo, false);
         return parent::haltHttp($errorInfo);
@@ -37,7 +37,7 @@ class App extends Application
     * @param bool $isCli
     * @return bool
     */
-    protected function logError(array $errorInfo, bool $isCli = false) : bool
+    protected function logError(array $errorInfo, bool $isCli = false): bool
     {
         $logger = new \WebServCo\Framework\Log\FileLogger(
             sprintf('error%s', $isCli ? 'CLI' : ''),

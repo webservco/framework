@@ -10,7 +10,7 @@ class ApplicationException extends \Exception
         parent::__construct($message, $code, $previous);
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf("%s: [%s]: %s\n", __CLASS__, $this->code, $this->message);
     }

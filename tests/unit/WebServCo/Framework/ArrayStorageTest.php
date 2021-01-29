@@ -13,7 +13,7 @@ final class ArrayStorageTest extends TestCase
     */
     private array $originalArray;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->originalArray = [
             'key' => 'value',
@@ -30,7 +30,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWithNonExistingTripleSettingThrowsException() : void
+    public function unsetWithNonExistingTripleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         $setting = sprintf('foo%1$snotBar%1$sbaz', S::DIVIDER);
@@ -43,7 +43,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWithNonExistingDoubleSettingThrowsException() : void
+    public function unsetWithNonExistingDoubleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         $setting = sprintf('foo%1$snotBar', S::DIVIDER);
@@ -56,7 +56,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWithNonExistingSimpleSettingThrowsException() : void
+    public function unsetWithNonExistingSimpleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
         ArrayStorage::remove(
@@ -68,7 +68,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWorksWithTripleSetting() : void
+    public function unsetWorksWithTripleSetting(): void
     {
         $setting = sprintf('foo%1$sbar%1$sbaz', S::DIVIDER);
         $expected = [
@@ -86,7 +86,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWorksWithDoubleSetting() : void
+    public function unsetWorksWithDoubleSetting(): void
     {
         $setting = sprintf('foo%1$sbar', S::DIVIDER);
         $expected = [
@@ -102,7 +102,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function unsetWorksWithSimpleSetting() : void
+    public function unsetWorksWithSimpleSetting(): void
     {
         $expected = [
             'key' => 'value',
@@ -116,7 +116,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function setEmptyWorksWithTripleSetting() : void
+    public function setEmptyWorksWithTripleSetting(): void
     {
         $setting = sprintf('foo%1$sbar%1$sbaz', S::DIVIDER);
         $expected = [
@@ -137,7 +137,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function setEmptyWorksWithDoubleSetting() : void
+    public function setEmptyWorksWithDoubleSetting(): void
     {
         $setting = sprintf('foo%1$sbar', S::DIVIDER);
         $expected = [
@@ -156,7 +156,7 @@ final class ArrayStorageTest extends TestCase
     /**
      * @test
      */
-    public function setEmptyWorksWithSimpleSetting() : void
+    public function setEmptyWorksWithSimpleSetting(): void
     {
         $expected = [
             'key' => 'value',

@@ -22,7 +22,7 @@ final class ConfigInstanceTest extends TestCase
 
     private string $value = 'value';
 
-    public static function setUpBeforeClass() : void
+    public static function setUpBeforeClass(): void
     {
         $pathProject = '/tmp/webservco/project/';
         $pathConfig = "{$pathProject}config/dev/";
@@ -50,7 +50,7 @@ final class ConfigInstanceTest extends TestCase
         self::$pathProject = $pathProject;
     }
 
-    public static function tearDownAfterClass() : void
+    public static function tearDownAfterClass(): void
     {
         $pathBase = '/tmp/webservco/';
         $it = new \RecursiveDirectoryIterator(
@@ -71,7 +71,7 @@ final class ConfigInstanceTest extends TestCase
         rmdir($pathBase);
     }
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->object = new Config();
     }
@@ -79,7 +79,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually() : void
+    public function canBeInstantiatedIndividually(): void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Config',
@@ -90,7 +90,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function nullSettingReturnsFalse() : void
+    public function nullSettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->set(null, null));
     }
@@ -98,7 +98,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function falseSettingReturnsFalse() : void
+    public function falseSettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->set(false, null));
     }
@@ -106,7 +106,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function emptySettingReturnsFalse() : void
+    public function emptySettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->set('', null));
     }
@@ -114,7 +114,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function validSettingReturnsTrue() : void
+    public function validSettingReturnsTrue(): void
     {
         $this->assertTrue($this->object->set('setting', 'value'));
     }
@@ -122,7 +122,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingNullValueReturnsTrue() : void
+    public function settingNullValueReturnsTrue(): void
     {
         $this->assertTrue($this->object->set('key', null));
     }
@@ -130,7 +130,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingFalseValueReturnsTrue() : void
+    public function settingFalseValueReturnsTrue(): void
     {
         $this->assertTrue($this->object->set('key', false));
     }
@@ -138,7 +138,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingEmptyValueReturnsTrue() : void
+    public function settingEmptyValueReturnsTrue(): void
     {
         $this->assertTrue($this->object->set('key', ''));
     }
@@ -146,7 +146,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingNonExistentSettingReturnsFalse() : void
+    public function gettingNonExistentSettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->get('noexist'));
     }
@@ -154,7 +154,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingNullSettingReturnsFalse() : void
+    public function gettingNullSettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->get(null));
     }
@@ -162,7 +162,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingFalseSettingReturnsFalse() : void
+    public function gettingFalseSettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->get(false));
     }
@@ -170,7 +170,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingEmptySettingReturnsFalse() : void
+    public function gettingEmptySettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->get(''));
     }
@@ -178,7 +178,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingEmptyArraySettingReturnsFalse() : void
+    public function gettingEmptyArraySettingReturnsFalse(): void
     {
         $this->assertFalse($this->object->get([]));
     }
@@ -186,7 +186,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingSimpleStringSettingWorks() : void
+    public function storingAndRetrievingSimpleStringSettingWorks(): void
     {
         $this->assertTrue($this->object->set($this->settingSimpleString, $this->value));
         $this->assertEquals($this->value, $this->object->get($this->settingSimpleString));
@@ -195,7 +195,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingArraySettingWorks() : void
+    public function storingAndRetrievingArraySettingWorks(): void
     {
         $this->assertTrue($this->object->set($this->settingArray, $this->value));
         $this->assertEquals($this->value, $this->object->get($this->settingArray));
@@ -204,7 +204,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function storingAndRetrievingSpecialStringSettingWorks() : void
+    public function storingAndRetrievingSpecialStringSettingWorks(): void
     {
         $this->assertTrue($this->object->set($this->settingSpecialString, $this->value));
         $this->assertEquals($this->value, $this->object->get($this->settingSpecialString));
@@ -213,7 +213,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingsTreeIsNoOverwrittenOnSpecialStringSetting() : void
+    public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
         $this->assertTrue($this->object->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
         $this->assertTrue($this->object->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
@@ -224,7 +224,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting() : void
+    public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
         $this->assertTrue($this->object->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
         $this->assertTrue($this->object->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
@@ -236,7 +236,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingSameKeyTwiceOverwritesTheFirst() : void
+    public function settingSameKeyTwiceOverwritesTheFirst(): void
     {
         $this->assertTrue($this->object->set('foo', 'old value'));
         $this->assertTrue($this->object->set('foo', 'new value'));
@@ -246,7 +246,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function settingSameMultilevelKeyTwiceOverwritesTheFirst() : void
+    public function settingSameMultilevelKeyTwiceOverwritesTheFirst(): void
     {
         $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
         $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
@@ -256,7 +256,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function addReturnsTrue() : void
+    public function addReturnsTrue(): void
     {
         $this->assertTrue($this->object->add('add', 'dda'));
     }
@@ -264,7 +264,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function addAppendsDataInsteadOfOverwriting() : void
+    public function addAppendsDataInsteadOfOverwriting(): void
     {
 
         $config = [
@@ -293,7 +293,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function loadReturnsEmptyArrayInvalidPath() : void
+    public function loadReturnsEmptyArrayInvalidPath(): void
     {
         $this->assertEquals([], $this->object->load('foo', '/foo/bar'));
     }
@@ -301,7 +301,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function dummyConfigFileExists() : void
+    public function dummyConfigFileExists(): void
     {
         $this->assertTrue(is_readable(self::$pathProject . 'config/dev/foo.php'));
     }
@@ -310,7 +310,7 @@ final class ConfigInstanceTest extends TestCase
      * @test
      * @depends dummyConfigFileExists
      */
-    public function loadReturnsArrayOnValidPath() : void
+    public function loadReturnsArrayOnValidPath(): void
     {
         $this->assertIsArray($this->object->load('foo', self::$pathProject));
     }
@@ -319,7 +319,7 @@ final class ConfigInstanceTest extends TestCase
      * @test
      * @depends loadReturnsArrayOnValidPath
      */
-    public function addDataFromFileWorks() : void
+    public function addDataFromFileWorks(): void
     {
         $data = $this->object->load('foo', self::$pathProject);
         $this->assertTrue($this->object->add('foo', $data));
@@ -329,7 +329,7 @@ final class ConfigInstanceTest extends TestCase
      * @test
      * @depends loadReturnsArrayOnValidPath
      */
-    public function loadAppendsDataInsteadOfOverwriting() : void
+    public function loadAppendsDataInsteadOfOverwriting(): void
     {
         $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
         $data = $this->object->load('foo', self::$pathProject);
@@ -340,7 +340,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function setEnvReturnsTrue() : void
+    public function setEnvReturnsTrue(): void
     {
         $this->assertTrue($this->object->setEnv('dev'));
     }
@@ -348,7 +348,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function setEnvDefaultsToDevOnInvalidValue() : void
+    public function setEnvDefaultsToDevOnInvalidValue(): void
     {
         $this->object->setEnv('noexist');
         $this->assertEquals('dev', $this->object->getEnv());
@@ -357,7 +357,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getEnvReturnsString() : void
+    public function getEnvReturnsString(): void
     {
         $this->assertIsString($this->object->getEnv());
     }
@@ -365,7 +365,7 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getEnvDefaultsToDev() : void
+    public function getEnvDefaultsToDev(): void
     {
         $config = new \WebServCo\Framework\Libraries\Config;
         $this->assertEquals('dev', $config->getEnv());

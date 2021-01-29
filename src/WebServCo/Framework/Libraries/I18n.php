@@ -27,7 +27,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         $this->domain = $this->setting('domain', 'messages');
     }
 
-    public function getLanguage() : string
+    public function getLanguage(): string
     {
         return $this->lang;
     }
@@ -35,17 +35,17 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     /**
     * @return array<string, array<string,string>>
     */
-    public function getLanguages() : array
+    public function getLanguages(): array
     {
         return $this->langs;
     }
 
-    public function getLocale() : string
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
-    public function init(string $projectPath, string $lang = null) : bool
+    public function init(string $projectPath, string $lang = null): bool
     {
         $this->translationsPath = $projectPath . 'resources/translations';
 
@@ -59,12 +59,12 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     * After calling init(), a custom language/domain can be set by calling setLanguage with full arguments.
     * Call this function afterwards to restore the original language/domain.
     */
-    public function reset() : bool
+    public function reset(): bool
     {
         return $this->setLanguage($this->lang, $this->translationsPath);
     }
 
-    public function setLanguage(string $lang, string $translationsPath = null) : bool
+    public function setLanguage(string $lang, string $translationsPath = null): bool
     {
         if (!array_key_exists($lang, $this->langs)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
@@ -81,7 +81,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return true;
     }
 
-    protected function setDomain(string $domain, string $directory) : bool
+    protected function setDomain(string $domain, string $directory): bool
     {
         bindtextdomain($domain, $directory);
         textdomain($domain);
@@ -90,7 +90,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return true;
     }
 
-    protected function setLocale(string $locale) : bool
+    protected function setLocale(string $locale): bool
     {
         /**
          * Rumored to allow using a locale regardless of server locale setup.

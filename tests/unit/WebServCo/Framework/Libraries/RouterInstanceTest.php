@@ -13,7 +13,7 @@ final class RouterInstanceTest extends TestCase
 
     private Router $object;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->cfg = [
             'default_route' => ['Content', 'home', ['foo', 'bar']],
@@ -28,7 +28,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually() : void
+    public function canBeInstantiatedIndividually(): void
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Router',
@@ -39,7 +39,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnEmptyData() : void
+    public function getRouteReturnsArrayOnEmptyData(): void
     {
         $route = $this->object->getRoute('', []);
         $this->assertIsArray($route);
@@ -49,7 +49,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnNullData() : void
+    public function getRouteReturnsArrayOnNullData(): void
     {
         $route = $this->object->getRoute('', []);
         $this->assertIsArray($route);
@@ -59,7 +59,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnValidData() : void
+    public function getRouteReturnsArrayOnValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
@@ -69,7 +69,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsValidData() : void
+    public function getRouteReturnsValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
@@ -82,7 +82,7 @@ final class RouterInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getRouteReturnsValidDataWithCustomRoutes() : void
+    public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);
         $this->assertIsArray($route);
