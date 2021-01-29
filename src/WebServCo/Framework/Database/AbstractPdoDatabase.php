@@ -76,12 +76,12 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             if (is_array($item)) {
                 foreach ($item as $v) {
                     $this->validateParam($v);
-                    $this->stmt->bindValue($i, $v, $this->getDataType($v));
+                    $this->stmt->bindValue($i, $v, $this->getDataType((string) $v));
                     $i++;
                 }
             } else {
                 $this->validateParam($item);
-                $this->stmt->bindValue($i, $item, $this->getDataType($item));
+                $this->stmt->bindValue($i, $item, $this->getDataType((string) $item));
                 $i++;
             }
         }
