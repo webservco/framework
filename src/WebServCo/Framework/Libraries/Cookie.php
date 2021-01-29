@@ -32,29 +32,20 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         bool $httponly = false,
         string $samesite = 'Lax'
     ): bool {
-        if (PHP_VERSION_ID < 70300) {
-            return setcookie(
-                $name,
-                \WebServCo\Framework\RequestUtils::sanitizeString($value),
-                $expires,
-                sprintf('%s; SameSite=%s', $path, $samesite),
-                $domain,
-                $secure,
-                $httponly
-            );
-        } else {
-            return setcookie(
-                $name,
-                \WebServCo\Framework\RequestUtils::sanitizeString($value),
-                [
-                    'expires' => $expires,
-                    'path' => $path,
-                    'domain' => $domain,
-                    'secure' => $secure,
-                    'httponly' => $httponly,
-                    'samesite' => $samesite,
-                ]
-            );
+        if (!in_array($samesite, ['Lax'])) {
+            throw new \InvalidArgumentException('Invalid argument: samesite.');
         }
+        return setcookie(
+            $name,
+            \WebServCo\Framework\RequestUtils::sanitizeString($value),
+            [
+                'expires' => $expires,
+                'path' => $path,
+                'domain' => $domain,
+                'secure' => $secure,
+                'httponly' => $httponly,
+                'samesite' => $samesite,
+            ]
+        );
     }
 }
