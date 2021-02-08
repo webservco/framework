@@ -36,6 +36,21 @@ interface DatabaseInterface
 
     public function escapeTableName(string $string): string;
 
+    /**
+    * @param string $tableName
+    * @param array<string,float|int|string> $addData
+    * @param array<string,float|int|string> $updateData
+    * @return \PDOStatement
+    */
+    public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement;
+
+    /**
+    * @param string $tableName
+    * @param array<string, float|int|string> $data
+    * @return \PDOStatement
+    */
+    public function insertIgnore(string $tableName, array $data = []): \PDOStatement;
+
     public function lastInsertId(): string;
 
     public function numRows(): int;
@@ -46,6 +61,13 @@ interface DatabaseInterface
     * @return \PDOStatement
     */
     public function query(string $query, array $params = []);
+
+    /**
+    * @param string $tableName
+    * @param array<string, float|int|string> $data
+    * @return \PDOStatement
+    */
+    public function replace(string $tableName, array $data = []): \PDOStatement;
 
     /**
     * @param array<int,array<int,mixed>> $queries
