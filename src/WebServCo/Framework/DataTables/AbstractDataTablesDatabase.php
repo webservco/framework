@@ -13,12 +13,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected DatabaseInterface $db;
 
     /**
-    * @param array<array<int,mixed>|string> $searchQueryPart
-    * @param string $orderQueryPart,
-    * @param string $limitQuery
+    * @param string $searchPart
+    * @param string $orderPart,
+    * @param string $limitPart
     * @return string
     */
-    abstract protected function getQuery(array $searchQueryPart, string $orderQueryPart, string $limitQuery): string;
+    abstract protected function getQuery(string $searchPart, string $orderPart, string $limitPart): string;
 
     abstract protected function getRecordsTotalQuery(): string;
 
@@ -30,30 +30,38 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     public function getResponse(Request $request): Response
     {
         $params = [];
-        $limitQuery = '';
+        $limitPart = '';
 
         $columnArrayObject = $request->getColumns();
-        list($searchQueryPart, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
+        list($searchPart, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
+
+        if (!is_string($searchPart)) {
+            throw new \InvalidArgumentException('"searchQueryPart" is not a string');
+        }
+        if (!is_array($searchParams)) {
+            throw new \InvalidArgumentException('"searchParams" is not an array');
+        }
+
         $params = array_merge($params, $searchParams);
 
         $orderArrayObject = $request->getOrder();
-        $orderQueryPart = $this->getOrderQueryPart($columnArrayObject, $orderArrayObject);
+        $orderPart = $this->getOrderQueryPart($columnArrayObject, $orderArrayObject);
 
         $length = $request->getLength();
         if (-1 != $length) {
-            $limitQuery = 'LIMIT ?, ?';
+            $limitPart = 'LIMIT ?, ?';
             $params[] = $request->getStart();
             $params[] = $length;
         }
-
-        $query = $this->getQuery($searchQueryPart, $orderQueryPart, $limitQuery);
+        $query = $this->getQuery($searchPart, $orderPart, $limitPart);
         $pdoStatement = $this->db->query($query, $params);
 
         $data = $this->getData($columnArrayObject, $pdoStatement);
 
         $recordsFiltered = $this->getRecordsFiltered();
 
-        $recordsTotal = $this->getRecordsTotal($recordsFiltered, $searchQueryPart);
+
+        $recordsTotal = $this->getRecordsTotal($recordsFiltered, $searchPart);
 
         return new Response(
             $request->getDraw(),
@@ -141,14 +149,9 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         return (int) $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
     }
 
-    /**
-    * @param int $recordsFiltered
-    * @param array<array<int,mixed>|string> $searchQueryPart
-    * @return int
-    */
-    protected function getRecordsTotal(int $recordsFiltered, array $searchQueryPart): int
+    protected function getRecordsTotal(int $recordsFiltered, string $searchPart): int
     {
-        if (empty($searchQueryPart)) {
+        if (empty($searchPart)) {
             return $recordsFiltered;
         }
         return (int) $this->db->getColumn( // grand total - query without the search, order, limits
@@ -159,12 +162,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     /**
     * @param ArrayObjectInterface $columnArrayObject
-    * @return array<mixed>
+    * @return array<int,array<int,string>|string>
     */
     protected function getSearchQueryPart(ArrayObjectInterface $columnArrayObject): array
     {
         $this->assertColumnArrayObject($columnArrayObject);
-        $query = null;
+        $query = '';
         $params = [];
         foreach ($columnArrayObject as $column) {
             if ($column->getSearchable()) {
