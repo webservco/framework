@@ -43,8 +43,8 @@ trait DatabaseTrait
 
     /**
     * @param string $tableName
-    * @param array<string, float|int|string> $addData
-    * @param array<string, float|int|string> $updateData
+    * @param array<string,float|int|string> $addData
+    * @param array<string,float|int|string> $updateData
     * @return \PDOStatement
     */
     final public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement
