@@ -4,55 +4,55 @@ namespace WebServCo\Framework;
 
 final class RequestUtils
 {
+
     /**
-    * @param string $string
     * @return array<int,string>
     */
     public static function explode(string $string): array
     {
-        if (false !== strpos($string, '?')) {
-            return explode('?', $string, 2);
-        } elseif (false !== strpos($string, '&')) {
-            return explode('&', $string, 2);
+        if (false !== \strpos($string, '?')) {
+            return \explode('?', $string, 2);
+        }
+
+        if (false !== \strpos($string, '&')) {
+            return \explode('&', $string, 2);
         }
         return [$string, ''];
     }
 
     /**
-    * @param string $string
     * @return array<string, string|null>
     */
     public static function format(string $string): array
     {
         $data = [];
         $parts = self::split($string);
-        $num = count($parts);
+        $num = \count($parts);
         for ($position = 0; $position < $num; $position +=2) {
-            $data[$parts[$position]] = $position == $num -1 ? null :
+            $data[$parts[$position]] = $position === $num -1
+                ? null
+                :
             $parts[$position + 1];
         }
         return $data;
     }
 
     /**
-    * @param string $string
-    * @param string $path
-    * @param string $filename
     * @param array<int,string> $suffixes
     * @return array<int,string>
     */
     public static function parse(string $string, string $path, string $filename, array $suffixes): array
     {
-        $pathLen = strlen($path);
-        if (0 === strncasecmp($path, $string, $pathLen)) {
-            $string = substr($string, $pathLen);
+        $pathLen = \strlen($path);
+        if (0 === \strncasecmp($path, $string, $pathLen)) {
+            $string = \substr($string, $pathLen);
         }
-        $filenameLen = strlen($filename);
-        if (0 === strncasecmp($filename, $string, $filenameLen)) {
-            $string = substr($string, $filenameLen);
+        $filenameLen = \strlen($filename);
+        if (0 === \strncasecmp($filename, $string, $filenameLen)) {
+            $string = \substr($string, $filenameLen);
         }
-        list($target, $query) = self::explode($string);
-        list($target, $suffix) = self::removeSuffix(
+        [$target, $query] = self::explode($string);
+        [$target, $suffix] = self::removeSuffix(
             self::transform($target),
             $suffixes
         );
@@ -61,19 +61,18 @@ final class RequestUtils
     }
 
     /**
-    * @param string $string
     * @param array<int,string> $suffixes
     * @return array<int,string>
     */
     public static function removeSuffix(string $string, array $suffixes = []): array
     {
-        if (is_array($suffixes)) {
-            $stringRev = strrev($string);
+        if (\is_array($suffixes)) {
+            $stringRev = \strrev($string);
             foreach ($suffixes as $suffix) {
-                $suffixRev = strrev($suffix);
-                $suffixLen = strlen($suffix);
-                if (0 === strncasecmp($suffixRev, $stringRev, $suffixLen)) {
-                    return [strrev(substr($stringRev, $suffixLen)), $suffix];
+                $suffixRev = \strrev($suffix);
+                $suffixLen = \strlen($suffix);
+                if (0 === \strncasecmp($suffixRev, $stringRev, $suffixLen)) {
+                    return [\strrev(\substr($stringRev, $suffixLen)), $suffix];
                 }
             }
         }
@@ -83,7 +82,7 @@ final class RequestUtils
     public static function sanitizeString(string $string): string
     {
         // Strip tags, optionally strip or encode special characters.
-        $string = filter_var($string, FILTER_SANITIZE_STRING);
+        $string = \filter_var($string, \FILTER_SANITIZE_STRING);
         $unwanted = [
             "`",
             //"'",
@@ -111,26 +110,25 @@ final class RequestUtils
             //"}",
             //"(",
             //")",
-            "\$"
+            "\$",
         ];
-        $string = str_replace($unwanted, '', (string) $string);
+        $string = \str_replace($unwanted, '', (string) $string);
         return $string;
     }
 
     /**
-    * @param string $string
     * @return array<int,string>
     */
     public static function split(string $string): array
     {
-        $parts = explode('/', $string);
-        $parts = array_map('urldecode', $parts);
-        return array_diff($parts, ['']);
+        $parts = \explode('/', $string);
+        $parts = \array_map('urldecode', $parts);
+        return \array_diff($parts, ['']);
     }
 
     public static function transform(string $string): string
     {
-        $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
-        return trim($string, ' /');
+        $string = \str_replace(['?', '&', '=', '//'], ['', '/', '/', '/0/'], $string);
+        return \trim($string, ' /');
     }
 }
