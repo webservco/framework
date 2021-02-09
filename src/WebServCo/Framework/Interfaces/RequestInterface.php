@@ -4,14 +4,14 @@ namespace WebServCo\Framework\Interfaces;
 
 interface RequestInterface
 {
+
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
-     * @param string $key
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function data($key, $defaultValue = false);
+    public function data(string $key, $defaultValue = false);
 
     /**
     * @return array<string,string>
@@ -55,7 +55,6 @@ interface RequestInterface
 
     /**
     * @param array<int,string> $removeParameters
-    * @return string
     */
     public function getUrl(array $removeParameters = []): string;
 

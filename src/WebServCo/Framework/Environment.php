@@ -4,6 +4,7 @@ namespace WebServCo\Framework;
 
 final class Environment
 {
+
     const DEV = 'dev';
     const TEST = 'test';
     const PROD = 'prod';

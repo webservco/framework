@@ -4,12 +4,12 @@ namespace WebServCo\Framework\Interfaces;
 
 interface SessionInterface
 {
+
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $data
-     * @return bool
      */
     public function add($setting, $data): bool;
 
@@ -17,7 +17,6 @@ interface SessionInterface
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
-     * @return bool
      */
     public function clear($setting): bool;
 
@@ -36,18 +35,15 @@ interface SessionInterface
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
-     * @return bool
      */
     public function has($setting): bool;
 
     public function regenerate(): bool;
 
-
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
-     * @return bool
      */
     public function remove($setting): bool;
 
@@ -56,8 +52,6 @@ interface SessionInterface
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
-     * @return bool
      */
     public function set($setting, $value): bool;
 

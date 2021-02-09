@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 
 interface ResponseInterface
 {
+
     public function setStatus(int $statusCode): bool;
 
     public function setContent(string $content): bool;

@@ -6,20 +6,6 @@ use WebServCo\Framework\Exceptions\ArrayStorageException;
 
 final class ArrayStorage
 {
-    /**
-     * Parse the setting key to make sure it's a simple string
-     * or an array.
-     * @param mixed $setting
-     * @return mixed
-     */
-    private static function parseSetting($setting)
-    {
-        if (is_string($setting) &&
-        false !== strpos($setting, \WebServCo\Framework\Settings::DIVIDER)) {
-            return explode(\WebServCo\Framework\Settings::DIVIDER, $setting);
-        }
-        return $setting;
-    }
 
     /**
      * Add data to an existing key of a storage array.
@@ -32,19 +18,19 @@ final class ArrayStorage
      * @return array<mixed>
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function add($storage, $setting, $data): array
+    public static function add(array $storage, $setting, $data): array
     {
-        if (!is_array($storage) || empty($setting)) {
+        if (!\is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified.');
         }
         $setting = self::parseSetting($setting);
         $newData = [$data];
         if (self::has($storage, $setting)) {
             $existingData = self::get($storage, $setting);
-            if (!is_array($existingData)) {
+            if (!\is_array($existingData)) {
                 throw new ArrayStorageException('Invalid existing data type.');
             }
-            $newData = array_merge($existingData, $newData);
+            $newData = \array_merge($existingData, $newData);
         }
         return self::set($storage, $setting, $newData);
     }
@@ -57,20 +43,17 @@ final class ArrayStorage
      * @return array<mixed>
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function append($storage, $data = []): array
+    public static function append(array $storage, $data = []): array
     {
-        if (!is_array($storage) || !is_array($data)) {
+        if (!\is_array($storage) || !\is_array($data)) {
             throw new ArrayStorageException('Invalid parameters specified.');
         }
         foreach ($data as $setting => $value) {
-            if (array_key_exists($setting, $storage) &&
-                is_array($storage[$setting]) &&
-                is_array($value)
-            ) {
-                $storage[$setting] = self::append($storage[$setting], $value);
-            } else {
-                $storage[$setting] = $value;
-            }
+            $storage[$setting] = \array_key_exists($setting, $storage) &&
+                \is_array($storage[$setting]) &&
+                \is_array($value)
+                 ? self::append($storage[$setting], $value)
+                 : $value;
         }
         return $storage;
     }
@@ -89,37 +72,39 @@ final class ArrayStorage
     {
         $setting = self::parseSetting($setting);
 
-        if (!isset($setting) || is_bool($setting) || empty($storage)) {
+        if (!isset($setting) || \is_bool($setting) || empty($storage)) {
             // use "!isset" for `$setting` and not "empty" (can be 0)
             // `is_bool` check: handle wrong $setting type
             //     prevents: "array_key_exists(): The first argument should be either a string or an integer"
             return $defaultValue;
         }
 
-        if (!is_array($storage)) {
+        if (!\is_array($storage)) {
             return $defaultValue;
         }
 
         /**
          * If $setting is an array, process it recursively.
          */
-        if (is_array($setting)) {
+        if (\is_array($setting)) {
             /**
              * Check if we have the first $setting element in the
              * configuration data array.
              */
-            if (array_key_exists(0, $setting) && array_key_exists($setting[0], $storage)) {
+            if (\array_key_exists(0, $setting) && \array_key_exists($setting[0], $storage)) {
                 /**
                  * Remove first element from $setting.
                  */
-                $key = array_shift($setting);
+                $key = \array_shift($setting);
                 /**
                  * At the end of the recursion $setting will be
                  * an empty array. In this case we simply return the
                  * current configuration data.
                  */
                 if (empty($setting)) {
-                    return false !== $storage[$key] ? $storage[$key] : $defaultValue;
+                    return false !== $storage[$key]
+                        ? $storage[$key]
+                        : $defaultValue;
                 }
                 /**
                  * Go down one element in the configuration data
@@ -137,7 +122,7 @@ final class ArrayStorage
         /**
          * If we arrive here, $setting must be a simple string.
          */
-        if (array_key_exists($setting, $storage)) {
+        if (\array_key_exists($setting, $storage)) {
             return $storage[$setting];
         }
 
@@ -162,7 +147,9 @@ final class ArrayStorage
     public static function getElse($storage, $setting = null, $defaultValue = false)
     {
         $data = self::get($storage, $setting, $defaultValue);
-        return !empty($data) ? $data : $defaultValue;
+        return !empty($data)
+            ? $data
+            : $defaultValue;
     }
 
     /**
@@ -170,7 +157,6 @@ final class ArrayStorage
     * @param mixed $setting Can be an array, a string,
     *                          or a special formatted string
     *                          (eg 'app/path/project').
-    * @return bool
     */
     public static function has($storage, $setting): bool
     {
@@ -186,13 +172,12 @@ final class ArrayStorage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
-     *
      * @return array<mixed> The updated storage array.
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
-    public static function remove($storage, $setting): array
+    public static function remove(array $storage, $setting): array
     {
-        if (!is_array($storage) || empty($setting)) {
+        if (!\is_array($storage) || empty($setting)) {
             throw new ArrayStorageException('Invalid parameters specified.');
         }
 
@@ -202,15 +187,48 @@ final class ArrayStorage
             throw new ArrayStorageException('Empty setting.');
         }
 
-        if (is_array($setting)) {
+        if (\is_array($setting)) {
             return self::removeByIndex($storage, $setting);
         }
-        if (!array_key_exists($setting, $storage)) {
+        if (!\array_key_exists($setting, $storage)) {
             throw new ArrayStorageException(
-                sprintf('setting "%s" does not exist in storage object.', $setting)
+                \sprintf('setting "%s" does not exist in storage object.', $setting)
             );
         }
         unset($storage[$setting]);
+        return $storage;
+    }
+
+    /**
+     * Sets a value in a storage array.
+     *
+     * @param array<mixed> $storage
+     * @param mixed $setting Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $value The value to be stored.
+     * @return array<mixed> The storage array with new data.
+     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
+     */
+    public static function set(array $storage, $setting, $value): array
+    {
+        if (!\is_array($storage) || empty($setting)) {
+            throw new ArrayStorageException('Invalid parameters specified.');
+        }
+        $setting = self::parseSetting($setting);
+        if (\is_array($setting)) {
+            $reference = &$storage;
+            foreach ($setting as $item) {
+                if (!\is_array($reference)) {
+                    $reference = [];
+                }
+                $reference = &$reference[$item];
+            }
+            $reference = $value;
+            unset($reference);
+            return $storage;
+        }
+        $storage[$setting] = $value;
         return $storage;
     }
 
@@ -229,29 +247,29 @@ final class ArrayStorage
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      *   If the index does not exist within the array.
      */
-    protected static function removeByIndex($array, $indices): array
+    protected static function removeByIndex(array $array, array $indices): array
     {
         // Create a reference to the original array.
         $a = &$array;
         // Count all passed indices, remove one because arrays are zero based.
-        $c = count($indices) - 1;
+        $c = \count($indices) - 1;
         // Iterate over all passed indices.
         for ($i = 0; $i <= $c; ++$i) {
             // Make sure the index to go down for deletion actually exists.
-            if (!array_key_exists($indices[$i], $a)) {
+            if (!\array_key_exists($indices[$i], $a)) {
                 throw new ArrayStorageException(
-                    sprintf('"%s" does not exist in storage object.', $indices[$i])
+                    \sprintf('"%s" does not exist in storage object.', $indices[$i])
                 );
             }
             // This is the target if we reached the last index that was passed.
             if ($i === $c) {
                 unset($a[$indices[$i]]);
-            } elseif (is_array($a[$indices[$i]])) {
+            } elseif (\is_array($a[$indices[$i]])) {
                 // Make sure we have an array to go further down.
                 $a = &$a[$indices[$i]];
             } else {
                 throw new ArrayStorageException(
-                    sprintf('"%s" does not exist in storage object.', $indices[$i])
+                    \sprintf('"%s" does not exist in storage object.', $indices[$i])
                 );
             }
         }
@@ -259,36 +277,17 @@ final class ArrayStorage
     }
 
     /**
-     * Sets a value in a storage array.
+     * Parse the setting key to make sure it's a simple string
+     * or an array.
      *
-     * @param array<mixed> $storage
-     * @param mixed $setting Can be an array, a string,
-     *                          or a special formatted string
-     *                          (eg 'app/path/project').
-     * @param mixed $value The value to be stored.
-     *
-     * @return array<mixed> The storage array with new data.
-     * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
+     * @param mixed $setting
+     * @return mixed
      */
-    public static function set($storage, $setting, $value): array
+    private static function parseSetting($setting)
     {
-        if (!is_array($storage) || empty($setting)) {
-            throw new ArrayStorageException('Invalid parameters specified.');
+        if (\is_string($setting) && false !== \strpos($setting, \WebServCo\Framework\Settings::DIVIDER)) {
+            return \explode(\WebServCo\Framework\Settings::DIVIDER, $setting);
         }
-        $setting = self::parseSetting($setting);
-        if (is_array($setting)) {
-            $reference = &$storage;
-            foreach ($setting as $item) {
-                if (!is_array($reference)) {
-                    $reference = [];
-                }
-                $reference = &$reference[$item];
-            }
-            $reference = $value;
-            unset($reference);
-            return $storage;
-        }
-        $storage[$setting] = $value;
-        return $storage;
+        return $setting;
     }
 }

@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 
 interface I18nInterface
 {
+
     public function getLanguage(): string;
 
     /**
@@ -11,7 +12,7 @@ interface I18nInterface
     */
     public function getLanguages(): array;
 
-    public function init(string $projectPath, string $lang = null): bool;
+    public function init(string $projectPath, ?string $lang = null): bool;
 
-    public function setLanguage(string $lang, string $translationsPath = null): bool;
+    public function setLanguage(string $lang, ?string $translationsPath = null): bool;
 }

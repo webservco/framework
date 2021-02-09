@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 
 interface ConfigInterface
 {
+
     /**
      * Add base setting data.
      *
@@ -12,12 +13,10 @@ interface ConfigInterface
      *
      * @param string $setting Name of setting to load.
      * @param mixed $data Data to add.
-     * @return bool
      */
     public function add(string $setting, $data): bool;
 
     /**
-     *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
@@ -45,17 +44,12 @@ interface ConfigInterface
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
     public function set($setting, $value): bool;
 
     /**
      * Set application environment value.
-     *
-     * @param string $env
-     *
-     * @return bool
      */
     public function setEnv(string $env): bool;
 }

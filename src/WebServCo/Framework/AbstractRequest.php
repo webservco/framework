@@ -4,8 +4,10 @@ namespace WebServCo\Framework;
 
 abstract class AbstractRequest extends \WebServCo\Framework\AbstractLibrary
 {
+
     /**
      * Sanitized _SERVER data.
+     *
      * @var array<string,mixed>
      */
     protected array $server = [];

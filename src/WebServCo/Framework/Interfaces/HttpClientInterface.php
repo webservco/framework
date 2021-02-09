@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Interfaces;
 
 interface HttpClientInterface
 {
+
     public function retrieve(string $url): \WebServCo\Framework\Http\Response;
 
     public function setDebug(bool $debug): bool;
@@ -14,7 +15,6 @@ interface HttpClientInterface
 
     /**
     * @param array<mixed>|string $data
-    * @return bool
     */
     public function setRequestData($data): bool;
 

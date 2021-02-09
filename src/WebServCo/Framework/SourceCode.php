@@ -4,6 +4,7 @@ namespace WebServCo\Framework;
 
 final class SourceCode
 {
+
     const TYPE_XML = 'XML';
 
     protected string $type;
@@ -33,9 +34,9 @@ final class SourceCode
 
     protected function highlightXml(string $data): string
     {
-        $data = htmlentities($data);
-        $data = str_replace('&lt;', '<span style="color: purple">&lt;', $data);
-        $data = str_replace('&gt;', '&gt;</span>', $data);
+        $data = \htmlentities($data);
+        $data = \str_replace('&lt;', '<span style="color: purple">&lt;', $data);
+        $data = \str_replace('&gt;', '&gt;</span>', $data);
         return $data;
     }
 }
