@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Arrays;
 
 abstract class AbstractValidatedClass
 {
+
     /**
     * @return array<int,string>
     */
@@ -14,10 +15,12 @@ abstract class AbstractValidatedClass
     */
     public function __construct(array $data = [])
     {
-        foreach (get_object_vars($this) as $property => $default) {
-            if (array_key_exists($property, $data)) {
-                $this->{$property} = $data[$property];
+        foreach (\get_object_vars($this) as $property => $default) {
+            if (!\array_key_exists($property, $data)) {
+                continue;
             }
+
+            $this->{$property} = $data[$property];
         }
         $this->validate();
     }
@@ -28,7 +31,7 @@ abstract class AbstractValidatedClass
         foreach ($required as $item) {
             if (empty($this->{$item})) {
                 throw new \WebServCo\Framework\Exceptions\Validation\RequiredArgumentException(
-                    sprintf('Empty required parameter: %s', $item)
+                    \sprintf('Empty required parameter: %s', $item)
                 );
             }
         }

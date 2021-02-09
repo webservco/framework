@@ -6,6 +6,7 @@ use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
 class Items
 {
+
     protected ArrayObjectInterface $arrayObject;
 
     public function __construct(ArrayObjectInterface $arrayObject)
@@ -19,9 +20,8 @@ class Items
     }
 
     /**
-    * @param int|null|string $index
+    * @param int|string|null $index
     * @param mixed $item
-    * @return bool
     */
     public function set($index, $item): bool
     {

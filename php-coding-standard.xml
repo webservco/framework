@@ -64,6 +64,7 @@
 			<!-- "allows using fully qualified functions from global space (i.e. \phpversion())". -->
 			<property name="allowFullyQualifiedGlobalFunctions" value="true" />
 			<property name="maxLineLength" value="120" />
+			<property name="ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach" value="true" />
 		</properties>
 	</rule>
 </ruleset>
