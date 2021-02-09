@@ -3,6 +3,10 @@
 	<description>A custom coding standard based on PSR2</description>
 	<rule ref="PSR2"></rule>
 	<rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml"><!-- relative path to your ruleset.xml -->
+		<!-- TODO investigate (seems to be a bug / conflict with won rules) -->
+		<exclude name="SlevomatCodingStandard.Classes.TraitUseSpacing.IncorrectLinesCountAfterLastUse" />
+		<!-- TODO investigate (seems to conflict with own rules and also with PSR2) -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing.IncorrectLinesCountBeforeControlStructure" />
 		<!-- TODO investigate (conflicts with SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing.IncorrectLinesCountBeforeControlStructure) -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountAfterLastControlStructure" />
 		<exclude name="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeControlStructure" />
@@ -34,6 +38,12 @@
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix" />
 		<!--"Reports use of superfluous suffix "Trait" for traits." -->
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix" />
+		<!-- "Superfluous suffix "Exception"." -->
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />
+		<!-- "Superfluous suffix "Error"." -->
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousErrorNaming.SuperfluousSuffix" />
+		<!-- Superfluous suffix "Interface". -->
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix" />
 		<!-- "This sniff reduces confusion [..]" -->
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />
 		<!-- Opposite error if fixed -->
