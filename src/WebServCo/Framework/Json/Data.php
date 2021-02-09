@@ -4,7 +4,10 @@ namespace WebServCo\Framework\Json;
 
 class Data implements \WebServCo\Framework\Interfaces\JsonInterface
 {
+
     /**
+    * Data
+    *
     * @var array<mixed>
     */
     protected array $data;
@@ -19,6 +22,6 @@ class Data implements \WebServCo\Framework\Interfaces\JsonInterface
 
     public function toJson(): string
     {
-        return (string) json_encode($this->data);
+        return (string) \json_encode($this->data);
     }
 }

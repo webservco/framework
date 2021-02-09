@@ -4,10 +4,9 @@ namespace WebServCo\Framework\Json;
 
 class Response extends \WebServCo\Framework\Http\Response
 {
-    public function __construct(
-        \WebServCo\Framework\Interfaces\JsonInterface $jsonObject,
-        int $statusCode = 200
-    ) {
+
+    public function __construct(\WebServCo\Framework\Interfaces\JsonInterface $jsonObject, int $statusCode = 200)
+    {
         parent::__construct(
             $jsonObject->toJson(),
             $statusCode,
