@@ -8,14 +8,15 @@ abstract class AbstractLibrary implements
     \WebServCo\Framework\Interfaces\LibraryInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
+
     /**
-    * @var array<mixed>
-    */
+     * @var array<mixed>
+     */
     private array $data;
 
     /**
-    * @var array<string,string|array<mixed>>
-    */
+     * @var array<string,string|array<mixed>>
+     */
     private array $settings;
 
     /**
@@ -37,17 +38,12 @@ abstract class AbstractLibrary implements
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
-     * @param string $key
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function data($key, $defaultValue = false)
+    final public function data(string $key, $defaultValue = false)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->data,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->data, $key, $defaultValue);
     }
 
     /**
@@ -55,17 +51,12 @@ abstract class AbstractLibrary implements
      * $this->data returns data if it exists (can be empty).
      * This method returns data if both exists and not empty.
      *
-     * @param string $key
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function dataElse($key, $defaultValue = false)
+    final public function dataElse(string $key, $defaultValue = false)
     {
-        return \WebServCo\Framework\ArrayStorage::getElse(
-            $this->data,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::getElse($this->data, $key, $defaultValue);
     }
 
     /**
@@ -81,7 +72,6 @@ abstract class AbstractLibrary implements
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
     final public function setData($key, $value): bool
@@ -98,10 +88,9 @@ abstract class AbstractLibrary implements
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
-    final public function setSetting($key, $value)
+    final public function setSetting($key, $value): bool
     {
         if (empty($key)) {
             return false;
@@ -119,11 +108,7 @@ abstract class AbstractLibrary implements
     */
     final public function setting($key, $defaultValue = false)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->settings,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->settings, $key, $defaultValue);
     }
 
     /**
