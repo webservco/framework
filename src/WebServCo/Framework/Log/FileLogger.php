@@ -9,6 +9,7 @@ class FileLogger extends AbstractLogger implements
     \WebServCo\Framework\Interfaces\LoggerInterface,
     \WebServCo\Framework\Interfaces\FileLoggerInterface
 {
+
     protected string $channel;
     protected string $logDir;
     protected string $logPath;
@@ -20,23 +21,23 @@ class FileLogger extends AbstractLogger implements
         $this->logDir = $logDir;
 
         if (empty($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not set for channel "%s".', $channel));
+            throw new ApplicationException(\sprintf('Log directory not set for channel "%s".', $channel));
         }
 
-        if (!is_readable($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not readable: %s.', $this->logDir));
+        if (!\is_readable($this->logDir)) {
+            throw new ApplicationException(\sprintf('Log directory not readable: %s.', $this->logDir));
         }
-        if (!is_writable($this->logDir)) {
-            throw new ApplicationException(sprintf('Log directory not writeable: %s.', $this->logDir));
+        if (!\is_writable($this->logDir)) {
+            throw new ApplicationException(\sprintf('Log directory not writeable: %s.', $this->logDir));
         }
-        $this->logPath = sprintf('%s%s.log', $this->logDir, $this->channel);
+        $this->logPath = \sprintf('%s%s.log', $this->logDir, $this->channel);
 
         $this->requestInterface = $requestInterface;
     }
 
     public function clear(): bool
     {
-        return (bool) file_put_contents($this->logPath, null);
+        return (bool) \file_put_contents($this->logPath, null);
     }
 
     public function getLogDirectory(): string
@@ -45,10 +46,7 @@ class FileLogger extends AbstractLogger implements
     }
 
     /**
-    * @param string $level
-    * @param string $message
     * @param mixed $context
-    * @return bool
     */
     public function log(string $level, string $message, $context = null): bool
     {
@@ -58,21 +56,21 @@ class FileLogger extends AbstractLogger implements
         $contextInfo = null;
         if (!empty($context)) {
             $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
-            file_put_contents(sprintf('%s/%s.%s.context', $this->logDir, $this->channel, $id), $contextAsString);
+            \file_put_contents(\sprintf('%s/%s.%s.context', $this->logDir, $this->channel, $id), $contextAsString);
             $contextInfo = '[context saved] ';
         }
 
-        $data = sprintf(
+        $data = \sprintf(
             '[%s] %s %s %s%s%s',
             $id,
             $this->requestInterface->getRemoteAddress(),
             $level,
             $contextInfo,
             $message,
-            PHP_EOL
+            \PHP_EOL
         );
 
-        file_put_contents($this->logPath, $data, FILE_APPEND);
+        \file_put_contents($this->logPath, $data, \FILE_APPEND);
 
         return true;
     }
