@@ -5,7 +5,7 @@ namespace WebServCo\Framework\Exceptions;
 class UnsupportedMediaTypeException extends HttpException
 {
 
-    const CODE = 415;
+    public const CODE = 415;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

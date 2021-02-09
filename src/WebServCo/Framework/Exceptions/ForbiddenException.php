@@ -5,7 +5,7 @@ namespace WebServCo\Framework\Exceptions;
 class ForbiddenException extends AclException
 {
 
-    const CODE = 403;
+    public const CODE = 403;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

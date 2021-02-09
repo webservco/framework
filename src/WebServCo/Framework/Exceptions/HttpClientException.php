@@ -5,7 +5,7 @@ namespace WebServCo\Framework\Exceptions;
 class HttpClientException extends HttpException
 {
 
-    const CODE = 500;
+    public const CODE = 500;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

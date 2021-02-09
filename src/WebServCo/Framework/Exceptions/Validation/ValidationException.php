@@ -5,7 +5,7 @@ namespace WebServCo\Framework\Exceptions\Validation;
 class ValidationException extends \WebServCo\Framework\Exceptions\ApplicationException
 {
 
-    const CODE = 0;
+    public const CODE = 0;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {
