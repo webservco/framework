@@ -7,9 +7,12 @@ use WebServCo\Framework\Libraries\Router;
 
 final class RouterInstanceTest extends TestCase
 {
+
     /**
-    * @var array<string,array<mixed>>
-    */
+     * Cfg.
+     *
+     * @var array<string,array<mixed>>
+     */
     private array $cfg;
 
     private Router $object;
@@ -31,10 +34,7 @@ final class RouterInstanceTest extends TestCase
      */
     public function canBeInstantiatedIndividually(): void
     {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Router',
-            $this->object
-        );
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', $this->object);
     }
 
     /**
@@ -44,7 +44,7 @@ final class RouterInstanceTest extends TestCase
     {
         $route = $this->object->getRoute('', []);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
     }
 
     /**
@@ -54,7 +54,7 @@ final class RouterInstanceTest extends TestCase
     {
         $route = $this->object->getRoute('', []);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
     }
 
     /**
@@ -64,7 +64,7 @@ final class RouterInstanceTest extends TestCase
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
     }
 
     /**
@@ -74,7 +74,7 @@ final class RouterInstanceTest extends TestCase
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
         $this->assertEquals('foo', $route[0]);
         $this->assertEquals('bar', $route[1]);
         $this->assertEquals(['baz'], $route[2]);
@@ -87,9 +87,9 @@ final class RouterInstanceTest extends TestCase
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
         $this->assertEquals('Content', $route[0]);
         $this->assertEquals('debugSomething', $route[1]);
-        $this->assertEquals(['foo','bar'], $route[2]);
+        $this->assertEquals(['foo', 'bar'], $route[2]);
     }
 }

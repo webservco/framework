@@ -3,11 +3,11 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\ErrorHandler;
 
 final class ErrorHandlerTest extends TestCase
 {
+
     /**
      * @test
      */

@@ -3,13 +3,15 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-
-use WebServCo\Framework\Settings as S;
 use WebServCo\Framework\ArrayStorage;
+use WebServCo\Framework\Settings;
 
 final class ArrayStorageTest extends TestCase
 {
+
     /**
+    * Original array.
+    *
     * @var array<array<mixed>|string>
     */
     private array $originalArray;
@@ -21,9 +23,9 @@ final class ArrayStorageTest extends TestCase
             'foo' => [
                 'bar' => [
                     'baz' => [
-                        'foobarbaz'
+                        'foobarbaz',
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -34,11 +36,8 @@ final class ArrayStorageTest extends TestCase
     public function unsetWithNonExistingTripleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
-        $setting = sprintf('foo%1$snotBar%1$sbaz', S::DIVIDER);
-        ArrayStorage::remove(
-            $this->originalArray,
-            $setting
-        );
+        $setting = \sprintf('foo%1$snotBar%1$sbaz', Settings::DIVIDER);
+        ArrayStorage::remove($this->originalArray, $setting);
     }
 
     /**
@@ -47,11 +46,8 @@ final class ArrayStorageTest extends TestCase
     public function unsetWithNonExistingDoubleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
-        $setting = sprintf('foo%1$snotBar', S::DIVIDER);
-        ArrayStorage::remove(
-            $this->originalArray,
-            $setting
-        );
+        $setting = \sprintf('foo%1$snotBar', Settings::DIVIDER);
+        ArrayStorage::remove($this->originalArray, $setting);
     }
 
     /**
@@ -60,10 +56,7 @@ final class ArrayStorageTest extends TestCase
     public function unsetWithNonExistingSimpleSettingThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ArrayStorageException::class);
-        ArrayStorage::remove(
-            $this->originalArray,
-            'noexist'
-        );
+        ArrayStorage::remove($this->originalArray, 'noexist');
     }
 
     /**
@@ -71,7 +64,7 @@ final class ArrayStorageTest extends TestCase
      */
     public function unsetWorksWithTripleSetting(): void
     {
-        $setting = sprintf('foo%1$sbar%1$sbaz', S::DIVIDER);
+        $setting = \sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
         $expected = [
             'key' => 'value',
             'foo' => [
@@ -89,7 +82,7 @@ final class ArrayStorageTest extends TestCase
      */
     public function unsetWorksWithDoubleSetting(): void
     {
-        $setting = sprintf('foo%1$sbar', S::DIVIDER);
+        $setting = \sprintf('foo%1$sbar', Settings::DIVIDER);
         $expected = [
             'key' => 'value',
             'foo' => [],
@@ -119,7 +112,7 @@ final class ArrayStorageTest extends TestCase
      */
     public function setEmptyWorksWithTripleSetting(): void
     {
-        $setting = sprintf('foo%1$sbar%1$sbaz', S::DIVIDER);
+        $setting = \sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
         $expected = [
             'key' => 'value',
             'foo' => [
@@ -140,7 +133,7 @@ final class ArrayStorageTest extends TestCase
      */
     public function setEmptyWorksWithDoubleSetting(): void
     {
-        $setting = sprintf('foo%1$sbar', S::DIVIDER);
+        $setting = \sprintf('foo%1$sbar', Settings::DIVIDER);
         $expected = [
             'key' => 'value',
             'foo' => [

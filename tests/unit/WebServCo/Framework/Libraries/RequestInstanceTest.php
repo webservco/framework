@@ -7,14 +7,19 @@ use WebServCo\Framework\Libraries\Request;
 
 final class RequestInstanceTest extends TestCase
 {
+
     /**
-    * @var array<string,array<int,string>>
-    */
+     * Cfg
+     *
+     * @var array<string,array<int,string>>
+     */
     private array $cfg;
 
     /**
-    * @var array<string,string>
-    */
+     * Post
+     *
+     * @var array<string,string>
+     */
     private array $post;
 
     private Request $object;
@@ -23,15 +28,18 @@ final class RequestInstanceTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cfg = ['suffixes' => ['.htm','.html'],];
+        $this->cfg = ['suffixes' => ['.htm', '.html'],];
         $this->post = [
             'key' => 'value',
             'script' => '<script>hello</script>',
             '<h1>invalid</h1>' => '<tag>tag</tag>',
         ];
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $this->object = new Request($this->cfg, $_SERVER, $this->post);
 
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $_SERVER['REQUEST_METHOD'] = 'POST';
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $this->objectPost = new Request($this->cfg, $_SERVER, $this->post);
     }
 
@@ -40,10 +48,7 @@ final class RequestInstanceTest extends TestCase
      */
     public function canBeInstantiatedIndividually(): void
     {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Request',
-            $this->object
-        );
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', $this->object);
     }
 
     /**

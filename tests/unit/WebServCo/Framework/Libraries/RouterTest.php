@@ -4,13 +4,15 @@ namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Framework as Fw;
-use WebServCo\Framework\Libraries\Router;
 
 final class RouterTest extends TestCase
 {
+
     /**
-    * @var array<string,array<mixed>>
-    */
+     * Cfg
+     *
+     * @var array<string,array<mixed>>
+     */
     private array $cfg;
 
     public function setUp(): void
@@ -39,7 +41,7 @@ final class RouterTest extends TestCase
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
     }
 
     /**
@@ -49,7 +51,7 @@ final class RouterTest extends TestCase
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
         $this->assertEquals('foo', $route[0]);
         $this->assertEquals('bar', $route[1]);
         $this->assertEquals(['baz'], $route[2]);
@@ -62,9 +64,9 @@ final class RouterTest extends TestCase
     {
         $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
         $this->assertIsArray($route);
-        $this->assertEquals(3, count($route));
+        $this->assertEquals(3, \count($route));
         $this->assertEquals('Content', $route[0]);
         $this->assertEquals('debugSomething', $route[1]);
-        $this->assertEquals(['foo','bar'], $route[2]);
+        $this->assertEquals(['foo', 'bar'], $route[2]);
     }
 }

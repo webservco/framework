@@ -8,13 +8,14 @@ use WebServCo\Framework\Settings as S;
 
 final class ConfigInstanceTest extends TestCase
 {
-    private Config $object;
 
-    private static string $pathProject = '';
+    private Config $object;
 
     private string $settingSimpleString = 'setting';
 
     /**
+    * Setting array.
+    *
     * @var array<int,string>
     */
     private array $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
@@ -23,54 +24,7 @@ final class ConfigInstanceTest extends TestCase
 
     private string $value = 'value';
 
-    public static function setUpBeforeClass(): void
-    {
-        $pathProject = '/tmp/webservco/project/';
-        $pathConfig = "{$pathProject}config/dev/";
-        if (!is_readable($pathConfig)) {
-                mkdir($pathConfig, 0775, true);
-                $data = "<?php
-                return [
-                    'date' => [
-                        'timezone' => 'Europe/Budapest',
-                    ],
-                    'options' => [
-                        'setting1' => 'value1',
-                        'setting2' => 'value2',
-                        'setting3' => 'value3',
-                    ],
-                    'level1' => [
-                        'level2' => [
-                            'level3' => ['value']
-                        ],
-                    ],
-                    ];
-                ";
-                file_put_contents("{$pathConfig}foo.php", $data);
-        }
-        self::$pathProject = $pathProject;
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $pathBase = '/tmp/webservco/';
-        $it = new \RecursiveDirectoryIterator(
-            $pathBase,
-            \RecursiveDirectoryIterator::SKIP_DOTS
-        );
-        $files = new \RecursiveIteratorIterator(
-            $it,
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($files as $item) {
-            if ($item->isDir()) {
-                rmdir($item->getRealPath());
-            } else {
-                unlink($item->getRealPath());
-            }
-        }
-        rmdir($pathBase);
-    }
+    private static string $pathProject = '';
 
     public function setUp(): void
     {
@@ -82,10 +36,7 @@ final class ConfigInstanceTest extends TestCase
      */
     public function canBeInstantiatedIndividually(): void
     {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Config',
-            $this->object
-        );
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Config', $this->object);
     }
 
     /**
@@ -216,10 +167,10 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
-        $this->assertTrue($this->object->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
-        $this->assertEquals($this->value, $this->object->get(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)));
+        $this->assertTrue($this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue($this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue($this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
+        $this->assertEquals($this->value, $this->object->get(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)));
     }
 
     /**
@@ -227,9 +178,9 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
-        $this->assertTrue($this->object->set(sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue($this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue($this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue($this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
         $this->assertTrue($this->object->set('app', $this->value));
         $this->assertEquals($this->value, $this->object->get('app'));
     }
@@ -249,9 +200,9 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst(): void
     {
-        $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
-        $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
-        $this->assertEquals('new value', $this->object->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
 
     /**
@@ -279,16 +230,19 @@ final class ConfigInstanceTest extends TestCase
             ],
             'level1' => [
                 'level2' => [
-                    'level3' => ['value']
+                    'level3' => ['value'],
                 ],
             ],
         ];
-        $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
-        $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
         $this->assertTrue($this->object->add('foo', $config));
 
-        $this->assertEquals('value', $this->object->get(sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', S::DIVIDER)));
-        $this->assertEquals('new value', $this->object->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertEquals(
+            'value',
+            $this->object->get(\sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', S::DIVIDER))
+        );
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
 
     /**
@@ -304,7 +258,7 @@ final class ConfigInstanceTest extends TestCase
      */
     public function dummyConfigFileExists(): void
     {
-        $this->assertTrue(is_readable(self::$pathProject . 'config/dev/foo.php'));
+        $this->assertTrue(\is_readable(self::$pathProject . 'config/dev/foo.php'));
     }
 
     /**
@@ -324,18 +278,19 @@ final class ConfigInstanceTest extends TestCase
     {
         $data = $this->object->load('foo', self::$pathProject);
         $this->assertTrue($this->object->add('foo', $data));
-        $this->assertEquals('value1', $this->object->get(sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)));
+        $this->assertEquals('value1', $this->object->get(\sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)));
     }
+
     /**
      * @test
      * @depends loadReturnsArrayOnValidPath
      */
     public function loadAppendsDataInsteadOfOverwriting(): void
     {
-        $this->assertTrue($this->object->set(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
         $data = $this->object->load('foo', self::$pathProject);
         $this->object->add('foo', $data);
-        $this->assertEquals('new value', $this->object->get(sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
     }
 
     /**
@@ -368,7 +323,50 @@ final class ConfigInstanceTest extends TestCase
      */
     public function getEnvDefaultsToDev(): void
     {
-        $config = new \WebServCo\Framework\Libraries\Config;
+        $config = new \WebServCo\Framework\Libraries\Config();
         $this->assertEquals('dev', $config->getEnv());
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        $pathProject = '/tmp/webservco/project/';
+        $pathConfig = "{$pathProject}config/dev/";
+        if (!\is_readable($pathConfig)) {
+                \mkdir($pathConfig, 0775, true);
+                $data = "<?php
+                return [
+                    'date' => [
+                        'timezone' => 'Europe/Budapest',
+                    ],
+                    'options' => [
+                        'setting1' => 'value1',
+                        'setting2' => 'value2',
+                        'setting3' => 'value3',
+                    ],
+                    'level1' => [
+                        'level2' => [
+                            'level3' => ['value']
+                        ],
+                    ],
+                    ];
+                ";
+                \file_put_contents("{$pathConfig}foo.php", $data);
+        }
+        self::$pathProject = $pathProject;
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        $pathBase = '/tmp/webservco/';
+        $it = new \RecursiveDirectoryIterator($pathBase, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $item) {
+            if ($item->isDir()) {
+                \rmdir($item->getRealPath());
+            } else {
+                \unlink($item->getRealPath());
+            }
+        }
+        \rmdir($pathBase);
     }
 }

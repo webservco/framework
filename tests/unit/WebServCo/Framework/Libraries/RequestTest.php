@@ -4,10 +4,10 @@ namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Framework as Fw;
-use WebServCo\Framework\Libraries\Request;
 
 final class RequestTest extends TestCase
 {
+
     /**
      * @test
      */

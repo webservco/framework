@@ -4,72 +4,25 @@ namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Framework as Fw;
-use WebServCo\Framework\Libraries\Config;
 use WebServCo\Framework\Settings as S;
 
 final class ConfigTest extends TestCase
 {
-    private static string $pathProject = '';
 
     private string $settingSimpleString = 'setting';
 
     /**
+    * Setting array.
+    *
     * @var array<int,string>
     */
-    private $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
+    private array $settingArray = ['setting_array1', 'setting_array2', 'setting_array3'];
 
     private string $settingSpecialString = 'setting1.setting2.setting3';
 
     private string $value = 'value';
 
-    public static function setUpBeforeClass(): void
-    {
-        $pathProject = '/tmp/webservco/project/';
-        $pathConfig = "{$pathProject}config/dev/";
-        if (!is_readable($pathConfig)) {
-                mkdir($pathConfig, 0775, true);
-                $data = "<?php
-                return [
-                    'date' => [
-                        'timezone' => 'Europe/Budapest',
-                    ],
-                    'options' => [
-                        'setting1' => 'value1',
-                        'setting2' => 'value2',
-                        'setting3' => 'value3',
-                    ],
-                    'level1' => [
-                        'level2' => [
-                            'level3' => ['value']
-                        ],
-                    ],
-                    ];
-                ";
-                file_put_contents("{$pathConfig}foo.php", $data);
-        }
-        self::$pathProject = $pathProject;
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $pathBase = '/tmp/webservco/';
-        $it = new \RecursiveDirectoryIterator(
-            $pathBase,
-            \RecursiveDirectoryIterator::SKIP_DOTS
-        );
-        $files = new \RecursiveIteratorIterator(
-            $it,
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($files as $item) {
-            if ($item->isDir()) {
-                rmdir($item->getRealPath());
-            } else {
-                unlink($item->getRealPath());
-            }
-        }
-        rmdir($pathBase);
-    }
+    private static string $pathProject = '';
 
     public function setUp(): void
     {
@@ -246,26 +199,26 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
+                \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
+                \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
+                \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
             Fw::library('Config')->get(
-                sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)
+                \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)
             )
         );
     }
@@ -277,19 +230,19 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
+                \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
+                \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
+                \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
@@ -319,20 +272,20 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
         $this->assertEquals(
             'new value',
             Fw::library('Config')->get(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
     }
@@ -362,19 +315,19 @@ final class ConfigTest extends TestCase
             ],
             'level1' => [
                 'level2' => [
-                    'level3' => ['value']
+                    'level3' => ['value'],
                 ],
             ],
         ];
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
@@ -383,7 +336,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals(
             'value',
             Fw::library('Config')->get(
-                sprintf(
+                \sprintf(
                     'foo%1$slevel1%1$slevel2%1$slevel3%1$s0',
                     S::DIVIDER
                 )
@@ -392,7 +345,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals(
             'new value',
             Fw::library('Config')->get(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
     }
@@ -414,7 +367,7 @@ final class ConfigTest extends TestCase
     public function dummyConfigFileExists(): void
     {
         $this->assertTrue(
-            is_readable(self::$pathProject . 'config/dev/foo.php')
+            \is_readable(self::$pathProject . 'config/dev/foo.php')
         );
     }
 
@@ -438,10 +391,11 @@ final class ConfigTest extends TestCase
         $this->assertEquals(
             'value1',
             Fw::library('Config')->get(
-                sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)
+                \sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)
             )
         );
     }
+
     /**
      * @test
      * @depends loadReturnsArrayOnValidPath
@@ -450,7 +404,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertTrue(
             Fw::library('Config')->set(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
@@ -459,7 +413,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals(
             'new value',
             Fw::library('Config')->get(
-                sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
     }
@@ -494,7 +448,50 @@ final class ConfigTest extends TestCase
      */
     public function getEnvDefaultsToDev(): void
     {
-        $config = new \WebServCo\Framework\Libraries\Config;
+        $config = new \WebServCo\Framework\Libraries\Config();
         $this->assertEquals('dev', $config->getEnv());
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        $pathProject = '/tmp/webservco/project/';
+        $pathConfig = "{$pathProject}config/dev/";
+        if (!\is_readable($pathConfig)) {
+                \mkdir($pathConfig, 0775, true);
+                $data = "<?php
+                return [
+                    'date' => [
+                        'timezone' => 'Europe/Budapest',
+                    ],
+                    'options' => [
+                        'setting1' => 'value1',
+                        'setting2' => 'value2',
+                        'setting3' => 'value3',
+                    ],
+                    'level1' => [
+                        'level2' => [
+                            'level3' => ['value']
+                        ],
+                    ],
+                    ];
+                ";
+                \file_put_contents("{$pathConfig}foo.php", $data);
+        }
+        self::$pathProject = $pathProject;
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        $pathBase = '/tmp/webservco/';
+        $it = new \RecursiveDirectoryIterator($pathBase, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $item) {
+            if ($item->isDir()) {
+                \rmdir($item->getRealPath());
+            } else {
+                \unlink($item->getRealPath());
+            }
+        }
+        \rmdir($pathBase);
     }
 }
