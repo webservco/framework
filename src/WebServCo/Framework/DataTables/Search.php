@@ -4,6 +4,7 @@ namespace WebServCo\Framework\DataTables;
 
 class Search
 {
+
     protected string $value;
     protected bool $regex;
 

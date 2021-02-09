@@ -6,28 +6,30 @@ use WebServCo\Framework\ArrayObject\Items;
 
 class RequestHelper extends AbstractHelper
 {
+
     /**
     * @param array<string,mixed> $data
     * @param array<int,string> $required
-    * @return Request
     */
     public static function init(array $data, array $required = []): Request
     {
+        $required = $required; // reserved for future use.
+        
         parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 
         foreach (['columns', 'order', 'search'] as $item) {
-            if (!is_array($data[$item])) {
-                throw new \InvalidArgumentException(sprintf('Invalid parameter: %s.', $item));
+            if (!\is_array($data[$item])) {
+                throw new \InvalidArgumentException(\sprintf('Invalid parameter: %s.', $item));
             }
         }
 
         $columns = new Items(new ColumnArrayObject());
         foreach ($data['columns'] as $item) {
             $columnItem = new Column(
-                isset($item['data']) ? $item['data'] : null,
-                isset($item['name']) ? $item['name'] : null,
-                isset($item['searchable']) ? $item['searchable'] : null,
-                isset($item['orderable']) ? $item['orderable'] : null,
+                $item['data'] ?? null,
+                $item['name'] ?? null,
+                $item['searchable'] ?? null,
+                $item['orderable'] ?? null,
                 SearchHelper::init($item['search'])
             );
             $columns->set(null, $columnItem);
@@ -35,10 +37,7 @@ class RequestHelper extends AbstractHelper
 
         $order = new Items(new OrderArrayObject());
         foreach ($data['order'] as $item) {
-            $orderItem = new Order(
-                isset($item['column']) ? $item['column'] : null,
-                isset($item['dir']) ? $item['dir'] : null
-            );
+            $orderItem = new Order($item['column'] ?? null, $item['dir'] ?? null);
             $order->set(null, $orderItem);
         }
 

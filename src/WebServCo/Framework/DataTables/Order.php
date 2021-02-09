@@ -4,6 +4,7 @@ namespace WebServCo\Framework\DataTables;
 
 class Order
 {
+
     protected string $column;
     protected string $dir;
 

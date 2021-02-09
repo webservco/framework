@@ -7,6 +7,7 @@ use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
 class Request
 {
+
     protected int $draw;
 
     protected Items $columns;
@@ -30,7 +31,7 @@ class Request
     }
 
     /**
-    * @return ArrayObjectInterface<ColumnArrayObject>
+    * @return \WebServCo\Framework\Interfaces\ArrayObjectInterface<\WebServCo\Framework\DataTables\ColumnArrayObject>
     */
     public function getColumns(): ArrayObjectInterface
     {
@@ -48,7 +49,7 @@ class Request
     }
 
     /**
-    * @return ArrayObjectInterface<OrderArrayObject>
+    * @return \WebServCo\Framework\Interfaces\ArrayObjectInterface<\WebServCo\Framework\DataTables\OrderArrayObject>
     */
     public function getOrder(): ArrayObjectInterface
     {

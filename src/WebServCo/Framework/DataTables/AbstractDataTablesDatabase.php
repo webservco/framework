@@ -8,13 +8,11 @@ use WebServCo\Framework\Interfaces\DatabaseInterface;
 
 abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interfaces\DataTablesInterface
 {
+
     protected DatabaseInterface $db;
 
     /**
-    * @param string $searchPart
     * @param string $orderPart,
-    * @param string $limitPart
-    * @return string
     */
     abstract protected function getQuery(string $searchPart, string $orderPart, string $limitPart): string;
 
@@ -31,22 +29,22 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         $limitPart = '';
 
         $columnArrayObject = $request->getColumns();
-        list($searchPart, $searchParams) = $this->getSearchQueryPart($columnArrayObject);
+        [$searchPart, $searchParams] = $this->getSearchQueryPart($columnArrayObject);
 
-        if (!is_string($searchPart)) {
+        if (!\is_string($searchPart)) {
             throw new \InvalidArgumentException('"searchQueryPart" is not a string');
         }
-        if (!is_array($searchParams)) {
+        if (!\is_array($searchParams)) {
             throw new \InvalidArgumentException('"searchParams" is not an array');
         }
 
-        $params = array_merge($params, $searchParams);
+        $params = \array_merge($params, $searchParams);
 
         $orderArrayObject = $request->getOrder();
         $orderPart = $this->getOrderQueryPart($columnArrayObject, $orderArrayObject);
 
         $length = $request->getLength();
-        if (-1 != $length) {
+        if (-1 !== $length) {
             $limitPart = 'LIMIT ?, ?';
             $params[] = $request->getStart();
             $params[] = $length;
@@ -72,7 +70,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected function assertColumnArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof ColumnArrayObject) {
-            throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
+            throw new \InvalidArgumentException(\sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
         }
         return true;
     }
@@ -80,14 +78,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected function assertOrderArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof OrderArrayObject) {
-            throw new \InvalidArgumentException(sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
+            throw new \InvalidArgumentException(\sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
         }
         return true;
     }
 
     /**
-    * @param ArrayObjectInterface $columnArrayObject
-    * @param \PDOStatement $pdoStatement
     * @return array<int,array<int|string,mixed>>
     */
     protected function getData(ArrayObjectInterface $columnArrayObject, \PDOStatement $pdoStatement): array
@@ -98,7 +94,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             $item = [];
             foreach ($columnArrayObject as $column) {
                 $name = $column->getData();
-                $item[$name] = isset($row[$name]) ? $row[$name] : null;
+                $item[$name] = $row[$name] ?? null;
             }
             $data[] = $item;
         }
@@ -124,20 +120,22 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             foreach ($orderArrayObject as $order) {
                 $columnKey = (string) $order->getColumn();
                 $column = $columnArrayObject->offsetGet($columnKey);
-                if ($column instanceof Column) {
-                    if ($column->getOrderable()) {
-                        $dir = strtoupper($order->getDir());
-                        $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC]) ? $dir : DatabaseOrder::ASC;
-                        $columnName = $this->getDatabaseColumnName($column->getData());
-                        $items[] = sprintf(
-                            ' %s %s',
-                            $columnName,
-                            $dir
-                        );
-                    }
+                if (!($column instanceof Column)) {
+                    continue;
                 }
+
+                if (!$column->getOrderable()) {
+                    continue;
+                }
+
+                $dir = \strtoupper($order->getDir());
+                $dir = \in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC], true)
+                    ? $dir
+                    : DatabaseOrder::ASC;
+                $columnName = $this->getDatabaseColumnName($column->getData());
+                $items[] = \sprintf(' %s %s', $columnName, $dir);
             }
-            $query .= implode(",", $items);
+            $query .= \implode(",", $items);
         }
         return $query;
     }
@@ -159,7 +157,6 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     }
 
     /**
-    * @param ArrayObjectInterface $columnArrayObject
     * @return array<int,array<int,string>|string>
     */
     protected function getSearchQueryPart(ArrayObjectInterface $columnArrayObject): array
@@ -168,17 +165,21 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         $query = '';
         $params = [];
         foreach ($columnArrayObject as $column) {
-            if ($column->getSearchable()) {
-                $search = $column->getSearch();
-                $searchValue = $search->getValue();
-                if ('' !== $searchValue) { // make sure it works also for "0"
-                    $query .= sprintf(
-                        " AND %s LIKE ?",
-                        $this->getDatabaseColumnName($column->getData())
-                    );
-                    $params[] = sprintf('%%%s%%', $searchValue);
-                }
+            if (!$column->getSearchable()) {
+                continue;
             }
+
+            $search = $column->getSearch();
+            $searchValue = $search->getValue();
+            if ('' === $searchValue) {
+                continue;
+            }
+            // make sure it works also for "0"
+            $query .= \sprintf(
+                " AND %s LIKE ?",
+                $this->getDatabaseColumnName($column->getData())
+            );
+            $params[] = \sprintf('%%%s%%', $searchValue);
         }
         return [$query, $params];
     }
