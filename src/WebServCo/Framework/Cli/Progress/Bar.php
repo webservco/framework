@@ -5,6 +5,7 @@ namespace WebServCo\Framework\Cli\Progress;
 //https://gist.github.com/mayconbordin/2860547
 final class Bar
 {
+
     protected string $type;
 
     protected int $width;
@@ -39,7 +40,7 @@ final class Bar
 
     public function setType(string $type): bool
     {
-        if (!in_array($type, ['single_line', 'multi_line'])) {
+        if (!\in_array($type, ['single_line', 'multi_line'], true)) {
             throw new \InvalidArgumentException('Invalid type.');
         }
 
@@ -70,42 +71,51 @@ final class Bar
         }
     }
 
+    public function finish(): string
+    {
+        return "\033[" . 0 . 'D' . \str_repeat(' ', 74) . "\r";
+    }
+
     protected function prefixProgress(string $message): string
     {
-        $percent = round($this->item * 100 / $this->total);
-        $bar = (int) round($this->width * $percent / 100);
-        $this->outBar = sprintf(
+        $percent = \round($this->item * 100 / $this->total);
+        $bar = (int) \round($this->width * $percent / 100);
+        $this->outBar = \sprintf(
             "%s%% [%s>%s] %s",
             $percent,
-            str_repeat('=', $bar),
-            str_repeat(' ', (int) round($this->width-$bar)),
+            \str_repeat('=', $bar),
+            \str_repeat(' ', (int) \round($this->width-$bar)),
             $this->item . '/' . $this->total
         );
         $this->outMessage = $message;
 
-        $padLen = ($this->width + $this->padding) - strlen($this->outBar);
-        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen): '';
+        $padLen = $this->width + $this->padding - \strlen($this->outBar);
+        $this->outPad = 0 < $padLen
+            ? \str_repeat(' ', (int) $padLen)
+            : '';
         return $this->outBar.$this->outPad.$this->outMessage;
     }
 
     protected function suffixSingle(bool $result, bool $overwrite = false): string
     {
-        $totalLen = strlen($this->outBar.$this->outPad.$this->outMessage);
+        $totalLen = \strlen($this->outBar.$this->outPad.$this->outMessage);
         $output = null;
 
         if ($overwrite) {
             //overwrite current line
             $output .= "\033[" . $totalLen . 'D';
-            $output .= str_repeat(' ', $this->width + $this->padding);
+            $output .= \str_repeat(' ', $this->width + $this->padding);
             $output .= $this->outMessage;
         }
 
         $padLen = 74 - $totalLen;
         if (0 < $padLen) {
-            $output .= str_repeat(' ', $padLen);
+            $output .= \str_repeat(' ', $padLen);
         }
         $output .= '[';
-        $output .= $result ? "\e[32mOK" : "\e[31mKO";
+        $output .= $result
+            ? "\e[32mOK"
+            : "\e[31mKO";
         $output .= "\e[0m" . ']';
         $output .= "\r";
 
@@ -115,13 +125,8 @@ final class Bar
     protected function suffixMulti(bool $result, bool $overwrite = true): string
     {
         $output = $this->suffixSingle($result, $overwrite);
-        $output .= PHP_EOL;
+        $output .= \PHP_EOL;
 
         return $output;
-    }
-
-    public function finish(): string
-    {
-        return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }
 }

@@ -5,6 +5,7 @@ namespace WebServCo\Framework\Cli;
 final class Response extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
+
     public function __construct(string $content = '', int $exitStatus = 0)
     {
         $this->setStatus($exitStatus);
