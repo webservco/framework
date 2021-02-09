@@ -51,6 +51,15 @@ final class Strings
         return (string) $transliterator->transliterate($string);
     }
 
+    public static function isEmpty(string $string): bool
+    {
+        if ($string === '') {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function linkify(string $string): string
     {
         return (string) preg_replace(
