@@ -3,10 +3,10 @@
 namespace WebServCo\Framework\Files;
 
 use WebServCo\Framework\Exceptions\ApplicationException;
-use WebServCo\Framework\Files\CsvFile;
 
 final class CsvCreator
 {
+
     protected string $delimiter;
     protected string $enclosure;
 
@@ -17,10 +17,7 @@ final class CsvCreator
     }
 
     /**
-    * @param string $fileName
     * @param array<int,array<mixed>> $data
-    * @param bool $addHeader
-    * @return CsvFile
     */
     public function getCsvFile(string $fileName, array $data, bool $addHeader = true): CsvFile
     {
@@ -33,8 +30,6 @@ final class CsvCreator
 
     /**
     * @param array<int,array<mixed>> $data
-    * @param bool $addHeader
-    * @return string
     */
     public function getCsvData(array $data, bool $addHeader = true): string
     {
@@ -43,31 +38,31 @@ final class CsvCreator
         }
         try {
             // temporary memory wrapper; if bigger than 5MB will be written to temp file.
-            $handle = fopen('php://temp/maxmemory: ' . (5*1024*1024), 'r+');
+            $handle = \fopen('php://temp/maxmemory: ' . (5*1024*1024), 'r+');
 
-            if (!is_resource($handle)) {
+            if (!\is_resource($handle)) {
                 throw new ApplicationException('Not a valid resource.');
             }
 
             if ($addHeader) {
-                $headerData = current($data);
+                $headerData = \current($data);
                 if (false !== $headerData) {
-                    fputcsv($handle, array_keys($headerData), $this->delimiter, $this->enclosure);
+                    \fputcsv($handle, \array_keys($headerData), $this->delimiter, $this->enclosure);
                 }
             }
 
             foreach ($data as $item) {
-                fputcsv($handle, $item, $this->delimiter, $this->enclosure);
+                \fputcsv($handle, $item, $this->delimiter, $this->enclosure);
             }
 
-            rewind($handle);
+            \rewind($handle);
 
-            $csvData = (string) stream_get_contents($handle);
+            $csvData = (string) \stream_get_contents($handle);
 
-            fclose($handle);
+            \fclose($handle);
 
             return $csvData;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new ApplicationException($e->getMessage());
         }
     }

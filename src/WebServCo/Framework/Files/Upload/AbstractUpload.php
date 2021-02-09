@@ -6,7 +6,10 @@ use WebServCo\Framework\Exceptions\UploadException;
 
 abstract class AbstractUpload
 {
+
     /**
+    * Allowed extensions.
+    *
     * @var array<int,string>
     */
     protected array $allowedExtensions;
@@ -36,29 +39,36 @@ abstract class AbstractUpload
 
     final public function do(): bool
     {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (empty($_FILES)) {
             return false;
         }
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!isset($_FILES[$this->formFieldName]['error'])) {
             throw new UploadException(Codes::NO_FILE);
         }
-        if (Codes::OK != $_FILES[$this->formFieldName]['error']) {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+        if (Codes::OK !== $_FILES[$this->formFieldName]['error']) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             throw new UploadException($_FILES[$this->formFieldName]['error']);
         }
         $this->checkAllowedExtensions();
         $this->fileName = $this->generateUploadedFileName(
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_FILES[$this->formFieldName]['name'],
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_FILES[$this->formFieldName]['type']
         );
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         $this->fileMimeType = $_FILES[$this->formFieldName]['type'];
-
-        if (!move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory.$this->fileName)) {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+        if (!\move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory.$this->fileName)) {
             throw new UploadException(Codes::CANT_WRITE);
         }
 
         try {
-            chmod($this->uploadDirectory.$this->fileName, 0664);
-        } catch (\Exception $e) {
+            \chmod($this->uploadDirectory.$this->fileName, 0664);
+        } catch (\Throwable $e) {
             // Operation not permitted
         }
 
@@ -67,7 +77,6 @@ abstract class AbstractUpload
 
     /**
     * @param array<int,string> $allowedExtensions
-    * @return bool
     */
     final public function setAllowedExtensions(array $allowedExtensions): bool
     {
@@ -84,7 +93,8 @@ abstract class AbstractUpload
     final protected function checkAllowedExtensions(): bool
     {
         if (!empty($this->allowedExtensions)) {
-            if (!array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+            if (!\array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {
                 throw new UploadException(Codes::TYPE_NOT_ALLOWED);
             }
         }
