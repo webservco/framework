@@ -4,7 +4,9 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
+
     abstract public function getHost(): string;
+
     abstract public function getSchema(): string;
 
     public function getSuffix(): string
@@ -22,13 +24,13 @@ trait RequestUrlTrait
         if (\WebServCo\Framework\Framework::isCli()) {
             return '';
         }
-        $url = sprintf(
+        $url = \sprintf(
             '%s://%s%s',
             $this->getSchema(),
             $this->getHost(),
             $this->path
         );
-        return rtrim($url, '/') . '/';
+        return \rtrim($url, '/') . '/';
     }
 
     public function getShortUrl(): string
@@ -43,23 +45,23 @@ trait RequestUrlTrait
 
     /**
     * @param array<int,string> $removeParameters
-    * @return string
     */
     public function getUrl(array $removeParameters = []): string
     {
-        if (!is_array($removeParameters)) {
+        if (!\is_array($removeParameters)) {
             throw new \InvalidArgumentException('Agument must be an array.');
         }
 
         $url = $this->getShortUrl();
         $query = $this->getQuery();
         foreach ($removeParameters as $item) {
-            if (array_key_exists($item, $query)) {
-                unset($query[$item]);
+            if (!\array_key_exists($item, $query)) {
+                continue;
             }
+
+            unset($query[$item]);
         }
-        $url .= \WebServCo\Framework\Utils\Arrays::toUrlQueryString($query);
-        return $url;
+        return $url . \WebServCo\Framework\Utils\Arrays::toUrlQueryString($query);
     }
 
     /**
@@ -79,10 +81,6 @@ trait RequestUrlTrait
      */
     public function query($key, $defaultValue = false)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->query,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->query, $key, $defaultValue);
     }
 }

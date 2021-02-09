@@ -7,15 +7,14 @@ use WebServCo\Framework\Utils\Arrays;
 
 trait DatabaseAddQueryTrait
 {
+
     abstract public function escapeIdentifier(string $string): string;
+
     abstract public function escapeTableName(string $string): string;
 
     /**
-    * @param string $queryType
-    * @param string $tableName
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
-    * @return string
     */
     final protected function generateAddQuery(
         string $queryType,
@@ -25,7 +24,7 @@ trait DatabaseAddQueryTrait
     ): string {
         $multiDimensional = Arrays::isMultidimensional($addData);
 
-        list($keys, $data) = $this->getKeysValues($addData);
+        [$keys, $data] = $this->getKeysValues($addData);
 
         $query = $this->generateAddQueryPrefix($queryType);
         $query .= ' ' . $this->escapeTableName($tableName);
@@ -36,9 +35,7 @@ trait DatabaseAddQueryTrait
             return $query;
         }
 
-        $query .= $this->generateAddQueryUpdatePart($updateData);
-
-        return $query;
+        return $query . $this->generateAddQueryUpdatePart($updateData);
     }
 
     /**
@@ -49,14 +46,12 @@ trait DatabaseAddQueryTrait
     {
         $multiDimensional = Arrays::isMultidimensional($data);
         if ($multiDimensional) {
-            $keys = array_keys(call_user_func_array('array_merge', $data));
+            $keys = \array_keys(\call_user_func_array('array_merge', $data));
             // fill any missing keys with empty data
-            $key_pair = array_combine($keys, array_fill(0, count($keys), null));
-            $data = array_map(function ($e) use ($key_pair) {
-                return array_merge((array) $key_pair, $e);
-            }, $data);
+            $key_pair = \array_combine($keys, \array_fill(0, \count($keys), null));
+            $data = \array_map(static fn ($e) => \array_merge((array) $key_pair, $e), $data);
         } else {
-            $keys = array_keys($data);
+            $keys = \array_keys($data);
         }
 
         return [$keys, $data];
@@ -82,21 +77,18 @@ trait DatabaseAddQueryTrait
 
     /**
     * @param array<int,string> $fields
-    * @return string
     */
     final protected function generateAddQueryFieldsPart(array $fields): string
     {
-        return ' (' . implode(
+        return ' (' . \implode(
             ', ',
-            array_map([$this, 'escapeIdentifier'], $fields)
+            \array_map([$this, 'escapeIdentifier'], $fields)
         ) .
         ')';
     }
 
     /**
     * @param array<mixed> $data
-    * @param bool $multiDimensional
-    * @return string
     */
     final protected function generateAddQueryValuesPart(array $data, bool $multiDimensional): string
     {
@@ -106,7 +98,7 @@ trait DatabaseAddQueryTrait
             foreach ($data as $item) {
                 $valuesStrings[] = $this->generateValuesString($item);
             }
-            $query .= implode(', ', $valuesStrings);
+            $query .= \implode(', ', $valuesStrings);
         } else {
             $query .= $this->generateValuesString($data);
         }
@@ -115,7 +107,6 @@ trait DatabaseAddQueryTrait
 
     /**
     * @param array<mixed> $data
-    * @return string
     */
     final protected function generateAddQueryUpdatePart(array $data = []): string
     {
@@ -125,17 +116,16 @@ trait DatabaseAddQueryTrait
 
         $strings = [];
         foreach ($data as $k => $v) {
-            $strings[] = sprintf('%s = ?', $this->escapeIdentifier((string) $k));
+            $strings[] = \sprintf('%s = ?', $this->escapeIdentifier((string) $k));
         }
 
         $query = " ON DUPLICATE KEY UPDATE ";
-        $query .= implode(', ', $strings);
+        $query .= \implode(', ', $strings);
         return $query;
     }
 
     /**
     * @param array<int, float|int|string> $data
-    * @return string
     */
     final protected function generateValuesString(array $data): string
     {

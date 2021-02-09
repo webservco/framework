@@ -7,6 +7,7 @@ use WebServCo\Framework\Interfaces\OutputLoaderInterface;
 
 trait OutputTrait
 {
+
     protected int $outputCode;
     protected OutputLoaderInterface $outputLoader;
 
@@ -29,8 +30,6 @@ trait OutputTrait
 
     /**
     * @param array<int|string,mixed> $data
-    * @param string $template
-    * @return Response
     */
     protected function outputHtmlPartial(array $data, string $template): Response
     {
@@ -43,11 +42,8 @@ trait OutputTrait
 
     /**
     * @param array<int|string,mixed> $data
-    * @param string $pageTemplate
-    * @param string $mainTemplate
-    * @return Response
     */
-    protected function outputHtml(array $data, string $pageTemplate, string $mainTemplate = null): Response
+    protected function outputHtml(array $data, string $pageTemplate, ?string $mainTemplate = null): Response
     {
         return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
@@ -58,8 +54,6 @@ trait OutputTrait
 
     /**
     * @param array<int|string,mixed> $content
-    * @param bool $result
-    * @return Response
     */
     protected function outputJson(array $content, bool $result = true): Response
     {

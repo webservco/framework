@@ -6,6 +6,7 @@ use WebServCo\Framework\Framework;
 
 trait ExposeLibrariesTrait
 {
+
     final protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface
     {
         return Framework::library('Config');

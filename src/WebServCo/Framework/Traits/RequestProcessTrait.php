@@ -7,6 +7,7 @@ use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
+
     abstract public function clearData(): bool;
 
     /**
@@ -14,7 +15,6 @@ trait RequestProcessTrait
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
     abstract public function setData($key, $value): bool;
@@ -38,7 +38,7 @@ trait RequestProcessTrait
     public function sanitize(array $data): array
     {
         foreach ($data as $key => $value) {
-            if (is_string($value)) {
+            if (\is_string($value)) {
                 // Sanitize only first level (prevents "argv" from being sanitized)
                 $value = RequestUtils::sanitizeString($value);
             }
@@ -50,7 +50,6 @@ trait RequestProcessTrait
     /**
     * @param array<string,mixed> $server
     * @param array<string,string> $post
-    * @return bool
     */
     protected function init(array $server, array $post = []): bool
     {
@@ -79,16 +78,17 @@ trait RequestProcessTrait
 
     protected function setBody(): bool
     {
-        $this->body = (string) file_get_contents('php://input');
+        $this->body = (string) \file_get_contents('php://input');
         return true;
     }
 
     protected function setMethod(): bool
     {
         if (empty($this->server['REQUEST_METHOD']) ||
-        !in_array(
+        !\in_array(
             $this->server['REQUEST_METHOD'],
-            Method::getSupported()
+            Method::getSupported(),
+            true
         )) {
             return false;
         }
@@ -101,7 +101,7 @@ trait RequestProcessTrait
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
-        $this->filename = basename($this->server['SCRIPT_NAME']);
+        $this->filename = \basename($this->server['SCRIPT_NAME']);
         return true;
     }
 
@@ -111,13 +111,13 @@ trait RequestProcessTrait
             return false;
         }
 
-        $this->path = rtrim(
-            str_replace(
+        $this->path = \rtrim(
+            \str_replace(
                 $this->filename,
                 '',
                 $this->server['SCRIPT_NAME']
             ),
-            DIRECTORY_SEPARATOR
+            \DIRECTORY_SEPARATOR
         );
 
         return true;
@@ -125,13 +125,19 @@ trait RequestProcessTrait
 
     protected function clearGlobals(): bool
     {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!empty($_GET)) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             foreach ($_GET as $k => $v) {
+                // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
                 unset($_REQUEST[$k]);
             }
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_GET = [];
         }
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!empty($_POST)) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_POST = [];
         }
         return true;
@@ -139,7 +145,6 @@ trait RequestProcessTrait
 
     /**
     * @param array<string,string> $post
-    * @return bool
     */
     protected function processPost(array $post = []): bool
     {
@@ -166,7 +171,7 @@ trait RequestProcessTrait
         }
         if (isset($this->server['argv'][2])) {
             foreach ($this->server['argv'] as $k => $v) {
-                if (in_array($k, [0,1])) {
+                if (\in_array($k, [0, 1], true)) {
                     continue;
                 }
                 $this->args[] = RequestUtils::sanitizeString($v);
@@ -194,13 +199,13 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        list ($target, $queryString, $suffix) = RequestUtils::parse(
+        [$target, $queryString, $suffix] = RequestUtils::parse(
             $string,
             $this->path,
             $this->filename,
             $this->setting('suffixes')
         );
-        $this->target = RequestUtils::sanitizeString(urldecode($target));
+        $this->target = RequestUtils::sanitizeString(\urldecode($target));
         $this->query = RequestUtils::format(RequestUtils::sanitizeString($queryString));
         $this->suffix = $suffix;
         return true;
