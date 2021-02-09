@@ -4,11 +4,9 @@ namespace WebServCo\Framework\Utils;
 
 final class Template
 {
+
     /**
-    * @param string $templatePath
-    * @param string $templateName
     * @param array<int|string,mixed> $data
-    * @return string
     */
     public static function render(string $templatePath, string $templateName, array $data): string
     {

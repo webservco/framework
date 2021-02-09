@@ -4,10 +4,11 @@ namespace WebServCo\Framework\Utils;
 
 final class Dates
 {
+
     public static function format(string $date, string $format = 'Y-m-d'): string
     {
         $dateTime = \DateTime::createFromFormat($format, $date);
-        if (false == $dateTime) {
+        if (false === $dateTime) {
             throw new \InvalidArgumentException('Invalid date.');
         }
         return $dateTime->format($format);
@@ -17,6 +18,6 @@ final class Dates
     {
         $formattedDate = self::format($date, $format);
         
-        return $formattedDate == $date;
+        return $formattedDate === $date;
     }
 }

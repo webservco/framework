@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
+
     /**
     * @param array<int|string,mixed> $array
     * @return array<int|string,mixed>
@@ -11,12 +12,14 @@ final class Arrays
     public static function removeEmptyValues(array $array): array
     {
         foreach ($array as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $array[$key] = self::removeEmptyValues($array[$key]);
             }
-            if (empty($array[$key])) {
-                unset($array[$key]);
+            if (!empty($array[$key])) {
+                continue;
             }
+
+            unset($array[$key]);
         }
         return $array;
     }
@@ -27,23 +30,26 @@ final class Arrays
     */
     public static function has(?array $array, $value): bool
     {
-        if (!is_array($array)) {
+        if (!\is_array($array)) {
             return false;
         }
-        return in_array($value, $array);
+        return \in_array($value, $array, true);
     }
 
     /**
     * Get a value from an array if it exists, otherwise a specified default value.
     * For multi dimensional arrays please see ArrayStorage.
-    * @param array<mixed> $array
+     *
+     * @param array<mixed> $array
     * @param mixed $key
     * @param mixed $defaultValue
     * @return mixed
     */
     public static function get(array $array, $key, $defaultValue = false)
     {
-        return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
+        return \array_key_exists($key, $array)
+            ? $array[$key]
+            : $defaultValue;
     }
 
     /**
@@ -54,7 +60,7 @@ final class Arrays
         if (empty($array)) {
             return false;
         }
-        return is_array($array[key($array)]);
+        return \is_array($array[\key($array)]);
     }
 
     /**
@@ -64,9 +70,11 @@ final class Arrays
     public static function nullToEmptyString(array $array): array
     {
         foreach ($array as $key => $value) {
-            if (is_null($value)) {
-                $array[$key] = '';
+            if (!\is_null($value)) {
+                continue;
             }
+
+            $array[$key] = '';
         }
         return $array;
     }
@@ -78,7 +86,8 @@ final class Arrays
     * "PHP Cookbook by David Sklar, Adam Trachtenberg"
     * 4.24. Finding All Element Combinations of an Array
     * https://www.oreilly.com/library/view/php-cookbook/1565926811/ch04s25.html
-    * @param array<mixed> $array
+     *
+     * @param array<mixed> $array
     * @return array<mixed>
     */
     public static function powerSet(array $array): array
@@ -86,14 +95,14 @@ final class Arrays
         $results = [[]]; //initialize by adding the empty set
         foreach ($array as $element) {
             foreach ($results as $combination) {
-                array_push($results, array_merge([$element], $combination));
+                \array_push($results, \array_merge([$element], $combination));
             }
         }
         // sort by number of elements descending
-        $array1 = array_map('count', $results);
-        array_multisort($array1, SORT_DESC, $results);
+        $array1 = \array_map('count', $results);
+        \array_multisort($array1, \SORT_DESC, $results);
 
-        return array_filter($results); // removes empty elements
+        return \array_filter($results); // removes empty elements
     }
 
     /**
@@ -106,8 +115,8 @@ final class Arrays
         }
         $queries = [];
         foreach ($array as $k => $v) {
-            $queries[] = sprintf('%s=%s', $k, $v);
+            $queries[] = \sprintf('%s=%s', $k, $v);
         }
-        return '?' . implode('&', $queries);
+        return '?' . \implode('&', $queries);
     }
 }
