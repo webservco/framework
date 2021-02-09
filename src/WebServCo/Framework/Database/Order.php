@@ -4,6 +4,7 @@ namespace WebServCo\Framework\Database;
 
 final class Order
 {
-    const ASC = 'ASC';
-    const DESC = 'DESC';
+
+    public const ASC = 'ASC';
+    public const DESC = 'DESC';
 }

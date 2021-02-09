@@ -48,6 +48,8 @@
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />
 		<!-- Opposite error if fixed -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses" />
+		<!-- Opposite error if fixed -->
+		<exclude name="SlevomatCodingStandard.Functions.DisallowArrowFunction.DisallowedArrowFunction" />
 		<properties>
 			<!-- Namespaces that are allowed to be `use`d -->
 			<property name="namespacesRequiredToUse" type="array">

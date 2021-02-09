@@ -6,15 +6,19 @@ use WebServCo\Framework\Exceptions\DatabaseException;
 
 abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 {
-    protected \PDO $db;
-    protected \PDOStatement $stmt;
-    /**
-    * @var array<int,array<mixed>>
-    */
-    protected array $rows;
 
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
+
+    protected \PDO $db;
+    protected \PDOStatement $stmt;
+
+    /**
+     * Rows.
+     *
+     * @var array<int,array<mixed>>
+     */
+    protected array $rows;
 
     abstract protected function getDataSourceName(string $host, string $port, string $dbname): string;
 
@@ -39,10 +43,10 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                     \PDO::ATTR_EMULATE_PREPARES => false,
-                    \PDO::ATTR_PERSISTENT => false
+                    \PDO::ATTR_PERSISTENT => false,
                 ]
             );
-        } catch (\Exception $e) { // PDOException/RuntimeException/Exception
+        } catch (\Throwable $e) { // PDOException/RuntimeException/Exception
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
@@ -55,47 +59,14 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return $this->stmt->rowCount();
     }
 
-    /**
-    * @param array<mixed> $data
-    * @return bool
-    */
-    protected function bindParams(array $data): bool
-    {
-        if (empty($data)) {
-            return false;
-        }
-
-        if (!is_array($data)) {
-            throw new DatabaseException('"Parameters" is not an array.');
-        }
-
-        $i = 1;
-        foreach ($data as $item) {
-            if (is_array($item)) {
-                foreach ($item as $v) {
-                    $this->validateParam($v);
-                    $this->stmt->bindValue($i, $v, $this->getDataType((string) $v));
-                    $i++;
-                }
-            } else {
-                $this->validateParam($item);
-                $this->stmt->bindValue($i, $item, $this->getDataType((string) $item));
-                $i++;
-            }
-        }
-        return true;
-    }
-
     public function escape(string $string): string
     {
         return $this->db->quote($string);
     }
 
     /**
-    * @param string $query
     * @param array<int,float|int|string> $params
-    * @param int $columnNumber
-    * @return bool|int|null|string
+    * @return bool|int|string|null
     */
     public function getColumn(string $query, array $params = [], int $columnNumber = 0)
     {
@@ -103,32 +74,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return $this->stmt->fetchColumn($columnNumber);
     }
 
-    protected function getDataType(string $variable): int
-    {
-        $type = gettype($variable);
-
-        switch ($type) {
-            case 'NULL':
-                return \PDO::PARAM_NULL;
-            case 'integer':
-                return \PDO::PARAM_INT;
-            case 'boolean':
-            // causes data not to be inserted
-            //return \PDO::PARAM_BOOL;
-            case 'string':
-            case 'double':
-            case 'array':
-            case 'object':
-            case 'resource':
-            case 'resource (closed)':
-            case 'unknown type':
-            default:
-                return \PDO::PARAM_STR;
-        }
-    }
-
     /**
-    * @param string $query
     * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
     */
@@ -139,14 +85,13 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     }
 
     /**
-    * @param string $query
     * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
     */
     public function getRows(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC) ?? [];
         return $this->rows;
     }
 
@@ -174,16 +119,14 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         if (!($this->stmt instanceof \PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
         }
-        if ('mysql' != $this->setting('driver')) {
+        if ('mysql' !== $this->setting('driver')) {
             throw new DatabaseException('Not implemented.');
         }
         return $this->stmt->rowCount();
     }
 
     /**
-    * @param string $query
     * @param array<int,mixed> $params
-    * @return \PDOStatement
     */
     public function query(string $query, array $params = []): \PDOStatement
     {
@@ -204,15 +147,13 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 $this->stmt = $stmt;
             }
             return $this->stmt;
-        } catch (\Exception $e) { // \PDOException, \RuntimeException
+        } catch (\Throwable $e) { // \PDOException, \RuntimeException
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
     /**
-    * @param int $attribute
     * @param mixed $value
-    * @return bool
     */
     public function setAttribute(int $attribute, $value): bool
     {
@@ -221,7 +162,6 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
     /**
     * @param array<int,array<int,mixed>> $queries
-    * @return bool
     */
     public function transaction(array $queries): bool
     {
@@ -231,24 +171,77 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 if (!isset($item[0])) {
                     throw new DatabaseException('No query specified.');
                 }
-                $params = isset($item[1]) ? $item[1] : [];
+                $params = $item[1] ?? [];
                 $this->query($item[0], $params);
             }
             $this->db->commit();
             return true;
-        } catch (\Exception $e) { // DatabaseException, \PDOException, \RuntimeException
+        } catch (\Throwable $e) { // DatabaseException, \PDOException, \RuntimeException
             $this->db->rollBack();
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
     /**
+    * @param array<mixed> $data
+    */
+    protected function bindParams(array $data): bool
+    {
+        if (empty($data)) {
+            return false;
+        }
+
+        if (!\is_array($data)) {
+            throw new DatabaseException('"Parameters" is not an array.');
+        }
+
+        $i = 1;
+        foreach ($data as $item) {
+            if (\is_array($item)) {
+                foreach ($item as $v) {
+                    $this->validateParam($v);
+                    $this->stmt->bindValue($i, $v, $this->getDataType((string) $v));
+                    $i++;
+                }
+            } else {
+                $this->validateParam($item);
+                $this->stmt->bindValue($i, $item, $this->getDataType((string) $item));
+                $i++;
+            }
+        }
+        return true;
+    }
+
+    protected function getDataType(string $variable): int
+    {
+        $type = \gettype($variable);
+
+        switch ($type) {
+            case 'NULL':
+                return \PDO::PARAM_NULL;
+            case 'integer':
+                return \PDO::PARAM_INT;
+            case 'boolean':
+            // causes data not to be inserted
+            //return \PDO::PARAM_BOOL;
+            case 'string':
+            case 'double':
+            case 'array':
+            case 'object':
+            case 'resource':
+            case 'resource (closed)':
+            case 'unknown type':
+            default:
+                return \PDO::PARAM_STR;
+        }
+    }
+
+    /**
     * @param mixed $param
-    * @return bool
     */
     protected function validateParam($param): bool
     {
-        if (is_array($param)) {
+        if (\is_array($param)) {
             throw new DatabaseException('Parameter is an array.');
         }
         return true;
