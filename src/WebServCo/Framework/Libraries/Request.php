@@ -5,6 +5,7 @@ namespace WebServCo\Framework\Libraries;
 final class Request extends \WebServCo\Framework\AbstractRequest implements
     \WebServCo\Framework\Interfaces\RequestInterface
 {
+
     use \WebServCo\Framework\Traits\RequestProcessTrait;
     use \WebServCo\Framework\Traits\RequestServerTrait;
     use \WebServCo\Framework\Traits\RequestUrlTrait;

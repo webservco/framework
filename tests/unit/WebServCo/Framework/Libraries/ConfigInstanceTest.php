@@ -4,7 +4,7 @@ namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Libraries\Config;
-use WebServCo\Framework\Settings as S;
+use WebServCo\Framework\Settings;
 
 final class ConfigInstanceTest extends TestCase
 {
@@ -167,10 +167,19 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
-        $this->assertTrue($this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
-        $this->assertEquals($this->value, $this->object->get(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)));
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+        );
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+        );
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value)
+        );
+        $this->assertEquals(
+            $this->value,
+            $this->object->get(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER))
+        );
     }
 
     /**
@@ -178,9 +187,15 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
-        $this->assertTrue($this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER), $this->value));
-        $this->assertTrue($this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER), $this->value));
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+        );
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+        );
+        $this->assertTrue(
+            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value)
+        );
         $this->assertTrue($this->object->set('app', $this->value));
         $this->assertEquals($this->value, $this->object->get('app'));
     }
@@ -200,9 +215,9 @@ final class ConfigInstanceTest extends TestCase
      */
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst(): void
     {
-        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
-        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
-        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'old value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'new value'));
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER)));
     }
 
     /**
@@ -234,15 +249,15 @@ final class ConfigInstanceTest extends TestCase
                 ],
             ],
         ];
-        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'old value'));
-        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'old value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'new value'));
         $this->assertTrue($this->object->add('foo', $config));
 
         $this->assertEquals(
             'value',
-            $this->object->get(\sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', S::DIVIDER))
+            $this->object->get(\sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', Settings::DIVIDER))
         );
-        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER)));
     }
 
     /**
@@ -278,7 +293,7 @@ final class ConfigInstanceTest extends TestCase
     {
         $data = $this->object->load('foo', self::$pathProject);
         $this->assertTrue($this->object->add('foo', $data));
-        $this->assertEquals('value1', $this->object->get(\sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)));
+        $this->assertEquals('value1', $this->object->get(\sprintf('foo%1$soptions%1$ssetting1', Settings::DIVIDER)));
     }
 
     /**
@@ -287,10 +302,10 @@ final class ConfigInstanceTest extends TestCase
      */
     public function loadAppendsDataInsteadOfOverwriting(): void
     {
-        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER), 'new value'));
+        $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'new value'));
         $data = $this->object->load('foo', self::$pathProject);
         $this->object->add('foo', $data);
-        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)));
+        $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER)));
     }
 
     /**

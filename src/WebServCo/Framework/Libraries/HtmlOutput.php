@@ -5,6 +5,7 @@ namespace WebServCo\Framework\Libraries;
 final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\OutputInterface
 {
+
     private string $path;
     private string $template;
 
@@ -22,18 +23,18 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
 
     public function render(): string
     {
-        ob_start();
+        \ob_start();
         try {
             $templatePath = "{$this->path}{$this->template}.php";
-            if (!is_file($templatePath)) {
+            if (!\is_file($templatePath)) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    sprintf('Template file not found: %s.', $templatePath)
+                    \sprintf('Template file not found: %s.', $templatePath)
                 );
             }
             include $templatePath;
-            $output = ob_get_clean();
+            $output = \ob_get_clean();
         } catch (\Throwable $e) { // php7
-            ob_end_clean();
+            \ob_end_clean();
             throw $e;
         }
         return (string) $output;

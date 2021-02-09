@@ -4,17 +4,21 @@ namespace WebServCo\Framework\Libraries;
 
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
+
     public function get(string $name, string $defaultValue = ''): string
     {
-        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+        return $_COOKIE[$name] ?? $defaultValue;
     }
 
     public function remove(string $name): bool
     {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!isset($_COOKIE[$name])) {
             return false;
         }
 
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         unset($_COOKIE[$name]);
         $this->set($name, '', -1);
         return true;
@@ -29,7 +33,6 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
     * @param bool $secure,
     * @param bool $httponly,
     * @param 'Lax'|'None'|'Strict' $samesite
-    * @return bool
     */
     public function set(
         string $name,
@@ -41,10 +44,10 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         bool $httponly = false,
         string $samesite = 'Lax'
     ): bool {
-        if (!in_array($samesite, ['Lax', 'None', 'Strict'])) {
+        if (!\in_array($samesite, ['Lax', 'None', 'Strict'], true)) {
             throw new \InvalidArgumentException('Invalid argument: samesite');
         }
-        return setcookie(
+        return \setcookie(
             $name,
             \WebServCo\Framework\RequestUtils::sanitizeString($value),
             // phpstan-ignore-next-line

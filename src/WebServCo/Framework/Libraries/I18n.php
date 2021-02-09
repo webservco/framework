@@ -4,9 +4,12 @@ namespace WebServCo\Framework\Libraries;
 
 final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebServCo\Framework\Interfaces\I18nInterface
 {
+
     /**
-    * @var array<string, array<string,string>>
-    */
+     * Langs
+     *
+     * @var array<string, array<string,string>>
+     */
     protected array $langs;
 
     protected string $domain;
@@ -46,11 +49,12 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return $this->locale;
     }
 
-    public function init(string $projectPath, string $lang = null): bool
+    public function init(string $projectPath, ?string $lang = null): bool
     {
         $this->translationsPath = $projectPath . 'resources/translations';
 
-        $lang = $lang ? $lang : $this->setting('lang', 'en');
+        // $lang is $lang if not null, otherwise get from setting
+        $lang ??= $this->setting('lang', 'en');
         $this->setLanguage($lang);
 
         return true;
@@ -65,11 +69,11 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return $this->setLanguage($this->lang, $this->translationsPath);
     }
 
-    public function setLanguage(string $lang, string $translationsPath = null): bool
+    public function setLanguage(string $lang, ?string $translationsPath = null): bool
     {
-        if (!array_key_exists($lang, $this->langs)) {
+        if (!\array_key_exists($lang, $this->langs)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                sprintf('Language not available: %s.', $lang)
+                \sprintf('Language not available: %s.', $lang)
             );
         }
 
@@ -84,9 +88,9 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
 
     protected function setDomain(string $domain, string $directory): bool
     {
-        bindtextdomain($domain, $directory);
-        textdomain($domain);
-        bind_textdomain_codeset($domain, 'UTF8');
+        \bindtextdomain($domain, $directory);
+        \textdomain($domain);
+        \bind_textdomain_codeset($domain, 'UTF8');
 
         return true;
     }
@@ -106,14 +110,14 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         /**
          * Do not use LC_ALL, in order to skip LC_NUMERIC.
          */
-        if (defined('LC_MESSAGES')) {
-            setlocale(LC_COLLATE, $locale);
-            setlocale(LC_CTYPE, $locale);
-            setlocale(LC_MONETARY, $locale);
-            setlocale(LC_TIME, $locale);
-            setlocale(LC_MESSAGES, $locale);
+        if (\defined('LC_MESSAGES')) {
+            \setlocale(\LC_COLLATE, $locale);
+            \setlocale(\LC_CTYPE, $locale);
+            \setlocale(\LC_MONETARY, $locale);
+            \setlocale(\LC_TIME, $locale);
+            \setlocale(\LC_MESSAGES, $locale);
         } else { // Windows
-            setlocale(LC_ALL, $locale);
+            \setlocale(\LC_ALL, $locale);
         }
 
         return true;

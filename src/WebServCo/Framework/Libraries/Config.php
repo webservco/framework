@@ -5,8 +5,10 @@ namespace WebServCo\Framework\Libraries;
 final class Config extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ConfigInterface
 {
+
     /**
      * Stores configuration data.
+     *
      * @var array<mixed>
      */
     private array $config = [];
@@ -14,7 +16,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * Application environment.
      */
-    private string $env = '';
+    private string $env;
 
     /**
      * Add base setting data.
@@ -24,7 +26,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @param string $setting Name of setting to load.
      * @param mixed $data Data to add.
-     * @return bool
      */
     public function add(string $setting, $data): bool
     {
@@ -36,7 +37,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     }
 
     /**
-     *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'app/path/project').
@@ -50,12 +50,10 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
 
     /**
      * Get application environment value.
-     *
-     * @return string
      */
     public function getEnv(): string
     {
-        return $this->env ?: \WebServCo\Framework\Environment::DEV;
+        return $this->env ?? \WebServCo\Framework\Environment::DEV;
     }
 
     /**
@@ -69,11 +67,11 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     public function load(string $setting, string $pathProject): array
     {
         $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
-        if (!is_readable($pathFull)) {
+        if (!\is_readable($pathFull)) {
             return [];
         }
         $data = (include $pathFull);
-        return is_array($data) ? $data : [];
+        return \is_array($data) ? $data : [];
     }
 
     /**
@@ -83,7 +81,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool true on success and false on failure.
      */
     public function set($setting, $value): bool
@@ -97,18 +94,12 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
 
     /**
      * Set application environment value.
-     *
-     * @param string $env
-     *
-     * @return bool
      */
     public function setEnv(string $env): bool
     {
-        if (in_array($env, \WebServCo\Framework\Environment::getOptions())) {
-            $this->env = $env;
-        } else {
-            $this->env = \WebServCo\Framework\Environment::DEV;
-        }
+        $this->env = \in_array($env, \WebServCo\Framework\Environment::getOptions(), true)
+            ? $env
+            : \WebServCo\Framework\Environment::DEV;
 
         return true;
     }
