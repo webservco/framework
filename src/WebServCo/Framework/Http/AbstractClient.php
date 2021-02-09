@@ -6,6 +6,7 @@ use WebServCo\Framework\Exceptions\HttpClientException;
 
 abstract class AbstractClient
 {
+
     protected bool $debug;
 
     protected string $method;
@@ -13,16 +14,22 @@ abstract class AbstractClient
     protected string $requestContentType;
 
     /**
+    * Request data
+    *
     * @var array<string,string>|string
     */
     protected $requestData;
 
     /**
+    * Request headers
+    *
     * @var array<string,mixed>
     */
     protected array $requestHeaders;
 
     /**
+    * Resposne headers
+    *
     * @var array<int,array<string,mixed>>
     */
     protected array $responseHeaders;
@@ -60,9 +67,7 @@ abstract class AbstractClient
     }
 
     /**
-    * @param string $url
     * @param array<mixed>|string $data
-    * @return Response
     */
     public function post(string $url, $data = null): Response
     {
@@ -81,7 +86,7 @@ abstract class AbstractClient
 
     public function setMethod(string $method): bool
     {
-        if (!in_array($method, Method::getSupported())) {
+        if (!\in_array($method, Method::getSupported(), true)) {
             throw new HttpClientException('Unsupported method.');
         }
         $this->method = $method;
@@ -90,14 +95,13 @@ abstract class AbstractClient
 
     /**
     * @param array<string,mixed>|string $data
-    * @return bool
     */
     public function setRequestData($data): bool
     {
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $this->requestData = [];
             foreach ($data as $key => $value) {
-                if (is_array($value)) {
+                if (\is_array($value)) {
                     throw new \InvalidArgumentException('Request data value can not be an array.');
                 }
                 $this->requestData[$key] = $value;
