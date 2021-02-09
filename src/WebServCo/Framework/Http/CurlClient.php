@@ -95,10 +95,11 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
         $this->debugFinish();
 
+        $headers = \end($this->responseHeaders);
         return new Response(
             $body,
             $httpCode,
-            \end($this->responseHeaders) ?? []
+            \is_array($headers) ? $headers : []
         );
     }
 

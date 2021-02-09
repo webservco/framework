@@ -91,7 +91,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function getRows(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        $this->rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC) ?? [];
+        $rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $this->rows = \is_array($rows) ? $rows : [];
         return $this->rows;
     }
 
