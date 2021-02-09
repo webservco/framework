@@ -13,8 +13,8 @@ trait DatabaseTrait
     /**
     * @param string $queryType
     * @param string $tableName
-    * @param array<string, float|int|string> $addData
-    * @param array<string, float|int|string> $updateData
+    * @param array<string,float|int|string> $addData
+    * @param array<string,float|int|string> $updateData
     * @return string
     */
     abstract protected function generateAddQuery(
@@ -41,8 +41,8 @@ trait DatabaseTrait
 
     /**
     * @param string $tableName
-    * @param array<string,float|int|string> $addData
-    * @param array<string,float|int|string> $updateData
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
     * @return \PDOStatement
     */
     final public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement
@@ -52,7 +52,7 @@ trait DatabaseTrait
 
     /**
     * @param string $tableName
-    * @param array<string, float|int|string> $data
+    * @param array<mixed> $data
     * @return \PDOStatement
     */
     final public function insertIgnore(string $tableName, array $data = []): \PDOStatement
@@ -62,7 +62,7 @@ trait DatabaseTrait
 
     /**
     * @param string $tableName
-    * @param array<string, float|int|string> $data
+    * @param array<mixed> $data
     * @return \PDOStatement
     */
     final public function replace(string $tableName, array $data = []): \PDOStatement
@@ -73,8 +73,8 @@ trait DatabaseTrait
     /**
     * @param string $queryType
     * @param string $tableName
-    * @param array<string, float|int|string> $addData
-    * @param array<string, float|int|string> $updateData
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
     * @return \PDOStatement
     */
     final protected function add(

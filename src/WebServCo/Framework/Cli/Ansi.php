@@ -10,7 +10,7 @@ final class Ansi
     * @see \WebServCo\Framework\Cli\Sgr
     *
     * @param string $string
-    * @param array<int,string> $parameters ANSI SGR parameters (alterantively use the Sgr class constants)
+    * @param array<int,int> $parameters ANSI SGR parameters (alterantively use the Sgr class constants)
     *
     * @return string
     */

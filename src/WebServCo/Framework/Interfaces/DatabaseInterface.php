@@ -17,14 +17,14 @@ interface DatabaseInterface
     /**
     * @param string $query
     * @param array<int, float|int|string> $params
-    * @return array<string, float|int|string>
+    * @return array<string,float|int|string>
     */
     public function getRow(string $query, array $params = []): array;
 
     /**
     * @param string $query
     * @param array<int, float|int|string> $params
-    * @return array<string, float|int|string>
+    * @return array<string,float|int|string>
     */
     public function getRows(string $query, array $params = []): array;
 
@@ -36,15 +36,15 @@ interface DatabaseInterface
 
     /**
     * @param string $tableName
-    * @param array<string,float|int|string> $addData
-    * @param array<string,float|int|string> $updateData
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
     * @return \PDOStatement
     */
     public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement;
 
     /**
     * @param string $tableName
-    * @param array<string, float|int|string> $data
+    * @param array<mixed> $data
     * @return \PDOStatement
     */
     public function insertIgnore(string $tableName, array $data = []): \PDOStatement;
@@ -55,14 +55,14 @@ interface DatabaseInterface
 
     /**
     * @param string $query
-    * @param array<int, float|int|string> $params
+    * @param array<int,float|int|string> $params
     * @return \PDOStatement
     */
     public function query(string $query, array $params = []);
 
     /**
     * @param string $tableName
-    * @param array<string, float|int|string> $data
+    * @param array<mixed> $data
     * @return \PDOStatement
     */
     public function replace(string $tableName, array $data = []): \PDOStatement;

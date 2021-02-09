@@ -3,62 +3,20 @@
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
+
     private static string $pathProject = '';
     private static string $pathWeb = '';
-
-    public static function setUpBeforeClass(): void
-    {
-        $pathProject = '/tmp/webservco/project/';
-        $pathWeb = "{$pathProject}public/";
-        if (!is_readable($pathWeb)) {
-                mkdir($pathWeb, 0775, true);
-                touch("{$pathWeb}index.php");
-                file_put_contents("{$pathProject}.env", 'dev');
-        }
-        self::$pathProject = $pathProject;
-        self::$pathWeb = $pathWeb;
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $pathBase = '/tmp/webservco/';
-        $it = new \RecursiveDirectoryIterator(
-            $pathBase,
-            \RecursiveDirectoryIterator::SKIP_DOTS
-        );
-        $files = new \RecursiveIteratorIterator(
-            $it,
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($files as $item) {
-            if ($item->isDir()) {
-                rmdir($item->getRealPath());
-            } else {
-                unlink($item->getRealPath());
-            }
-        }
-        rmdir($pathBase);
-    }
-
-    public function setUp(): void
-    {
-    }
-
-    public function tearDown(): void
-    {
-    }
 
     /**
     * @test
     */
     public function dummyProjectPathIsReadable(): void
     {
-        $this->assertTrue(is_readable(self::$pathProject));
+        $this->assertTrue(\is_readable(self::$pathProject));
     }
 
     /**
@@ -66,7 +24,7 @@ final class ApplicationTest extends TestCase
     */
     public function dummyWebPathIsReadable(): void
     {
-        $this->assertTrue(is_readable(self::$pathWeb));
+        $this->assertTrue(\is_readable(self::$pathWeb));
     }
 
     /**
@@ -127,5 +85,35 @@ final class ApplicationTest extends TestCase
         $app = new App(self::$pathWeb, self::$pathProject);
         $reflection = new \ReflectionMethod($app, 'shutdown');
         $this->assertTrue($reflection->isPublic());
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        $pathProject = '/tmp/webservco/project/';
+        $pathWeb = "{$pathProject}public/";
+
+        if (!\is_readable($pathWeb)) {
+                \mkdir($pathWeb, 0775, true);
+                \touch("{$pathWeb}index.php");
+                \file_put_contents("{$pathProject}.env", 'dev');
+        }
+        self::$pathProject = $pathProject;
+        self::$pathWeb = $pathWeb;
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        $pathBase = '/tmp/webservco/';
+        $it = new \RecursiveDirectoryIterator($pathBase, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+
+        foreach ($files as $item) {
+            if ($item->isDir()) {
+                \rmdir($item->getRealPath());
+            } else {
+                \unlink($item->getRealPath());
+            }
+        }
+        \rmdir($pathBase);
     }
 }

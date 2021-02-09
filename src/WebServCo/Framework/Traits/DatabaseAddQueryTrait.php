@@ -13,8 +13,8 @@ trait DatabaseAddQueryTrait
     /**
     * @param string $queryType
     * @param string $tableName
-    * @param array<string, float|int|string> $addData
-    * @param array<string, float|int|string> $updateData
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
     * @return string
     */
     final protected function generateAddQuery(
@@ -114,7 +114,7 @@ trait DatabaseAddQueryTrait
     }
 
     /**
-    * @param array<string, float|int|string> $data
+    * @param array<mixed> $data
     * @return string
     */
     final protected function generateAddQueryUpdatePart(array $data = []): string
@@ -125,7 +125,7 @@ trait DatabaseAddQueryTrait
 
         $strings = [];
         foreach ($data as $k => $v) {
-            $strings[] = sprintf('%s = ?', $this->escapeIdentifier($k));
+            $strings[] = sprintf('%s = ?', $this->escapeIdentifier((string) $k));
         }
 
         $query = " ON DUPLICATE KEY UPDATE ";

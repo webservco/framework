@@ -7,6 +7,7 @@ use WebServCo\Framework\Environment;
 
 final class EnvironmentTest extends TestCase
 {
+
     /**
      * @test
      */
@@ -36,6 +37,6 @@ final class EnvironmentTest extends TestCase
      */
     public function getOptionsReturnsExpectedValues(): void
     {
-        $this->assertEquals(['dev','test','prod'], Environment::getOptions());
+        $this->assertEquals(['dev', 'test', 'prod'], Environment::getOptions());
     }
 }
