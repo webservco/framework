@@ -5,7 +5,7 @@ namespace WebServCo\Framework;
 final class SourceCode
 {
 
-    const TYPE_XML = 'XML';
+    public const TYPE_XML = 'XML';
 
     protected string $type;
     protected string $data;

@@ -10,11 +10,15 @@ abstract class AbstractLibrary implements
 {
 
     /**
+     * Data.
+     *
      * @var array<mixed>
      */
     private array $data;
 
     /**
+     * Settings.
+     *
      * @var array<string,string|array<mixed>>
      */
     private array $settings;

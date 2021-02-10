@@ -8,6 +8,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**
+     * Errors.
+     *
      * @var array<string, array<int,string>>
      */
     protected array $errors;
@@ -15,6 +17,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     protected bool $filtered;
 
     /**
+     * Submit fields.
+     *
      * @var array<int,string>
      */
     protected array $submitFields;

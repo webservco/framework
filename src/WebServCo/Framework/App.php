@@ -54,6 +54,7 @@ class App extends Application
                         $previous->getFile(),
                         $previous->getLine()
                     );
+                // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
                 } while ($previous = $previous->getPrevious());
             }
         }
