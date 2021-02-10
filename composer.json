@@ -38,7 +38,7 @@
         "test" : "phpunit --colors=always",
         "test:d" : "phpunit --testdox",
         "check:structure" : "pds-skeleton validate .",
-        "check" : "phpcs --standard=PSR2 --extensions=php src tests",
+        "check" : "phpcs --standard=php-coding-standard.xml --extensions=php -sp src tests",
         "s:1": "phpstan analyse src tests --level=1 --ansi -c phpstan.neon",
         "s:2": "phpstan analyse src tests --level=2 --ansi -c phpstan.neon",
         "s:3": "phpstan analyse src tests --level=3 --ansi -c phpstan.neon",
