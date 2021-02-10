@@ -21,7 +21,8 @@
         "phpunit/phpunit" : "~9",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "php-parallel-lint/php-console-highlighter": "^0.5.0",
-        "slevomat/coding-standard": "^6.4"
+        "slevomat/coding-standard": "^6.4",
+        "phpstan/phpstan-strict-rules": "^0.12"
     },
     "suggest" : {
         "pds/skeleton" : "A standard filesystem skeleton suitable for all PHP packages.",
@@ -42,6 +43,7 @@
         "s:6": "phpstan analyse src tests --level=6 --ansi -c phpstan.neon",
         "s:7": "phpstan analyse src tests --level=7 --ansi -c phpstan.neon",
         "s:8": "phpstan analyse src tests --level=8 --ansi -c phpstan.neon",
+        "s:strict": "clear && phpstan analyse src --level=8 --ansi -c phpstan-strict.neon",
         "test" : "phpunit --colors=always",
         "test:d" : "phpunit --testdox"
     }
