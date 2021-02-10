@@ -7,15 +7,18 @@ namespace WebServCo\Framework\Interfaces;
 */
 interface ArrayObjectInterface extends \Traversable, \Countable
 {
+
     /**
     * @param array<mixed>|object $array
     * @return array<int|string,mixed>|null
     */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function exchangeArray($array);
 
     /**
     * @return array<int|string,mixed>
     */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function getArrayCopy();
 
     /**
@@ -25,15 +28,17 @@ interface ArrayObjectInterface extends \Traversable, \Countable
     public function offsetGet($key);
 
     /**
-    * @param int|null|string $key
+    * @param int|string|null $key
     * @param mixed $value
     * @return void
     */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function offsetSet($key, $value);
 
     /**
     * @param string|int $key
     * @return void
     */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function offsetUnset($key);
 }
