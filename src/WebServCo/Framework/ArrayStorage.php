@@ -217,11 +217,13 @@ final class ArrayStorage
         }
         $setting = self::parseSetting($setting);
         if (\is_array($setting)) {
+            // phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedAssigningByReference
             $reference = &$storage;
             foreach ($setting as $item) {
                 if (!\is_array($reference)) {
                     $reference = [];
                 }
+                // phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedAssigningByReference
                 $reference = &$reference[$item];
             }
             $reference = $value;
@@ -250,10 +252,12 @@ final class ArrayStorage
     protected static function removeByIndex(array $array, array $indices): array
     {
         // Create a reference to the original array.
+        // phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedAssigningByReference
         $a = &$array;
         // Count all passed indices, remove one because arrays are zero based.
         $c = \count($indices) - 1;
         // Iterate over all passed indices.
+        // phpcs:ignore SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPreIncrementOperator
         for ($i = 0; $i <= $c; ++$i) {
             // Make sure the index to go down for deletion actually exists.
             if (!\array_key_exists($indices[$i], $a)) {
@@ -266,6 +270,7 @@ final class ArrayStorage
                 unset($a[$indices[$i]]);
             } elseif (\is_array($a[$indices[$i]])) {
                 // Make sure we have an array to go further down.
+                // phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedAssigningByReference
                 $a = &$a[$indices[$i]];
             } else {
                 throw new ArrayStorageException(
