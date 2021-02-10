@@ -4,32 +4,27 @@ namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 {
+
+    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
+
     /**
-    * @var array<string, array<int,string>>
-    */
+     * @var array<string, array<int,string>>
+     */
     protected array $errors;
 
     protected bool $filtered;
 
     /**
-    * @var array<int,string>
-    */
+     * @var array<int,string>
+     */
     protected array $submitFields;
 
     protected string $submitField;
 
     protected bool $valid;
 
-    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
-
-    /**
-     * @return bool
-     */
     abstract protected function filter(): bool;
 
-    /**
-     * @return bool
-     */
     abstract protected function validate(): bool;
 
     /**
@@ -47,11 +42,11 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
          * Set form data
          */
         foreach ($this->setting('meta', []) as $field => $title) {
-            if ($this->isSent()) {
-                $data = $this->request()->data($field, null);
-            } else {
-                $data = \WebServCo\Framework\Utils\Arrays::get($defaultData, $field, null);
-            }
+            $data = $this->isSent() ? $this->request()->data($field, null) : \WebServCo\Framework\Utils\Arrays::get(
+                $defaultData,
+                $field,
+                null
+            );
             $this->setData($field, $data);
         }
 
@@ -59,9 +54,11 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
         $this->filtered = $this->filter();
 
-        if ($this->isSent()) {
-            $this->valid = $this->validate();
+        if (!$this->isSent()) {
+            return;
         }
+
+        $this->valid = $this->validate();
     }
 
     final public function clear(): bool
@@ -79,11 +76,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      */
     final public function errors($key, $defaultValue = false)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->errors,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->errors, $key, $defaultValue);
     }
 
     /**
@@ -105,7 +98,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function help($key, $defaultValue = false)
     {
         return $this->setting(
-            sprintf('help/%s', $key),
+            \sprintf('help/%s', $key),
             $defaultValue
         );
     }
@@ -121,7 +114,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             }
             return false;
         }
-        return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
+        return \WebServCo\Framework\Http\Method::POST === $this->request()->getMethod();
     }
 
     final public function isValid(): bool
@@ -137,7 +130,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function meta($key, $defaultValue = false)
     {
         return $this->setting(
-            sprintf('meta/%s', $key),
+            \sprintf('meta/%s', $key),
             $defaultValue
         );
     }
@@ -150,7 +143,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function required($key, $defaultValue = false)
     {
         return $this->setting(
-            sprintf('required/%s', $key),
+            \sprintf('required/%s', $key),
             $defaultValue
         );
     }
@@ -163,7 +156,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return [
             'meta' => $this->setting('meta', []),
             'help' => $this->setting('help', []),
-            'required' => array_fill_keys($this->setting('required', []), true),
+            'required' => \array_fill_keys($this->setting('required', []), true),
             'custom' => $this->setting('custom', []),
             'data' => $this->getData(),
             'errors' => $this->errors,
