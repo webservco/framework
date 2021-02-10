@@ -49,12 +49,14 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
         return $this->locale;
     }
 
-    public function init(string $projectPath, ?string $lang = null): bool
+    public function init(string $projectPath, string $lang = ''): bool
     {
         $this->translationsPath = $projectPath . 'resources/translations';
 
-        // $lang is $lang if not null, otherwise get from setting
-        $lang ??= $this->setting('lang', 'en');
+        if (\WebServCo\Framework\Utils\Strings::isEmpty($lang)) {
+            $lang = $this->setting('lang', 'en');
+        }
+
         $this->setLanguage($lang);
 
         return true;

@@ -12,7 +12,7 @@ interface I18nInterface
     */
     public function getLanguages(): array;
 
-    public function init(string $projectPath, ?string $lang = null): bool;
+    public function init(string $projectPath, string $lang = ''): bool;
 
     public function setLanguage(string $lang, ?string $translationsPath = null): bool;
 }
