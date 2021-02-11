@@ -27,3 +27,44 @@ return [
 ];
 
 ```
+
+Note: If you'd rather use a custom/external page for 404, simply ommit the `404_route` and the system will throw a `\WebServCo\Framework\Exceptions\NotFoundException` which you can catch in your Application.
+
+Example:
+
+```php
+final class App extends \WebServCo\Framework\Application
+{
+    [...]
+
+    /**
+     * Handle HTTP errors.
+     *
+     * @param array<string,mixed> $errorInfo
+     */
+    protected function haltHttp(array $errorInfo = []): bool
+    {
+        $this->logError($errorInfo, false);
+        switch ($errorInfo['code']) {
+            case 404:
+                $output = \file_get_contents(
+                    \sprintf('%sresources/views/404.php', $this->projectPath)
+                );
+                break;
+            case 500: //application
+            case 0: //default
+            default:
+                return parent::haltHttp($errorInfo);
+        }
+        $response = new \WebServCo\Framework\Http\Response(
+            $output,
+            $errorInfo['code'],
+            ['Content-Type' => ['text/html']]
+        );
+        $response->send();
+        return true;
+    }
+
+    [...]
+}
+```
