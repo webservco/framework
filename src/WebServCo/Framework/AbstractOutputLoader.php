@@ -64,10 +64,13 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         /**
          * Page content
          */
-        $this->htmlOutput()->setData(
-            'tpl_content',
-            $this->getRenderedHtml($pageTemplate)
-        );
+        if (!\WebServCo\Framework\Utils\Strings::isEmpty($pageTemplate)) {
+            $this->htmlOutput()->setData(
+                'tpl_content',
+                $this->getRenderedHtml($pageTemplate)
+            );
+        }
+
         /**
          * Main template
          */
