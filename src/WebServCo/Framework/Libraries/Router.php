@@ -16,17 +16,24 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         if (empty($routeString) || 'index' === $routeString) {
             $defaultRoute = $this->setting('default_route');
             if (!isset($defaultRoute[1])) {
-                throw new \WebServCo\Framework\Exceptions\ApplicationException("Default route missing or not valid.");
+                throw new \WebServCo\Framework\Exceptions\NotFoundException("Default route missing or not valid.");
             }
             return $defaultRoute;
         }
 
         $parts = \explode('/', $routeString, 3);
 
+        // No matching route found
         if (empty($parts[1])) {
-            throw new \WebServCo\Framework\Exceptions\NotFoundException(
-                \sprintf('The requested resource "%s" was not found.', $routeString)
-            );
+            // Check if we have a 404 route
+            $fourOhfourRoute = $this->setting('404_route');
+            if (!isset($fourOhfourRoute[1])) {
+                // No 404 route found, throw 404 exception.
+                throw new \WebServCo\Framework\Exceptions\NotFoundException(
+                    \sprintf('The requested resource "%s" was not found.', $routeString)
+                );
+            }
+            return $fourOhfourRoute;
         }
 
         $controller = $parts[0];

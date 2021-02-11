@@ -43,6 +43,8 @@ A PHP Framework
 * [AbstractLibrary](/docs/Libraries/AbstractLibrary.md)
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
+* [Request](/docs/Libraries/Request.md)
+* [Router](/docs/Libraries/Router.md)
 * [Session](/docs/Libraries/Session.md)
 
 ### Objects
