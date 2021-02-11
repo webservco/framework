@@ -20,8 +20,8 @@ interface DatabaseInterface
     public function getRow(string $query, array $params = []): array;
 
     /**
-    * @param array<int, float|int|string> $params
-    * @return array<string,float|int|string>
+    * @param array<int,float|int|string> $params
+    * @return array<int,array<string,float|int|string>>
     */
     public function getRows(string $query, array $params = []): array;
 

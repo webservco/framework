@@ -86,7 +86,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
     /**
     * @param array<int,float|int|string> $params
-    * @return array<string,float|int|string>
+    * @return array<int,array<string,float|int|string>>
     */
     public function getRows(string $query, array $params = []): array
     {
