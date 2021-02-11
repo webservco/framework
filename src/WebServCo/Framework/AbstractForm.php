@@ -33,7 +33,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     /**
     * @param array<string,string|array<mixed>> $settings
-    * @param array<string,mixed> $defaultData
+    * @param array<string,bool|int|float|string|null> $defaultData
     * @param array<int,string> $submitFields
     */
     public function __construct(array $settings, array $defaultData = [], array $submitFields = [])
