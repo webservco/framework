@@ -45,7 +45,7 @@ final class CsvCreator
             }
 
             // Add Byte Order mark (BOM) for UTF-8.
-            \fwrite($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+            \fwrite($handle, \chr(0xEF) . \chr(0xBB) . \chr(0xBF));
 
             if ($addHeader) {
                 $headerData = \current($data);
