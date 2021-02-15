@@ -47,7 +47,7 @@ interface DatabaseInterface
     public function numRows(): int;
 
     /**
-    * @param array<int,float|int|string> $params
+    * @param array<int,float|int|string|null> $params
     */
     public function query(string $query, array $params = []): \PDOStatement;
 

@@ -17,7 +17,7 @@ trait DatabaseTrait
     abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0): ?string;
 
     /**
-    * @param array<int, float|int|string> $params
+    * @param array<int,float|int|string|null> $params
     */
     abstract public function query(string $query, array $params = []): \PDOStatement;
 

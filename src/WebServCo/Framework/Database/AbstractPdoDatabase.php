@@ -127,7 +127,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     }
 
     /**
-    * @param array<int,mixed> $params
+    * @param array<int,float|int|string|null> $params
     */
     public function query(string $query, array $params = []): \PDOStatement
     {
