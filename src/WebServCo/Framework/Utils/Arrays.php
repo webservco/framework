@@ -106,7 +106,7 @@ final class Arrays
     }
 
     /**
-    * @param array<int|float|string,int|float|string> $array
+    * @param array<int|string,int|float|string> $array
     */
     public static function toUrlQueryString(array $array): ?string
     {
