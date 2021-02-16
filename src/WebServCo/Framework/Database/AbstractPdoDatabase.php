@@ -110,9 +110,9 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * depending on the underlying driver.
     * For example, PDO_PGSQL requires you to specify the name of a sequence object for the name parameter.
     */
-    public function lastInsertId(string $name = ''): string
+    public function lastInsertId(string $name = ''): int
     {
-        return $this->db->lastInsertId($name);
+        return (int) $this->db->lastInsertId($name);
     }
 
     public function numRows(): int

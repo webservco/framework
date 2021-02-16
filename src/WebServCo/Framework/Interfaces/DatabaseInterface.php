@@ -42,7 +42,7 @@ interface DatabaseInterface
     */
     public function insertIgnore(string $tableName, array $data = []): \PDOStatement;
 
-    public function lastInsertId(): string;
+    public function lastInsertId(): int;
 
     public function numRows(): int;
 
