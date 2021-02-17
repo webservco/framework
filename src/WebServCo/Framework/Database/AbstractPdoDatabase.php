@@ -13,13 +13,6 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     protected \PDO $db;
     protected \PDOStatement $stmt;
 
-    /**
-     * Rows.
-     *
-     * @var array<int,array<mixed>>
-     */
-    protected array $rows;
-
     abstract protected function getDataSourceName(string $host, string $port, string $dbname): string;
 
     /**
@@ -81,7 +74,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function getRow(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        return $this->handleStatementReturn($result);
     }
 
     /**
@@ -91,9 +85,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function getRows(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        $rows = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $this->rows = \is_array($rows) ? $rows : [];
-        return $this->rows;
+        $result = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->handleStatementReturn($result);
     }
 
     /**
@@ -246,5 +239,31 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             throw new DatabaseException('Parameter is an array.');
         }
         return true;
+    }
+
+    /**
+    * Make sure PDO Statement returns an array when there are no errors.
+    *
+    * "In all cases, false is returned on failure."
+    * However, false is also returned when there are no results.
+    *
+    * @param bool|array<mixed> $result
+    * @return array<mixed>
+    */
+    protected function handleStatementReturn($result): array
+    {
+        if (\is_array($result)) {
+            // All is ok.
+            return $result;
+        }
+        $errorInfo = $this->stmt->errorInfo();
+        // 0 = "SQLSTATE"
+        // 1 = "Driver specific error code"
+        // 2 = "Driver specific error message"
+        if ('00000' === $errorInfo[0]) {
+            // "Successful completion", so no results
+            return [];
+        }
+        throw new DatabaseException($errorInfo[2]);
     }
 }
