@@ -1,11 +1,12 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
 final class MysqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
-
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
 
     protected function getDataSourceName(string $host, string $port, string $dbname): string

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli\Progress;
 
@@ -84,7 +86,7 @@ final class Bar
             "%s%% [%s>%s] %s",
             $percent,
             \str_repeat('=', $bar),
-            \str_repeat(' ', (int) \round($this->width-$bar)),
+            \str_repeat(' ', (int) \round($this->width - $bar)),
             $this->item . '/' . $this->total
         );
         $this->outMessage = $message;
@@ -93,12 +95,12 @@ final class Bar
         $this->outPad = 0 < $padLen
             ? \str_repeat(' ', (int) $padLen)
             : '';
-        return $this->outBar.$this->outPad.$this->outMessage;
+        return $this->outBar . $this->outPad . $this->outMessage;
     }
 
     protected function suffixSingle(bool $result, bool $overwrite = false): string
     {
-        $totalLen = \strlen($this->outBar.$this->outPad.$this->outMessage);
+        $totalLen = \strlen($this->outBar . $this->outPad . $this->outMessage);
         $output = null;
 
         if ($overwrite) {

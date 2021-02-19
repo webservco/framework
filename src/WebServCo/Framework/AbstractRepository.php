@@ -1,10 +1,11 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
 abstract class AbstractRepository extends \WebServCo\Framework\AbstractLibrary
 {
-
     use \WebServCo\Framework\Traits\OutputTrait;
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
     use \WebServCo\Framework\Traits\ResponseUrlTrait;

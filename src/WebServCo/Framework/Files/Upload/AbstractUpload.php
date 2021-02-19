@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Files\Upload;
 
@@ -62,12 +64,12 @@ abstract class AbstractUpload
         // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         $this->fileMimeType = $_FILES[$this->formFieldName]['type'];
         // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-        if (!\move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory.$this->fileName)) {
+        if (!\move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory . $this->fileName)) {
             throw new UploadException(Codes::CANT_WRITE);
         }
 
         try {
-            \chmod($this->uploadDirectory.$this->fileName, 0664);
+            \chmod($this->uploadDirectory . $this->fileName, 0664);
         } catch (\Throwable $e) {
             // Operation not permitted
         }

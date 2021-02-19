@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
@@ -8,7 +10,6 @@ use WebServCo\Framework\Interfaces\ResponseInterface;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
-
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**

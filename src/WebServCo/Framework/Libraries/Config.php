@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
@@ -66,7 +68,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function load(string $setting, string $pathProject): array
     {
-        $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
+        $pathFull = "{$pathProject}config/" . $this->getEnv() . "/{$setting}.php";
         if (!\is_readable($pathFull)) {
             return [];
         }

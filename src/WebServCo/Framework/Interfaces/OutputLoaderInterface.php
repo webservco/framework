@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Interfaces;
 
@@ -6,7 +8,7 @@ interface OutputLoaderInterface
 {
 
     public function cli(string $string, bool $eol = true): bool;
-    
+
     /**
     * @param array<int|string,mixed> $data
     */

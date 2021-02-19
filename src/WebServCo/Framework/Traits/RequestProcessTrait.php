@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
@@ -84,12 +86,14 @@ trait RequestProcessTrait
 
     protected function setMethod(): bool
     {
-        if (empty($this->server['REQUEST_METHOD']) ||
-        !\in_array(
-            $this->server['REQUEST_METHOD'],
-            Method::getSupported(),
-            true
-        )) {
+        if (
+            empty($this->server['REQUEST_METHOD']) ||
+            !\in_array(
+                $this->server['REQUEST_METHOD'],
+                Method::getSupported(),
+                true
+            )
+        ) {
             return false;
         }
         $this->method = $this->server['REQUEST_METHOD'];

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
@@ -12,7 +14,7 @@ class SearchHelper extends AbstractHelper
     public static function init(array $data, array $required = []): Search
     {
         $required = $required; // reserved for future use.
-        
+
         parent::validate($data, ['value', 'regex']);
 
         foreach (['value', 'regex'] as $item) {

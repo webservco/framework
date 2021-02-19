@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Utils;
 
@@ -17,7 +19,7 @@ final class Dates
     public static function isDate(string $date, string $format = 'Y-m-d'): bool
     {
         $formattedDate = self::format($date, $format);
-        
+
         return $formattedDate === $date;
     }
 }

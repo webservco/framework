@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli\Progress;
 
@@ -31,12 +33,12 @@ final class Line
         $this->outPad = 0 < $this->padding
             ? \str_repeat(' ', (int) $this->padding)
             : '';
-        return $this->outPad.$this->outMessage;
+        return $this->outPad . $this->outMessage;
     }
 
     public function suffix(bool $result = true): string
     {
-        $totalLen = \strlen($this->outPad.$this->outMessage);
+        $totalLen = \strlen($this->outPad . $this->outMessage);
         $output = null;
 
         //overwrite current line

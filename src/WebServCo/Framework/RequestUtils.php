@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
@@ -28,8 +30,8 @@ final class RequestUtils
         $data = [];
         $parts = self::split($string);
         $num = \count($parts);
-        for ($position = 0; $position < $num; $position +=2) {
-            $data[$parts[$position]] = $position === $num -1
+        for ($position = 0; $position < $num; $position += 2) {
+            $data[$parts[$position]] = $position === $num - 1
                 ? null
                 :
             $parts[$position + 1];

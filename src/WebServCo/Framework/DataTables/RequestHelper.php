@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
@@ -14,7 +16,7 @@ class RequestHelper extends AbstractHelper
     public static function init(array $data, array $required = []): Request
     {
         $required = $required; // reserved for future use.
-        
+
         parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 
         foreach (['columns', 'order', 'search'] as $item) {
