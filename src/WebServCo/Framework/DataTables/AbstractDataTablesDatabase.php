@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebServCo\Framework\DataTables;
 
 use WebServCo\Framework\Database\Order as DatabaseOrder;
+use WebServCo\Framework\Exceptions\DatabaseException;
 use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 use WebServCo\Framework\Interfaces\DatabaseInterface;
 
@@ -52,7 +53,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             $params[] = $length;
         }
         $query = $this->getQuery($searchPart, $orderPart, $limitPart);
-        $pdoStatement = $this->db->query($query, $params);
+        try {
+            $pdoStatement = $this->db->query($query, $params);
+        } catch (DatabaseException $e) {
+            // Rethrow in order to pinpoint the query location in the logs.
+            throw new DatabaseException($e->getMessage(), $e);
+        }
 
         $data = $this->getData($columnArrayObject, $pdoStatement);
 
@@ -105,7 +111,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     protected function getDatabaseColumnName(string $dataTablesColumnName): string
     {
-        return $this->db->escapeIdentifier($dataTablesColumnName);
+        try {
+            return $this->db->escapeIdentifier($dataTablesColumnName);
+        } catch (DatabaseException $e) {
+            // Rethrow in order to pinpoint the query location in the logs.
+            throw new DatabaseException($e->getMessage(), $e);
+        }
     }
 
     protected function getOrderQueryPart(
@@ -144,7 +155,12 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     protected function getRecordsFiltered(): int
     {
-        return (int) $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
+        try {
+            return (int) $this->db->getColumn("SELECT FOUND_ROWS()", [], 0);
+        } catch (DatabaseException $e) {
+            // Rethrow in order to pinpoint the query location in the logs.
+            throw new DatabaseException($e->getMessage(), $e);
+        }
     }
 
     protected function getRecordsTotal(int $recordsFiltered, string $searchPart): int
@@ -152,10 +168,15 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         if (empty($searchPart)) {
             return $recordsFiltered;
         }
-        return (int) $this->db->getColumn( // grand total - query without the search, order, limits
-            $this->getRecordsTotalQuery(),
-            []
-        );
+        try {
+            return (int) $this->db->getColumn( // grand total - query without the search, order, limits
+                $this->getRecordsTotalQuery(),
+                []
+            );
+        } catch (DatabaseException $e) {
+            // Rethrow in order to pinpoint the query location in the logs.
+            throw new DatabaseException($e->getMessage(), $e);
+        }
     }
 
     /**
