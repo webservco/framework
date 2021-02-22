@@ -73,49 +73,36 @@ class Application extends \WebServCo\Framework\AbstractApplication
             ? 'Command'
             : 'Controller';
         $target = $this->request()->getTarget();
+        // \WebServCo\Framework\Objects\Route
         $route = $this->router()->getRoute(
             $target,
             $this->router()->setting('routes'),
             $this->request()->getArgs()
         );
 
-        $class = isset($route[0])
-            ? \strval($route[0])
-            : null;
-        $method = isset($route[1])
-            ? \strval($route[1])
-            : null;
-        $args = $route[2] ?? [];
-        if (!\is_array($args)) {
-            $args = [];
-        }
-
-        if (empty($class) || empty($method)) {
-            throw new ApplicationException(
-                \sprintf(
-                    'Invalid route. Target: "%s".',
-                    $target
-                )
-            );
-        }
-
-        $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
+        $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
         if (!\class_exists($className)) {
-            throw new NotFoundException(
-                \sprintf('No matching %s found. Target: "%s"', $classType, $target)
-            );
+            if ('Controller' !== $classType) {
+                throw new NotFoundException(
+                    \sprintf('No matching %s found. Target: "%s"', $classType, $target)
+                );
+            }
+            // Class type is "Controller", so check for 404 route
+            // throws \WebServCo\Framework\Exceptions\NotFoundException
+            $route = $this->router()->getFourOhfourRoute();
+            $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
         }
 
         $object = new $className();
         $parent = \get_parent_class($object);
-        if (\method_exists((string) $parent, $method) || !\is_callable([$className, $method])) {
+        if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
             throw new NotFoundException(\sprintf('No matching Action found. Target: "%s".', $target));
         }
-        $callable = [$object, $method];
+        $callable = [$object, $route->method];
         if (!\is_callable($callable)) {
             throw new ApplicationException(\sprintf('Method not found. Target: "%s"', $target));
         }
 
-        return \call_user_func_array($callable, $args);
+        return \call_user_func_array($callable, $route->arguments);
     }
 }

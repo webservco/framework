@@ -4,15 +4,31 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
+use WebServCo\Framework\Objects\Route;
+
 final class Router extends \WebServCo\Framework\AbstractLibrary
 {
+
+    public function getFourOhfourRoute(): Route
+    {
+        // Check if we have a 404 route
+        $fourOhfourRoute = $this->setting('404_route');
+        if (!isset($fourOhfourRoute[1])) {
+            // No 404 route found, throw 404 exception.
+            throw new \WebServCo\Framework\Exceptions\NotFoundException('The requested resource was not found.');
+        }
+        return new Route(
+            $fourOhfourRoute[0],
+            $fourOhfourRoute[1],
+            \WebServCo\Framework\Utils\Arrays::get($fourOhfourRoute, 2, [])
+        );
+    }
 
     /**
     * @param array<string,string> $routes
     * @param array<int,string> $extraArgs
-    * @return array<array<int,string>|string>
     */
-    public function getRoute(string $requestCustom, array $routes, array $extraArgs = []): array
+    public function getRoute(string $requestCustom, array $routes, array $extraArgs = []): Route
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString) || 'index' === $routeString) {
@@ -20,37 +36,33 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
             if (!isset($defaultRoute[1])) {
                 throw new \WebServCo\Framework\Exceptions\NotFoundException("Default route missing or not valid.");
             }
-            return $defaultRoute;
+            return new Route(
+                $defaultRoute[0],
+                $defaultRoute[1],
+                \WebServCo\Framework\Utils\Arrays::get($defaultRoute, 2, [])
+            );
         }
 
         $parts = \explode('/', $routeString, 3);
 
-        // No matching route found
-        if (empty($parts[1])) {
-            // Check if we have a 404 route
-            $fourOhfourRoute = $this->setting('404_route');
-            if (!isset($fourOhfourRoute[1])) {
-                // No 404 route found, throw 404 exception.
-                throw new \WebServCo\Framework\Exceptions\NotFoundException(
-                    \sprintf('The requested resource "%s" was not found.', $routeString)
-                );
-            }
-            return $fourOhfourRoute;
+        $class = \WebServCo\Framework\Utils\Arrays::get($parts, 0, false);
+        $method = \WebServCo\Framework\Utils\Arrays::get($parts, 1, false);
+        if (!$class || !$method) {
+            // Route is invalid
+            // Return 404 route
+            // throws \WebServCo\Framework\Exceptions\NotFoundException
+            return $this->getFourOhfourRoute();
         }
 
-        $controller = $parts[0];
-        $action = $parts[1];
-        $args = [];
+        $args = \array_key_exists(2, $parts)
+            ? \explode('/', $parts[2])
+            : [];
 
-        if (!empty($parts['2'])) {
-            $args = \explode('/', $parts[2]);
+        foreach ($extraArgs as $k => $v) {
+            $args[] = $v;
         }
-        if (!empty($extraArgs)) {
-            foreach ($extraArgs as $k => $v) {
-                $args[] = $v;
-            }
-        }
-        return [$controller, $action, $args];
+
+        return new Route($class, $method, $args);
     }
 
     /**

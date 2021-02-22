@@ -42,8 +42,7 @@ final class RouterTest extends TestCase
     public function getRouteReturnsArrayOnValidData(): void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertIsArray($route);
-        $this->assertEquals(3, \count($route));
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
     /**
@@ -52,11 +51,10 @@ final class RouterTest extends TestCase
     public function getRouteReturnsValidData(): void
     {
         $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertIsArray($route);
-        $this->assertEquals(3, \count($route));
-        $this->assertEquals('foo', $route[0]);
-        $this->assertEquals('bar', $route[1]);
-        $this->assertEquals(['baz'], $route[2]);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('foo', $route->class);
+        $this->assertEquals('bar', $route->method);
+        $this->assertEquals(['baz'], $route->arguments);
     }
 
     /**
@@ -65,10 +63,9 @@ final class RouterTest extends TestCase
     public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
         $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
-        $this->assertIsArray($route);
-        $this->assertEquals(3, \count($route));
-        $this->assertEquals('Content', $route[0]);
-        $this->assertEquals('debugSomething', $route[1]);
-        $this->assertEquals(['foo', 'bar'], $route[2]);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('Content', $route->class);
+        $this->assertEquals('debugSomething', $route->method);
+        $this->assertEquals(['foo', 'bar'], $route->arguments);
     }
 }
