@@ -44,7 +44,7 @@
             "Composer\\Config::disableProcessTimeout",
             "clear && phpDocumentor.phar -d . --ignore vendor/ -t var/tmp/phpdoc --cache-folder var/tmp/phpdoc/.cache && browser-sync start --server 'var/tmp/phpdoc'"
         ],
-        "lint": "vendor/bin/parallel-lint .",
+        "lint": "vendor/bin/parallel-lint src tests",
         "s:8": "vendor/bin/phpstan analyse src tests --level=8 --ansi -c phpstan.neon",
         "s:strict": "clear && vendor/bin/phpstan analyse src --level=8 --ansi -c phpstan-strict.neon",
         "test" : "vendor/bin/phpunit --colors=always",
