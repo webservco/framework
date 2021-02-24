@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Http\Method;
-use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
@@ -42,7 +41,7 @@ trait RequestProcessTrait
         foreach ($data as $key => $value) {
             if (\is_string($value)) {
                 // Sanitize only first level (prevents "argv" from being sanitized)
-                $value = RequestUtils::sanitizeString($value);
+                $value = \WebServCo\Framework\Utils\Request::sanitizeString($value);
             }
             $data[$key] = $value;
         }
@@ -154,14 +153,14 @@ trait RequestProcessTrait
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData(RequestUtils::sanitizeString($k), $v);
+            $this->setData(\WebServCo\Framework\Utils\Request::sanitizeString($k), $v);
         }
         return true;
     }
 
     protected function process(): bool
     {
-        if (\WebServCo\Framework\Framework::isCli()) {
+        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
             return $this->processCli();
         }
 
@@ -178,7 +177,7 @@ trait RequestProcessTrait
                 if (\in_array($k, [0, 1], true)) {
                     continue;
                 }
-                $this->args[] = RequestUtils::sanitizeString($v);
+                $this->args[] = \WebServCo\Framework\Utils\Request::sanitizeString($v);
             }
         }
         return true;
@@ -203,14 +202,16 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        [$target, $queryString, $suffix] = RequestUtils::parse(
+        [$target, $queryString, $suffix] = \WebServCo\Framework\Utils\Request::parse(
             $string,
             $this->path,
             $this->filename,
             $this->setting('suffixes')
         );
-        $this->target = RequestUtils::sanitizeString(\urldecode($target));
-        $this->query = RequestUtils::format(RequestUtils::sanitizeString($queryString));
+        $this->target = \WebServCo\Framework\Utils\Request::sanitizeString(\urldecode($target));
+        $this->query = \WebServCo\Framework\Utils\Request::format(
+            \WebServCo\Framework\Utils\Request::sanitizeString($queryString)
+        );
         $this->suffix = $suffix;
         return true;
     }

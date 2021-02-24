@@ -120,7 +120,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
 
     public function start(string $storagePath = ''): bool
     {
-        if (\WebServCo\Framework\Framework::isCli()) {
+        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
             throw new SessionException('Not starting session in CLI mode.');
         }
 

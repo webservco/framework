@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Utils;
 
-final class RequestUtils
+final class Request
 {
 
     /**

@@ -51,8 +51,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         }
         return \setcookie(
             $name,
-            \WebServCo\Framework\RequestUtils::sanitizeString($value),
-            // phpstan-ignore-next-line
+            \WebServCo\Framework\Utils\Request::sanitizeString($value),
             [
                 'expires' => $expires,
                 'path' => $path,
