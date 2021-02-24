@@ -127,7 +127,7 @@ trait DatabaseAddQueryTrait
     }
 
     /**
-    * @param array<int, float|int|string> $data
+    * @param array<int,float|int|string> $data
     */
     final protected function generateValuesString(array $data): string
     {

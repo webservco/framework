@@ -10,13 +10,13 @@ interface DatabaseInterface
     public function affectedRows(): int;
 
     /**
-    * @param array<int, float|int|string> $params
+    * @param array<int,float|int|string> $params
     * @return bool|int|string|null
     */
     public function getColumn(string $query, array $params = [], int $columnNumber = 0);
 
     /**
-    * @param array<int, float|int|string> $params
+    * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
     */
     public function getRow(string $query, array $params = []): array;

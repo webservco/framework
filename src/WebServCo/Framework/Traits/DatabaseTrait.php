@@ -14,7 +14,7 @@ trait DatabaseTrait
     abstract public function escapeTableName(string $string): string;
 
     /**
-    * @param array<int, float|int|string> $params
+    * @param array<int,float|int|string> $params
     */
     abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0): ?string;
 
