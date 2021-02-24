@@ -23,7 +23,7 @@ trait RequestUrlTrait
 
     public function getAppUrl(): string
     {
-        if (\WebServCo\Framework\Framework::isCli()) {
+        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
             return '';
         }
         $url = \sprintf(

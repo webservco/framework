@@ -8,11 +8,6 @@ use WebServCo\Framework\Exceptions\ApplicationException;
 
 final class Framework
 {
-
-    public const OS_WINDOWS = 'Windows';
-    public const OS_LINUX = 'Linux';
-    public const OS_UNSUPPORTED = 'Unsupported';
-
     public const TYPE_FRAMEWORK = 'Framework';
     public const TYPE_PROJECT = 'Project';
 
@@ -74,33 +69,10 @@ final class Framework
         return self::$projectLibraries[$storageKey];
     }
 
-    /**
-     * Checks if interface type is CLI.
-     */
-    public static function isCli(): bool
-    {
-        return 'cli' === \PHP_SAPI;
-    }
-
-    /**
-     * Get operating system (if supported).
-     */
-    public static function getOS(): string
-    {
-        $uname = \php_uname('s');
-        if (0 === \strncasecmp($uname, 'Win', 3)) {
-            return self::OS_WINDOWS;
-        }
-        if (0 === \strncasecmp($uname, 'Linux', 5)) {
-            return self::OS_LINUX;
-        }
-        return self::OS_UNSUPPORTED;
-    }
-
     protected static function loadHelper(string $className): bool
     {
         $path = \sprintf(
-            '%ssrc%sWebServCo%sFramework%sHelpers%s%sHelper.php',
+            '%ssrc%sWebServCo%sFramework%sLibraryHelpers%s%sHelper.php',
             self::getPath(),
             \DIRECTORY_SEPARATOR,
             \DIRECTORY_SEPARATOR,

@@ -17,20 +17,4 @@ final class FrameworkTest extends TestCase
     {
         $this->assertIsString(Fw::getPath());
     }
-
-    /**
-     * @test
-     */
-    public function getCliReturnsBoolean(): void
-    {
-        $this->assertIsBool(Fw::isCli());
-    }
-
-    /**
-     * @test
-     */
-    public function getOsReturnsString(): void
-    {
-        $this->assertIsString(Fw::getOS());
-    }
 }

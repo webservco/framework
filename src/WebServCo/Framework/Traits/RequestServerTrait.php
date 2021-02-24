@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\Framework;
+use WebServCo\Framework\Helpers\PhpHelper;
 
 trait RequestServerTrait
 {
@@ -89,7 +89,7 @@ trait RequestServerTrait
 
     public function getSchema(): string
     {
-        if (Framework::isCli()) {
+        if (PhpHelper::isCli()) {
             return '';
         }
 
@@ -115,14 +115,6 @@ trait RequestServerTrait
         return $this->server['SERVER_PROTOCOL'];
     }
 
-    public function getRemoteAddress(): string
-    {
-        if (Framework::isCli()) {
-            return \gethostbyname(\php_uname('n'));
-        }
-        return $this->server['REMOTE_ADDR'] ?? null;
-    }
-
     public function getServerVariable(string $index): ?string
     {
         if (!\array_key_exists($index, $this->server)) {
@@ -133,7 +125,7 @@ trait RequestServerTrait
 
     public function getUserAgent(): string
     {
-        if (Framework::isCli()) {
+        if (PhpHelper::isCli()) {
             return '';
         }
         return $this->server['HTTP_USER_AGENT'] ?? null;

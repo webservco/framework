@@ -6,6 +6,7 @@ namespace WebServCo\Framework;
 
 use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Exceptions\NotFoundException;
+use WebServCo\Framework\Helpers\PhpHelper;
 use WebServCo\Framework\Interfaces\ResponseInterface;
 
 class Application extends \WebServCo\Framework\AbstractApplication
@@ -39,7 +40,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             if ($response instanceof ResponseInterface) {
                 $statusCode = $response->send();
             }
-            $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
+            $this->shutdown(null, true, PhpHelper::isCli() ? $statusCode : 0);
         } catch (\Throwable $e) { // php7
             $this->shutdown($e, true);
         }
@@ -69,7 +70,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
     final protected function execute(): ResponseInterface
     {
-        $classType = Framework::isCli()
+        $classType = PhpHelper::isCli()
             ? 'Command'
             : 'Controller';
         $target = $this->request()->getTarget();
