@@ -123,11 +123,11 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
             $this->debugOutput = (string) \ob_get_clean();
 
             $this->logger->debug('CURL INFO:', $this->debugInfo);
-            $this->logger->debug('CURL VERBOSE:', $this->debugOutput);
+            $this->logger->debug('CURL VERBOSE:', ['debugOutput' => $this->debugOutput]);
             if (!empty($this->requestData)) {
-                $this->logger->debug('REQUEST DATA:', $this->requestData);
+                $this->logger->debug('REQUEST DATA:', ['requestData' => $this->requestData]);
             }
-            $this->logger->debug('CURL RESPONSE:', $this->response);
+            $this->logger->debug('CURL RESPONSE:', ['response' => $this->response]);
 
             return true;
         }

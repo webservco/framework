@@ -37,7 +37,7 @@ class App extends Application
     /**
     * @param array<string,mixed> $errorInfo
     */
-    protected function logError(array $errorInfo, bool $isCli = false): bool
+    protected function logError(array $errorInfo, bool $isCli = false): void
     {
         $logger = new \WebServCo\Framework\Log\FileLogger(
             \sprintf('error%s', $isCli ? 'CLI' : ''),
@@ -60,6 +60,6 @@ class App extends Application
                 } while ($previous = $previous->getPrevious());
             }
         }
-        return $logger->error($errorMessage, $errorInfo);
+        $logger->error($errorMessage, $errorInfo);
     }
 }

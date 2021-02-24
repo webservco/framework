@@ -10,18 +10,28 @@ class CliOutputLogger extends AbstractOutputLogger implements
 
     public function clear(): bool
     {
-        return $this->output(\WebServCo\Framework\Cli\Ansi::clear(), true);
+        $this->output(\WebServCo\Framework\Cli\Ansi::clear(), true);
+        return true;
     }
 
     /**
-    * @param mixed $context
+    * Logs with an arbitrary level.
+    *
+    * Uncommon phpdoc syntax used in order to be compatible with \Psr\Log\LoggerInterface
+    *
+    * @param mixed $level
+    * @param string $message
+    * @param array<string,mixed> $context
+    * @throws \Psr\Log\InvalidArgumentException
     */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-    public function log(string $level, string $message, $context = null): bool
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+    public function log($level, $message, array $context = []): void
     {
-        if (!empty($context)) {
+        $this->validateLogLevel($level);
+
+        if ($context) {
             $message = \sprintf('[context not outputted] %s', $message);
         }
-        return $this->output($message, true);
+        $this->output($message, true);
     }
 }

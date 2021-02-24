@@ -6,6 +6,5 @@ namespace WebServCo\Framework\Interfaces;
 
 interface OutputLoggerInterface extends LoggerInterface
 {
-
-    public function output(string $string, bool $eol = true): bool;
+    public function output(string $string, bool $eol = true): void;
 }

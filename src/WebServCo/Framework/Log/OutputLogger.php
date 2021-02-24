@@ -13,11 +13,23 @@ class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\
     }
 
     /**
-    * @param mixed $context
+    * Logs with an arbitrary level.
+    *
+    * Uncommon phpdoc syntax used in order to be compatible with \Psr\Log\LoggerInterface
+    *
+    * @param mixed $level
+    * @param string $message
+    * @param array<string,mixed> $context
+    * @throws \Psr\Log\InvalidArgumentException
     */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-    public function log(string $level, string $message, $context = null): bool
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+    public function log($level, $message, array $context = []): void
     {
-        return $this->output($message, true);
+        $this->validateLogLevel($level);
+
+        // SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+        $context = $context;
+
+        $this->output($message, true);
     }
 }

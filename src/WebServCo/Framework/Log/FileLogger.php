@@ -4,54 +4,37 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Interfaces\RequestInterface;
 
-class FileLogger extends AbstractLogger implements
-    \WebServCo\Framework\Interfaces\LoggerInterface,
-    \WebServCo\Framework\Interfaces\FileLoggerInterface
+class FileLogger extends AbstractFileLogger
 {
-
-    protected string $channel;
-    protected string $logDir;
-    protected string $logPath;
+    /*
+    * Needed in order to log the remore address
+    */
     protected RequestInterface $requestInterface;
 
     public function __construct(string $channel, string $logDir, RequestInterface $requestInterface)
     {
-        $this->channel = $channel;
-        $this->logDir = $logDir;
-
-        if (empty($this->logDir)) {
-            throw new ApplicationException(\sprintf('Log directory not set for channel "%s".', $channel));
-        }
-
-        if (!\is_readable($this->logDir)) {
-            throw new ApplicationException(\sprintf('Log directory not readable: %s.', $this->logDir));
-        }
-        if (!\is_writable($this->logDir)) {
-            throw new ApplicationException(\sprintf('Log directory not writeable: %s.', $this->logDir));
-        }
-        $this->logPath = \sprintf('%s%s.log', $this->logDir, $this->channel);
+        parent::__construct($channel, $logDir);
 
         $this->requestInterface = $requestInterface;
     }
 
-    public function clear(): bool
-    {
-        return (bool) \file_put_contents($this->logPath, null);
-    }
-
-    public function getLogDirectory(): string
-    {
-        return $this->logDir;
-    }
-
     /**
-    * @param mixed $context
+    * Logs with an arbitrary level.
+    *
+    * Uncommon phpdoc syntax used in order to be compatible with \Psr\Log\LoggerInterface
+    *
+    * @param mixed $level
+    * @param string $message
+    * @param array<string,mixed> $context
+    * @throws \Psr\Log\InvalidArgumentException
     */
-    public function log(string $level, string $message, $context = null): bool
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+    public function log($level, $message, array $context = []): void
     {
+        $this->validateLogLevel($level);
+
         $dateTime = new \DateTime();
         $id = $dateTime->format('Ymd.His.u');
 
@@ -73,7 +56,5 @@ class FileLogger extends AbstractLogger implements
         );
 
         \file_put_contents($this->logPath, $data, \FILE_APPEND);
-
-        return true;
     }
 }
