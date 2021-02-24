@@ -41,8 +41,7 @@ class App extends Application
     {
         $logger = new \WebServCo\Framework\Log\FileLogger(
             \sprintf('error%s', $isCli ? 'CLI' : ''),
-            $this->config()->get('app/path/log'),
-            $this->request()
+            $this->config()->get('app/path/log')
         );
         $errorMessage = \sprintf('Error: %s in %s:%s', $errorInfo['message'], $errorInfo['file'], $errorInfo['line']);
         if ($errorInfo['exception'] instanceof \Exception) {

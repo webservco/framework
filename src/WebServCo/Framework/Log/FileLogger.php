@@ -4,22 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-use WebServCo\Framework\Interfaces\RequestInterface;
-
 class FileLogger extends AbstractFileLogger
 {
-    /*
-    * Needed in order to log the remore address
-    */
-    protected RequestInterface $requestInterface;
-
-    public function __construct(string $channel, string $logDir, RequestInterface $requestInterface)
-    {
-        parent::__construct($channel, $logDir);
-
-        $this->requestInterface = $requestInterface;
-    }
-
     /**
     * Logs with an arbitrary level.
     *
@@ -48,7 +34,7 @@ class FileLogger extends AbstractFileLogger
         $data = \sprintf(
             '[%s] %s %s %s%s%s',
             $id,
-            $this->requestInterface->getRemoteAddress(),
+            \WebServCo\Framework\Helpers\RequestHelper::getRemoteAddress(),
             $level,
             $contextInfo,
             $message,

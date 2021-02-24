@@ -47,8 +47,6 @@ interface RequestInterface
     */
     public function getQuery(): array;
 
-    public function getRemoteAddress(): string;
-
     public function getSchema(): string;
 
     public function getSuffix(): string;
