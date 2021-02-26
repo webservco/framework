@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 
 final class RouterTest extends TestCase
 {
@@ -33,7 +32,10 @@ final class RouterTest extends TestCase
      */
     public function canBeAccessedViaFramework(): void
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::library('Router'));
+        $this->assertInstanceOf(
+            'WebServCo\Framework\Libraries\Router',
+            \WebServCo\Framework\Helpers\RouterLibraryHelper::library()
+        );
     }
 
     /**
@@ -41,7 +43,10 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsArrayOnValidData(): void
     {
-        $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
+            'foo/bar/baz',
+            $this->cfg['routes']
+        );
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
@@ -50,7 +55,10 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsValidData(): void
     {
-        $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
+            'foo/bar/baz',
+            $this->cfg['routes']
+        );
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
         $this->assertEquals('foo', $route->class);
         $this->assertEquals('bar', $route->method);
@@ -62,7 +70,7 @@ final class RouterTest extends TestCase
      */
     public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
-        $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute('qwerty', $this->cfg['routes']);
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
         $this->assertEquals('Content', $route->class);
         $this->assertEquals('debugSomething', $route->method);

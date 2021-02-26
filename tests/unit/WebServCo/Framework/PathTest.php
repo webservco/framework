@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Tests\Framework;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 
-final class FrameworkTest extends TestCase
+final class PathTest extends TestCase
 {
 
     /**
@@ -15,6 +14,6 @@ final class FrameworkTest extends TestCase
      */
     public function getPathReturnsString(): void
     {
-        $this->assertIsString(Fw::getPath());
+        $this->assertIsString(\WebServCo\Framework\Path::get());
     }
 }

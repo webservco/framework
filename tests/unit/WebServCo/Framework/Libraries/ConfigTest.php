@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Settings as S;
 
 final class ConfigTest extends TestCase
@@ -31,8 +30,8 @@ final class ConfigTest extends TestCase
         /**
          * Reset data to prevent phpunit hanging
          */
-        Fw::library('Config')->set('app', null);
-        Fw::library('Config')->set('foo', null);
+        \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('app', null);
+        \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('foo', null);
     }
 
     /**
@@ -42,7 +41,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Config',
-            Fw::library('Config')
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()
         );
     }
 
@@ -51,7 +50,7 @@ final class ConfigTest extends TestCase
      */
     public function nullSettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->set(null, null));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(null, null));
     }
 
     /**
@@ -59,7 +58,7 @@ final class ConfigTest extends TestCase
      */
     public function falseSettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->set(false, null));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(false, null));
     }
 
     /**
@@ -67,7 +66,7 @@ final class ConfigTest extends TestCase
      */
     public function emptySettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->set('', null));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('', null));
     }
 
     /**
@@ -75,7 +74,7 @@ final class ConfigTest extends TestCase
      */
     public function validSettingReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->set('setting', 'value'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('setting', 'value'));
     }
 
     /**
@@ -83,7 +82,7 @@ final class ConfigTest extends TestCase
      */
     public function settingNullValueReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->set('key', null));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('key', null));
     }
 
     /**
@@ -91,7 +90,7 @@ final class ConfigTest extends TestCase
      */
     public function settingFalseValueReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->set('key', false));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('key', false));
     }
 
     /**
@@ -99,7 +98,7 @@ final class ConfigTest extends TestCase
      */
     public function settingEmptyValueReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->set('key', ''));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('key', ''));
     }
 
     /**
@@ -108,7 +107,7 @@ final class ConfigTest extends TestCase
      */
     public function frameworkAccessUsesSingleInstance(): void
     {
-        $this->assertEquals('value', Fw::library('Config')->get('setting'));
+        $this->assertEquals('value', \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('setting'));
     }
 
     /**
@@ -116,7 +115,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNonExistentSettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->get('noexist'));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('noexist'));
     }
 
     /**
@@ -124,7 +123,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingNullSettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->get(null));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(null));
     }
 
     /**
@@ -132,7 +131,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingFalseSettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->get(false));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(false));
     }
 
     /**
@@ -140,7 +139,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptySettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->get(''));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(''));
     }
 
     /**
@@ -148,7 +147,7 @@ final class ConfigTest extends TestCase
      */
     public function gettingEmptyArraySettingReturnsFalse(): void
     {
-        $this->assertFalse(Fw::library('Config')->get([]));
+        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get([]));
     }
 
     /**
@@ -157,14 +156,14 @@ final class ConfigTest extends TestCase
     public function storingAndRetrievingSimpleStringSettingWorks(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 $this->settingSimpleString,
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::library('Config')->get($this->settingSimpleString)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSimpleString)
         );
     }
 
@@ -174,14 +173,14 @@ final class ConfigTest extends TestCase
     public function storingAndRetrievingArraySettingWorks(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 $this->settingArray,
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::library('Config')->get($this->settingArray)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingArray)
         );
     }
 
@@ -190,8 +189,13 @@ final class ConfigTest extends TestCase
      */
     public function storingAndRetrievingSpecialStringSettingWorks(): void
     {
-        $this->assertTrue(Fw::library('Config')->set($this->settingSpecialString, $this->value));
-        $this->assertEquals($this->value, Fw::library('Config')->get($this->settingSpecialString));
+        $this->assertTrue(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set($this->settingSpecialString, $this->value)
+        );
+        $this->assertEquals(
+            $this->value,
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSpecialString)
+        );
     }
 
     /**
@@ -200,26 +204,26 @@ final class ConfigTest extends TestCase
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertEquals(
             $this->value,
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)
             )
         );
@@ -231,29 +235,29 @@ final class ConfigTest extends TestCase
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
                 $this->value
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set('app', $this->value)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('app', $this->value)
         );
         $this->assertEquals(
             $this->value,
-            Fw::library('Config')->get('app')
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('app')
         );
     }
 
@@ -262,9 +266,9 @@ final class ConfigTest extends TestCase
      */
     public function settingSameKeyTwiceOverwritesTheFirst(): void
     {
-        $this->assertTrue(Fw::library('Config')->set('foo', 'old value'));
-        $this->assertTrue(Fw::library('Config')->set('foo', 'new value'));
-        $this->assertEquals('new value', Fw::library('Config')->get('foo'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('foo', 'old value'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('foo', 'new value'));
+        $this->assertEquals('new value', \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('foo'));
     }
 
     /**
@@ -273,20 +277,20 @@ final class ConfigTest extends TestCase
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
         $this->assertEquals(
             'new value',
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -297,7 +301,7 @@ final class ConfigTest extends TestCase
      */
     public function addReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->add('add', 'dda'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('add', 'dda'));
     }
 
     /**
@@ -322,22 +326,22 @@ final class ConfigTest extends TestCase
             ],
         ];
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'old value'
             )
         );
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
-        $this->assertTrue(Fw::library('Config')->add('foo', $config));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('foo', $config));
 
         $this->assertEquals(
             'value',
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf(
                     'foo%1$slevel1%1$slevel2%1$slevel3%1$s0',
                     S::DIVIDER
@@ -346,7 +350,7 @@ final class ConfigTest extends TestCase
         );
         $this->assertEquals(
             'new value',
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -359,7 +363,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertEquals(
             [],
-            Fw::library('Config')->load('foo', '/foo/bar')
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', '/foo/bar')
         );
     }
 
@@ -379,7 +383,9 @@ final class ConfigTest extends TestCase
      */
     public function loadReturnsArrayOnValidPath(): void
     {
-        $this->assertIsArray(Fw::library('Config')->load('foo', self::$pathProject));
+        $this->assertIsArray(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject)
+        );
     }
 
     /**
@@ -388,11 +394,11 @@ final class ConfigTest extends TestCase
      */
     public function addDataFromFileWorks(): void
     {
-        $data = Fw::library('Config')->load('foo', self::$pathProject);
-        $this->assertTrue(Fw::library('Config')->add('foo', $data));
+        $data = \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject);
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('foo', $data));
         $this->assertEquals(
             'value1',
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)
             )
         );
@@ -405,16 +411,16 @@ final class ConfigTest extends TestCase
     public function loadAppendsDataInsteadOfOverwriting(): void
     {
         $this->assertTrue(
-            Fw::library('Config')->set(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
                 'new value'
             )
         );
-        $data = Fw::library('Config')->load('foo', self::$pathProject);
-        Fw::library('Config')->add('foo', $data);
+        $data = \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject);
+        \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('foo', $data);
         $this->assertEquals(
             'new value',
-            Fw::library('Config')->get(
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
             )
         );
@@ -425,7 +431,7 @@ final class ConfigTest extends TestCase
      */
     public function setEnvReturnsTrue(): void
     {
-        $this->assertTrue(Fw::library('Config')->setEnv('dev'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('dev'));
     }
 
     /**
@@ -433,8 +439,8 @@ final class ConfigTest extends TestCase
      */
     public function setEnvDefaultsToDevOnInvalidValue(): void
     {
-        Fw::library('Config')->setEnv('noexist');
-        $this->assertEquals('dev', Fw::library('Config')->getEnv());
+        \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('noexist');
+        $this->assertEquals('dev', \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->getEnv());
     }
 
     /**
@@ -442,7 +448,7 @@ final class ConfigTest extends TestCase
      */
     public function getEnvReturnsString(): void
     {
-        $this->assertIsString(Fw::library('Config')->getEnv());
+        $this->assertIsString(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->getEnv());
     }
 
     /**

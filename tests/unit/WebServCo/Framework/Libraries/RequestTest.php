@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 
 final class RequestTest extends TestCase
 {
@@ -17,7 +16,7 @@ final class RequestTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Request',
-            Fw::library('Request')
+            \WebServCo\Framework\Helpers\RequestLibraryHelper::library()
         );
     }
 
@@ -26,7 +25,7 @@ final class RequestTest extends TestCase
      */
     public function getSchemaReturnsEmptyStringOnCli(): void
     {
-        $this->assertEquals('', Fw::library('Request')->getSchema());
+        $this->assertEquals('', \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->getSchema());
     }
 
     /**
@@ -34,7 +33,7 @@ final class RequestTest extends TestCase
      */
     public function getRefererReturnsEmptyStringOnCli(): void
     {
-        $this->assertEquals('', Fw::library('Request')->getReferer());
+        $this->assertEquals('', \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->getReferer());
     }
 
     /**
@@ -42,7 +41,7 @@ final class RequestTest extends TestCase
      */
     public function getHostReturnsString(): void
     {
-        $this->assertIsString(Fw::library('Request')->getHost());
+        $this->assertIsString(\WebServCo\Framework\Helpers\RequestLibraryHelper::library()->getHost());
     }
 
     /**
@@ -51,9 +50,9 @@ final class RequestTest extends TestCase
     public function sanitizeRemovesBadChars(): void
     {
         $this->assertEquals(
-            ['?&#39;&#34;?!~#^&*=[]:;||{}()x'],
-            Fw::library('Request')->sanitize(
-                ["?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]
+            ['test' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
+            \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->sanitize(
+                ['test' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]
             )
         );
     }
@@ -64,9 +63,9 @@ final class RequestTest extends TestCase
     public function sanitizeRemovesTags(): void
     {
         $this->assertEquals(
-            ['script=alert(&#39;hacked!&#39;).html&key=value'],
-            Fw::library('Request')->sanitize(
-                ["script=<script>alert('hacked!')</script>.html&key=value"]
+            ['test' => 'script=alert(&#39;hacked!&#39;).html&key=value'],
+            \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->sanitize(
+                ['test' => "script=<script>alert('hacked!')</script>.html&key=value"]
             )
         );
     }

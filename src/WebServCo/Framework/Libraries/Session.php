@@ -41,9 +41,8 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         $_SESSION = [];
-        $cookie = \WebServCo\Framework\Framework::library('Cookie');
-        $cookie->set(
-            \session_name(),
+        \WebServCo\Framework\Helpers\CookieLibraryHelper::library()->set(
+            (string) \session_name(),
             '',
             \time() - 3600,
             $this->setting(\sprintf('cookie%spath', Settings::DIVIDER), '/'),

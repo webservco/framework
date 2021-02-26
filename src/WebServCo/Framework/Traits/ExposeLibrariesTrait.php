@@ -4,48 +4,46 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
-use WebServCo\Framework\Framework;
-
 trait ExposeLibrariesTrait
 {
 
     final protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface
     {
-        return Framework::library('Config');
+        return \WebServCo\Framework\Helpers\ConfigLibraryHelper::library();
     }
 
     final protected function cookie(): \WebServCo\Framework\Libraries\Cookie
     {
-        return Framework::library('Cookie');
+        return \WebServCo\Framework\Helpers\CookieLibraryHelper::library();
     }
 
     final protected function i18n(): \WebServCo\Framework\Interfaces\I18nInterface
     {
-        return Framework::library('I18n');
+        return \WebServCo\Framework\Helpers\I18nLibraryHelper::library();
     }
 
     final protected function mysqlPdoDb(): \WebServCo\Framework\Interfaces\DatabaseInterface
     {
-        return Framework::library('MysqlPdoDatabase');
+        return \WebServCo\Framework\Helpers\MysqlPdoDatabaseLibraryHelper::library();
     }
 
     final protected function request(): \WebServCo\Framework\Interfaces\RequestInterface
     {
-        return Framework::library('Request');
+        return \WebServCo\Framework\Helpers\RequestLibraryHelper::library();
     }
 
     final protected function router(): \WebServCo\Framework\Libraries\Router
     {
-        return Framework::library('Router');
+        return \WebServCo\Framework\Helpers\RouterLibraryHelper::library();
     }
 
     final protected function security(): \WebServCo\Framework\Libraries\Security
     {
-        return Framework::library('Security');
+        return \WebServCo\Framework\Helpers\SecurityLibraryHelper::library();
     }
 
     final protected function session(): \WebServCo\Framework\Interfaces\SessionInterface
     {
-        return Framework::library('Session');
+        return \WebServCo\Framework\Helpers\SessionLibraryHelper::library();
     }
 }
