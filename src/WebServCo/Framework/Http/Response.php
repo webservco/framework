@@ -71,7 +71,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         $statusCodes = StatusCode::getSupported();
         if (!isset($statusCodes[$statusCode])) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    \sprintf('Invalid HTTP status code: %s.', $statusCode)
+                    \sprintf('Invalid HTTP status code: %s.', $statusCode),
                 );
         }
         $this->statusCode = $statusCode;
@@ -106,7 +106,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         \header(
             \sprintf('%s: %s', $name, $value),
             true,
-            $statusCode
+            $statusCode,
         );
         return true;
     }
@@ -124,7 +124,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
         \header(
             \sprintf('HTTP/1.1 %s %s', $this->statusCode, $this->statusText),
             true,
-            $this->statusCode
+            $this->statusCode,
         );
         return true;
     }

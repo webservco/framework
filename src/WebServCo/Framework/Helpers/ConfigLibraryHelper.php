@@ -18,8 +18,8 @@ abstract class ConfigLibraryHelper extends AbstractLibraryHelper
         $projectPath = self::library()->get(
             \sprintf(
                 'app%1$spath%1$sproject',
-                \WebServCo\Framework\Settings::DIVIDER
-            )
+                \WebServCo\Framework\Settings::DIVIDER,
+            ),
         );
         if (empty($projectPath)) {
             return [];

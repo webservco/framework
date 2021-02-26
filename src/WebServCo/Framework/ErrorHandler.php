@@ -123,7 +123,7 @@ final class ErrorHandler
             0,
             $errno,
             $errfile,
-            $errline
+            $errline,
         );
     }
 

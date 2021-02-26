@@ -30,7 +30,7 @@ trait RequestUrlTrait
             '%s://%s%s',
             $this->getSchema(),
             $this->getHost(),
-            $this->path
+            $this->path,
         );
         return \rtrim($url, '/') . '/';
     }

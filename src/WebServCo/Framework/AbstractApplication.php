@@ -104,7 +104,7 @@ abstract class AbstractApplication
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],
                 \basename($errorInfo['file']),
-                $errorInfo['line']
+                $errorInfo['line'],
             );
             if (!empty($errorInfo['trace'])) {
                 $output .= "<p>";
@@ -122,7 +122,7 @@ abstract class AbstractApplication
                         $output .= \sprintf(
                             ' [%s:%s]',
                             \basename($item['file']),
-                            $item['line']
+                            $item['line'],
                         );
                         $output .= " ";
                     }
@@ -136,7 +136,7 @@ abstract class AbstractApplication
         $response = new \WebServCo\Framework\Http\Response(
             $output,
             $statusCode,
-            ['Content-Type' => ['text/html']]
+            ['Content-Type' => ['text/html']],
         );
         $response->send();
         return true;

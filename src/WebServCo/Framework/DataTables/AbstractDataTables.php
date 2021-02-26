@@ -22,7 +22,7 @@ abstract class AbstractDataTables implements \WebServCo\Framework\Interfaces\Dat
             $request->getDraw(),
             $this->getRecordsTotal(),
             $this->getRecordsFiltered(),
-            $this->getData($request)
+            $this->getData($request),
         );
     }
 }

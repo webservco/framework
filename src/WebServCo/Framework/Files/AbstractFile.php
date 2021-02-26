@@ -42,7 +42,7 @@ abstract class AbstractFile
                 'Content-Type' => [$this->contentType],
                 'Content-Transfer-Encoding' => ['binary'],
                 'Connection' => ['close'],
-            ]
+            ],
         );
     }
 
@@ -68,7 +68,7 @@ abstract class AbstractFile
                 'Cache-Control' => ['public'],
                 'Content-Type' => [$this->contentType],
                 'Content-Transfer-Encoding' => ['binary'],
-            ]
+            ],
         );
     }
 }

@@ -12,7 +12,7 @@ class Response extends \WebServCo\Framework\Http\Response
         parent::__construct(
             $jsonObject->toJson(),
             $statusCode,
-            ['Content-Type' => ['application/json']]
+            ['Content-Type' => ['application/json']],
         );
     }
 }

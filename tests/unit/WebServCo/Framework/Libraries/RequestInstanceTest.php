@@ -84,7 +84,7 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertEquals(
             ['foo' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
-            $this->object->sanitize(['foo' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"])
+            $this->object->sanitize(['foo' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]),
         );
     }
 
@@ -96,8 +96,8 @@ final class RequestInstanceTest extends TestCase
         $this->assertEquals(
             ['foo' => 'script=alert(&#39;hacked!&#39;).html&key=value'],
             $this->object->sanitize(
-                ['foo' => "script=<script>alert('hacked!')</script>.html&key=value"]
-            )
+                ['foo' => "script=<script>alert('hacked!')</script>.html&key=value"],
+            ),
         );
     }
 
@@ -108,7 +108,7 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertEquals(
             'value',
-            $this->objectPost->data('key')
+            $this->objectPost->data('key'),
         );
     }
 
@@ -119,7 +119,7 @@ final class RequestInstanceTest extends TestCase
     {
         $this->assertEquals(
             '<script>hello</script>',
-            $this->objectPost->data('script')
+            $this->objectPost->data('script'),
         );
     }
 

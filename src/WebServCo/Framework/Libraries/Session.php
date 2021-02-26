@@ -49,7 +49,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
             $this->setting(\sprintf('cookie%sdomain', Settings::DIVIDER), ''),
             $this->setting(\sprintf('cookie%ssecure', Settings::DIVIDER), true),
             $this->setting(\sprintf('cookie%shttponly', Settings::DIVIDER), true),
-            $this->setting(\sprintf('cookie%ssamesite', Settings::DIVIDER), 'Lax')
+            $this->setting(\sprintf('cookie%ssamesite', Settings::DIVIDER), 'Lax'),
         );
         \session_destroy();
         return true;
@@ -191,7 +191,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
             if ($this->setting('strict_custom_path', true)) {
                 throw new SessionException(
                     'Unable to set custom session storage path. ' .
-                    \sprintf('Current path: %s.', $actualStoragePath)
+                    \sprintf('Current path: %s.', $actualStoragePath),
                 );
             }
             return false;

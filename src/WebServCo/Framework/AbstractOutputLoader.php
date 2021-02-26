@@ -60,7 +60,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         foreach ($this->htmlOutput()->setting('partials', []) as $partialTemplate) {
             $this->htmlOutput()->setData(
                 "tpl_{$partialTemplate}",
-                $this->getRenderedHtml($partialTemplate)
+                $this->getRenderedHtml($partialTemplate),
             );
         }
         /**
@@ -69,7 +69,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         if (!\WebServCo\Framework\Utils\Strings::isEmpty($pageTemplate)) {
             $this->htmlOutput()->setData(
                 'tpl_content',
-                $this->getRenderedHtml($pageTemplate)
+                $this->getRenderedHtml($pageTemplate),
             );
         }
 

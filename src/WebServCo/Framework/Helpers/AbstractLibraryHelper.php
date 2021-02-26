@@ -19,12 +19,12 @@ abstract class AbstractLibraryHelper
             \DIRECTORY_SEPARATOR,
             \DIRECTORY_SEPARATOR,
             \DIRECTORY_SEPARATOR,
-            $name
+            $name,
         );
 
         if (!\is_readable($path)) {
             throw new \WebServCo\Framework\Exceptions\LibraryException(
-                \sprintf('Helper for %s Library not found.', $name)
+                \sprintf('Helper for %s Library not found.', $name),
             );
         }
         require $path;

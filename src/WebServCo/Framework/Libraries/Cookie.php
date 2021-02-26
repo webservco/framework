@@ -59,7 +59,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
                 'secure' => $secure,
                 'httponly' => $httponly,
                 'samesite' => $samesite,
-            ]
+            ],
         );
     }
 }

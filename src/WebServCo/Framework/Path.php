@@ -14,7 +14,7 @@ final class Path
         return \str_replace(
             \sprintf('src%sWebServCo%sFramework', \DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR),
             '',
-            __DIR__
+            __DIR__,
         );
     }
 }

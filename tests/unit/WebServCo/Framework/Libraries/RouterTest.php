@@ -34,7 +34,7 @@ final class RouterTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Router',
-            \WebServCo\Framework\Helpers\RouterLibraryHelper::library()
+            \WebServCo\Framework\Helpers\RouterLibraryHelper::library(),
         );
     }
 
@@ -45,7 +45,7 @@ final class RouterTest extends TestCase
     {
         $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
             'foo/bar/baz',
-            $this->cfg['routes']
+            $this->cfg['routes'],
         );
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
@@ -57,7 +57,7 @@ final class RouterTest extends TestCase
     {
         $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
             'foo/bar/baz',
-            $this->cfg['routes']
+            $this->cfg['routes'],
         );
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
         $this->assertEquals('foo', $route->class);

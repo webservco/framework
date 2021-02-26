@@ -53,7 +53,7 @@ final class Strings
             . ':: NFC;'
             . ':: [:Punctuation:] Remove;'
             . ':: Lower();'
-            . '[:Separator:] > \'-\''
+            . '[:Separator:] > \'-\'',
         );
         if (!($transliterator instanceof \Transliterator)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Transliterator error.');
@@ -75,7 +75,7 @@ final class Strings
         return (string) \preg_replace(
             "~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~",
             "<a href=\"\\0\">\\0</a>",
-            $string
+            $string,
         );
     }
 

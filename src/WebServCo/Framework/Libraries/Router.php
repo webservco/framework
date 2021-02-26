@@ -20,7 +20,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
         return new Route(
             $fourOhfourRoute[0],
             $fourOhfourRoute[1],
-            \WebServCo\Framework\Utils\Arrays::get($fourOhfourRoute, 2, [])
+            \WebServCo\Framework\Utils\Arrays::get($fourOhfourRoute, 2, []),
         );
     }
 
@@ -39,7 +39,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
             return new Route(
                 $defaultRoute[0],
                 $defaultRoute[1],
-                \WebServCo\Framework\Utils\Arrays::get($defaultRoute, 2, [])
+                \WebServCo\Framework\Utils\Arrays::get($defaultRoute, 2, []),
             );
         }
 

@@ -75,7 +75,7 @@ final class ArrayStorageTest extends TestCase
         ];
         $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
-            $setting
+            $setting,
         ));
     }
 
@@ -91,7 +91,7 @@ final class ArrayStorageTest extends TestCase
         ];
         $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
-            $setting
+            $setting,
         ));
     }
 
@@ -105,7 +105,7 @@ final class ArrayStorageTest extends TestCase
         ];
         $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
-            'foo'
+            'foo',
         ));
     }
 
@@ -126,7 +126,7 @@ final class ArrayStorageTest extends TestCase
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
             $setting,
-            null
+            null,
         ));
     }
 
@@ -145,7 +145,7 @@ final class ArrayStorageTest extends TestCase
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
             $setting,
-            null
+            null,
         ));
     }
 
@@ -161,7 +161,7 @@ final class ArrayStorageTest extends TestCase
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
             'foo',
-            null
+            null,
         ));
     }
 }

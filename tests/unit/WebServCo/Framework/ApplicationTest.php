@@ -65,7 +65,7 @@ final class ApplicationTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Application',
-            new App(self::$pathWeb, self::$pathProject)
+            new App(self::$pathWeb, self::$pathProject),
         );
     }
 

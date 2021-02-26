@@ -68,9 +68,9 @@ trait DatabaseTrait
             \sprintf(
                 "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
                 $this->escapeTableName($table),
-                $this->escapeIdentifier($field)
+                $this->escapeIdentifier($field),
             ),
-            [$value]
+            [$value],
         );
     }
 

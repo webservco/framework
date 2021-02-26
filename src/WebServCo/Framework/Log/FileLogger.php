@@ -38,7 +38,7 @@ class FileLogger extends AbstractFileLogger
             $level,
             $contextInfo,
             $message,
-            \PHP_EOL
+            \PHP_EOL,
         );
 
         \file_put_contents($this->logPath, $data, \FILE_APPEND);

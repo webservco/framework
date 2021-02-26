@@ -33,7 +33,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->config = \WebServCo\Framework\ArrayStorage::append(
             $this->config,
-            [$setting => $data]
+            [$setting => $data],
         );
         return true;
     }

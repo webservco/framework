@@ -38,7 +38,7 @@ trait OutputTrait
         return new Response(
             $this->output()->html($data, $template),
             $this->outputCode,
-            ['Content-Type' => ['text/html']]
+            ['Content-Type' => ['text/html']],
         );
     }
 
@@ -50,7 +50,7 @@ trait OutputTrait
         return new Response(
             $this->output()->htmlPage($data, $pageTemplate, $mainTemplate),
             $this->outputCode,
-            ['Content-Type' => ['text/html']]
+            ['Content-Type' => ['text/html']],
         );
     }
 
@@ -66,7 +66,7 @@ trait OutputTrait
         return new Response(
             $this->output()->json($data),
             $this->outputCode,
-            ['Content-Type' => ['application/json']]
+            ['Content-Type' => ['application/json']],
         );
     }
 

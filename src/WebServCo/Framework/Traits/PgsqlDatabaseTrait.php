@@ -16,7 +16,7 @@ trait PgsqlDatabaseTrait
     {
         // @TODO Fix.
         throw new \WebServCo\Framework\Exceptions\NotImplementedException(
-            \sprintf('Method not implemented. String: %s.', $string)
+            \sprintf('Method not implemented. String: %s.', $string),
         );
     }
 }

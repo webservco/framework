@@ -16,7 +16,7 @@ final class RequestTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Request',
-            \WebServCo\Framework\Helpers\RequestLibraryHelper::library()
+            \WebServCo\Framework\Helpers\RequestLibraryHelper::library(),
         );
     }
 
@@ -52,8 +52,8 @@ final class RequestTest extends TestCase
         $this->assertEquals(
             ['test' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
             \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->sanitize(
-                ['test' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]
-            )
+                ['test' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"],
+            ),
         );
     }
 
@@ -65,8 +65,8 @@ final class RequestTest extends TestCase
         $this->assertEquals(
             ['test' => 'script=alert(&#39;hacked!&#39;).html&key=value'],
             \WebServCo\Framework\Helpers\RequestLibraryHelper::library()->sanitize(
-                ['test' => "script=<script>alert('hacked!')</script>.html&key=value"]
-            )
+                ['test' => "script=<script>alert('hacked!')</script>.html&key=value"],
+            ),
         );
     }
 }

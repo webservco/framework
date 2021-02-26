@@ -56,7 +56,7 @@ final class Request
         [$target, $query] = self::explode($string);
         [$target, $suffix] = self::removeSuffix(
             self::transform($target),
-            $suffixes
+            $suffixes,
         );
         $query = self::transform($query);
         return [$target, $query, $suffix];

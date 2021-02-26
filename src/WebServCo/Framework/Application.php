@@ -78,14 +78,14 @@ class Application extends \WebServCo\Framework\AbstractApplication
         $route = $this->router()->getRoute(
             $target,
             $this->router()->setting('routes'),
-            $this->request()->getArgs()
+            $this->request()->getArgs(),
         );
 
         $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
         if (!\class_exists($className)) {
             if ('Controller' !== $classType) {
                 throw new NotFoundException(
-                    \sprintf('No matching %s found. Target: "%s"', $classType, $target)
+                    \sprintf('No matching %s found. Target: "%s"', $classType, $target),
                 );
             }
             // Class type is "Controller", so check for 404 route

@@ -30,7 +30,7 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
             $templatePath = "{$this->path}{$this->template}.php";
             if (!\is_file($templatePath)) {
                 throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    \sprintf('Template file not found: %s.', $templatePath)
+                    \sprintf('Template file not found: %s.', $templatePath),
                 );
             }
             include $templatePath;

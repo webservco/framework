@@ -33,7 +33,7 @@ abstract class AbstractValidatedClass
         foreach ($required as $item) {
             if (empty($this->{$item})) {
                 throw new \WebServCo\Framework\Exceptions\Validation\RequiredArgumentException(
-                    \sprintf('Empty required parameter: %s', $item)
+                    \sprintf('Empty required parameter: %s', $item),
                 );
             }
         }

@@ -50,7 +50,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
             $data = $this->isSent() ? $this->request()->data($field, null) : \WebServCo\Framework\Utils\Arrays::get(
                 $defaultData,
                 $field,
-                null
+                null,
             );
             $this->setData($field, $data);
         }
@@ -104,7 +104,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         return $this->setting(
             \sprintf('help/%s', $key),
-            $defaultValue
+            $defaultValue,
         );
     }
 
@@ -136,7 +136,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         return $this->setting(
             \sprintf('meta/%s', $key),
-            $defaultValue
+            $defaultValue,
         );
     }
 
@@ -149,7 +149,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         return $this->setting(
             \sprintf('required/%s', $key),
-            $defaultValue
+            $defaultValue,
         );
     }
 

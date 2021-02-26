@@ -90,7 +90,7 @@ trait RequestProcessTrait
             !\in_array(
                 $this->server['REQUEST_METHOD'],
                 Method::getSupported(),
-                true
+                true,
             )
         ) {
             return false;
@@ -118,9 +118,9 @@ trait RequestProcessTrait
             \str_replace(
                 $this->filename,
                 '',
-                $this->server['SCRIPT_NAME']
+                $this->server['SCRIPT_NAME'],
             ),
-            \DIRECTORY_SEPARATOR
+            \DIRECTORY_SEPARATOR,
         );
 
         return true;
@@ -206,11 +206,11 @@ trait RequestProcessTrait
             $string,
             $this->path,
             $this->filename,
-            $this->setting('suffixes')
+            $this->setting('suffixes'),
         );
         $this->target = \WebServCo\Framework\Utils\Request::sanitizeString(\urldecode($target));
         $this->query = \WebServCo\Framework\Utils\Request::format(
-            \WebServCo\Framework\Utils\Request::sanitizeString($queryString)
+            \WebServCo\Framework\Utils\Request::sanitizeString($queryString),
         );
         $this->suffix = $suffix;
         return true;

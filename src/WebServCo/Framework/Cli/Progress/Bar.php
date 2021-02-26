@@ -87,7 +87,7 @@ final class Bar
             $percent,
             \str_repeat('=', $bar),
             \str_repeat(' ', (int) \round($this->width - $bar)),
-            $this->item . '/' . $this->total
+            $this->item . '/' . $this->total,
         );
         $this->outMessage = $message;
 

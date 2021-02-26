@@ -59,7 +59,7 @@ abstract class AbstractUpload
             // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_FILES[$this->formFieldName]['name'],
             // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
-            $_FILES[$this->formFieldName]['type']
+            $_FILES[$this->formFieldName]['type'],
         );
         // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         $this->fileMimeType = $_FILES[$this->formFieldName]['type'];

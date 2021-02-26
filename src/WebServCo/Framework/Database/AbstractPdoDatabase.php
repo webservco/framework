@@ -27,7 +27,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             $dsn = $this->getDataSourceName(
                 $this->setting('connection/host', '127.0.0.1'),
                 $this->setting('connection/port', null),
-                $this->setting('connection/dbname', 'test')
+                $this->setting('connection/dbname', 'test'),
             );
             $this->db = new \PDO(
                 $dsn,
@@ -38,7 +38,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                     \PDO::ATTR_EMULATE_PREPARES => false,
                     \PDO::ATTR_PERSISTENT => false,
-                ]
+                ],
             );
         } catch (\Throwable $e) { // PDOException/RuntimeException/Exception
             throw new DatabaseException($e->getMessage(), $e);

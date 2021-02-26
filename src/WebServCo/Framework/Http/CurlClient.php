@@ -101,7 +101,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return new Response(
             $body,
             $httpCode,
-            \is_array($headers) ? $headers : []
+            \is_array($headers) ? $headers : [],
         );
     }
 
@@ -304,7 +304,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
                 \CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
                 \CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
                 \CURLOPT_TIMEOUT => 60, // The maximum number of seconds to allow cURL functions to execute.
-            ]
+            ],
         );
         // check if we should ignore ssl errors
         if ($this->skipSslVerification) {
@@ -327,7 +327,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
             \curl_setopt(
                 $this->curl,
                 \CURLOPT_HTTPHEADER,
-                $this->parseRequestHeaders($this->requestHeaders)
+                $this->parseRequestHeaders($this->requestHeaders),
             );
         }
 

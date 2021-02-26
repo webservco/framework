@@ -84,7 +84,7 @@ trait DatabaseAddQueryTrait
     {
         return ' (' . \implode(
             ', ',
-            \array_map([$this, 'escapeIdentifier'], $fields)
+            \array_map([$this, 'escapeIdentifier'], $fields),
         ) .
         ')';
     }

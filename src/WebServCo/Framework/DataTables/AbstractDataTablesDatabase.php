@@ -71,7 +71,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             $request->getDraw(),
             $recordsTotal,
             $recordsFiltered,
-            $data
+            $data,
         );
     }
 
@@ -171,7 +171,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         try {
             return (int) $this->db->getColumn( // grand total - query without the search, order, limits
                 $this->getRecordsTotalQuery(),
-                []
+                [],
             );
         } catch (DatabaseException $e) {
             // Rethrow in order to pinpoint the query location in the logs.
@@ -200,7 +200,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             // make sure it works also for "0"
             $query .= \sprintf(
                 " AND %s LIKE ?",
-                $this->getDatabaseColumnName($column->getData())
+                $this->getDatabaseColumnName($column->getData()),
             );
             $params[] = \sprintf('%%%s%%', $searchValue);
         }

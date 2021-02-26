@@ -41,7 +41,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Libraries\Config',
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library(),
         );
     }
 
@@ -158,12 +158,12 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 $this->settingSimpleString,
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertEquals(
             $this->value,
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSimpleString)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSimpleString),
         );
     }
 
@@ -175,12 +175,12 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 $this->settingArray,
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertEquals(
             $this->value,
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingArray)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingArray),
         );
     }
 
@@ -190,11 +190,11 @@ final class ConfigTest extends TestCase
     public function storingAndRetrievingSpecialStringSettingWorks(): void
     {
         $this->assertTrue(
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set($this->settingSpecialString, $this->value)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set($this->settingSpecialString, $this->value),
         );
         $this->assertEquals(
             $this->value,
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSpecialString)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get($this->settingSpecialString),
         );
     }
 
@@ -206,26 +206,26 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertEquals(
             $this->value,
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
-                \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER)
-            )
+                \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
+            ),
         );
     }
 
@@ -237,27 +237,27 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sone%1$ssub_two%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$stwo%1$ssub_two%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('app%1$sthree%1$ssub_three%1$skey', S::DIVIDER),
-                $this->value
-            )
+                $this->value,
+            ),
         );
         $this->assertTrue(
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('app', $this->value)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set('app', $this->value),
         );
         $this->assertEquals(
             $this->value,
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('app')
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('app'),
         );
     }
 
@@ -279,20 +279,20 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
-                'old value'
-            )
+                'old value',
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
-                'new value'
-            )
+                'new value',
+            ),
         );
         $this->assertEquals(
             'new value',
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
-                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
-            )
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+            ),
         );
     }
 
@@ -328,14 +328,14 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
-                'old value'
-            )
+                'old value',
+            ),
         );
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
-                'new value'
-            )
+                'new value',
+            ),
         );
         $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('foo', $config));
 
@@ -344,15 +344,15 @@ final class ConfigTest extends TestCase
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
                 \sprintf(
                     'foo%1$slevel1%1$slevel2%1$slevel3%1$s0',
-                    S::DIVIDER
-                )
-            )
+                    S::DIVIDER,
+                ),
+            ),
         );
         $this->assertEquals(
             'new value',
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
-                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
-            )
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+            ),
         );
     }
 
@@ -363,7 +363,7 @@ final class ConfigTest extends TestCase
     {
         $this->assertEquals(
             [],
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', '/foo/bar')
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', '/foo/bar'),
         );
     }
 
@@ -373,7 +373,7 @@ final class ConfigTest extends TestCase
     public function dummyConfigFileExists(): void
     {
         $this->assertTrue(
-            \is_readable(self::$pathProject . 'config/dev/foo.php')
+            \is_readable(self::$pathProject . 'config/dev/foo.php'),
         );
     }
 
@@ -384,7 +384,7 @@ final class ConfigTest extends TestCase
     public function loadReturnsArrayOnValidPath(): void
     {
         $this->assertIsArray(
-            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject)
+            \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject),
         );
     }
 
@@ -399,8 +399,8 @@ final class ConfigTest extends TestCase
         $this->assertEquals(
             'value1',
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
-                \sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER)
-            )
+                \sprintf('foo%1$soptions%1$ssetting1', S::DIVIDER),
+            ),
         );
     }
 
@@ -413,16 +413,16 @@ final class ConfigTest extends TestCase
         $this->assertTrue(
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->set(
                 \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
-                'new value'
-            )
+                'new value',
+            ),
         );
         $data = \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->load('foo', self::$pathProject);
         \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->add('foo', $data);
         $this->assertEquals(
             'new value',
             \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(
-                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER)
-            )
+                \sprintf('foo%1$sbar%1$sbaz', S::DIVIDER),
+            ),
         );
     }
 

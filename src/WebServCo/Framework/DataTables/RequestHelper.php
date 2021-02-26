@@ -32,7 +32,7 @@ class RequestHelper extends AbstractHelper
                 $item['name'] ?? null,
                 $item['searchable'] ?? null,
                 $item['orderable'] ?? null,
-                SearchHelper::init($item['search'])
+                SearchHelper::init($item['search']),
             );
             $columns->set(null, $columnItem);
         }
@@ -49,7 +49,7 @@ class RequestHelper extends AbstractHelper
             $order,
             $data['start'],
             $data['length'],
-            SearchHelper::init($data['search'])
+            SearchHelper::init($data['search']),
         );
     }
 }

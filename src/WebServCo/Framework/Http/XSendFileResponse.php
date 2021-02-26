@@ -20,7 +20,7 @@ class XSendFileResponse extends Response
                 'Content-Type' => ['application/octet-stream'],
                 'Content-Disposition' => [\sprintf('attachment; filename="%s"', $outputFilename)],
                 'X-Sendfile' => [$filePath],
-            ] // headers
+            ], // headers
         );
     }
 }

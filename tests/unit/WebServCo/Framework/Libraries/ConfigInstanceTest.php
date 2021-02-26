@@ -170,17 +170,17 @@ final class ConfigInstanceTest extends TestCase
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertEquals(
             $this->value,
-            $this->object->get(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER))
+            $this->object->get(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER)),
         );
     }
 
@@ -190,13 +190,13 @@ final class ConfigInstanceTest extends TestCase
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$sone%1$ssub_two%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$stwo%1$ssub_two%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertTrue(
-            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value)
+            $this->object->set(\sprintf('app%1$sthree%1$ssub_three%1$skey', Settings::DIVIDER), $this->value),
         );
         $this->assertTrue($this->object->set('app', $this->value));
         $this->assertEquals($this->value, $this->object->get('app'));
@@ -257,7 +257,7 @@ final class ConfigInstanceTest extends TestCase
 
         $this->assertEquals(
             'value',
-            $this->object->get(\sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', Settings::DIVIDER))
+            $this->object->get(\sprintf('foo%1$slevel1%1$slevel2%1$slevel3%1$s0', Settings::DIVIDER)),
         );
         $this->assertEquals('new value', $this->object->get(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER)));
     }
