@@ -28,7 +28,7 @@ return [
 
 ```
 
-Note: If you'd rather use a custom/external page for 404, simply ommit the `404_route` and the system will throw a `\WebServCo\Framework\Exceptions\NotFoundException` which you can catch in your Application.
+Note: If you'd rather use a custom/external page for 404, simply omit the `404_route` and the system will throw a `\WebServCo\Framework\Exceptions\NotFoundException` which you can catch in your Application.
 
 Example:
 
