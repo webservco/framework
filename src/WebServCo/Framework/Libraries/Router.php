@@ -12,7 +12,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
     public function getFourOhfourRoute(): Route
     {
         // Check if we have a 404 route
-        $fourOhfourRoute = $this->setting('404_route');
+        $fourOhfourRoute = $this->setting('404_route', []);
         if (!isset($fourOhfourRoute[1])) {
             // No 404 route found, throw 404 exception.
             throw new \WebServCo\Framework\Exceptions\NotFoundException('The requested resource was not found.');
@@ -32,7 +32,7 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
     {
         $routeString = $this->parseCustomRoutes($requestCustom, $routes);
         if (empty($routeString) || 'index' === $routeString) {
-            $defaultRoute = $this->setting('default_route');
+            $defaultRoute = $this->setting('default_route', []);
             if (!isset($defaultRoute[1])) {
                 throw new \WebServCo\Framework\Exceptions\NotFoundException("Default route missing or not valid.");
             }

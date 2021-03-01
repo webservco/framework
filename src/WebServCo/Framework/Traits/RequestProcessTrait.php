@@ -206,7 +206,7 @@ trait RequestProcessTrait
             $string,
             $this->path,
             $this->filename,
-            $this->setting('suffixes'),
+            $this->setting('suffixes', []),
         );
         $this->target = \WebServCo\Framework\Utils\Request::sanitizeString(\urldecode($target));
         $this->query = \WebServCo\Framework\Utils\Request::format(

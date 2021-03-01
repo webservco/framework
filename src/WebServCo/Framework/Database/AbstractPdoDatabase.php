@@ -26,7 +26,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         try {
             $dsn = $this->getDataSourceName(
                 $this->setting('connection/host', '127.0.0.1'),
-                $this->setting('connection/port', null),
+                $this->setting('connection/port', ''),
                 $this->setting('connection/dbname', 'test'),
             );
             $this->db = new \PDO(
@@ -114,7 +114,7 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         if (!($this->stmt instanceof \PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
         }
-        if ('mysql' !== $this->setting('driver')) {
+        if ('mysql' !== $this->setting('driver', '')) {
             throw new DatabaseException('Not implemented.');
         }
         return $this->stmt->rowCount();
