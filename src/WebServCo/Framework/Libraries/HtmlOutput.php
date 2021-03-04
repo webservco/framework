@@ -35,7 +35,7 @@ final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
             }
             include $templatePath;
             $output = \ob_get_clean();
-        } catch (\Throwable $e) { // php7
+        } catch (\Throwable $e) {
             \ob_end_clean();
             throw $e;
         }

@@ -24,7 +24,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             \register_shutdown_function([$this, 'shutdown']);
 
             $this->setEnvironmentValue();
-        } catch (\Throwable $e) { // php7
+        } catch (\Throwable $e) {
             $this->shutdown($e, true);
         }
     }
@@ -41,7 +41,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
                 $statusCode = $response->send();
             }
             $this->shutdown(null, true, PhpHelper::isCli() ? $statusCode : 0);
-        } catch (\Throwable $e) { // php7
+        } catch (\Throwable $e) {
             $this->shutdown($e, true);
         }
     }
