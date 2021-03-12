@@ -58,6 +58,8 @@ interface DatabaseInterface
     */
     public function replace(string $tableName, array $data = []): \PDOStatement;
 
+    public function tableExists(string $table): bool;
+
     /**
     * @param array<int,array<int,mixed>> $queries
     */
