@@ -113,41 +113,41 @@ final class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function gettingNonExistentSettingReturnsFalse(): void
+    public function gettingNonExistentSettingReturnsNull(): void
     {
-        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('noexist'));
+        $this->assertNull(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get('noexist'));
     }
 
     /**
      * @test
      */
-    public function gettingNullSettingReturnsFalse(): void
+    public function gettingNullSettingReturnsNull(): void
     {
-        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(null));
+        $this->assertNull(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(null));
     }
 
     /**
      * @test
      */
-    public function gettingFalseSettingReturnsFalse(): void
+    public function gettingFalseSettingReturnsNull(): void
     {
-        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(false));
+        $this->assertNull(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(false));
     }
 
     /**
      * @test
      */
-    public function gettingEmptySettingReturnsFalse(): void
+    public function gettingEmptySettingReturnsNull(): void
     {
-        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(''));
+        $this->assertNull(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get(''));
     }
 
     /**
      * @test
      */
-    public function gettingEmptyArraySettingReturnsFalse(): void
+    public function gettingEmptyArraySettingReturnsNull(): void
     {
-        $this->assertFalse(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get([]));
+        $this->assertNull(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->get([]));
     }
 
     /**

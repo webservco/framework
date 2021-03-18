@@ -128,7 +128,7 @@ final class RequestInstanceTest extends TestCase
      */
     public function postRequestTagsDisabledInKeys(): void
     {
-        $this->assertFalse($this->objectPost->data('<h1>invalid</h1>'));
+        $this->assertNull($this->objectPost->data('<h1>invalid</h1>'));
         $this->assertEquals('<tag>tag</tag>', $this->objectPost->data('invalid'));
     }
 }

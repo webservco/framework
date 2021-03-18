@@ -47,7 +47,7 @@ final class Arrays
     * @param mixed $defaultValue
     * @return mixed
     */
-    public static function get(array $array, $key, $defaultValue = false)
+    public static function get(array $array, $key, $defaultValue = null)
     {
         return \array_key_exists($key, $array)
             ? $array[$key]

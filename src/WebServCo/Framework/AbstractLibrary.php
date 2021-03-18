@@ -47,7 +47,7 @@ abstract class AbstractLibrary implements
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function data(string $key, $defaultValue = false)
+    final public function data(string $key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->data, $key, $defaultValue);
     }
@@ -60,7 +60,7 @@ abstract class AbstractLibrary implements
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function dataElse(string $key, $defaultValue = false)
+    final public function dataElse(string $key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::getElse($this->data, $key, $defaultValue);
     }
@@ -112,7 +112,7 @@ abstract class AbstractLibrary implements
     * @param mixed $defaultValue
     * @return mixed
     */
-    final public function setting($key, $defaultValue = false)
+    final public function setting($key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->settings, $key, $defaultValue);
     }

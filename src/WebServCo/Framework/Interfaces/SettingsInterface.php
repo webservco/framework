@@ -23,5 +23,5 @@ interface SettingsInterface
     * @param mixed $defaultValue
     * @return mixed
     */
-    public function setting($key, $defaultValue = false);
+    public function setting($key, $defaultValue = null);
 }

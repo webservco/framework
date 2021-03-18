@@ -13,7 +13,7 @@ interface LibraryInterface
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function data(string $key, $defaultValue = false);
+    public function data(string $key, $defaultValue = null);
 
     /**
     * @return array<mixed>
@@ -45,5 +45,5 @@ interface LibraryInterface
     * @param mixed $defaultValue
     * @return mixed
     */
-    public function setting($key, $defaultValue = false);
+    public function setting($key, $defaultValue = null);
 }

@@ -79,7 +79,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function errors($key, $defaultValue = false)
+    final public function errors($key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->errors, $key, $defaultValue);
     }
@@ -100,7 +100,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function help($key, $defaultValue = false)
+    final public function help($key, $defaultValue = null)
     {
         return $this->setting(
             \sprintf('help/%s', $key),
@@ -112,7 +112,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     {
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
-                if (false !== $this->request()->data($field)) {
+                if (null !== $this->request()->data($field)) {
                     $this->submitField = $field;
                     return true;
                 }
@@ -132,7 +132,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function meta($key, $defaultValue = false)
+    final public function meta($key, $defaultValue = null)
     {
         return $this->setting(
             \sprintf('meta/%s', $key),
@@ -145,7 +145,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function required($key, $defaultValue = false)
+    final public function required($key, $defaultValue = null)
     {
         return $this->setting(
             \sprintf('required/%s', $key),

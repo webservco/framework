@@ -14,7 +14,7 @@ interface DataInterface
      * @return mixed
      */
 
-    public function data(string $key, $defaultValue = false);
+    public function data(string $key, $defaultValue = null);
 
     /**
     * @return array<mixed>

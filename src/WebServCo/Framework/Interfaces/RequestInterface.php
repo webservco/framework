@@ -13,7 +13,7 @@ interface RequestInterface
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function data(string $key, $defaultValue = false);
+    public function data(string $key, $defaultValue = null);
 
     /**
     * @return array<string,string>
@@ -67,5 +67,5 @@ interface RequestInterface
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function query($key, $defaultValue = false);
+    public function query($key, $defaultValue = null);
 }

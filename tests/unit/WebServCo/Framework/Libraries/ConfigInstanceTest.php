@@ -100,41 +100,41 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function gettingNonExistentSettingReturnsFalse(): void
+    public function gettingNonExistentSettingReturnsNull(): void
     {
-        $this->assertFalse($this->object->get('noexist'));
+        $this->assertNull($this->object->get('noexist'));
     }
 
     /**
      * @test
      */
-    public function gettingNullSettingReturnsFalse(): void
+    public function gettingNullSettingReturnsNull(): void
     {
-        $this->assertFalse($this->object->get(null));
+        $this->assertNull($this->object->get(null));
     }
 
     /**
      * @test
      */
-    public function gettingFalseSettingReturnsFalse(): void
+    public function gettingFalseSettingReturnsNull(): void
     {
-        $this->assertFalse($this->object->get(false));
+        $this->assertNull($this->object->get(false));
     }
 
     /**
      * @test
      */
-    public function gettingEmptySettingReturnsFalse(): void
+    public function gettingEmptySettingReturnsNull(): void
     {
-        $this->assertFalse($this->object->get(''));
+        $this->assertNull($this->object->get(''));
     }
 
     /**
      * @test
      */
-    public function gettingEmptyArraySettingReturnsFalse(): void
+    public function gettingEmptyArraySettingReturnsNull(): void
     {
-        $this->assertFalse($this->object->get([]));
+        $this->assertNull($this->object->get([]));
     }
 
     /**

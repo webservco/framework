@@ -45,7 +45,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function get($setting, $defaultValue = false)
+    public function get($setting, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->config, $setting, $defaultValue);
     }

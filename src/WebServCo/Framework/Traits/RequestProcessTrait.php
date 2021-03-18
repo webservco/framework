@@ -27,7 +27,7 @@ trait RequestProcessTrait
     * @param mixed $defaultValue
     * @return mixed
     */
-    abstract public function setting($key, $defaultValue = false);
+    abstract public function setting($key, $defaultValue = null);
 
     /**
     * Data value can be another array, for example _SERVER in CLI ("argv" is an array)

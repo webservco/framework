@@ -81,7 +81,7 @@ trait RequestUrlTrait
      * @param mixed $defaultValue
      * @return mixed
      */
-    public function query($key, $defaultValue = false)
+    public function query($key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->query, $key, $defaultValue);
     }
