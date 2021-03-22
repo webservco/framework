@@ -30,8 +30,8 @@ class RequestHelper extends AbstractHelper
             $columnItem = new Column(
                 $item['data'] ?? null,
                 $item['name'] ?? null,
-                $item['searchable'] ?? null,
-                $item['orderable'] ?? null,
+                \filter_var($item['searchable'], \FILTER_VALIDATE_BOOLEAN),
+                \filter_var($item['orderable'], \FILTER_VALIDATE_BOOLEAN),
                 SearchHelper::init($item['search']),
             );
             $columns->set(null, $columnItem);
@@ -44,11 +44,11 @@ class RequestHelper extends AbstractHelper
         }
 
         return new Request(
-            $data['draw'],
+            (int) $data['draw'],
             $columns,
             $order,
-            $data['start'],
-            $data['length'],
+            (int) $data['start'],
+            (int) $data['length'],
             SearchHelper::init($data['search']),
         );
     }

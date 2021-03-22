@@ -23,6 +23,6 @@ class SearchHelper extends AbstractHelper
             }
         }
 
-        return new Search($data['value'], $data['regex']);
+        return new Search($data['value'], \filter_var($data['regex'], \FILTER_VALIDATE_BOOLEAN));
     }
 }
