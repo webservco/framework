@@ -44,9 +44,9 @@ class App extends Application
             $this->config()->get('app/path/log'),
         );
         $errorMessage = \sprintf('Error: %s in %s:%s', $errorInfo['message'], $errorInfo['file'], $errorInfo['line']);
-        if ($errorInfo['exception'] instanceof \Exception) {
+        if ($errorInfo['exception'] instanceof \Throwable) {
             $previous = $errorInfo['exception']->getPrevious();
-            if ($previous instanceof \Exception) {
+            if ($previous instanceof \Throwable) {
                 do {
                     $errorMessage .= \sprintf(
                         '%sPrevious: %s in %s:%s',
