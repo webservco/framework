@@ -1,15 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Interfaces;
 
 interface ResponseInterface
 {
-    public function setStatus($statusCode);
 
-    public function setContent($content);
+    public function setStatus(int $statusCode): bool;
 
-    public function send();
+    public function setContent(string $content): bool;
 
-    public function getContent();
+    public function send(): int;
 
-    public function getStatus();
+    public function getContent(): string;
+
+    public function getStatus(): int;
 }

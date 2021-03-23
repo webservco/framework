@@ -1,48 +1,55 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\DataTables;
 
 use WebServCo\Framework\ArrayObject\Items;
 
 class RequestHelper extends AbstractHelper
 {
-    public static function init($data, $required = [])
+
+    /**
+    * @param array<string,mixed> $data
+    * @param array<int,string> $required
+    */
+    public static function init(array $data, array $required = []): Request
     {
-        parent::init($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
+        $required = $required; // reserved for future use.
+
+        parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 
         foreach (['columns', 'order', 'search'] as $item) {
-            if (!is_array($data[$item])) {
-                throw new \InvalidArgumentException(sprintf('Invalid parameter: %s.', $item));
+            if (!\is_array($data[$item])) {
+                throw new \InvalidArgumentException(\sprintf('Invalid parameter: %s.', $item));
             }
         }
 
         $columns = new Items(new ColumnArrayObject());
         foreach ($data['columns'] as $item) {
             $columnItem = new Column(
-                isset($item['data']) ? $item['data'] : null,
-                isset($item['name']) ? $item['name'] : null,
-                isset($item['searchable']) ? $item['searchable'] : null,
-                isset($item['orderable']) ? $item['orderable'] : null,
-                SearchHelper::init($item['search'])
+                $item['data'] ?? null,
+                $item['name'] ?? null,
+                \filter_var($item['searchable'], \FILTER_VALIDATE_BOOLEAN),
+                \filter_var($item['orderable'], \FILTER_VALIDATE_BOOLEAN),
+                SearchHelper::init($item['search']),
             );
             $columns->set(null, $columnItem);
         }
 
         $order = new Items(new OrderArrayObject());
         foreach ($data['order'] as $item) {
-            $orderItem = new Order(
-                isset($item['column']) ? $item['column'] : null,
-                isset($item['dir']) ? $item['dir'] : null
-            );
+            $orderItem = new Order($item['column'] ?? null, $item['dir'] ?? null);
             $order->set(null, $orderItem);
         }
 
         return new Request(
-            $data['draw'],
+            (int) $data['draw'],
             $columns,
             $order,
-            $data['start'],
-            $data['length'],
-            SearchHelper::init($data['search'])
+            (int) $data['start'],
+            (int) $data['length'],
+            SearchHelper::init($data['search']),
         );
     }
 }

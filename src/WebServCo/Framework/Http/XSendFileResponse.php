@@ -1,25 +1,26 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Http;
 
 class XSendFileResponse extends Response
 {
-    public function __construct($filePath, $outputFilename)
+
+    public function __construct(string $filePath, string $outputFilename)
     {
-        if (!is_readable($filePath)) {
+        if (!\is_readable($filePath)) {
             throw new \WebServCo\Framework\Exceptions\NotFoundException('File not found.');
         }
 
         parent::__construct(
-            null, // content
+            '', // content
             200, // statusCode
             [
-                'Content-Type' => 'application/octet-stream',
-                'Content-Disposition' => sprintf(
-                    'attachment; filename="%s"',
-                    $outputFilename
-                ),
-                'X-Sendfile' => $filePath,
-            ] // headers
+                'Content-Type' => ['application/octet-stream'],
+                'Content-Disposition' => [\sprintf('attachment; filename="%s"', $outputFilename)],
+                'X-Sendfile' => [$filePath],
+            ], // headers
         );
     }
 }

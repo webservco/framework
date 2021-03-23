@@ -1,17 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Json;
 
 class Data implements \WebServCo\Framework\Interfaces\JsonInterface
 {
-    protected $data;
 
-    public function __construct($data = [])
+    /**
+    * Data
+    *
+    * @var array<mixed>
+    */
+    protected array $data;
+
+    /**
+    * @param array<mixed> $data
+    */
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }
 
-    public function toJson()
+    public function toJson(): string
     {
-        return json_encode($this->data);
+        return (string) \json_encode($this->data);
     }
 }

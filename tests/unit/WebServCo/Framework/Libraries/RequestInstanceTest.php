@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
@@ -6,112 +9,126 @@ use WebServCo\Framework\Libraries\Request;
 
 final class RequestInstanceTest extends TestCase
 {
-    private $cfg;
-    private $post;
-    private $object;
-    private $objectPost;
-    
-    public function setUp()
+
+    /**
+     * Cfg
+     *
+     * @var array<string,array<int,string>>
+     */
+    private array $cfg;
+
+    /**
+     * Post
+     *
+     * @var array<string,string>
+     */
+    private array $post;
+
+    private Request $object;
+
+    private Request $objectPost;
+
+    public function setUp(): void
     {
-        $this->cfg = ['suffixes' => ['.htm','.html'],];
+        $this->cfg = ['suffixes' => ['.htm', '.html'],];
         $this->post = [
             'key' => 'value',
             'script' => '<script>hello</script>',
             '<h1>invalid</h1>' => '<tag>tag</tag>',
         ];
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $this->object = new Request($this->cfg, $_SERVER, $this->post);
-        
+
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $_SERVER['REQUEST_METHOD'] = 'POST';
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $this->objectPost = new Request($this->cfg, $_SERVER, $this->post);
     }
-    
+
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually()
+    public function canBeInstantiatedIndividually(): void
     {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Request',
-            $this->object
-        );
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', $this->object);
     }
-    
+
     /**
      * @test
      */
-    public function getSchemaReturnsNullOnCli()
+    public function getSchemaReturnsEmptyStringOnCli(): void
     {
-        $this->assertNull($this->object->getSchema());
+        $this->assertEquals('', $this->object->getSchema());
     }
-    
+
     /**
      * @test
      */
-    public function getRefererReturnsNullOnCli()
+    public function getRefererReturnsEmptyStringOnCli(): void
     {
-        $this->assertNull($this->object->getReferer());
+        $this->assertEquals('', $this->object->getReferer());
     }
-    
+
     /**
      * @test
      */
-    public function getHostReturnsString()
+    public function getHostReturnsString(): void
     {
-        $this->assertInternalType('string', $this->object->getHost());
+        $this->assertIsString($this->object->getHost());
     }
-    
+
     /**
      * @test
      */
-    public function sanitizeRemovesBadChars()
+    public function sanitizeRemovesBadChars(): void
     {
         $this->assertEquals(
-            '?&#39;&#34;?!~#^&*=[]:;||{}()x',
-            $this->object->sanitize("?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx")
+            ['foo' => '?&#39;&#34;?!~#^&*=[]:;||{}()x'],
+            $this->object->sanitize(['foo' => "?`'\"?!~#^&*=[]:;\||{}()\$\b\n\r\tx"]),
         );
     }
-    
+
     /**
      * @test
      */
-    public function sanitizeRemovesTags()
+    public function sanitizeRemovesTags(): void
     {
         $this->assertEquals(
-            'script=alert(&#39;hacked!&#39;).html&key=value',
+            ['foo' => 'script=alert(&#39;hacked!&#39;).html&key=value'],
             $this->object->sanitize(
-                "script=<script>alert('hacked!')</script>.html&key=value"
-            )
+                ['foo' => "script=<script>alert('hacked!')</script>.html&key=value"],
+            ),
         );
     }
-    
+
     /**
      * @test
      */
-    public function postRequestIsParsedCorrectly()
+    public function postRequestIsParsedCorrectly(): void
     {
         $this->assertEquals(
             'value',
-            $this->objectPost->data('key')
+            $this->objectPost->data('key'),
         );
     }
-    
+
     /**
      * @test
      */
-    public function postRequestTagsNotDisabledInValues()
+    public function postRequestTagsNotDisabledInValues(): void
     {
         $this->assertEquals(
             '<script>hello</script>',
-            $this->objectPost->data('script')
+            $this->objectPost->data('script'),
         );
     }
-    
+
     /**
      * @test
      */
-    public function postRequestTagsDisabledInKeys()
+    public function postRequestTagsDisabledInKeys(): void
     {
-        $this->assertFalse($this->objectPost->data('<h1>invalid</h1>'));
+        $this->assertNull($this->objectPost->data('<h1>invalid</h1>'));
         $this->assertEquals('<tag>tag</tag>', $this->objectPost->data('invalid'));
     }
 }

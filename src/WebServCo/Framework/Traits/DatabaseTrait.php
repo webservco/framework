@@ -1,33 +1,101 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Database\QueryType;
 
 trait DatabaseTrait
 {
-    abstract public function escapeIdentifier($string);
-    abstract public function escapeTableName($string);
-    abstract protected function generateAddQuery($queryType, $tableName, $addData = [], $updateData = []);
-    abstract public function getColumn($query, $params = [], $columnNumber = 0);
-    abstract public function query($query, $values = []);
 
-    final public function insert($tableName, $addData = [], $updateData = [])
+    abstract public function escapeIdentifier(string $string): string;
+
+    abstract public function escapeTableName(string $string): string;
+
+    /**
+    * @param array<int,float|int|string> $params
+    */
+    abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0): ?string;
+
+    /**
+    * @param array<int,float|int|string|null> $params
+    */
+    abstract public function query(string $query, array $params = []): \PDOStatement;
+
+    /**
+    * @param array<string,float|int|string> $addData
+    * @param array<string,float|int|string> $updateData
+    */
+    abstract protected function generateAddQuery(
+        string $queryType,
+        string $tableName,
+        array $addData = [],
+        array $updateData = []
+    ): string;
+
+    /**
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
+    */
+    final public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement
     {
         return $this->add(QueryType::INSERT, $tableName, $addData, $updateData);
     }
 
-    final public function insertIgnore($tableName, $data = [])
+    /**
+    * @param array<mixed> $data
+    */
+    final public function insertIgnore(string $tableName, array $data = []): \PDOStatement
     {
         return $this->add(QueryType::INSERT_IGNORE, $tableName, $data);
     }
 
-    final public function replace($tableName, $data = [])
+    /**
+    * @param array<mixed> $data
+    */
+    final public function replace(string $tableName, array $data = []): \PDOStatement
     {
         return $this->add(QueryType::REPLACE, $tableName, $data);
     }
 
-    final protected function add($queryType, $tableName, $addData = [], $updateData = [])
+    /**
+    * @param float|int|string $value
+    */
+    final public function valueExists(string $table, string $field, $value): bool
     {
+        return (bool) $this->getColumn(
+            \sprintf(
+                "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
+                $this->escapeTableName($table),
+                $this->escapeIdentifier($field),
+            ),
+            [$value],
+        );
+    }
+
+    final public function tableExists(string $table): bool
+    {
+        $name = $this->escapeTableName($table);
+
+        try {
+            $this->query(\sprintf('SELECT 1 FROM %s LIMIT 1', $name));
+            return true;
+        } catch (\WebServCo\Framework\Exceptions\DatabaseException $e) {
+            return false;
+        }
+    }
+
+    /**
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
+    */
+    final protected function add(
+        string $queryType,
+        string $tableName,
+        array $addData = [],
+        array $updateData = []
+    ): \PDOStatement {
         if (empty($tableName)) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }
@@ -43,29 +111,5 @@ trait DatabaseTrait
         }
 
         return $this->query($query, $queryData);
-    }
-
-    final public function valueExists($table, $field, $value)
-    {
-        return (bool) $this->getColumn(
-            sprintf(
-                "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
-                $this->escapeTableName($table),
-                $this->escapeIdentifier($field)
-            ),
-            [$value]
-        );
-    }
-
-    final public function tableExists($table)
-    {
-        $name = $this->escapeTableName($table);
-
-        try {
-            $this->query(sprintf('SELECT 1 FROM %s LIMIT 1', $name));
-            return true;
-        } catch (\WebServCo\Framework\Exceptions\DatabaseException $e) {
-            return false;
-        }
     }
 }

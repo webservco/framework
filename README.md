@@ -33,7 +33,7 @@ A PHP Framework
 * [File upload](/docs/Files/Upload.md)
 
 ### Http
-* [CurlBrowser](/docs/CurlBrowser.md)
+* [CurlClient](/docs/CurlClients.md)
 * [X-Sendfile](/docs/Http/XSendFile.md)
 
 ### JSON
@@ -43,6 +43,8 @@ A PHP Framework
 * [AbstractLibrary](/docs/Libraries/AbstractLibrary.md)
 * [Cookie](/docs/Libraries/Cookie.md)
 * [Internationalization](/docs/Libraries/I18n.md)
+* [Request](/docs/Libraries/Request.md)
+* [Router](/docs/Libraries/Router.md)
 * [Session](/docs/Libraries/Session.md)
 
 ### Objects

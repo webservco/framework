@@ -1,67 +1,82 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
-    public static function removeEmptyValues(array $array) : array
+
+    /**
+    * @param array<int|string,mixed> $array
+    * @return array<int|string,mixed>
+    */
+    public static function removeEmptyValues(array $array): array
     {
         foreach ($array as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $array[$key] = self::removeEmptyValues($array[$key]);
             }
-            if (empty($array[$key])) {
-                unset($array[$key]);
+            if (!empty($array[$key])) {
+                continue;
             }
+
+            unset($array[$key]);
         }
         return $array;
     }
 
     /**
-    * @param array[] $array
+    * @param array<mixed> $array
     * @param mixed $value
     */
-    public static function has(?array $array, $value) : bool
+    public static function has(?array $array, $value): bool
     {
-        if (!is_array($array)) {
+        if (!\is_array($array)) {
             return false;
         }
-        return in_array($value, $array);
+        return \in_array($value, $array, true);
     }
 
     /**
     * Get a value from an array if it exists, otherwise a specified default value.
     * For multi dimensional arrays please see ArrayStorage.
-    * @param array[] $array
+     *
+     * @param array<mixed> $array
     * @param mixed $key
     * @param mixed $defaultValue
     * @return mixed
     */
-    public static function get(array $array, $key, $defaultValue = false)
+    public static function get(array $array, $key, $defaultValue = null)
     {
-        return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
-    }
-
-    /**
-    * @param array[] $array
-    */
-    public static function isMultidimensional(array $array) : bool
-    {
-        if (empty($array)) {
-            return false;
-        }
-        return is_array($array[key($array)]);
+        return \array_key_exists($key, $array)
+            ? $array[$key]
+            : $defaultValue;
     }
 
     /**
     * @param array<mixed> $array
-    * @return array[]
     */
-    public static function nullToEmptyString(array $array) : array
+    public static function isMultidimensional(array $array): bool
+    {
+        if (empty($array)) {
+            return false;
+        }
+        return \is_array($array[\key($array)]);
+    }
+
+    /**
+    * @param array<mixed> $array
+    * @return array<mixed>
+    */
+    public static function nullToEmptyString(array $array): array
     {
         foreach ($array as $key => $value) {
-            if (is_null($value)) {
-                $array[$key] = '';
+            if (!\is_null($value)) {
+                continue;
             }
+
+            $array[$key] = '';
         }
         return $array;
     }
@@ -73,36 +88,37 @@ final class Arrays
     * "PHP Cookbook by David Sklar, Adam Trachtenberg"
     * 4.24. Finding All Element Combinations of an Array
     * https://www.oreilly.com/library/view/php-cookbook/1565926811/ch04s25.html
-    * @param array[] $array
-    * @return array[]
+     *
+     * @param array<mixed> $array
+    * @return array<mixed>
     */
-    public static function powerSet(array $array) : array
+    public static function powerSet(array $array): array
     {
         $results = [[]]; //initialize by adding the empty set
         foreach ($array as $element) {
             foreach ($results as $combination) {
-                array_push($results, array_merge([$element], $combination));
+                \array_push($results, \array_merge([$element], $combination));
             }
         }
         // sort by number of elements descending
-        $array1 = array_map('count', $results);
-        array_multisort($array1, SORT_DESC, $results);
+        $array1 = \array_map('count', $results);
+        \array_multisort($array1, \SORT_DESC, $results);
 
-        return array_filter($results); // removes empty elements
+        return \array_filter($results); // removes empty elements
     }
 
     /**
-    * @param array<mixed> $array
+    * @param array<int|string,int|float|string> $array
     */
-    public static function toUrlQueryString(array $array) : ?string
+    public static function toUrlQueryString(array $array): ?string
     {
         if (empty($array)) {
             return null;
         }
         $queries = [];
         foreach ($array as $k => $v) {
-            $queries[] = sprintf('%s=%s', $k, $v);
+            $queries[] = \sprintf('%s=%s', $k, $v);
         }
-        return '?' . implode('&', $queries);
+        return '?' . \implode('&', $queries);
     }
 }

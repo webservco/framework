@@ -1,21 +1,25 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Cli\Progress;
 
 //https://gist.github.com/mayconbordin/2860547
 final class Bar
 {
-    protected $type;
 
-    protected $width;
-    protected $padding;
-    protected $total;
-    protected $item;
+    protected string $type;
 
-    protected $outBar;
-    protected $outPad;
-    protected $outMessage;
+    protected int $width;
+    protected int $padding;
+    protected int $total;
+    protected int $item;
 
-    public function __construct($width = 20)
+    protected string $outBar;
+    protected string $outPad;
+    protected string $outMessage;
+
+    public function __construct(int $width = 20)
     {
         $this->type = 'single_line';
         $this->width = $width;
@@ -24,94 +28,107 @@ final class Bar
         $this->item = 1;
     }
 
-    public function start($total = 100)
+    public function start(int $total = 100): bool
     {
         $this->total = $total;
+        return true;
     }
 
-    public function advanceTo($item)
+    public function advanceTo(int $item): bool
     {
         $this->item = $item;
+        return true;
     }
 
-    public function setType($type)
+    public function setType(string $type): bool
     {
-        if (in_array($type, ['single_line', 'multi_line'])) {
-            $this->type = $type;
+        if (!\in_array($type, ['single_line', 'multi_line'], true)) {
+            throw new \InvalidArgumentException('Invalid type.');
         }
+
+        $this->type = $type;
+        return true;
     }
 
-    public function prefix($message = '')
+    public function prefix(string $message = ''): string
     {
         switch ($this->type) {
             case 'single_line':
             case 'multi_line':
                 return $this->prefixProgress($message);
+            default:
+                throw new \InvalidArgumentException('Invalid type.');
         }
     }
 
-    public function suffix($result = true)
+    public function suffix(bool $result = true): string
     {
         switch ($this->type) {
             case 'single_line':
                 return $this->suffixSingle($result);
             case 'multi_line':
                 return $this->suffixMulti($result);
+            default:
+                throw new \InvalidArgumentException('Invalid type.');
         }
     }
 
-    protected function prefixProgress($message)
+    public function finish(): string
     {
-        $percent = round($this->item * 100 / $this->total);
-        $bar = (int) round($this->width * $percent / 100);
-        $this->outBar = sprintf(
+        return "\033[" . 0 . 'D' . \str_repeat(' ', 74) . "\r";
+    }
+
+    protected function prefixProgress(string $message): string
+    {
+        $percent = \round($this->item * 100 / $this->total);
+        $bar = (int) \round($this->width * $percent / 100);
+        $this->outBar = \sprintf(
             "%s%% [%s>%s] %s",
             $percent,
-            str_repeat('=', $bar),
-            str_repeat(' ', (int) round($this->width-$bar)),
-            $this->item . '/' . $this->total
+            \str_repeat('=', $bar),
+            \str_repeat(' ', (int) \round($this->width - $bar)),
+            $this->item . '/' . $this->total,
         );
         $this->outMessage = $message;
 
-        $padLen = ($this->width + $this->padding) - strlen($this->outBar);
-        $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : null;
-        return $this->outBar.$this->outPad.$this->outMessage;
+        $padLen = $this->width + $this->padding - \strlen($this->outBar);
+        $this->outPad = 0 < $padLen
+            ? \str_repeat(' ', (int) $padLen)
+            : '';
+        return $this->outBar . $this->outPad . $this->outMessage;
     }
 
-    protected function suffixSingle($result, $overwrite = false)
+    protected function suffixSingle(bool $result, bool $overwrite = false): string
     {
-        $totalLen = strlen($this->outBar.$this->outPad.$this->outMessage);
+        $totalLen = \strlen($this->outBar . $this->outPad . $this->outMessage);
         $output = null;
 
         if ($overwrite) {
             //overwrite current line
             $output .= "\033[" . $totalLen . 'D';
-            $output .= str_repeat(' ', $this->width + $this->padding);
+            $output .= \str_repeat(' ', $this->width + $this->padding);
             $output .= $this->outMessage;
         }
 
         $padLen = 74 - $totalLen;
         if (0 < $padLen) {
-            $output .= str_repeat(' ', $padLen);
+            $output .= \str_repeat(' ', $padLen);
         }
         $output .= '[';
-        $output .= $result ? "\e[32mOK" : "\e[31mKO";
+        $output .= $result
+            ? "\e[32mOK"
+            : "\e[31mKO";
         $output .= "\e[0m" . ']';
         $output .= "\r";
 
         return $output;
     }
 
-    protected function suffixMulti($result, $overwrite = true)
+    protected function suffixMulti(bool $result, bool $overwrite = true): string
     {
         $output = $this->suffixSingle($result, $overwrite);
-        $output .= PHP_EOL;
+        $output .= \PHP_EOL;
 
         return $output;
-    }
-
-    public function finish()
-    {
-        return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }
 }

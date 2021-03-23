@@ -1,44 +1,55 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ArrayInterface,
     \WebServCo\Framework\Interfaces\DataInterface,
+    \WebServCo\Framework\Interfaces\LibraryInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
-    private $data;
-    private $settings;
 
-    public function __construct($settings = [])
+    /**
+     * Data.
+     *
+     * @var array<mixed>
+     */
+    private array $data;
+
+    /**
+     * Settings.
+     *
+     * @var array<string,string|array<mixed>>
+     */
+    private array $settings;
+
+    /**
+    * @param array<string,string|array<mixed>> $settings
+    */
+    public function __construct(array $settings = [])
     {
         $this->clearData();
 
-        if (is_array($settings)) { // check instead of cast to prevent unexpected results
-            $this->settings = $settings;
-        } else {
-            $this->settings = [];
-        }
+        $this->settings = $settings;
     }
 
-    final public function clearData()
+    final public function clearData(): bool
     {
         $this->data = [];
+        return true;
     }
 
     /**
      * Returns data if exists, $defaultValue otherwise.
      *
-     * @param string $key
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function data($key, $defaultValue = false)
+    final public function data(string $key, $defaultValue = null)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->data,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->data, $key, $defaultValue);
     }
 
     /**
@@ -46,20 +57,18 @@ abstract class AbstractLibrary implements
      * $this->data returns data if it exists (can be empty).
      * This method returns data if both exists and not empty.
      *
-     * @param string $key
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function dataElse($key, $defaultValue = false)
+    final public function dataElse(string $key, $defaultValue = null)
     {
-        return \WebServCo\Framework\ArrayStorage::getElse(
-            $this->data,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::getElse($this->data, $key, $defaultValue);
     }
 
-    final public function getData()
+    /**
+    * @return array<mixed>
+    */
+    final public function getData(): array
     {
         return $this->data;
     }
@@ -69,10 +78,9 @@ abstract class AbstractLibrary implements
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
-    final public function setData($key, $value)
+    final public function setData($key, $value): bool
     {
         if (empty($key)) {
             return false;
@@ -86,10 +94,9 @@ abstract class AbstractLibrary implements
      *                          or a special formatted string
      *                          (eg 'app/path/project').
      * @param mixed $value The value to be stored.
-     *
      * @return bool True on success and false on failure.
      */
-    final public function setSetting($key, $value)
+    final public function setSetting($key, $value): bool
     {
         if (empty($key)) {
             return false;
@@ -98,16 +105,22 @@ abstract class AbstractLibrary implements
         return true;
     }
 
-    final public function setting($key, $defaultValue = false)
+    /**
+    * @param mixed $key Can be an array, a string,
+    *                          or a special formatted string
+    *                          (eg 'app/path/project').
+    * @param mixed $defaultValue
+    * @return mixed
+    */
+    final public function setting($key, $defaultValue = null)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->settings,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->settings, $key, $defaultValue);
     }
 
-    public function toArray()
+    /**
+    * @return array<string, array<mixed>>
+    */
+    public function toArray(): array
     {
         return [
             'data' => $this->data,

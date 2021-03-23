@@ -1,31 +1,43 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 {
-    protected $errors;
-
-    protected $filtered;
-
-    protected $submitFields;
-
-    protected $submitField;
-
-    protected $valid;
-
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**
-     * @return bool
+     * Errors.
+     *
+     * @var array<string, array<int,string>>
      */
-    abstract protected function filter();
+    protected array $errors;
+
+    protected bool $filtered;
 
     /**
-     * @return bool
+     * Submit fields.
+     *
+     * @var array<int,string>
      */
-    abstract protected function validate();
+    protected array $submitFields;
 
-    public function __construct($settings, $defaultData = [], $submitFields = [])
+    protected string $submitField;
+
+    protected bool $valid;
+
+    abstract protected function filter(): bool;
+
+    abstract protected function validate(): bool;
+
+    /**
+    * @param array<string,string|array<mixed>> $settings
+    * @param array<string,bool|int|float|string|null> $defaultData
+    * @param array<int,string> $submitFields
+    */
+    public function __construct(array $settings, array $defaultData = [], array $submitFields = [])
     {
         parent::__construct($settings);
 
@@ -35,11 +47,11 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
          * Set form data
          */
         foreach ($this->setting('meta', []) as $field => $title) {
-            if ($this->isSent()) {
-                $data = $this->request()->data($field, null);
-            } else {
-                $data = \WebServCo\Framework\Utils\Arrays::get($defaultData, $field, null);
-            }
+            $data = $this->isSent() ? $this->request()->data($field, null) : \WebServCo\Framework\Utils\Arrays::get(
+                $defaultData,
+                $field,
+                null,
+            );
             $this->setData($field, $data);
         }
 
@@ -47,27 +59,34 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
         $this->filtered = $this->filter();
 
-        if ($this->isSent()) {
-            $this->valid = $this->validate();
+        if (!$this->isSent()) {
+            return;
         }
+
+        $this->valid = $this->validate();
     }
 
-    final public function clear()
+    final public function clear(): bool
     {
         $this->clearData();
-        $this->filtered = [];
+        $this->filtered = false;
         $this->errors = [];
+        return true;
     }
 
-    final public function errors($key, $defaultValue = false)
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function errors($key, $defaultValue = null)
     {
-        return \WebServCo\Framework\ArrayStorage::get(
-            $this->errors,
-            $key,
-            $defaultValue
-        );
+        return \WebServCo\Framework\ArrayStorage::get($this->errors, $key, $defaultValue);
     }
 
+    /**
+    * @return mixed
+    */
     final public function getSubmitField()
     {
         if (!$this->isSent() || empty($this->submitFields)) {
@@ -76,55 +95,73 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         return $this->submitField;
     }
 
-    final public function help($key, $defaultValue = false)
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function help($key, $defaultValue = null)
     {
         return $this->setting(
-            sprintf('help/%s', $key),
-            $defaultValue
+            \sprintf('help/%s', $key),
+            $defaultValue,
         );
     }
 
-    final public function isSent()
+    final public function isSent(): bool
     {
         if (!empty($this->submitFields)) {
             foreach ($this->submitFields as $field) {
-                if (false !== $this->request()->data($field)) {
+                if (null !== $this->request()->data($field)) {
                     $this->submitField = $field;
                     return true;
                 }
             }
             return false;
         }
-        return $this->request()->getMethod() === \WebServCo\Framework\Http\Method::POST;
+        return \WebServCo\Framework\Http\Method::POST === $this->request()->getMethod();
     }
 
-    final public function isValid()
+    final public function isValid(): bool
     {
         return $this->valid;
     }
 
-    final public function meta($key, $defaultValue = false)
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function meta($key, $defaultValue = null)
     {
         return $this->setting(
-            sprintf('meta/%s', $key),
-            $defaultValue
+            \sprintf('meta/%s', $key),
+            $defaultValue,
         );
     }
 
-    final public function required($key, $defaultValue = false)
+    /**
+     * @param mixed $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    final public function required($key, $defaultValue = null)
     {
         return $this->setting(
-            sprintf('required/%s', $key),
-            $defaultValue
+            \sprintf('required/%s', $key),
+            $defaultValue,
         );
     }
 
-    final public function toArray()
+    /**
+    * @return array<string, array<mixed>>
+    */
+    final public function toArray(): array
     {
         return [
             'meta' => $this->setting('meta', []),
             'help' => $this->setting('help', []),
-            'required' => array_fill_keys($this->setting('required', []), true),
+            'required' => \array_fill_keys($this->setting('required', []), true),
             'custom' => $this->setting('custom', []),
             'data' => $this->getData(),
             'errors' => $this->errors,

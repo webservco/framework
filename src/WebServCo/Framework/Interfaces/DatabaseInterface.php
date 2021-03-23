@@ -1,27 +1,72 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Interfaces;
 
 interface DatabaseInterface
 {
-    public function escape($string);
 
-    public function query($query, $values = []);
+    public function affectedRows(): int;
 
-    public function transaction($queries);
+    /**
+    * @param array<int,float|int|string> $params
+    * @return bool|int|string|null
+    */
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0);
 
-    public function numRows();
+    /**
+    * @param array<int,float|int|string> $params
+    * @return array<string,float|int|string>
+    */
+    public function getRow(string $query, array $params = []): array;
 
-    public function affectedRows();
+    /**
+    * @param array<int,float|int|string> $params
+    * @return array<int,array<string,float|int|string>>
+    */
+    public function getRows(string $query, array $params = []): array;
 
-    public function getRows($query, $params = []);
+    public function escape(string $string): string;
 
-    public function getRow($query, $params = []);
+    public function escapeIdentifier(string $string): string;
 
-    public function getColumn($query, $params = [], $columnNumber = 0);
+    public function escapeTableName(string $string): string;
 
-    public function lastInsertId();
+    /**
+    * @param array<mixed> $addData
+    * @param array<mixed> $updateData
+    */
+    public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement;
 
-    public function escapeIdentifier($string);
+    /**
+    * @param array<mixed> $data
+    */
+    public function insertIgnore(string $tableName, array $data = []): \PDOStatement;
 
-    public function escapeTableName($string);
+    public function lastInsertId(): int;
+
+    public function numRows(): int;
+
+    /**
+    * @param array<int,float|int|string|null> $params
+    */
+    public function query(string $query, array $params = []): \PDOStatement;
+
+    /**
+    * @param array<mixed> $data
+    */
+    public function replace(string $tableName, array $data = []): \PDOStatement;
+
+    public function tableExists(string $table): bool;
+
+    /**
+    * @param array<int,array<int,mixed>> $queries
+    */
+    public function transaction(array $queries): bool;
+
+    /**
+    * @param float|int|string $value
+    */
+    public function valueExists(string $table, string $field, $value): bool;
 }

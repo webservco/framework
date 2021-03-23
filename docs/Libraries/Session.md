@@ -100,7 +100,7 @@ $this->session()->remove('user/name');
 ### Retrieving data
 
 ```php
-$this->session()->get($setting, $defaultValue = false);
+$this->session()->get($setting, $defaultValue = null);
 $this->session()->get('user/name');
 $this->session()->get('user/name', 'N/A');
 ```

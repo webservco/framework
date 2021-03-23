@@ -1,17 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\DataTables;
 
 class Response implements \WebServCo\Framework\Interfaces\JsonInterface
 {
-    protected $draw;
 
-    protected $recordsTotal;
+    protected int $draw;
 
-    protected $recordsFiltered;
+    protected int $recordsTotal;
 
-    protected $data;
+    protected int $recordsFiltered;
 
-    public function __construct($draw, $recordsTotal, $recordsFiltered, $data = [])
+    /**
+     * Data.
+     *
+     * @var array<int,array<int|string,mixed>> $data
+     */
+    protected array $data;
+
+    /**
+    * @param array<int,array<int|string,mixed>> $data
+    */
+    public function __construct(int $draw, int $recordsTotal, int $recordsFiltered, array $data = [])
     {
         $this->draw = $draw;
         $this->recordsTotal = $recordsTotal;
@@ -19,13 +31,16 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
         $this->data = $data;
     }
 
-    public function toArray()
+    /**
+    * @return array<string,mixed>
+    */
+    public function toArray(): array
     {
         $array = [
             'draw' => $this->draw,
             'recordsTotal' => $this->recordsTotal,
             'recordsFiltered' => $this->recordsFiltered,
-            'data' => []
+            'data' => [],
         ];
         foreach ($this->data as $item) {
             $array['data'][] = $item;
@@ -33,9 +48,9 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
         return $array;
     }
 
-    public function toJson()
+    public function toJson(): string
     {
         $array = $this->toArray();
-        return json_encode($array);
+        return (string) \json_encode($array);
     }
 }

@@ -1,12 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Files;
 
 class CsvFile extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
-    const CONTENT_TYPE = 'text/csv';
 
-    public function __construct($fileName, $fileData)
-    {
-        parent::__construct($fileName, (string) $fileData, self::CONTENT_TYPE);
-    }
+    public const CONTENT_TYPE = 'text/csv';
 }

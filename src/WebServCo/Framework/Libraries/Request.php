@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Libraries;
 
 final class Request extends \WebServCo\Framework\AbstractRequest implements
@@ -8,24 +11,32 @@ final class Request extends \WebServCo\Framework\AbstractRequest implements
     use \WebServCo\Framework\Traits\RequestServerTrait;
     use \WebServCo\Framework\Traits\RequestUrlTrait;
 
-    public function __construct($settings, $server, $post = [])
+    /**
+    * @param array<string,string|array<mixed>> $settings
+    * @param array<string,mixed> $server
+    * @param array<string,string> $post
+    */
+    public function __construct(array $settings, array $server, array $post = [])
     {
         parent::__construct($settings);
 
         $this->init($server, $post);
     }
 
-    public function getArgs()
+    /**
+    * @return array<int,string>
+    */
+    public function getArgs(): array
     {
         return $this->args;
     }
 
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }

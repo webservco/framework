@@ -1,7 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Interfaces;
 
 interface ArrayInterface
 {
-    public function toArray();
+
+    /**
+    * @return array<string,mixed>
+    */
+    public function toArray(): array;
 }

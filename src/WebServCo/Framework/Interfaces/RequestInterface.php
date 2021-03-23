@@ -1,16 +1,71 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Interfaces;
 
 interface RequestInterface
 {
-    public function getAcceptContentTypes();
-    public function getAppUrl();
-    public function getContentType();
-    public function getArgs();
-    public function getBody();
-    public function getHost();
-    public function getMethod();
-    public function getQuery();
-    public function getRemoteAddress();
-    public function getUrl($removeParameters = []);
+
+    /**
+     * Returns data if exists, $defaultValue otherwise.
+     *
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function data(string $key, $defaultValue = null);
+
+    /**
+    * @return array<string,string>
+    */
+    public function getAcceptContentTypes(): array;
+
+    public function getAcceptLanguage(): string;
+
+    public function getAppUrl(): string;
+
+    /**
+    * @return array<int,string>
+    */
+    public function getArgs(): array;
+
+    public function getBody(): string;
+
+    public function getContentType(): string;
+
+    /**
+    * @return array<mixed>
+    */
+    public function getData(): array;
+
+    public function getHost(): string;
+
+    public function getMethod(): string;
+
+    /**
+    * @return array<string,mixed>
+    */
+    public function getQuery(): array;
+
+    public function getSchema(): string;
+
+    public function getSuffix(): string;
+
+    public function getTarget(): string;
+
+    /**
+    * @param array<int,string> $removeParameters
+    */
+    public function getUrl(array $removeParameters = []): string;
+
+    public function getUserAgent(): string;
+
+    /**
+     * @param mixed $key Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function query($key, $defaultValue = null);
 }

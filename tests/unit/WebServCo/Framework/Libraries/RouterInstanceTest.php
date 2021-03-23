@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
@@ -6,10 +9,17 @@ use WebServCo\Framework\Libraries\Router;
 
 final class RouterInstanceTest extends TestCase
 {
-    private $object;
-    private $cfg;
-    
-    public function setUp()
+
+    /**
+     * Cfg.
+     *
+     * @var array<string,array<mixed>>
+     */
+    private array $cfg;
+
+    private Router $object;
+
+    public function setUp(): void
     {
         $this->cfg = [
             'default_route' => ['Content', 'home', ['foo', 'bar']],
@@ -20,71 +30,63 @@ final class RouterInstanceTest extends TestCase
         ];
         $this->object = new Router($this->cfg);
     }
-    
+
     /**
      * @test
      */
-    public function canBeInstantiatedIndividually()
+    public function canBeInstantiatedIndividually(): void
     {
-        $this->assertInstanceOf(
-            'WebServCo\Framework\Libraries\Router',
-            $this->object
-        );
+        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', $this->object);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnEmptyData()
+    public function getRouteReturnsArrayOnEmptyData(): void
     {
         $route = $this->object->getRoute('', []);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnNullData()
+    public function getRouteReturnsArrayOnNullData(): void
     {
-        $route = $this->object->getRoute(null, []);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
+        $route = $this->object->getRoute('', []);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnValidData()
+    public function getRouteReturnsArrayOnValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidData()
+    public function getRouteReturnsValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-        $this->assertEquals('foo', $route[0]);
-        $this->assertEquals('bar', $route[1]);
-        $this->assertEquals(['baz'], $route[2]);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('foo', $route->class);
+        $this->assertEquals('bar', $route->method);
+        $this->assertEquals(['baz'], $route->arguments);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidDataWithCustomRoutes()
+    public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-        $this->assertEquals('Content', $route[0]);
-        $this->assertEquals('debugSomething', $route[1]);
-        $this->assertEquals(['foo','bar'], $route[2]);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('Content', $route->class);
+        $this->assertEquals('debugSomething', $route->method);
+        $this->assertEquals(['foo', 'bar'], $route->arguments);
     }
 }

@@ -1,23 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractResponse
 {
-    protected $content;
-    protected $statusCode;
 
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
+    protected string $content;
 
-    public function getContent()
+    protected int $statusCode;
+
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->statusCode;
+    }
+
+    public function setContent(string $content): bool
+    {
+        $this->content = $content;
+        return true;
     }
 }

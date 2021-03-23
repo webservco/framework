@@ -1,15 +1,16 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Utils;
 
 final class Template
 {
+
     /**
-    * @param string $templatePath
-    * @param string $templateName
-    * @param array<mixed> $data
-    * @return string
+    * @param array<int|string,mixed> $data
     */
-    public static function render(string $templatePath, string $templateName, array $data) : string
+    public static function render(string $templatePath, string $templateName, array $data): string
     {
         $output = new \WebServCo\Framework\Libraries\HtmlOutput();
         foreach ($data as $k => $v) {

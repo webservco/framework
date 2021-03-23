@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\ErrorHandler;
-use WebServCo\Framework\Framework;
-use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\ApplicationException;
 use WebServCo\Framework\Exceptions\NotFoundException;
+use WebServCo\Framework\Helpers\PhpHelper;
+use WebServCo\Framework\Interfaces\ResponseInterface;
 
 class Application extends \WebServCo\Framework\AbstractApplication
 {
@@ -14,25 +16,15 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Starts the execution of the application.
      */
-    final public function start()
+    final public function start(): void
     {
         try {
             ErrorHandler::set();
 
-            register_shutdown_function([$this, 'shutdown']);
+            \register_shutdown_function([$this, 'shutdown']);
 
             $this->setEnvironmentValue();
-
-            /**
-             * With no argument, timezone will be set from the configuration.
-             */
-            $this->date()->setTimezone();
-            /**
-             * @todo i18n, log, session (if not cli), users (if not cli)
-             */
-
-            return true;
-        } catch (\Throwable $e) { // php7
+        } catch (\Throwable $e) {
             $this->shutdown($e, true);
         }
     }
@@ -40,74 +32,18 @@ class Application extends \WebServCo\Framework\AbstractApplication
     /**
      * Runs the application.
      */
-    public function run()
+    public function run(): void
     {
         try {
             $response = $this->execute();
             $statusCode = 0;
-            if ($response instanceof
-                \WebServCo\Framework\Interfaces\ResponseInterface) {
+            if ($response instanceof ResponseInterface) {
                 $statusCode = $response->send();
             }
-            $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
-        } catch (\Throwable $e) { // php7
+            $this->shutdown(null, true, PhpHelper::isCli() ? $statusCode : 0);
+        } catch (\Throwable $e) {
             $this->shutdown($e, true);
         }
-    }
-
-    final protected function execute()
-    {
-        $classType = Framework::isCli() ? 'Command' : 'Controller';
-        $target = $this->request()->getTarget();
-        $route = $this->router()->getRoute(
-            $target,
-            $this->router()->setting('routes'),
-            $this->request()->getArgs()
-        );
-
-        $class = isset($route[0]) ? $route[0] : null;
-        $method = isset($route[1]) ? $route[1] : null;
-        $args = isset($route[2]) ? $route[2] : [];
-
-        if (empty($class) || empty($method)) {
-            throw new ApplicationException(
-                sprintf(
-                    'Invalid route. Target: "%s".',
-                    $target
-                )
-            );
-        }
-
-        $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $class, $classType);
-        if (!class_exists($className)) {
-            /* enable in V10 *
-            throw new NotFoundException(
-                sprintf('No matching %s found. Target: "%s"', $classType, $target)
-            );
-            /* enable in V10 */
-
-            /* remove in V10 */
-            // check for v9 class name
-            $className = sprintf("\\%s\\Domain\\%s\\%s%s", $this->projectNamespace, $class, $class, $classType);
-            if (!class_exists($className)) {
-                throw new NotFoundException(
-                    sprintf('No matching %s found. Target: "%s".', $classType, $target)
-                );
-            }
-            /* remove in V10 */
-        }
-
-        $object = new $className;
-        $parent = get_parent_class($object);
-        if (method_exists((string) $parent, $method) ||
-            !is_callable([$className, $method])) {
-            throw new NotFoundException(sprintf('No matching Action found. Target: "%s".', $target));
-        }
-        $callable = [$object, $method];
-        if (!is_callable($callable)) {
-            throw new ApplicationException(sprintf('Method not found. Target: "%s"', $target));
-        }
-        return call_user_func_array($callable, $args);
     }
 
     /**
@@ -115,7 +51,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
      *
      * This method is also registered as a shutdown handler.
      */
-    final public function shutdown($exception = null, $manual = false, $statusCode = 0) : void
+    final public function shutdown(?\Throwable $exception = null, bool $manual = false, int $statusCode = 0): void
     {
         $hasError = $this->handleErrors($exception);
         if ($hasError) {
@@ -130,5 +66,44 @@ class Application extends \WebServCo\Framework\AbstractApplication
             ErrorHandler::restore();
         }
         exit($statusCode);
+    }
+
+    final protected function execute(): ResponseInterface
+    {
+        $classType = PhpHelper::isCli()
+            ? 'Command'
+            : 'Controller';
+        $target = $this->request()->getTarget();
+        // \WebServCo\Framework\Objects\Route
+        $route = $this->router()->getRoute(
+            $target,
+            $this->router()->setting('routes'),
+            $this->request()->getArgs(),
+        );
+
+        $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
+        if (!\class_exists($className)) {
+            if ('Controller' !== $classType) {
+                throw new NotFoundException(
+                    \sprintf('No matching %s found. Target: "%s"', $classType, $target),
+                );
+            }
+            // Class type is "Controller", so check for 404 route
+            // throws \WebServCo\Framework\Exceptions\NotFoundException
+            $route = $this->router()->getFourOhfourRoute();
+            $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
+        }
+
+        $object = new $className();
+        $parent = \get_parent_class($object);
+        if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
+            throw new NotFoundException(\sprintf('No matching Action found. Target: "%s".', $target));
+        }
+        $callable = [$object, $route->method];
+        if (!\is_callable($callable)) {
+            throw new ApplicationException(\sprintf('Method not found. Target: "%s"', $target));
+        }
+
+        return \call_user_func_array($callable, $route->arguments);
     }
 }

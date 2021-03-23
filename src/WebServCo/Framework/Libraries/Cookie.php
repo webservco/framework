@@ -1,57 +1,65 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Libraries;
 
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
-    public function set(
-        $name,
-        $value = '',
-        $expires = 0,
-        $path = '',
-        $domain = '',
-        $secure = true,
-        $httponly = false,
-        $samesite = 'Lax'
-    ) {
-        if (PHP_VERSION_ID < 70300) {
-            return setcookie(
-                $name,
-                \WebServCo\Framework\RequestUtils::sanitizeString($value),
-                $expires,
-                sprintf('%s; SameSite=%s', $path, $samesite),
-                $domain,
-                $secure,
-                $httponly
-            );
-        } else {
-            return setcookie(
-                $name,
-                \WebServCo\Framework\RequestUtils::sanitizeString($value),
-                [
-                    'expires' => $expires,
-                    'path' => $path,
-                    'domain' => $domain,
-                    'secure' => $secure,
-                    'httponly' => $httponly,
-                    'samesite' => $samesite,
-                ]
-            );
-        }
+
+    public function get(string $name, string $defaultValue = ''): string
+    {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+        return $_COOKIE[$name] ?? $defaultValue;
     }
 
-    public function get($name, $defaultValue = false)
+    public function remove(string $name): bool
     {
-        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : $defaultValue;
-    }
-
-    public function remove($name)
-    {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!isset($_COOKIE[$name])) {
             return false;
         }
 
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         unset($_COOKIE[$name]);
-        $this->set($name, false, -1);
+        $this->set($name, '', -1);
         return true;
+    }
+
+    /**
+    * @param string $name,
+    * @param string $value,
+    * @param int $expires,
+    * @param string $path,
+    * @param string $domain,
+    * @param bool $secure,
+    * @param bool $httponly,
+    * @param 'Lax'|'None'|'Strict' $samesite
+    */
+    public function set(
+        string $name,
+        string $value = '',
+        int $expires = 0,
+        string $path = '',
+        string $domain = '',
+        bool $secure = true,
+        bool $httponly = false,
+        string $samesite = 'Lax'
+    ): bool {
+        if (!\in_array($samesite, ['Lax', 'None', 'Strict'], true)) {
+            throw new \InvalidArgumentException('Invalid argument: samesite');
+        }
+        return \setcookie(
+            $name,
+            \WebServCo\Framework\Utils\Request::sanitizeString($value),
+            [
+                'expires' => $expires,
+                'path' => $path,
+                'domain' => $domain,
+                'secure' => $secure,
+                'httponly' => $httponly,
+                'samesite' => $samesite,
+            ],
+        );
     }
 }

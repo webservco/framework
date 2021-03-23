@@ -20,7 +20,7 @@ Removes empty values from input array (recursive).
 
 Returns true if `$array` is an array and contains `$value`.
 
-### `get($array, $key, $defaultValue = false)`
+### `get($array, $key, $defaultValue = null)`
 
 Get a value from an array if it exists, otherwise a specified default value.
 For multi dimensional arrays please see ArrayStorage.

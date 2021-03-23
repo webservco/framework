@@ -32,7 +32,7 @@ Adapted from https://stackoverflow.com/a/13331948
 
 ### `linkify($string)`
 
-Convert URL's into links (adds the <a> tag)
+Convert URL's into links (adds the `<a>` tag)
 
 Adapted from https://stackoverflow.com/a/507459
 

@@ -1,15 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
-use WebServCo\Framework\Libraries\Router;
 
 final class RouterTest extends TestCase
 {
-    private $cfg;
-    
-    public function setUp()
+
+    /**
+     * Cfg
+     *
+     * @var array<string,array<mixed>>
+     */
+    private array $cfg;
+
+    public function setUp(): void
     {
         $this->cfg = [
             'default_route' => ['Content', 'home', ['foo', 'bar']],
@@ -19,48 +26,54 @@ final class RouterTest extends TestCase
             ],
         ];
     }
-    
+
     /**
      * @test
      */
-    public function canBeAccessedViaFramework()
+    public function canBeAccessedViaFramework(): void
     {
-        $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', Fw::library('Router'));
+        $this->assertInstanceOf(
+            'WebServCo\Framework\Libraries\Router',
+            \WebServCo\Framework\Helpers\RouterLibraryHelper::library(),
+        );
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsArrayOnValidData()
+    public function getRouteReturnsArrayOnValidData(): void
     {
-        $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
+            'foo/bar/baz',
+            $this->cfg['routes'],
+        );
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidData()
+    public function getRouteReturnsValidData(): void
     {
-        $route = Fw::library('Router')->getRoute('foo/bar/baz', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-        $this->assertEquals('foo', $route[0]);
-        $this->assertEquals('bar', $route[1]);
-        $this->assertEquals(['baz'], $route[2]);
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute(
+            'foo/bar/baz',
+            $this->cfg['routes'],
+        );
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('foo', $route->class);
+        $this->assertEquals('bar', $route->method);
+        $this->assertEquals(['baz'], $route->arguments);
     }
-    
+
     /**
      * @test
      */
-    public function getRouteReturnsValidDataWithCustomRoutes()
+    public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
-        $route = Fw::library('Router')->getRoute('qwerty', $this->cfg['routes']);
-        $this->assertInternalType('array', $route);
-        $this->assertEquals(3, count($route));
-        $this->assertEquals('Content', $route[0]);
-        $this->assertEquals('debugSomething', $route[1]);
-        $this->assertEquals(['foo','bar'], $route[2]);
+        $route = \WebServCo\Framework\Helpers\RouterLibraryHelper::library()->getRoute('qwerty', $this->cfg['routes']);
+        $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
+        $this->assertEquals('Content', $route->class);
+        $this->assertEquals('debugSomething', $route->method);
+        $this->assertEquals(['foo', 'bar'], $route->arguments);
     }
 }

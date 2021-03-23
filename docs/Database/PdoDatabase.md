@@ -35,6 +35,7 @@ $this->db = new \WebServCo\Framework\Libraries\MysqlPdoDatabase(
 $this->db->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
+
 #### INSERT ... ON DUPLICATE KEY UPDATE
 
 > Not supported when adding multiple rows at once

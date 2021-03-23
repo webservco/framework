@@ -22,6 +22,8 @@ $object = MyClass::fromArray($array);
 
 ## To array
 
+> Works only for public members
+
 ```php
 class MyClass implements \WebServCo\Framework\Interfaces\ArrayInterface
 {

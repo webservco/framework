@@ -1,28 +1,58 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Http\Method;
-use WebServCo\Framework\RequestUtils;
 
 trait RequestProcessTrait
 {
-    abstract public function clearData();
-    abstract public function setData($key, $value);
-    abstract public function setting($key, $defaultValue = false);
 
-    public function sanitize($data)
+    abstract public function clearData(): bool;
+
+    /**
+     * @param mixed $key Can be an array, a string,
+     *                          or a special formatted string
+     *                          (eg 'app/path/project').
+     * @param mixed $value The value to be stored.
+     * @return bool True on success and false on failure.
+     */
+    abstract public function setData($key, $value): bool;
+
+    /**
+    * @param mixed $key Can be an array, a string,
+    *                          or a special formatted string
+    *                          (eg 'app/path/project').
+    * @param mixed $defaultValue
+    * @return mixed
+    */
+    abstract public function setting($key, $defaultValue = null);
+
+    /**
+    * Data value can be another array, for example _SERVER in CLI ("argv" is an array)
+    * Important: only first level is sanitized.
+    *
+    * @param array<string,array<int,string>|string> $data
+    * @return array<string,array<int,string>|string>
+    */
+    public function sanitize(array $data): array
     {
-        if (is_array($data)) {
-            array_walk_recursive(
-                $data,
-                '\WebServCo\Framework\RequestUtils::sanitizeString'
-            );
-            return $data;
+        foreach ($data as $key => $value) {
+            if (\is_string($value)) {
+                // Sanitize only first level (prevents "argv" from being sanitized)
+                $value = \WebServCo\Framework\Utils\Request::sanitizeString($value);
+            }
+            $data[$key] = $value;
         }
-        return RequestUtils::sanitizeString($data);
+        return $data;
     }
 
-    protected function init($server, $post = [])
+    /**
+    * @param array<string,mixed> $server
+    * @param array<string,string> $post
+    */
+    protected function init(array $server, array $post = []): bool
     {
         $this->server = $this->sanitize($server);
 
@@ -44,102 +74,116 @@ trait RequestProcessTrait
         if ($this->setting('clear_globals', false)) {
             $this->clearGlobals();
         }
+        return true;
     }
 
-    protected function setBody()
+    protected function setBody(): bool
     {
-        $this->body = file_get_contents('php://input');
+        $this->body = (string) \file_get_contents('php://input');
+        return true;
     }
 
-    protected function setMethod()
+    protected function setMethod(): bool
     {
-        if (empty($this->server['REQUEST_METHOD']) ||
-        !in_array(
-            $this->server['REQUEST_METHOD'],
-            Method::getSupported()
-        )) {
+        if (
+            empty($this->server['REQUEST_METHOD']) ||
+            !\in_array(
+                $this->server['REQUEST_METHOD'],
+                Method::getSupported(),
+                true,
+            )
+        ) {
             return false;
         }
         $this->method = $this->server['REQUEST_METHOD'];
         return true;
     }
 
-    protected function setFilename()
+    protected function setFilename(): bool
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
-        $this->filename = basename($this->server['SCRIPT_NAME']);
+        $this->filename = \basename($this->server['SCRIPT_NAME']);
         return true;
     }
 
-    protected function setPath()
+    protected function setPath(): bool
     {
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
 
-        $this->path = rtrim(
-            str_replace(
+        $this->path = \rtrim(
+            \str_replace(
                 $this->filename,
                 '',
-                $this->server['SCRIPT_NAME']
+                $this->server['SCRIPT_NAME'],
             ),
-            DIRECTORY_SEPARATOR
+            \DIRECTORY_SEPARATOR,
         );
 
         return true;
     }
 
-    protected function clearGlobals()
+    protected function clearGlobals(): bool
     {
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!empty($_GET)) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             foreach ($_GET as $k => $v) {
+                // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
                 unset($_REQUEST[$k]);
             }
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_GET = [];
         }
+        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!empty($_POST)) {
+            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_POST = [];
         }
         return true;
     }
 
-    protected function processPost($post = [])
+    /**
+    * @param array<string,string> $post
+    */
+    protected function processPost(array $post = []): bool
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData($this->sanitize($k), $v);
+            $this->setData(\WebServCo\Framework\Utils\Request::sanitizeString($k), $v);
         }
         return true;
     }
 
-    protected function process()
+    protected function process(): bool
     {
-        if (\WebServCo\Framework\Framework::isCli()) {
+        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
             return $this->processCli();
         }
 
         return $this->processHttp();
     }
 
-    protected function processCli()
+    protected function processCli(): bool
     {
         if (isset($this->server['argv'][1])) {
             $this->target = $this->server['argv'][1];
         }
         if (isset($this->server['argv'][2])) {
             foreach ($this->server['argv'] as $k => $v) {
-                if (in_array($k, [0,1])) {
+                if (\in_array($k, [0, 1], true)) {
                     continue;
                 }
-                $this->args[] = $this->sanitize($v);
+                $this->args[] = \WebServCo\Framework\Utils\Request::sanitizeString($v);
             }
         }
         return true;
     }
 
-    protected function processHttp()
+    protected function processHttp(): bool
     {
         $string = null;
         switch (true) {
@@ -158,14 +202,16 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        list ($target, $queryString, $suffix) = RequestUtils::parse(
+        [$target, $queryString, $suffix] = \WebServCo\Framework\Utils\Request::parse(
             $string,
             $this->path,
             $this->filename,
-            $this->setting('suffixes')
+            $this->setting('suffixes', []),
         );
-        $this->target = $this->sanitize(urldecode($target));
-        $this->query = RequestUtils::format($this->sanitize($queryString));
+        $this->target = \WebServCo\Framework\Utils\Request::sanitizeString(\urldecode($target));
+        $this->query = \WebServCo\Framework\Utils\Request::format(
+            \WebServCo\Framework\Utils\Request::sanitizeString($queryString),
+        );
         $this->suffix = $suffix;
         return true;
     }

@@ -1,49 +1,53 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework;
 
 abstract class AbstractApplication
 {
-    protected $projectNamespace;
-    protected $projectPath;
 
-    abstract protected function config();
-    abstract protected function request();
+    protected string $projectNamespace;
+    protected string $projectPath;
 
-    public function __construct($publicPath, $projectPath, $projectNamespace = 'Project')
+    abstract protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface;
+
+    abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
+
+    public function __construct(string $publicPath, string $projectPath, string $projectNamespace = 'Project')
     {
         $this->projectNamespace = $projectNamespace;
-        $publicPath = rtrim($publicPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->projectPath = rtrim($projectPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $publicPath = \rtrim($publicPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+        $this->projectPath = \rtrim($projectPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
-        if (!is_readable($publicPath . 'index.php') || !is_readable($this->projectPath . '.env')) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                'Invalid paths specified when initializing Application.'
-            );
+        if (!\is_readable($publicPath . 'index.php')) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
+        }
+        if (!\is_readable($this->projectPath . '.env')) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment file path is not readable.');
         }
 
-        $this->config()->set(sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
-        $this->config()->set(sprintf('app%1$spath%1$sproject', Settings::DIVIDER), $this->projectPath);
+        $this->config()->set(\sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
+        $this->config()->set(\sprintf('app%1$spath%1$sproject', Settings::DIVIDER), $this->projectPath);
     }
 
     /**
      * Sets the env value from the project .env file.
      */
-    final public function setEnvironmentValue()
+    final public function setEnvironmentValue(): bool
     {
         /**
-         * Env file existence is verified in the controller.
+         * Env file existence is verified in the constructor.
          */
-        $this->config()->setEnv(trim((string)file_get_contents($this->projectPath . '.env')));
+        $this->config()->setEnv(\trim((string) \file_get_contents($this->projectPath . '.env')));
 
         return true;
     }
 
     /**
      * Handle Errors.
-     *
-     * @param mixed $exception An \Error or \Exception object.
      */
-    final protected function handleErrors($exception = null)
+    final protected function handleErrors(?\Throwable $exception = null): bool
     {
         $errorInfo = \WebServCo\Framework\ErrorHandler::getErrorInfo($exception);
         if (!empty($errorInfo['message'])) {
@@ -52,16 +56,22 @@ abstract class AbstractApplication
         return false;
     }
 
-    final protected function halt($errorInfo = [])
+    /**
+    * @param array<string,mixed> $errorInfo
+    */
+    final protected function halt(array $errorInfo = []): bool
     {
-        if (\WebServCo\Framework\Framework::isCli()) {
-            return $this->haltCli($errorInfo);
-        } else {
-            return $this->haltHttp($errorInfo);
-        }
+        return \WebServCo\Framework\Helpers\PhpHelper::isCli()
+            ? $this->haltCli($errorInfo)
+            : $this->haltHttp($errorInfo);
     }
 
-    protected function haltHttp($errorInfo = [])
+    /**
+     * Handle HTTP errors.
+     *
+     * @param array<string,mixed> $errorInfo
+     */
+    protected function haltHttp(array $errorInfo = []): bool
     {
         switch ($errorInfo['code']) {
             case 404:
@@ -89,37 +99,30 @@ abstract class AbstractApplication
 </head>
 <body><div class="i"><br>' .
         "<h1>{$title}</h1>";
-        if (Environment::DEV == $this->config()->getEnv()) {
-            $output .= sprintf(
+        if (Environment::DEV === $this->config()->getEnv()) {
+            $output .= \sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],
-                basename($errorInfo['file']),
-                $errorInfo['line']
+                \basename($errorInfo['file']),
+                $errorInfo['line'],
             );
             if (!empty($errorInfo['trace'])) {
                 $output .= "<p>";
                 $output .= "<small>";
                 foreach ($errorInfo['trace'] as $item) {
                     if (!empty($item['class'])) {
-                        $output .= sprintf(
-                            '%s%s',
-                            $item['class'],
-                            $item['type']
-                        );
+                        $output .= \sprintf('%s%s', $item['class'], $item['type']);
                         $output .= "";
                     }
                     if (!empty($item['function'])) {
-                        $output .= sprintf(
-                            '%s',
-                            $item['function']
-                        );
+                        $output .= \sprintf('%s', $item['function']);
                         $output .= "";
                     }
                     if (!empty($item['file'])) {
-                        $output .= sprintf(
+                        $output .= \sprintf(
                             ' [%s:%s]',
-                            basename($item['file']),
-                            $item['line']
+                            \basename($item['file']),
+                            $item['line'],
                         );
                         $output .= " ";
                     }
@@ -133,21 +136,21 @@ abstract class AbstractApplication
         $response = new \WebServCo\Framework\Http\Response(
             $output,
             $statusCode,
-            ['Content-Type' => 'text/html']
+            ['Content-Type' => ['text/html']],
         );
         $response->send();
         return true;
     }
 
-    protected function haltCli($errorInfo = [])
+    /**
+    * @param array<string,mixed> $errorInfo
+    */
+    protected function haltCli(array $errorInfo = []): bool
     {
-        $output = 'Boo boo' . PHP_EOL;
-        $output .= $errorInfo['message'] . PHP_EOL;
-        $output .= "$errorInfo[file]:$errorInfo[line]" . PHP_EOL;
-        $response = new \WebServCo\Framework\Cli\Response(
-            $output,
-            1
-        );
+        $output = 'Boo boo' . \PHP_EOL;
+        $output .= $errorInfo['message'] . \PHP_EOL;
+        $output .= "$errorInfo[file]:$errorInfo[line]" . \PHP_EOL;
+        $response = new \WebServCo\Framework\Cli\Response($output, 1);
         $response->send();
         return true;
     }

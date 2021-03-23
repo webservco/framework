@@ -1,12 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\Interfaces;
 
-interface LoggerInterface
+interface LoggerInterface extends \Psr\Log\LoggerInterface
 {
-    public function clear();
-    public function debug($message, $context = []);
-    public function error($message, $context = []);
-    public function info($message, $context = []);
-    public function log($level, $message, $context = []);
-    public function warning($message, $context = []);
+    public function clear(): bool;
 }

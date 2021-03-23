@@ -1,17 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Framework\Http;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Framework as Fw;
 use WebServCo\Framework\Http\Method;
 
 final class MethodTest extends TestCase
 {
+
     /**
      * @test
      */
-    public function getMethodsReturnsArray()
+    public function getMethodsReturnsArray(): void
     {
-        $this->assertInternalType('array', Method::getSupported());
+        $this->assertIsArray(Method::getSupported());
     }
 }

@@ -1,6 +1,6 @@
-# CurlBrowser
+# CurlClient
 
-## `\WebServCo\Framework\CurlBrowser`
+## `\WebServCo\Framework\Http\CurlClient`
 
 Requires `\WebServCo\Framework\Interfaces\LoggerInterface`.
 
@@ -8,7 +8,7 @@ Returns `\WebServCo\Framework\Http\Response`.
 
 ## Initialization
 ```php
-$curlBrowser = new \WebServCo\Framework\CurlBrowser($loggerInterface);
+$curlClient = new \WebServCo\Framework\Http\CurlClient($loggerInterface);
 ```
 
 ---
@@ -17,12 +17,12 @@ $curlBrowser = new \WebServCo\Framework\CurlBrowser($loggerInterface);
 
 ### `GET`
 ```php
-$response = $curlBrowser->get($url);
+$response = $curlClient->get($url);
 ```
 
 ### `POST`
 ```php
-$response = $curlBrowser->post($url, $postData);
+$response = $curlClient->post($url, $postData);
 ```
 
 Default `Content-Type` for `POST` data is
@@ -37,12 +37,12 @@ If request data is a string, the `Content-Length` Header is set automatically.
 #### JSON Example
 
 ```php
-$curlBrowser->setDebug(true);
-$curlBrowser->setMethod(\WebServCo\Framework\Http\Method::POST);
-$curlBrowser->setRequestContentType('application/json');
-$curlBrowser->setRequestHeader('Accept', 'application/json');
-$curlBrowser->setRequestData('{"foo": "bar"}');
-$response = $curlBrowser->retrieve($url); // \WebServCo\Framework\Http\Response
+$curlClient->setDebug(true);
+$curlClient->setMethod(\WebServCo\Framework\Http\Method::POST);
+$curlClient->setRequestContentType('application/json');
+$curlClient->setRequestHeader('Accept', 'application/json');
+$curlClient->setRequestData('{"foo": "bar"}');
+$response = $curlClient->retrieve($url); // \WebServCo\Framework\Http\Response
 return json_decode($response->getContent(), true);
 ```
 

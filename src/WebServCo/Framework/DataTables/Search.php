@@ -1,18 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace WebServCo\Framework\DataTables;
 
 class Search
 {
-    protected $value;
-    protected $regex;
 
-    public function __construct($value, $regex)
+    protected string $value;
+    protected bool $regex;
+
+    public function __construct(string $value, bool $regex)
     {
         $this->value = $value;
-        $this->regex = (bool) $regex;
+        $this->regex = $regex;
     }
 
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }

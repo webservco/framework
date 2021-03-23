@@ -1,5 +1,29 @@
 # `\WebServCo\Framework\Libraries\HtmlOutput`
 
+## Returning HTML output
+
+In controller:
+
+### Default `pageTemplate`, default `mainTemplate`
+
+```php
+return $this->outputHtml($this->getData(), $this->getView(__FUNCTION__));
+```
+
+### Custom `mainTemplate`
+
+```php
+return $this->outputHtml($this->getData(), $this->getView(__FUNCTION__), 'customMainTemplate');
+```
+
+### `pageTemplate` is optional
+
+```php
+return $this->outputHtml($this->getData(), '', '404');
+```
+
+---
+
 ## Helper
 
 `WebServCo\Framework\Utils\Template`
