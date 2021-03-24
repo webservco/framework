@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\MysqlPdoDatabase;
 
-abstract class MysqlPdoDatabaseLibraryHelper extends AbstractLibraryHelper
+final class MysqlPdoDatabaseLibraryHelper extends AbstractLibraryHelper
 {
     private static ?MysqlPdoDatabase $object = null;
 

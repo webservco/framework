@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\I18n;
 
-abstract class I18nLibraryHelper extends AbstractLibraryHelper
+final class I18nLibraryHelper extends AbstractLibraryHelper
 {
     private static ?I18n $object = null;
 

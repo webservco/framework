@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Cookie;
 
-abstract class CookieLibraryHelper extends AbstractLibraryHelper
+final class CookieLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Cookie $object = null;
 

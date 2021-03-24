@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Router;
 
-abstract class RouterLibraryHelper extends AbstractLibraryHelper
+final class RouterLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Router $object = null;
 

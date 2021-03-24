@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Request;
 
-abstract class RequestLibraryHelper extends AbstractLibraryHelper
+final class RequestLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Request $object = null;
 

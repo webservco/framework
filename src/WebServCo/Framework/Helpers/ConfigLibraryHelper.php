@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Config;
 
-abstract class ConfigLibraryHelper extends AbstractLibraryHelper
+final class ConfigLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Config $object = null;
 

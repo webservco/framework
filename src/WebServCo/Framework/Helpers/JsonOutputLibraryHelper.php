@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\JsonOutput;
 
-abstract class JsonOutputLibraryHelper extends AbstractLibraryHelper
+final class JsonOutputLibraryHelper extends AbstractLibraryHelper
 {
     private static ?JsonOutput $object = null;
 

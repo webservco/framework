@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\HtmlOutput;
 
-abstract class HtmlOutputLibraryHelper extends AbstractLibraryHelper
+final class HtmlOutputLibraryHelper extends AbstractLibraryHelper
 {
     private static ?HtmlOutput $object = null;
 

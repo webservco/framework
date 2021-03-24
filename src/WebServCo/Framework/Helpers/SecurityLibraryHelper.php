@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Security;
 
-abstract class SecurityLibraryHelper extends AbstractLibraryHelper
+final class SecurityLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Security $object = null;
 

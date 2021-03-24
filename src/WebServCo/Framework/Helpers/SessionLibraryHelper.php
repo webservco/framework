@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Helpers;
 
 use WebServCo\Framework\Libraries\Session;
 
-abstract class SessionLibraryHelper extends AbstractLibraryHelper
+final class SessionLibraryHelper extends AbstractLibraryHelper
 {
     private static ?Session $object = null;
 
