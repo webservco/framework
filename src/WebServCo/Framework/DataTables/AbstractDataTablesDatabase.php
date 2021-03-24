@@ -125,32 +125,33 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     ): string {
         $this->assertColumnArrayObject($columnArrayObject);
         $this->assertOrderArrayObject($orderArrayObject);
-        $query = '';
-        $orderTotal = $orderArrayObject->count();
-        if (0 < $orderTotal) {
-            $query = "ORDER BY";
-            $items = [];
-            foreach ($orderArrayObject as $order) {
-                $columnKey = (string) $order->getColumn();
-                $column = $columnArrayObject->offsetGet($columnKey);
-                if (!($column instanceof Column)) {
-                    continue;
-                }
-
-                if (!$column->getOrderable()) {
-                    continue;
-                }
-
-                $dir = \strtoupper($order->getDir());
-                $dir = \in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC], true)
-                    ? $dir
-                    : DatabaseOrder::ASC;
-                $columnName = $this->getDatabaseColumnName($column->getData());
-                $items[] = \sprintf(' %s %s', $columnName, $dir);
+        $items = [];
+        foreach ($orderArrayObject as $order) {
+            $columnKey = (string) $order->getColumn();
+            $column = $columnArrayObject->offsetGet($columnKey);
+            if (!($column instanceof Column)) {
+                continue;
             }
-            $query .= \implode(",", $items);
+
+            if (!$column->getOrderable()) {
+                continue;
+            }
+
+            $dir = \strtoupper($order->getDir());
+            $dir = \in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC], true)
+                ? $dir
+                : DatabaseOrder::ASC;
+            $columnName = $this->getDatabaseColumnName($column->getData());
+            $items[] = \sprintf(' %s %s', $columnName, $dir);
         }
-        return $query;
+        if (!$items) {
+            // No order, or none of the columns are actually orderable
+            return '';
+        }
+        return \sprintf(
+            'ORDER BY%s',
+            \implode(",", $items),
+        );
     }
 
     protected function getRecordsFiltered(): int

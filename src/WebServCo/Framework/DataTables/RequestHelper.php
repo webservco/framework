@@ -27,9 +27,12 @@ class RequestHelper extends AbstractHelper
 
         $columns = new Items(new ColumnArrayObject());
         foreach ($data['columns'] as $item) {
+            if (!\array_key_exists('data', $item) || !\array_key_exists('name', $item)) {
+                //continue;
+            }
             $columnItem = new Column(
-                $item['data'] ?? null,
-                $item['name'] ?? null,
+                $item['data'],
+                $item['name'],
                 \filter_var($item['searchable'], \FILTER_VALIDATE_BOOLEAN),
                 \filter_var($item['orderable'], \FILTER_VALIDATE_BOOLEAN),
                 SearchHelper::init($item['search']),
@@ -39,7 +42,10 @@ class RequestHelper extends AbstractHelper
 
         $order = new Items(new OrderArrayObject());
         foreach ($data['order'] as $item) {
-            $orderItem = new Order($item['column'] ?? null, $item['dir'] ?? null);
+            if (!\array_key_exists('column', $item) || !\array_key_exists('dir', $item)) {
+                continue;
+            }
+            $orderItem = new Order($item['column'], $item['dir']);
             $order->set(null, $orderItem);
         }
 
