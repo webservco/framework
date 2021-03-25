@@ -3,7 +3,7 @@
 	<description>A custom coding standard based on PSR12</description>
 	<rule ref="PSR12"></rule>
 	<rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml"><!-- relative path to your ruleset.xml -->
-		<!-- TODO investigate (seems to be a bug / conflict with won rules) -->
+		<!-- TODO investigate (seems to be a bug / conflict with own rules) -->
 		<exclude name="SlevomatCodingStandard.Classes.TraitUseSpacing.IncorrectLinesCountAfterLastUse" />
 		<!-- TODO investigate (seems to conflict with own rules and also with PSR2) -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing.IncorrectLinesCountBeforeControlStructure" />
@@ -28,6 +28,8 @@
 		<exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName" />
 		<!-- TODO investigate -->
 		<exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint" />
+		<!-- Conflicts with PSR2 -->
+		<exclude name="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces.NoEmptyLineBeforeClosingBrace" />
 		<!-- Conflicts with PSR12 -->
 		<exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBetweenOpenTagAndDeclare" />
 		<!-- Conflicts with PSR12 -->
@@ -36,8 +38,6 @@
 		<exclude name="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces.NoEmptyLineAfterOpeningBrace" />
 		<!-- Conflicts with PSR12 -->
 		<exclude name="SlevomatCodingStandard.Classes.TraitUseSpacing.IncorrectLinesCountBeforeFirstUse" />
-		<!-- Conflicts with PSR2 -->
-		<exclude name="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces.NoEmptyLineBeforeClosingBrace" />
 		<!-- Conflicts with PSR2 -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing.IncorrectLinesCountAfterControlStructure" />
 		<!-- "Reports use of superfluous prefix or suffix "Abstract" for abstract classes." -->
@@ -56,6 +56,12 @@
 		<exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses" />
 		<!-- Opposite error if fixed -->
 		<exclude name="SlevomatCodingStandard.Functions.DisallowArrowFunction.DisallowedArrowFunction" />
+		<!-- "Use of pre-increment operator is disallowed." Disagree: 10% faster -->
+		<exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPreIncrementOperator" />
+		<!-- This one forces to use short ternary operator. Conflicts with "Use of short ternary operator is disallowed."  -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator.RequiredShortTernaryOperator" />
+		<!-- "Condition of "if" / "elseif" should be placed on a single line." -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition.RequiredSingleLineCondition" />
 		<!-- Special situation for I18nHelper -->
 		<exclude name="SlevomatCodingStandard.Namespaces.NamespaceDeclaration.DisallowedBracketedSyntax" />
 		<properties>
