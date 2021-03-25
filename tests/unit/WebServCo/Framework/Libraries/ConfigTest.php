@@ -311,9 +311,6 @@ final class ConfigTest extends TestCase
     {
 
         $config = [
-            'date' => [
-                'timezone' => 'Europe/Budapest',
-            ],
             'options' => [
                 'setting1' => 'value1',
                 'setting2' => 'value2',
@@ -468,9 +465,6 @@ final class ConfigTest extends TestCase
                 \mkdir($pathConfig, 0775, true);
                 $data = "<?php
                 return [
-                    'date' => [
-                        'timezone' => 'Europe/Budapest',
-                    ],
                     'options' => [
                         'setting1' => 'value1',
                         'setting2' => 'value2',
