@@ -34,9 +34,7 @@ trait ResponseUrlTrait
     final protected function getReloadResponse(array $removeParameters = []): Response
     {
         $url = $this->request()->getUrl($removeParameters);
-        // "The HTTP 205 Reset Content response status tells the client to reset the document view,
-        // so for example to clear the content of a form, reset a canvas state, or to refresh the UI"
-        return $this->getRedirectUrlResponse($url, 205);
+        return $this->getRedirectUrlResponse($url);
     }
 
     /**
