@@ -128,6 +128,6 @@ trait RequestServerTrait
         if (PhpHelper::isCli()) {
             return '';
         }
-        return $this->server['HTTP_USER_AGENT'] ?? null;
+        return $this->server['HTTP_USER_AGENT'] ?? '';
     }
 }
