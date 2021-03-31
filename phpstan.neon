@@ -1,4 +1,4 @@
 parameters:
 	inferPrivatePropertyTypeFromConstructor: true
-	autoload_files:
+	bootstrapFiles:
 		- %currentWorkingDirectory%/src/WebServCo/Framework/Helpers/I18nHelper.php
