@@ -29,16 +29,16 @@ final class EnvironmentTest extends TestCase
     /**
      * @test
      */
-    public function constantEnvProdHasExpectedValue(): void
+    public function constantEnvStagingHasExpectedValue(): void
     {
-        $this->assertEquals('prod', Environment::PROD);
+        $this->assertEquals('staging', Environment::STAGING);
     }
 
     /**
      * @test
      */
-    public function getOptionsReturnsExpectedValues(): void
+    public function constantEnvProdHasExpectedValue(): void
     {
-        $this->assertEquals(['dev', 'test', 'prod'], Environment::getOptions());
+        $this->assertEquals('production', Environment::PRODUCTION);
     }
 }

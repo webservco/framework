@@ -31,6 +31,7 @@ final class ConfigInstanceTest extends TestCase
     public function setUp(): void
     {
         $this->object = new Config();
+        $this->object->setEnv('dev');
     }
 
     /**
@@ -318,10 +319,10 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function setEnvDefaultsToDevOnInvalidValue(): void
+    public function setEnvThrowsExceptionOnInvalidValue(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->object->setEnv('noexist');
-        $this->assertEquals('dev', $this->object->getEnv());
     }
 
     /**
@@ -335,10 +336,11 @@ final class ConfigInstanceTest extends TestCase
     /**
      * @test
      */
-    public function getEnvDefaultsToDev(): void
+    public function getEnvWhenNotSetThrowsException(): void
     {
+        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
         $config = new \WebServCo\Framework\Libraries\Config();
-        $this->assertEquals('dev', $config->getEnv());
+        $config->getEnv();
     }
 
     public static function setUpBeforeClass(): void

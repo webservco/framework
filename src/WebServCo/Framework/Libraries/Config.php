@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
+use WebServCo\Framework\Environment;
+
 final class Config extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ConfigInterface
 {
@@ -18,7 +20,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * Application environment.
      */
-    private string $env;
+    private ?string $env = null;
 
     /**
      * Add base setting data.
@@ -55,7 +57,10 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function getEnv(): string
     {
-        return $this->env ?? \WebServCo\Framework\Environment::DEV;
+        if (!$this->env) {
+            throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment not set.');
+        }
+        return $this->env;
     }
 
     /**
@@ -99,9 +104,13 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function setEnv(string $env): bool
     {
-        $this->env = \in_array($env, \WebServCo\Framework\Environment::getOptions(), true)
-            ? $env
-            : \WebServCo\Framework\Environment::DEV;
+        if (
+            !\in_array($env, [Environment::DEV, Environment::TEST, Environment::STAGING, Environment::PRODUCTION], true)
+        ) {
+            throw new \InvalidArgumentException('Invalid environment specified.');
+        }
+
+        $this->env = $env;
 
         return true;
     }

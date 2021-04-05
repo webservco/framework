@@ -6,18 +6,15 @@ namespace WebServCo\Framework;
 
 final class Environment
 {
-
+    // Development - local
     public const DEV = 'dev';
-    public const TEST = 'test';
-    public const PROD = 'prod';
 
-    /**
-     * Retrieve list of all possible environment options.
-     *
-     * @return array<int,string>
-     */
-    public static function getOptions(): array
-    {
-        return [self::DEV, self::TEST, self::PROD];
-    }
+    // Development - server
+    public const TEST = 'test';
+
+    // Sandbox - server
+    public const STAGING = 'staging';
+
+    // Live - server
+    public const PRODUCTION = 'production';
 }
