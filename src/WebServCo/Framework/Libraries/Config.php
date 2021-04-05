@@ -105,7 +105,11 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     public function setEnv(string $env): bool
     {
         if (
-            !\in_array($env, [Environment::DEV, Environment::TEST, Environment::STAGING, Environment::PRODUCTION], true)
+            !\in_array(
+                $env,
+                [Environment::DEVELOPMENT, Environment::TESTING, Environment::STAGING, Environment::PRODUCTION],
+                true,
+            )
         ) {
             throw new \InvalidArgumentException('Invalid environment specified.');
         }

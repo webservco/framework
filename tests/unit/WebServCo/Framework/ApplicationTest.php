@@ -97,7 +97,7 @@ final class ApplicationTest extends TestCase
         if (!\is_readable($pathWeb)) {
                 \mkdir($pathWeb, 0775, true);
                 \touch("{$pathWeb}index.php");
-                \file_put_contents("{$pathProject}.env", 'dev');
+                \file_put_contents("{$pathProject}.env", 'development');
         }
         self::$pathProject = $pathProject;
         self::$pathWeb = $pathWeb;

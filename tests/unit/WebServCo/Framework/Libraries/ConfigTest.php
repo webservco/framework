@@ -370,7 +370,7 @@ final class ConfigTest extends TestCase
     public function dummyConfigFileExists(): void
     {
         $this->assertTrue(
-            \is_readable(self::$pathProject . 'config/dev/foo.php'),
+            \is_readable(self::$pathProject . 'config/development/foo.php'),
         );
     }
 
@@ -428,7 +428,7 @@ final class ConfigTest extends TestCase
      */
     public function setEnvReturnsTrue(): void
     {
-        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('dev'));
+        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('development'));
     }
 
     /**
@@ -461,7 +461,7 @@ final class ConfigTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         $pathProject = '/tmp/webservco/project/';
-        $pathConfig = "{$pathProject}config/dev/";
+        $pathConfig = "{$pathProject}config/development/";
         if (!\is_readable($pathConfig)) {
                 \mkdir($pathConfig, 0775, true);
                 $data = "<?php

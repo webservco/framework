@@ -15,7 +15,7 @@ final class EnvironmentTest extends TestCase
      */
     public function constantEnvDevHasExpectedValue(): void
     {
-        $this->assertEquals('dev', Environment::DEV);
+        $this->assertEquals('development', Environment::DEVELOPMENT);
     }
 
     /**
@@ -23,7 +23,7 @@ final class EnvironmentTest extends TestCase
      */
     public function constantEnvTestHasExpectedValue(): void
     {
-        $this->assertEquals('test', Environment::TEST);
+        $this->assertEquals('testing', Environment::TESTING);
     }
 
     /**

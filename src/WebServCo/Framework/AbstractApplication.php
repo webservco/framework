@@ -99,7 +99,7 @@ abstract class AbstractApplication
 </head>
 <body><div class="i"><br>' .
         "<h1>{$title}</h1>";
-        if (Environment::DEV === $this->config()->getEnv()) {
+        if (Environment::DEVELOPMENT === $this->config()->getEnv()) {
             $output .= \sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],

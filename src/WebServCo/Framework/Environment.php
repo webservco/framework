@@ -7,14 +7,15 @@ namespace WebServCo\Framework;
 final class Environment
 {
     // Development - local
-    public const DEV = 'dev';
+    public const DEVELOPMENT = 'development';
 
-    // Development - server
-    public const TEST = 'test';
+    // Test, QC
+    public const TESTING = 'testing';
 
-    // Sandbox - server
+    // Staging, Model, Pre, Demo
+    // Mirror of production environment
     public const STAGING = 'staging';
 
-    // Live - server
+    // Production, Live
     public const PRODUCTION = 'production';
 }
