@@ -8,8 +8,9 @@ use WebServCo\Framework\Exceptions\HttpClientException;
 
 abstract class AbstractClient
 {
-
     protected bool $debug;
+
+    protected \WebServCo\Framework\Interfaces\LoggerInterface $logger;
 
     protected string $method;
 
@@ -29,6 +30,8 @@ abstract class AbstractClient
     */
     protected array $requestHeaders;
 
+    protected string $response;
+
     /**
     * Resposne headers
     *
@@ -39,6 +42,17 @@ abstract class AbstractClient
     protected bool $skipSslVerification;
 
     abstract public function retrieve(string $url): Response;
+
+    public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        $this->debug = false;
+        $this->skipSslVerification = false;
+        $this->requestHeaders = [];
+        // Default Content-Type for
+        $this->requestContentType = 'application/x-www-form-urlencoded';
+        $this->response = '';
+    }
 
     public function get(string $url): Response
     {
@@ -69,12 +83,12 @@ abstract class AbstractClient
     }
 
     /**
-    * @param array<mixed>|string $data
+    * @param array<string,mixed>|string $data
     */
     public function post(string $url, $data = null): Response
     {
         $this->setMethod(Method::POST);
-        if (!empty($data)) {
+        if ($data) {
             $this->setRequestData($data);
         }
         return $this->retrieve($url);

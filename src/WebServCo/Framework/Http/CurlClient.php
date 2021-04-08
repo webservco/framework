@@ -34,10 +34,6 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     */
     protected $debugStderr;
 
-    protected \WebServCo\Framework\Interfaces\LoggerInterface $logger;
-
-    protected string $response;
-
     /**
     * Response header array
     *
@@ -52,68 +48,50 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     */
     protected array $responseHeadersArray;
 
-    public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        $this->debug = false;
-        $this->skipSslVerification = false;
-        $this->requestHeaders = [];
-        // Default Content-Type for
-        $this->requestContentType = 'application/x-www-form-urlencoded';
-    }
-
     public function retrieve(string $url): Response
     {
         $this->debugInit();
 
         $this->curl = \curl_init();
         if (!\is_resource($this->curl)) {
+            // Not in the try/catch/finally block as there is nothing to close or debug at this point.
             throw new HttpClientException('Not a valid cURL resource.');
         }
 
-        $this->setCurlOptions($url);
+        try {
+            $this->setCurlOptions($url);
 
-        $this->debugDo();
+            $this->debugSetOptions();
 
-        $this->handleRequestMethod();
+            $this->handleRequestMethod();
 
-        $this->setRequestHeaders();
+            $this->setRequestHeaders();
 
-        $this->processResponse();
+            $this->processResponse();
 
-        $this->debugInfo = \curl_getinfo($this->curl);
+            $body = \trim($this->response);
 
-        \curl_close($this->curl);
+            $this->processResponseHeaders();
 
-        $httpCode = $this->getHttpCode();
+            $headers = \end($this->responseHeaders);
+            return new Response(
+                $body, // content
+                $this->getHttpCode(), // statusCode
+                \is_array($headers) ? $headers : [], // headers
+            );
+        } catch (HttpClientException $e) {
+            // Re-throw same exception
+            // try/catch/finally block used in order to close and debug curl handle in all situations
+            throw new HttpClientException($e->getMessage(), $e);
+        } finally {
+            // Debug and close connection in any situation.
 
-        if (empty($httpCode)) {
-            throw new HttpClientException(\sprintf("Empty HTTP status code. cURL error: %s.", $this->curlError));
+            $this->debugInfo = \curl_getinfo($this->curl);
+
+            \curl_close($this->curl);
+
+            $this->debugFinish();
         }
-
-        $body = \trim($this->response);
-
-        $this->processResponseHeaders();
-
-        $this->debugFinish();
-
-        $headers = \end($this->responseHeaders);
-        return new Response(
-            $body,
-            $httpCode,
-            \is_array($headers) ? $headers : [],
-        );
-    }
-
-    protected function debugDo(): bool
-    {
-        if ($this->debug) {
-            //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
-            \curl_setopt($this->curl, \CURLOPT_VERBOSE, 1);
-            \curl_setopt($this->curl, \CURLOPT_STDERR, $this->debugStderr);
-            return true;
-        }
-        return false;
     }
 
     protected function debugFinish(): bool
@@ -124,10 +102,12 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
             $this->logger->debug('CURL INFO:', $this->debugInfo);
             $this->logger->debug('CURL VERBOSE:', ['debugOutput' => $this->debugOutput]);
-            if (!empty($this->requestData)) {
+            if ($this->requestData) {
                 $this->logger->debug('REQUEST DATA:', ['requestData' => $this->requestData]);
             }
-            $this->logger->debug('CURL RESPONSE:', ['response' => $this->response]);
+            if ($this->response) {
+                $this->logger->debug('CURL RESPONSE:', ['response' => $this->response]);
+            }
 
             return true;
         }
@@ -147,11 +127,24 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         return false;
     }
 
+    protected function debugSetOptions(): bool
+    {
+        if ($this->debug) {
+            //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
+            \curl_setopt($this->curl, \CURLOPT_VERBOSE, 1);
+            \curl_setopt($this->curl, \CURLOPT_STDERR, $this->debugStderr);
+            return true;
+        }
+        return false;
+    }
+
     protected function getHttpCode(): int
     {
-        return isset($this->debugInfo['http_code'])
-            ? (int) $this->debugInfo['http_code']
-            : 0;
+        $httpCode = \curl_getinfo($this->curl, \CURLINFO_RESPONSE_CODE);
+        if (!$httpCode) {
+            throw new HttpClientException(\sprintf("Empty HTTP status code. cURL error: %s.", $this->curlError));
+        }
+        return $httpCode;
     }
 
     protected function handleRequestMethod(): bool
@@ -168,7 +161,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
                 * curl_setopt($this->curl, CURLOPT_POST, true);
                 */
                 \curl_setopt($this->curl, \CURLOPT_CUSTOMREQUEST, $this->method);
-                if (!empty($this->requestData)) {
+                if ($this->requestData) {
                     \curl_setopt($this->curl, \CURLOPT_POSTFIELDS, $this->requestData);
                     if (\is_array($this->requestData)) {
                         $this->setRequestHeader('Content-Type', 'multipart/form-data');
@@ -194,7 +187,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     protected function headerCallback($curlResource, string $headerData): int
     {
         $headerDataTrimmed = \trim($headerData);
-        if (empty($headerDataTrimmed)) {
+        if (!$headerDataTrimmed) {
             $this->responseHeadersArray[] = $this->responseHeaderArray;
             $this->responseHeaderArray = [];
         }
@@ -313,6 +306,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
             // don't check the existence of a common name in the SSL peer certificate
             \curl_setopt($this->curl, \CURLOPT_SSL_VERIFYHOST, 0);
         }
+
         return true;
     }
 
@@ -323,7 +317,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         }
 
         // set headers
-        if (!empty($this->requestHeaders)) {
+        if ($this->requestHeaders) {
             \curl_setopt(
                 $this->curl,
                 \CURLOPT_HTTPHEADER,
