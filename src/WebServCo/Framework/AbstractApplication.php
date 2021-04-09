@@ -23,6 +23,7 @@ abstract class AbstractApplication
         if (!\is_readable($publicPath . 'index.php')) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
         }
+
         if (!\is_readable($this->projectPath . '.env')) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment file path is not readable.');
         }
@@ -87,18 +88,18 @@ abstract class AbstractApplication
         }
 
         $output = '<!doctype html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oops</title>
-    <style>
-    * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
-    .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
-    small {font-size: 0.8em;}
-    </style>
-</head>
-<body><div class="i"><br>' .
-        "<h1>{$title}</h1>";
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Oops</title>
+                <style>
+                * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
+                .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
+                small {font-size: 0.8em;}
+                </style>
+            </head>
+            <body><div class="i"><br>' .
+            "<h1>{$title}</h1>";
         if (Environment::DEVELOPMENT === $this->config()->getEnv()) {
             $output .= \sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
@@ -153,5 +154,10 @@ abstract class AbstractApplication
         $response = new \WebServCo\Framework\Cli\Response($output, 1);
         $response->send();
         return true;
+    }
+
+    protected function loadEnvironmentConfiguration(): bool
+    {
+        return \WebServCo\Framework\EnvironmentConfiguration::load($this->projectPath);
     }
 }
