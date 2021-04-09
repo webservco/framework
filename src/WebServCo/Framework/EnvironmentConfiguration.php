@@ -27,7 +27,30 @@ final class EnvironmentConfiguration
             throw new ConfigurationException('Error loading environment configuration file');
         }
         foreach ($data as $key => $value) {
-            $_SERVER[\sprintf('APP_%s', \strtoupper($key))] = $value;
+            $name = \sprintf('APP_%s', \strtoupper($key));
+
+            switch ($name) {
+                case 'APP_ENVIRONMENT':
+                    self::validateEnvironment($value);
+                    break;
+                default:
+                    break;
+            }
+            $_SERVER[$name] = $value;
+        }
+        return true;
+    }
+
+    public static function validateEnvironment(string $value): bool
+    {
+        if (
+            !\in_array(
+                $value,
+                [Environment::DEVELOPMENT, Environment::TESTING, Environment::STAGING, Environment::PRODUCTION],
+                true,
+            )
+        ) {
+            throw new ConfigurationException('Invalid environment value.');
         }
         return true;
     }

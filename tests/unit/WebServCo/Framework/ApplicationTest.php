@@ -70,16 +70,6 @@ final class ApplicationTest extends TestCase
     }
 
     /**
-    * @test
-    * @depends instantiationWithValidParametersWorks
-    */
-    public function setEnvironmentValueReturnsTrue(): void
-    {
-        $app = new App(self::$pathWeb, self::$pathProject);
-        $this->assertTrue($app->setEnvironmentValue());
-    }
-
-    /**
      * @test
      */
     public function shutdownMethodIsPublic(): void
@@ -95,9 +85,8 @@ final class ApplicationTest extends TestCase
         $pathWeb = "{$pathProject}public/";
 
         if (!\is_readable($pathWeb)) {
-                \mkdir($pathWeb, 0775, true);
-                \touch("{$pathWeb}index.php");
-                \file_put_contents("{$pathProject}.env", 'development');
+            \mkdir($pathWeb, 0775, true);
+            \touch("{$pathWeb}index.php");
         }
         self::$pathProject = $pathProject;
         self::$pathWeb = $pathWeb;

@@ -27,8 +27,6 @@ interface ConfigInterface
      */
     public function get($setting, $defaultValue = null);
 
-    public function getEnv(): string;
-
     /**
      * Load configuration data from a file.
      *
@@ -49,9 +47,4 @@ interface ConfigInterface
      * @return bool True on success and false on failure.
      */
     public function set($setting, $value): bool;
-
-    /**
-     * Set application environment value.
-     */
-    public function setEnv(string $env): bool;
 }

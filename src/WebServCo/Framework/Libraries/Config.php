@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
-use WebServCo\Framework\Environment;
-
 final class Config extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ConfigInterface
 {
@@ -16,11 +14,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      * @var array<mixed>
      */
     private array $config = [];
-
-    /**
-     * Application environment.
-     */
-    private ?string $env = null;
 
     /**
      * Add base setting data.
@@ -53,17 +46,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     }
 
     /**
-     * Get application environment value.
-     */
-    public function getEnv(): string
-    {
-        if (!$this->env) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment not set.');
-        }
-        return $this->env;
-    }
-
-    /**
      * Load configuration data from a file.
      *
      * @param string $setting Name of setting to load.
@@ -73,7 +55,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function load(string $setting, string $pathProject): array
     {
-        $pathFull = "{$pathProject}config/" . $this->getEnv() . "/{$setting}.php";
+        $pathFull = \sprintf('%sconfig/%s.php', $pathProject, $setting);
         if (!\is_readable($pathFull)) {
             return [];
         }
@@ -96,26 +78,6 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
             return false;
         }
         $this->config = \WebServCo\Framework\ArrayStorage::set($this->config, $setting, $value);
-        return true;
-    }
-
-    /**
-     * Set application environment value.
-     */
-    public function setEnv(string $env): bool
-    {
-        if (
-            !\in_array(
-                $env,
-                [Environment::DEVELOPMENT, Environment::TESTING, Environment::STAGING, Environment::PRODUCTION],
-                true,
-            )
-        ) {
-            throw new \InvalidArgumentException('Invalid environment specified.');
-        }
-
-        $this->env = $env;
-
         return true;
     }
 }

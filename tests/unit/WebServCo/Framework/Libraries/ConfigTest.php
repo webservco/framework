@@ -370,7 +370,7 @@ final class ConfigTest extends TestCase
     public function dummyConfigFileExists(): void
     {
         $this->assertTrue(
-            \is_readable(self::$pathProject . 'config/development/foo.php'),
+            \is_readable(self::$pathProject . 'config/foo.php'),
         );
     }
 
@@ -423,45 +423,10 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function setEnvReturnsTrue(): void
-    {
-        $this->assertTrue(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('development'));
-    }
-
-    /**
-     * @test
-     */
-    public function setEnvThrowsExceptionOnInvalidValue(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        \WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->setEnv('noexist');
-    }
-
-    /**
-     * @test
-     */
-    public function getEnvReturnsString(): void
-    {
-        $this->assertIsString(\WebServCo\Framework\Helpers\ConfigLibraryHelper::library()->getEnv());
-    }
-
-    /**
-     * @test
-     */
-    public function getEnvWhenNotSetThrowsException(): void
-    {
-        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
-        $config = new \WebServCo\Framework\Libraries\Config();
-        $config->getEnv();
-    }
-
     public static function setUpBeforeClass(): void
     {
         $pathProject = '/tmp/webservco/project/';
-        $pathConfig = "{$pathProject}config/development/";
+        $pathConfig = "{$pathProject}config/";
         if (!\is_readable($pathConfig)) {
                 \mkdir($pathConfig, 0775, true);
                 $data = "<?php

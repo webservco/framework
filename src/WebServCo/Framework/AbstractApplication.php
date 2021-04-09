@@ -24,25 +24,8 @@ abstract class AbstractApplication
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
         }
 
-        if (!\is_readable($this->projectPath . '.env')) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Environment file path is not readable.');
-        }
-
         $this->config()->set(\sprintf('app%1$spath%1$sweb', Settings::DIVIDER), $publicPath);
         $this->config()->set(\sprintf('app%1$spath%1$sproject', Settings::DIVIDER), $this->projectPath);
-    }
-
-    /**
-     * Sets the env value from the project .env file.
-     */
-    final public function setEnvironmentValue(): bool
-    {
-        /**
-         * Env file existence is verified in the constructor.
-         */
-        $this->config()->setEnv(\trim((string) \file_get_contents($this->projectPath . '.env')));
-
-        return true;
     }
 
     /**
@@ -100,7 +83,7 @@ abstract class AbstractApplication
             </head>
             <body><div class="i"><br>' .
             "<h1>{$title}</h1>";
-        if (Environment::DEVELOPMENT === $this->config()->getEnv()) {
+        if (Environment::DEVELOPMENT === $_SERVER['APP_ENVIRONMENT'] ?? Environment::DEVELOPMENT) {
             $output .= \sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],
