@@ -14,7 +14,7 @@ final class RequestLibraryHelper extends AbstractLibraryHelper
     {
         if (!self::$object instanceof Request) {
             $settings = ConfigLibraryHelper::getSettings('Request');
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
             self::$object = new Request($settings, $_SERVER, $_POST);
         }
         return self::$object;

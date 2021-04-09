@@ -27,7 +27,6 @@ final class EnvironmentConfiguration
             throw new ConfigurationException('Error loading environment configuration file');
         }
         foreach ($data as $key => $value) {
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_SERVER[\sprintf('APP_%s', \strtoupper($key))] = $value;
         }
         return true;

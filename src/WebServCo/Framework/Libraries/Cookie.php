@@ -9,18 +9,16 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
 
     public function get(string $name, string $defaultValue = ''): string
     {
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         return $_COOKIE[$name] ?? $defaultValue;
     }
 
     public function remove(string $name): bool
     {
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (!isset($_COOKIE[$name])) {
             return false;
         }
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         unset($_COOKIE[$name]);
         $this->set($name, '', -1);
         return true;

@@ -22,7 +22,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->checkSession();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         $_SESSION = ArrayStorage::add($_SESSION, $setting, $data);
         return true;
     }
@@ -39,7 +39,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
 
     public function destroy(): bool
     {
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         $_SESSION = [];
         \WebServCo\Framework\Helpers\CookieLibraryHelper::library()->set(
             (string) \session_name(),
@@ -66,7 +66,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->checkSession();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         return ArrayStorage::get($_SESSION, $setting, $defaultValue);
     }
 
@@ -79,7 +79,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->checkSession();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         return ArrayStorage::has($_SESSION, $setting);
     }
 
@@ -97,7 +97,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->checkSession();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         $_SESSION = ArrayStorage::remove($_SESSION, $setting);
         return true;
     }
@@ -112,7 +112,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     {
         $this->checkSession();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         $_SESSION = ArrayStorage::set($_SESSION, $setting, $value);
         return true;
     }
@@ -188,7 +188,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         $actualStoragePath = \session_save_path($storagePath);
 
         if ($actualStoragePath !== $storagePath) {
-            if ($this->setting('strict_custom_path', true)) {
+            if ($_SERVER['APP_STRICT_CUSTOM_PATH'] ?? true) { // true unless otherwise specified
                 throw new SessionException(
                     'Unable to set custom session storage path. ' .
                     \sprintf('Current path: %s.', $actualStoragePath),

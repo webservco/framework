@@ -41,29 +41,25 @@ abstract class AbstractUpload
 
     final public function do(): bool
     {
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
         if (empty($_FILES)) {
             return false;
         }
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         if (!isset($_FILES[$this->formFieldName]['error'])) {
             throw new UploadException(Codes::NO_FILE);
         }
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         if (Codes::OK !== $_FILES[$this->formFieldName]['error']) {
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             throw new UploadException($_FILES[$this->formFieldName]['error']);
         }
         $this->checkAllowedExtensions();
         $this->fileName = $this->generateUploadedFileName(
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_FILES[$this->formFieldName]['name'],
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             $_FILES[$this->formFieldName]['type'],
         );
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         $this->fileMimeType = $_FILES[$this->formFieldName]['type'];
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         if (!\move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory . $this->fileName)) {
             throw new UploadException(Codes::CANT_WRITE);
         }
@@ -95,7 +91,6 @@ abstract class AbstractUpload
     final protected function checkAllowedExtensions(): bool
     {
         if (!empty($this->allowedExtensions)) {
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             if (!\array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {
                 throw new UploadException(Codes::TYPE_NOT_ALLOWED);
             }

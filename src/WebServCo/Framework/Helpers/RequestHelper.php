@@ -12,9 +12,8 @@ final class RequestHelper
             return \gethostbyname(\php_uname('n'));
         }
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
+
         if (\array_key_exists('REMOTE_ADDR', $_SERVER)) {
-            // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable
             return \WebServCo\Framework\Utils\Request::sanitizeString($_SERVER['REMOTE_ADDR']);
         }
 
