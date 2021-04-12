@@ -35,7 +35,7 @@ final class ApplicationTest extends TestCase
     public function instantiationWithEmptyParametersThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
-        new App('', '');
+        new App('', '', null);
     }
 
     /**
@@ -44,7 +44,7 @@ final class ApplicationTest extends TestCase
     public function instantiationWithDummyParametersThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
-        new App('foo', 'bar');
+        new App('foo', 'bar', 'Project');
     }
 
     /**
@@ -53,7 +53,7 @@ final class ApplicationTest extends TestCase
     public function instantiationInvalidParametersThrowsException(): void
     {
         $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
-        new App('/tmp', '/tmp');
+        new App('/tmp', '/tmp', null);
     }
 
     /**
@@ -65,7 +65,7 @@ final class ApplicationTest extends TestCase
     {
         $this->assertInstanceOf(
             'WebServCo\Framework\Application',
-            new App(self::$pathWeb, self::$pathProject),
+            new App(self::$pathWeb, self::$pathProject, 'Project'),
         );
     }
 
@@ -74,7 +74,7 @@ final class ApplicationTest extends TestCase
      */
     public function shutdownMethodIsPublic(): void
     {
-        $app = new App(self::$pathWeb, self::$pathProject);
+        $app = new App(self::$pathWeb, self::$pathProject, 'Project');
         $reflection = new \ReflectionMethod($app, 'shutdown');
         $this->assertTrue($reflection->isPublic());
     }

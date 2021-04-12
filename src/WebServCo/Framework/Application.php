@@ -14,9 +14,9 @@ class Application extends \WebServCo\Framework\AbstractApplication
     use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**
-     * Starts the execution of the application.
+     * Runs the application.
      */
-    final public function start(): void
+    public function run(): void
     {
         try {
             ErrorHandler::set();
@@ -24,17 +24,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
             \register_shutdown_function([$this, 'shutdown']);
 
             $this->loadEnvironmentSettings();
-        } catch (\Throwable $e) {
-            $this->shutdown($e, true);
-        }
-    }
 
-    /**
-     * Runs the application.
-     */
-    public function run(): void
-    {
-        try {
             $response = $this->execute();
             $statusCode = 0;
             if ($response instanceof ResponseInterface) {

@@ -29,13 +29,13 @@ abstract class AbstractApplication
         }
 
         // If no custom project path is set, use parent directory of public.
-        $projectPath = $projectPath ?? (string) \realpath(\sprintf('%s..', $publicPath));
+        $projectPath ??= (string) \realpath(\sprintf('%s..', $publicPath));
 
         // Make sure path ends with a slash.
         $this->projectPath = \rtrim($projectPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
         // Add environment settings.
-        
+
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_WEB', $publicPath);
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_PROJECT', $this->projectPath);
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
