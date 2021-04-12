@@ -15,16 +15,7 @@ final class ConfigLibraryHelper extends AbstractLibraryHelper
     */
     public static function getSettings(string $name): array
     {
-        $projectPath = self::library()->get(
-            \sprintf(
-                'app%1$spath%1$sproject',
-                \WebServCo\Framework\Settings::DIVIDER,
-            ),
-        );
-        if (empty($projectPath)) {
-            return [];
-        }
-        return self::library()->load($name, $projectPath);
+        return self::library()->load($name, \WebServCo\Framework\Environment\Config::string('APP_PATH_PROJECT'));
     }
 
     public static function library(): Config
