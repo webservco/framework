@@ -16,16 +16,26 @@ abstract class AbstractApplication
 
     abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
 
-    public function __construct(string $publicPath, string $projectPath, string $projectNamespace = 'Project')
+    public function __construct(string $publicPath, ?string $projectPath, ?string $projectNamespace)
     {
-        $this->projectNamespace = $projectNamespace;
+        // If no custom namespace is set, use "Project".
+        $this->projectNamespace = $projectNamespace ?? 'Project';
+
+        // Make sure path ends with a slash.
         $publicPath = \rtrim($publicPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
-        $this->projectPath = \rtrim($projectPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
         if (!\is_readable($publicPath . 'index.php')) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
         }
 
+        // If no custom project path is set, use parent directory of public.
+        $projectPath = $projectPath ?? (string) \realpath(\sprintf('%s..', $publicPath));
+
+        // Make sure path ends with a slash.
+        $this->projectPath = \rtrim($projectPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+
+        // Add environment settings.
+        
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_WEB', $publicPath);
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_PROJECT', $this->projectPath);
         \WebServCo\Framework\Environment\Setting::set('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
