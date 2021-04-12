@@ -7,7 +7,7 @@
 ### `__construct`:
 ```php
 $this->runner = new \WebServCo\Framework\Cli\Runner\Runner(
-    sprintf('%svar/run/', $this->data('path/project'))
+    sprintf('%svar/run/', $projectPath)
 );
 ```
 
