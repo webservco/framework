@@ -30,7 +30,7 @@ final class Strings
         $functionStrlen = \function_exists('mb_strlen')
             ? 'mb_strlen'
             : 'strlen';
-        $check = $functionSubstr($haystack, $functionStrlen($haystack) - $functionStrlen($needle));
+        $check = $functionSubstr($haystack, (int) $functionStrlen($haystack) - (int) $functionStrlen($needle));
         return $check === $needle;
     }
 

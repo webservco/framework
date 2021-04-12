@@ -126,12 +126,12 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     */
     public function query(string $query, array $params = []): \PDOStatement
     {
-        if (empty($query)) {
+        if (!$query) {
             throw new DatabaseException('No query specified.');
         }
 
         try {
-            if (!empty($params)) {
+            if ($params) {
                 $this->stmt = $this->db->prepare($query);
                 $this->bindParams($params);
                 $this->stmt->execute();
@@ -183,12 +183,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     */
     protected function bindParams(array $data): bool
     {
-        if (empty($data)) {
+        if (!$data) {
             return false;
-        }
-
-        if (!\is_array($data)) {
-            throw new DatabaseException('"Parameters" is not an array.');
         }
 
         $i = 1;

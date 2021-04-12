@@ -17,7 +17,7 @@ abstract class AbstractFileLogger extends AbstractLogger
         $this->channel = $channel;
         $this->logDir = $logDir;
 
-        if (empty($this->logDir)) {
+        if (!$this->logDir) {
             throw new LoggerException(\sprintf('Log directory not set for channel "%s".', $channel));
         }
 

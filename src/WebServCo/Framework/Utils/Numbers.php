@@ -13,6 +13,6 @@ final class Numbers
     {
         $number = \floatval($number);
 
-        return 0 !== $number;
+        return (bool) $number;
     }
 }

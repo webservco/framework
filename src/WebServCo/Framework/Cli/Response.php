@@ -23,7 +23,7 @@ final class Response extends \WebServCo\Framework\AbstractResponse implements
 
     public function send(): int
     {
-        if (!empty($this->content)) {
+        if ($this->content) {
             echo $this->content;
         }
         return $this->statusCode;

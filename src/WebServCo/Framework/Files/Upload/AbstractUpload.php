@@ -41,7 +41,7 @@ abstract class AbstractUpload
 
     final public function do(): bool
     {
-        if (empty($_FILES)) {
+        if (!$_FILES) {
             return false;
         }
 
@@ -90,7 +90,7 @@ abstract class AbstractUpload
 
     final protected function checkAllowedExtensions(): bool
     {
-        if (!empty($this->allowedExtensions)) {
+        if ($this->allowedExtensions) {
             if (!\array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {
                 throw new UploadException(Codes::TYPE_NOT_ALLOWED);
             }

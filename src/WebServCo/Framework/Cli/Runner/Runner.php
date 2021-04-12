@@ -23,7 +23,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
 
     public function finish(): bool
     {
-        if (empty($this->pid) || !\is_file($this->pid) || !\is_readable($this->pid)) {
+        if (!$this->pid || !\is_file($this->pid) || !\is_readable($this->pid)) {
             $result = false;
         } else {
             \unlink($this->pid);
@@ -49,7 +49,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
 
     public function isRunning(): bool
     {
-        if (empty($this->pid)) {
+        if (!$this->pid) {
             return false;
         }
         return \is_readable($this->pid);

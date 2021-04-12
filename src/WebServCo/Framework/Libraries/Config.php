@@ -74,7 +74,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function set($setting, $value): bool
     {
-        if (empty($setting)) {
+        if (!$setting) {
             return false;
         }
         $this->config = \WebServCo\Framework\ArrayStorage::set($this->config, $setting, $value);

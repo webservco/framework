@@ -112,7 +112,7 @@ trait DatabaseAddQueryTrait
     */
     final protected function generateAddQueryUpdatePart(array $data = []): string
     {
-        if (empty($data)) {
+        if (!$data) {
             return '';
         }
 

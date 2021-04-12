@@ -89,7 +89,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     */
     final public function getSubmitField()
     {
-        if (!$this->isSent() || empty($this->submitFields)) {
+        if (!$this->isSent() || !$this->submitFields) {
             return false;
         }
         return $this->submitField;
@@ -110,7 +110,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     final public function isSent(): bool
     {
-        if (!empty($this->submitFields)) {
+        if ($this->submitFields) {
             foreach ($this->submitFields as $field) {
                 if (null !== $this->request()->data($field)) {
                     $this->submitField = $field;

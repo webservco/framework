@@ -38,7 +38,7 @@ trait RequestUrlTrait
     public function getShortUrl(): string
     {
         $url = $this->getAppUrl();
-        if (!empty($url)) {
+        if ($url) {
             $url .= $this->getTarget();
             $url .= $this->getSuffix();
         }
@@ -50,10 +50,6 @@ trait RequestUrlTrait
     */
     public function getUrl(array $removeParameters = []): string
     {
-        if (!\is_array($removeParameters)) {
-            throw new \InvalidArgumentException('Agument must be an array.');
-        }
-
         $url = $this->getShortUrl();
         $query = $this->getQuery();
         foreach ($removeParameters as $item) {

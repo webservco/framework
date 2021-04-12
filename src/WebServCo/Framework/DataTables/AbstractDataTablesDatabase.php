@@ -166,7 +166,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     protected function getRecordsTotal(int $recordsFiltered, string $searchPart): int
     {
-        if (empty($searchPart)) {
+        if (!$searchPart) {
             return $recordsFiltered;
         }
         try {

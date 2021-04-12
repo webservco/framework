@@ -82,7 +82,7 @@ abstract class AbstractLibrary implements
      */
     final public function setData($key, $value): bool
     {
-        if (empty($key)) {
+        if (!$key) {
             return false;
         }
         $this->data = \WebServCo\Framework\ArrayStorage::set($this->data, $key, $value);
@@ -98,7 +98,7 @@ abstract class AbstractLibrary implements
      */
     final public function setSetting($key, $value): bool
     {
-        if (empty($key)) {
+        if (!$key) {
             return false;
         }
         $this->settings = \WebServCo\Framework\ArrayStorage::set($this->settings, $key, $value);

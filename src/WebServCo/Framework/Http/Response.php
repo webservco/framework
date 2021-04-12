@@ -60,7 +60,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
     public function getHeaderLine(string $name): string
     {
         $data = $this->getHeader($name);
-        if (empty($data)) {
+        if (!$data) {
             return '';
         }
         return \implode(', ', $data);

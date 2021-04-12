@@ -96,7 +96,7 @@ trait DatabaseTrait
         array $addData = [],
         array $updateData = []
     ): \PDOStatement {
-        if (empty($tableName)) {
+        if (!$tableName) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }
 

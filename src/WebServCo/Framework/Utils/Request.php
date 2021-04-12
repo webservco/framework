@@ -68,7 +68,7 @@ final class Request
     */
     public static function removeSuffix(string $string, array $suffixes = []): array
     {
-        if (\is_array($suffixes)) {
+        if ($suffixes) {
             $stringRev = \strrev($string);
             foreach ($suffixes as $suffix) {
                 $suffixRev = \strrev($suffix);

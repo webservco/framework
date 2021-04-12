@@ -180,10 +180,6 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
 
     protected function setStoragePath(string $storagePath): bool
     {
-        if (empty($storagePath)) {
-            return false;
-        }
-
         \ini_set('session.save_path', (string) $storagePath);
         $actualStoragePath = \session_save_path($storagePath);
 

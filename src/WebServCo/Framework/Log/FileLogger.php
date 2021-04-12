@@ -25,7 +25,7 @@ class FileLogger extends AbstractFileLogger
         $id = $dateTime->format('Ymd.His.u');
 
         $contextInfo = null;
-        if (!empty($context)) {
+        if ($context) {
             $contextAsString = \WebServCo\Framework\Utils\Strings::getContextAsString($context);
             \file_put_contents(\sprintf('%s/%s.%s.context', $this->logDir, $this->channel, $id), $contextAsString);
             $contextInfo = '[context saved] ';
