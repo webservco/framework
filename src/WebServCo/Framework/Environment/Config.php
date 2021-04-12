@@ -11,6 +11,20 @@ final class Config
     /**
     * Get an environment configuration value.
     *
+    * Key existence and value type are validated.
+    */
+    public static function bool(string $key): bool
+    {
+        $value = self::key($key);
+        if (!\is_bool($value)) {
+            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
+        }
+        return $value;
+    }
+
+    /**
+    * Get an environment configuration value.
+    *
     * Key existence is validated.
     *
     * @return mixed
@@ -32,7 +46,7 @@ final class Config
     {
         $value = self::key($key);
         if (!\is_int($value)) {
-            throw new ConfigurationException(\sprintf('Value for key "%s" is not an integer', $key));
+            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
         }
         return $value;
     }
@@ -46,7 +60,7 @@ final class Config
     {
         $value = self::key($key);
         if (!\is_string($value)) {
-            throw new ConfigurationException(\sprintf('Value for key "%s" is not a string', $key));
+            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
         }
         return $value;
     }
