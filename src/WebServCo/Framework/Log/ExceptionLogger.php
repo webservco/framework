@@ -17,7 +17,7 @@ class ExceptionLogger
     {
         $this->fileLogger = new \WebServCo\Framework\Log\FileLogger(
             \WebServCo\Framework\Helpers\PhpHelper::isCli() ? 'errorCLI' : 'error',
-            \WebServCo\Framework\EnvironmentConfiguration\Config::getString('APP_PATH_LOG'),
+            \WebServCo\Framework\EnvironmentConfiguration\Get::string('APP_PATH_LOG'),
         );
     }
 

@@ -18,4 +18,18 @@ final class Environment
 
     // Production, Live
     public const PRODUCTION = 'production';
+
+    public static function validate(string $value): bool
+    {
+        if (
+            !\in_array(
+                $value,
+                [Environment::DEVELOPMENT, Environment::TESTING, Environment::STAGING, Environment::PRODUCTION],
+                true,
+            )
+        ) {
+            throw new \WebServCo\Framework\Exceptions\EnvironmentException('Invalid environment value.');
+        }
+        return true;
+    }
 }

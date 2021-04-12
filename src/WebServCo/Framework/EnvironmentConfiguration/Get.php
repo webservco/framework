@@ -6,7 +6,7 @@ namespace WebServCo\Framework\EnvironmentConfiguration;
 
 use WebServCo\Framework\Exceptions\ConfigurationException;
 
-final class Config
+final class Get
 {
     /**
     * Get an environment configuration value.
@@ -15,7 +15,7 @@ final class Config
     *
     * @return mixed
     */
-    public static function get(string $key)
+    public static function key(string $key)
     {
         if (!\array_key_exists($key, $_SERVER)) {
             throw new ConfigurationException(\sprintf('Key not found: "%s".', $key));
@@ -28,9 +28,9 @@ final class Config
     *
     * Key existence and value type are validated.
     */
-    public static function getInt(string $key): int
+    public static function int(string $key): int
     {
-        $value = self::get($key);
+        $value = self::key($key);
         if (!\is_int($value)) {
             throw new ConfigurationException(\sprintf('Value for key "%s" is not an integer', $key));
         }
@@ -42,9 +42,9 @@ final class Config
     *
     * Key existence and value type are validated.
     */
-    public static function getString(string $key): string
+    public static function string(string $key): string
     {
-        $value = self::get($key);
+        $value = self::key($key);
         if (!\is_string($value)) {
             throw new ConfigurationException(\sprintf('Value for key "%s" is not a string', $key));
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\EnvironmentConfiguration\Loader;
+use WebServCo\Framework\EnvironmentConfiguration\Set;
 
 abstract class AbstractApplication
 {
@@ -26,9 +26,9 @@ abstract class AbstractApplication
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
         }
 
-        Loader::set('APP_PATH_WEB', $publicPath);
-        Loader::set('APP_PATH_PROJECT', $this->projectPath);
-        Loader::set('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
+        Set::do('APP_PATH_WEB', $publicPath);
+        Set::do('APP_PATH_PROJECT', $this->projectPath);
+        Set::do('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
     }
 
     /**
@@ -144,6 +144,6 @@ abstract class AbstractApplication
 
     protected function loadEnvironmentConfiguration(): bool
     {
-        return \WebServCo\Framework\EnvironmentConfiguration\Loader::load($this->projectPath);
+        return \WebServCo\Framework\EnvironmentConfiguration\Load::do($this->projectPath);
     }
 }
