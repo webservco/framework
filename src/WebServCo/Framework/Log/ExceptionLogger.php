@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-use WebServCo\Framework\Interfaces\ConfigInterface;
 use WebServCo\Framework\Interfaces\LoggerInterface;
 
 /**
@@ -12,15 +11,13 @@ use WebServCo\Framework\Interfaces\LoggerInterface;
 */
 class ExceptionLogger
 {
-    protected ConfigInterface $configInterface;
     protected LoggerInterface $fileLogger;
 
-    public function __construct(ConfigInterface $configInterface)
+    public function __construct()
     {
-        $this->configInterface = $configInterface;
         $this->fileLogger = new \WebServCo\Framework\Log\FileLogger(
             \WebServCo\Framework\Helpers\PhpHelper::isCli() ? 'errorCLI' : 'error',
-            $this->configInterface->get('app/path/log'),
+            \WebServCo\Framework\EnvironmentConfiguration\Config::getString('APP_PATH_LOG'),
         );
     }
 

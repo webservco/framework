@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\EnvironmentConfiguration;
 
+use WebServCo\Framework\Environment;
 use WebServCo\Framework\Exceptions\ConfigurationException;
 
-final class EnvironmentConfiguration
+final class Loader
 {
     protected const FILENAME = '.env.ini';
 
-    public static function load(string $path): bool
+    public static function load(string $projectPath): bool
     {
-        if (!\is_readable($path . self::FILENAME)) {
+        $filePath = \sprintf('%sconfig/%s', $projectPath, self::FILENAME);
+        if (!\is_readable($filePath)) {
             throw new ConfigurationException('Environment configuration file is not readable.');
         }
         $data = \parse_ini_file(
-            $path . self::FILENAME, // filename
+            $filePath, // filename
             // true => "multidimensional array, with the section names and settings included"
             false, // process_sections
             // \INI_SCANNER_TYPED - tries to convert booleans and numeric types
@@ -27,17 +29,25 @@ final class EnvironmentConfiguration
             throw new ConfigurationException('Error loading environment configuration file');
         }
         foreach ($data as $key => $value) {
-            $name = \sprintf('APP_%s', \strtoupper($key));
-
-            switch ($name) {
-                case 'APP_ENVIRONMENT':
-                    self::validateEnvironment($value);
-                    break;
-                default:
-                    break;
-            }
-            $_SERVER[$name] = $value;
+            self::set($key, $value);
         }
+        return true;
+    }
+
+    /**
+    * @param mixed $value
+    */
+    public static function set(string $key, $value): bool
+    {
+        $key = self::getValidatedKey($key);
+        switch ($key) {
+            case 'APP_ENVIRONMENT':
+                self::validateEnvironment($value);
+                break;
+            default:
+                break;
+        }
+        $_SERVER[$key] = $value;
         return true;
     }
 
@@ -53,5 +63,14 @@ final class EnvironmentConfiguration
             throw new ConfigurationException('Invalid environment value.');
         }
         return true;
+    }
+
+    public static function getValidatedKey(string $key): string
+    {
+        $key = \strtoupper($key);
+        if (!\WebServCo\Framework\Utils\Strings::startsWith($key, 'APP_', false)) {
+            throw new ConfigurationException(\sprintf('Invalid key name: "%s".', $key));
+        }
+        return $key;
     }
 }

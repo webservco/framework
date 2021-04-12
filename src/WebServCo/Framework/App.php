@@ -41,7 +41,7 @@ class App extends Application
     {
         $logger = new \WebServCo\Framework\Log\FileLogger(
             \sprintf('error%s', $isCli ? 'CLI' : ''),
-            $this->config()->get('app/path/log'),
+            \WebServCo\Framework\EnvironmentConfiguration\Config::getString('APP_PATH_LOG'),
         );
         $errorMessage = \sprintf('Error: %s in %s:%s', $errorInfo['message'], $errorInfo['file'], $errorInfo['line']);
         if ($errorInfo['exception'] instanceof \Throwable) {

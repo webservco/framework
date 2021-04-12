@@ -42,9 +42,6 @@ In your Controller's `__construct()` method:
 ```php
 $this->session()->start($storagePath);
 
-$this->session()->start(
-    $this->config()->get('app/path/project') . 'var/sessions'
-);
 ```
 
 ### with default PHP storage directory:

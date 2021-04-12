@@ -9,7 +9,7 @@ final class PgsqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDa
 {
     use \WebServCo\Framework\Traits\PgsqlDatabaseTrait;
 
-    protected function getDataSourceName(string $host, string $port, string $dbname): string
+    protected function getDataSourceName(string $host, int $port, string $dbname): string
     {
         return \sprintf('%s:host=%s;port=%s;dbname=%s', 'pgsql', $host, $port, $dbname);
     }
