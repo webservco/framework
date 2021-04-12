@@ -6,26 +6,6 @@ namespace WebServCo\Framework\Utils;
 
 final class Arrays
 {
-
-    /**
-    * @param array<int|string,mixed> $array
-    * @return array<int|string,mixed>
-    */
-    public static function removeEmptyValues(array $array): array
-    {
-        foreach ($array as $key => $value) {
-            if (\is_array($value)) {
-                $array[$key] = self::removeEmptyValues($array[$key]);
-            }
-            if (!empty($array[$key])) {
-                continue;
-            }
-
-            unset($array[$key]);
-        }
-        return $array;
-    }
-
     /**
     * @param array<mixed> $array
     * @param mixed $value
@@ -59,7 +39,7 @@ final class Arrays
     */
     public static function isMultidimensional(array $array): bool
     {
-        if (empty($array)) {
+        if (!$array) {
             return false;
         }
         return \is_array($array[\key($array)]);
@@ -112,7 +92,7 @@ final class Arrays
     */
     public static function toUrlQueryString(array $array): ?string
     {
-        if (empty($array)) {
+        if (!$array) {
             return null;
         }
         $queries = [];
