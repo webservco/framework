@@ -15,7 +15,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $data
      */
     public function add($setting, $data): bool
@@ -30,7 +30,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      */
     public function clear($setting): bool
     {
@@ -58,7 +58,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $defaultValue
      * @return mixed
      */
@@ -73,7 +73,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      */
     public function has($setting): bool
     {
@@ -91,7 +91,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      */
     public function remove($setting): bool
     {
@@ -105,7 +105,7 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $value The value to be stored.
      */
     public function set($setting, $value): bool

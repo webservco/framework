@@ -15,7 +15,7 @@ final class ArrayStorage
      * @param array<mixed> $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $data
      * @return array<mixed>
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
@@ -66,7 +66,7 @@ final class ArrayStorage
      * @param mixed $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $defaultValue
      * @return mixed
      */
@@ -142,7 +142,7 @@ final class ArrayStorage
      * @param mixed $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $defaultValue
      * @return mixed
      */
@@ -158,7 +158,7 @@ final class ArrayStorage
     * @param mixed $storage
     * @param mixed $setting Can be an array, a string,
     *                          or a special formatted string
-    *                          (eg 'app/path/project').
+    *                          (eg 'i18n/lang').
     */
     public static function has($storage, $setting): bool
     {
@@ -173,7 +173,7 @@ final class ArrayStorage
      * @param array<mixed> $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @return array<mixed> The updated storage array.
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException
      */
@@ -207,7 +207,7 @@ final class ArrayStorage
      * @param array<mixed> $storage
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $value The value to be stored.
      * @return array<mixed> The storage array with new data.
      * @throws \WebServCo\Framework\Exceptions\ArrayStorageException

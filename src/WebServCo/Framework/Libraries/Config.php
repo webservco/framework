@@ -36,7 +36,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $defaultValue
      * @return mixed
      */
@@ -68,7 +68,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      *
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $value The value to be stored.
      * @return bool true on success and false on failure.
      */

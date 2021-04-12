@@ -77,7 +77,7 @@ trait RequestUrlTrait
     /**
      * @param mixed $key Can be an array, a string,
      *                          or a special formatted string
-     *                          (eg 'app/path/project').
+     *                          (eg 'i18n/lang').
      * @param mixed $defaultValue
      * @return mixed
      */
