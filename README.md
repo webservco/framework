@@ -1,4 +1,4 @@
-# webservco/framework V10
+# webservco/framework v10
 
 [![license](https://img.shields.io/github/license/webservco/framework.svg)](https://github.com/webservco/framework)
 [![PHP](https://img.shields.io/packagist/php-v/webservco/framework.svg)](https://www.php.net)
