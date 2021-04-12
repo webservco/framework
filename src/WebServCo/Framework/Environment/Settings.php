@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework\EnvironmentConfiguration;
+namespace WebServCo\Framework\Environment;
 
 use WebServCo\Framework\Exceptions\ConfigurationException;
 
-final class Load
+final class Settings
 {
     protected const FILENAME = '.env.ini';
 
-    public static function do(string $projectPath): bool
+    public static function load(string $projectPath): bool
     {
         $filePath = \sprintf('%sconfig/%s', $projectPath, self::FILENAME);
         if (!\is_readable($filePath)) {
@@ -28,7 +28,7 @@ final class Load
             throw new ConfigurationException('Error loading environment configuration file');
         }
         foreach ($data as $key => $value) {
-            Set::do($key, $value);
+            Setting::set($key, $value);
         }
         return true;
     }

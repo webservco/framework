@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework\EnvironmentConfiguration;
+namespace WebServCo\Framework\Environment;
 
 use WebServCo\Framework\Exceptions\ConfigurationException;
 
-final class Set
+final class Setting
 {
     /**
     * @param mixed $value
     */
-    public static function do(string $key, $value): bool
+    public static function set(string $key, $value): bool
     {
         $key = self::getValidatedKey($key);
         switch ($key) {
             case 'APP_ENVIRONMENT':
-                \WebServCo\Framework\Environment::validate($value);
+                Value::validate($value);
                 break;
             default:
                 break;

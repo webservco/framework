@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\EnvironmentConfiguration\Set;
+use WebServCo\Framework\Environment\Value;
 
 abstract class AbstractApplication
 {
@@ -26,9 +26,9 @@ abstract class AbstractApplication
             throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
         }
 
-        Set::do('APP_PATH_WEB', $publicPath);
-        Set::do('APP_PATH_PROJECT', $this->projectPath);
-        Set::do('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
+        \WebServCo\Framework\Environment\Setting::set('APP_PATH_WEB', $publicPath);
+        \WebServCo\Framework\Environment\Setting::set('APP_PATH_PROJECT', $this->projectPath);
+        \WebServCo\Framework\Environment\Setting::set('APP_PATH_LOG', \sprintf('%svar/log/', $this->projectPath));
     }
 
     /**
@@ -86,7 +86,8 @@ abstract class AbstractApplication
             </head>
             <body><div class="i"><br>' .
             "<h1>{$title}</h1>";
-        if (Environment::DEVELOPMENT === ($_SERVER['APP_ENVIRONMENT'] ?? Environment::DEVELOPMENT)) {
+        // not using "Config" here because we just want to stop and display a message, not do more validation.
+        if (Value::DEVELOPMENT === ($_SERVER['APP_ENVIRONMENT'] ?? Value::DEVELOPMENT)) {
             $output .= \sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $errorInfo['message'],
@@ -142,8 +143,8 @@ abstract class AbstractApplication
         return true;
     }
 
-    protected function loadEnvironmentConfiguration(): bool
+    protected function loadEnvironmentSettings(): bool
     {
-        return \WebServCo\Framework\EnvironmentConfiguration\Load::do($this->projectPath);
+        return \WebServCo\Framework\Environment\Settings::load($this->projectPath);
     }
 }

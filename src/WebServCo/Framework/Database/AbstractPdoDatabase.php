@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Database;
 
-use WebServCo\Framework\EnvironmentConfiguration\Get;
+use WebServCo\Framework\Environment\Config;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
 abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
@@ -26,14 +26,14 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
         try {
             $dsn = $this->getDataSourceName(
-                Get::string('APP_DBMS_HOST'),
-                Get::int('APP_DBMS_PORT'),
-                Get::string('APP_DBMS_DBNAME'),
+                Config::string('APP_DBMS_HOST'),
+                Config::int('APP_DBMS_PORT'),
+                Config::string('APP_DBMS_DBNAME'),
             );
             $this->db = new \PDO(
                 $dsn,
-                Get::string('APP_DBMS_USERNAME'),
-                Get::string('APP_DBMS_PASSWD'),
+                Config::string('APP_DBMS_USERNAME'),
+                Config::string('APP_DBMS_PASSWD'),
                 [
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,

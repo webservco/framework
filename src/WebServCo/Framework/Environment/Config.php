@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework\EnvironmentConfiguration;
+namespace WebServCo\Framework\Environment;
 
 use WebServCo\Framework\Exceptions\ConfigurationException;
 
-final class Get
+final class Config
 {
     /**
     * Get an environment configuration value.

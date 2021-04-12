@@ -23,7 +23,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
             \register_shutdown_function([$this, 'shutdown']);
 
-            $this->loadEnvironmentConfiguration();
+            $this->loadEnvironmentSettings();
         } catch (\Throwable $e) {
             $this->shutdown($e, true);
         }

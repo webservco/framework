@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework;
+namespace WebServCo\Framework\Environment;
 
-final class Environment
+final class Value
 {
     // Development - local
     public const DEVELOPMENT = 'development';
@@ -24,7 +24,7 @@ final class Environment
         if (
             !\in_array(
                 $value,
-                [Environment::DEVELOPMENT, Environment::TESTING, Environment::STAGING, Environment::PRODUCTION],
+                [Value::DEVELOPMENT, Value::TESTING, Value::STAGING, Value::PRODUCTION],
                 true,
             )
         ) {
