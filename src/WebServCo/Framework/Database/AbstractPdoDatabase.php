@@ -115,9 +115,6 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         if (!($this->stmt instanceof \PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
         }
-        if ('mysql' !== $this->setting('driver', '')) {
-            throw new DatabaseException('Not implemented.');
-        }
         return $this->stmt->rowCount();
     }
 
