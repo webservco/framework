@@ -7,7 +7,7 @@ namespace WebServCo\Framework;
 /**
 * An example Application implementation.
 *
-* Can be overwritten or extended by consumer implementations.
+* Can be replaced or extended by consumer implementations.
 * Custom functionality in this class: use custom output.
 */
 class Application extends AbstractApplication
