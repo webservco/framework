@@ -128,17 +128,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
 
         try {
+            $this->stmt = $this->db->prepare($query);
             if ($params) {
-                $this->stmt = $this->db->prepare($query);
                 $this->bindParams($params);
-                $this->stmt->execute();
-            } else {
-                $stmt = $this->db->query($query);
-                if (!($stmt instanceof \PDOStatement)) {
-                    throw new DatabaseException('Error executing query');
-                }
-                $this->stmt = $stmt;
             }
+            $this->stmt->execute();
             return $this->stmt;
         } catch (\Throwable $e) { // \PDOException, \RuntimeException
             throw new DatabaseException($e->getMessage(), $e);
