@@ -6,42 +6,6 @@ namespace WebServCo\Framework;
 
 final class ErrorHandler
 {
-
-    /**
-    * @return array<string,mixed>
-    */
-    public static function getErrorInfo(?\Throwable $exception = null): array
-    {
-        $errorInfo = [
-            'code' => 0,
-            'message' => null,
-            'file' => null,
-            'line' => null,
-            'trace' => null,
-            'exception' => null,
-        ];
-        if ($exception instanceof \Throwable) {
-            $errorInfo['code'] = $exception->getCode();
-            $errorInfo['message'] = $exception->getMessage();
-            $errorInfo['file'] = $exception->getFile();
-            $errorInfo['line'] = $exception->getLine();
-            $errorInfo['trace'] = $exception->getTrace();
-            $errorInfo['exception'] = $exception;
-        } else {
-            $last_error = \error_get_last();
-            if (!empty($last_error['message'])) {
-                $errorInfo['message'] = $last_error['message'];
-            }
-            if (!empty($last_error['file'])) {
-                $errorInfo['file'] = $last_error['file'];
-            }
-            if (!empty($last_error['line'])) {
-                $errorInfo['line'] = $last_error['line'];
-            }
-        }
-        return $errorInfo;
-    }
-
     public static function getErrorTypeString(int $type): string
     {
         switch ($type) {
@@ -82,6 +46,50 @@ final class ErrorHandler
         }
     }
 
+    public static function getFormattedMessage(\Throwable $exception): string
+    {
+        return \sprintf(
+            'Error: %s in %s:%s.',
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+        );
+    }
+
+    /*
+    * Get a \Throwable object if an error has occured.
+    *
+    * Used only for error logging / information display, not actually thrown.
+    */
+    public static function getThrowable(?\Throwable $exception = null): ?\Throwable
+    {
+        // Regular Exception, nothing further to do
+
+        if ($exception instanceof \Throwable) {
+            return $exception;
+        }
+
+        // A regular Error: create an ErrorException
+        // There is already a sys to convert and Error to ErrorException, so in theory we should never arrive here.
+
+        $last_error = \error_get_last();
+
+        if ($last_error) {
+            return new \ErrorException(
+                $last_error['message'], // message
+                0, // code
+                $last_error['type'], // severity
+                $last_error['file'], // filename
+                $last_error['line'], // lineno
+                null, // previous
+            );
+        }
+
+        // No error
+
+        return null;
+    }
+
     /**
      * Restores default error handler.
      */
@@ -111,19 +119,26 @@ final class ErrorHandler
      */
     public static function throwErrorException(int $errno, string $errstr, string $errfile, int $errline): bool
     {
+        /* Handle error reporting disabled or supressed *
+        // CURRENT SITUATION: ignore error reporting disabled or supressed, handle all errors
+        // Custom error handler is called even if errors disable or supressed (@)
+        // Code below handles this.
+        // https://www.php.net/manual/en/language.operators.errorcontrol.php
         // https://www.php.net/manual/en/function.set-error-handler.php
         if (!(\error_reporting() & $errno)) { // bitwise operator, not a typo
             // This error code is not included in error_reporting, so let it fall
             // through to the standard PHP error handler
             return false;
         }
+        /* Handle error reporting disabled or supressed */
 
         throw new \ErrorException(
-            \sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr),
-            0,
-            $errno,
-            $errfile,
-            $errline,
+            \sprintf('%s: %s.', self::getErrorTypeString($errno), $errstr), // message
+            0, // code
+            $errno, // severity
+            $errfile, // filename
+            $errline, // lineno
+            null, // previous
         );
     }
 

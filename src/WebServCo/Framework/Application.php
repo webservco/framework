@@ -4,96 +4,92 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Exceptions\ApplicationException;
-use WebServCo\Framework\Exceptions\NotFoundException;
-use WebServCo\Framework\Helpers\PhpHelper;
-use WebServCo\Framework\Interfaces\ResponseInterface;
-
-class Application extends \WebServCo\Framework\AbstractApplication
+/**
+* An example Application implementation.
+*
+* Can be overwritten or extended by consumer implementations.
+* Custom functionality in this class: use custom output.
+*/
+class Application extends AbstractApplication
 {
-    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
-
     /**
-     * Runs the application.
-     */
-    public function run(): void
+    * CLI message to output in case of error.
+    */
+    protected function getCliOutput(\Throwable $throwable): string
     {
-        try {
-            ErrorHandler::set();
-
-            \register_shutdown_function([$this, 'shutdown']);
-
-            $this->loadEnvironmentSettings();
-
-            $response = $this->execute();
-            $statusCode = 0;
-            if ($response instanceof ResponseInterface) {
-                $statusCode = $response->send();
-            }
-            $this->shutdown(null, true, PhpHelper::isCli() ? $statusCode : 0);
-        } catch (\Throwable $e) {
-            $this->shutdown($e, true);
-        }
+        $output = 'Boo boo' . \PHP_EOL;
+        $output .= \WebServCo\Framework\ErrorHandler::getFormattedMessage($throwable);
+        $output .= \PHP_EOL;
+        return $output;
     }
 
     /**
-     * Finishes the execution of the Application.
-     *
-     * This method is also registered as a shutdown handler.
-     */
-    final public function shutdown(?\Throwable $exception = null, bool $manual = false, int $statusCode = 0): void
+    * HTML code to output in case of error.
+    */
+    protected function getHttpOutput(\Throwable $throwable): string
     {
-        $hasError = $this->handleErrors($exception);
-        if ($hasError) {
-            $statusCode = 1;
+        $output = '<!doctype html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Oops</title>
+                <style>
+                * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
+                .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
+                small {font-size: 0.8em;}
+                </style>
+            </head>
+            <body><div class="i"><br>';
+        $output .= \sprintf('<h1>%s</h1>', 404 === $throwable->getCode() ? 'Resource not found' : 'Boo boo');
+
+        if (
+            \WebServCo\Framework\Environment\Value::DEVELOPMENT
+            === \WebServCo\Framework\Environment\Config::string('APP_ENVIRONMENT')
+        ) {
+            $output .= \sprintf(
+                '<p><i>%s</i></p><p>%s:%s</p>',
+                $throwable->getMessage(),
+                $throwable->getFile(),
+                $throwable->getLine(),
+            );
+            $trace = $throwable->getTrace();
+            if (!empty($trace)) {
+                $output .= "<p>";
+                $output .= "<small>";
+                foreach ($trace as $item) {
+                    if (!empty($item['class'])) {
+                        $output .= \sprintf('%s%s', $item['class'], $item['type']);
+                        $output .= "";
+                    }
+                    if (!empty($item['function'])) {
+                        $output .= \sprintf('%s', $item['function']);
+                        $output .= "";
+                    }
+                    if (!empty($item['file'])) {
+                        $output .= \sprintf(
+                            ' [%s:%s]',
+                            \basename($item['file']),
+                            $item['line'],
+                        );
+                        $output .= " ";
+                    }
+                    $output .= "<br>";
+                }
+                $output .= "</small></p>";
+            }
         }
 
-        if (!$manual) { // if shutdown handler
-            /**
-             * Warning: this part will always be executed,
-             * independent of the outcome of the script.
-             */
-            ErrorHandler::restore();
-        }
-        exit($statusCode);
+        $output .= '</div></body>';
+        $output .= '</html>';
+
+        return $output;
     }
 
-    final protected function execute(): ResponseInterface
+    /**
+    * Get Response.
+    */
+    protected function getResponse(): \WebServCo\Framework\Interfaces\ResponseInterface
     {
-        $classType = PhpHelper::isCli()
-            ? 'Command'
-            : 'Controller';
-        $target = $this->request()->getTarget();
-        // \WebServCo\Framework\Objects\Route
-        $route = $this->router()->getRoute(
-            $target,
-            $this->router()->setting('routes'),
-            $this->request()->getArgs(),
-        );
-
-        $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
-        if (!\class_exists($className)) {
-            if ('Controller' !== $classType) {
-                throw new NotFoundException(
-                    \sprintf('No matching %s found. Target: "%s"', $classType, $target),
-                );
-            }
-            // Class type is "Controller", so check for 404 route
-            // throws \WebServCo\Framework\Exceptions\NotFoundException
-            $route = $this->router()->getFourOhfourRoute();
-            $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
-        }
-
-        $object = new $className();
-        $parent = \get_parent_class($object);
-        if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
-            throw new NotFoundException(\sprintf('No matching Action found. Target: "%s".', $target));
-        }
-        $callable = [$object, $route->method];
-        if (!\is_callable($callable)) {
-            throw new ApplicationException(\sprintf('Method not found. Target: "%s"', $target));
-        }
-
-        return \call_user_func_array($callable, $route->arguments);
+        return $this->execute();
     }
 }

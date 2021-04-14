@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Environment\Value;
+use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Exceptions\NotFoundException;
+use WebServCo\Framework\Helpers\PhpHelper;
+use WebServCo\Framework\Interfaces\ResponseInterface;
 
 abstract class AbstractApplication
 {
+    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     protected string $projectNamespace;
     protected string $projectPath;
 
-    abstract protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface;
+    abstract protected function getCliOutput(\Throwable $throwable): string;
 
-    abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
+    abstract protected function getHttpOutput(\Throwable $throwable): string;
+
+    abstract protected function getResponse(): ResponseInterface;
 
     public function __construct(string $publicPath, ?string $projectPath, ?string $projectNamespace)
     {
@@ -42,113 +48,139 @@ abstract class AbstractApplication
     }
 
     /**
+     * Runs the application.
+     */
+    final public function run(): void
+    {
+        try {
+            ErrorHandler::set();
+
+            \register_shutdown_function([$this, 'shutdown']);
+
+            $this->loadEnvironmentSettings();
+
+            $response = $this->getResponse();
+
+            $statusCode = $response->send();
+
+            //$this->shutdown(null, true, PhpHelper::isCli() ? $statusCode : 0);
+            $this->shutdown(null, true, $statusCode);
+        } catch (\Throwable $e) {
+            $this->shutdown($e, true);
+        }
+    }
+
+    /**
+     * Finishes the execution of the Application.
+     *
+     * This method is also registered as a shutdown handler.
+     */
+    final public function shutdown(?\Throwable $exception = null, bool $manual = false, int $statusCode = 0): void
+    {
+        $hasError = $this->handleErrors($exception);
+        if ($hasError) {
+            $statusCode = 1;
+        }
+
+        if (!$manual) { // if shutdown handler
+            /**
+             * Warning: this part will always be executed,
+             * independent of the outcome of the script.
+             */
+            ErrorHandler::restore();
+        }
+        exit($statusCode);
+    }
+
+    final protected function execute(): ResponseInterface
+    {
+        $classType = PhpHelper::isCli()
+            ? 'Command'
+            : 'Controller';
+        $target = $this->request()->getTarget();
+        // \WebServCo\Framework\Objects\Route
+        $route = $this->router()->getRoute(
+            $target,
+            $this->router()->setting('routes'),
+            $this->request()->getArgs(),
+        );
+
+        $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
+        if (!\class_exists($className)) {
+            if ('Controller' !== $classType) {
+                throw new NotFoundException(
+                    \sprintf('No matching %s found. Target: "%s"', $classType, $target),
+                );
+            }
+            // Class type is "Controller", so check for 404 route
+            // throws \WebServCo\Framework\Exceptions\NotFoundException
+            $route = $this->router()->getFourOhfourRoute();
+            $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
+        }
+
+        $object = new $className();
+        $parent = \get_parent_class($object);
+        if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
+            throw new NotFoundException(\sprintf('No matching Action found. Target: "%s".', $target));
+        }
+        $callable = [$object, $route->method];
+        if (!\is_callable($callable)) {
+            throw new ApplicationException(\sprintf('Method not found. Target: "%s"', $target));
+        }
+
+        return \call_user_func_array($callable, $route->arguments);
+    }
+
+    /**
      * Handle Errors.
      */
     final protected function handleErrors(?\Throwable $exception = null): bool
     {
-        $errorInfo = \WebServCo\Framework\ErrorHandler::getErrorInfo($exception);
-        if (!empty($errorInfo['message'])) {
-            return $this->halt($errorInfo);
+        $throwable = \WebServCo\Framework\ErrorHandler::getThrowable($exception);
+        if ($throwable instanceof \Throwable) {
+            return $this->halt($throwable);
         }
         return false;
     }
 
-    /**
-    * @param array<string,mixed> $errorInfo
-    */
-    final protected function halt(array $errorInfo = []): bool
+    final protected function halt(\Throwable $throwable): bool
     {
+        $exceptionLogger = new \WebServCo\Framework\Log\ExceptionLogger();
+        $exceptionLogger->log($throwable);
         return \WebServCo\Framework\Helpers\PhpHelper::isCli()
-            ? $this->haltCli($errorInfo)
-            : $this->haltHttp($errorInfo);
+            ? $this->haltCli($throwable)
+            : $this->haltHttp($throwable);
     }
 
-    /**
-     * Handle HTTP errors.
-     *
-     * @param array<string,mixed> $errorInfo
-     */
-    protected function haltHttp(array $errorInfo = []): bool
+    final protected function haltCli(\Throwable $throwable): bool
     {
-        switch ($errorInfo['code']) {
+        $output = $this->getCliOutput($throwable);
+        $response = new \WebServCo\Framework\Cli\Response($output, 1);
+        $response->send();
+        return true;
+    }
+
+    final protected function haltHttp(\Throwable $throwable): bool
+    {
+        $output = $this->getHttpOutput($throwable);
+
+        $code = $throwable->getCode();
+        switch ($code) {
             case 404:
                 $statusCode = 404; //not found
-                $title = 'Resource not found';
                 break;
             case 500: //application
             case 0: //default
             default:
                 $statusCode = 500;
-                $title = 'Boo boo';
                 break;
         }
-
-        $output = '<!doctype html>
-            <html>
-            <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Oops</title>
-                <style>
-                * {background: #f2dede; color: #a94442; overflow-wrap: break-word;}
-                .i {margin-left: auto; margin-right: auto; text-align: center; width: auto;}
-                small {font-size: 0.8em;}
-                </style>
-            </head>
-            <body><div class="i"><br>' .
-            "<h1>{$title}</h1>";
-        // not using "Config" here because we just want to stop and display a message, not do more validation.
-        if (Value::DEVELOPMENT === ($_SERVER['APP_ENVIRONMENT'] ?? Value::DEVELOPMENT)) {
-            $output .= \sprintf(
-                '<p><i>%s</i></p><p>%s:%s</p>',
-                $errorInfo['message'],
-                \basename($errorInfo['file']),
-                $errorInfo['line'],
-            );
-            if (!empty($errorInfo['trace'])) {
-                $output .= "<p>";
-                $output .= "<small>";
-                foreach ($errorInfo['trace'] as $item) {
-                    if (!empty($item['class'])) {
-                        $output .= \sprintf('%s%s', $item['class'], $item['type']);
-                        $output .= "";
-                    }
-                    if (!empty($item['function'])) {
-                        $output .= \sprintf('%s', $item['function']);
-                        $output .= "";
-                    }
-                    if (!empty($item['file'])) {
-                        $output .= \sprintf(
-                            ' [%s:%s]',
-                            \basename($item['file']),
-                            $item['line'],
-                        );
-                        $output .= " ";
-                    }
-                    $output .= "<br>";
-                }
-                $output .= "</small></p>";
-            }
-        }
-        $output .= '</div></body></html>';
 
         $response = new \WebServCo\Framework\Http\Response(
             $output,
             $statusCode,
             ['Content-Type' => ['text/html']],
         );
-        $response->send();
-        return true;
-    }
-
-    /**
-    * @param array<string,mixed> $errorInfo
-    */
-    protected function haltCli(array $errorInfo = []): bool
-    {
-        $output = 'Boo boo' . \PHP_EOL;
-        $output .= $errorInfo['message'] . \PHP_EOL;
-        $output .= "$errorInfo[file]:$errorInfo[line]" . \PHP_EOL;
-        $response = new \WebServCo\Framework\Cli\Response($output, 1);
         $response->send();
         return true;
     }

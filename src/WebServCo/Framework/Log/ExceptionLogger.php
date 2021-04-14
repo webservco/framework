@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
+use WebServCo\Framework\ErrorHandler;
 use WebServCo\Framework\Interfaces\LoggerInterface;
 
 /**
@@ -21,20 +22,16 @@ class ExceptionLogger
         );
     }
 
-    public function getFormattedMessage(\Throwable $exception): string
-    {
-        return \sprintf(
-            'Error: %s in %s:%s.',
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine(),
-        );
-    }
-
     public function log(\Throwable $exception): void
     {
-        $errorMessage = $this->getFormattedMessage($exception);
-        $errorInfo = \WebServCo\Framework\ErrorHandler::getErrorInfo($exception);
-        $this->fileLogger->error($errorMessage, $errorInfo);
+        $this->fileLogger->error(ErrorHandler::getFormattedMessage($exception), $exception->getTrace());
+        $previous = $exception->getPrevious();
+        if (!$previous instanceof \Throwable) {
+            return;
+        }
+        do {
+            $this->fileLogger->error(ErrorHandler::getFormattedMessage($previous), $previous->getTrace());
+        // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
+        } while ($previous = $previous->getPrevious());
     }
 }
