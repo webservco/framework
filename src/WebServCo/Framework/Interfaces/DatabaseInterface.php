@@ -37,12 +37,12 @@ interface DatabaseInterface
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
     */
-    public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement;
+    public function insert(string $tableName, array $addData = [], array $updateData = []): bool;
 
     /**
     * @param array<mixed> $data
     */
-    public function insertIgnore(string $tableName, array $data = []): \PDOStatement;
+    public function insertIgnore(string $tableName, array $data = []): bool;
 
     public function lastInsertId(): int;
 
@@ -56,7 +56,7 @@ interface DatabaseInterface
     /**
     * @param array<mixed> $data
     */
-    public function replace(string $tableName, array $data = []): \PDOStatement;
+    public function replace(string $tableName, array $data = []): bool;
 
     public function tableExists(string $table): bool;
 

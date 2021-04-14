@@ -31,6 +31,8 @@ $this->db = new \WebServCo\Framework\Libraries\MysqlPdoDatabase(
 
 #### INSERT
 
+> This method uses a transaction.
+
 ```php
 $this->db->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
@@ -38,6 +40,7 @@ $this->db->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 
 #### INSERT ... ON DUPLICATE KEY UPDATE
 
+> This method uses a transaction.
 > Not supported when adding multiple rows at once
 
 ```php
@@ -51,11 +54,15 @@ $this->db->insert(
 
 #### INSERT IGNORE
 
+> This method uses a transaction.
+
 ```php
 $this->db->insertIgnore('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
 #### REPLACE
+
+> This method uses a transaction.
 
 ```php
 $this->db->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);

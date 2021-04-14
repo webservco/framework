@@ -24,6 +24,11 @@ trait DatabaseTrait
     abstract public function query(string $query, array $params = []): \PDOStatement;
 
     /**
+    * @param array<int,array<int,mixed>> $queries
+    */
+    abstract public function transaction(array $queries): bool;
+
+    /**
     * @param array<string,float|int|string> $addData
     * @param array<string,float|int|string> $updateData
     */
@@ -38,7 +43,7 @@ trait DatabaseTrait
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
     */
-    final public function insert(string $tableName, array $addData = [], array $updateData = []): \PDOStatement
+    final public function insert(string $tableName, array $addData = [], array $updateData = []): bool
     {
         return $this->add(QueryType::INSERT, $tableName, $addData, $updateData);
     }
@@ -46,7 +51,7 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $data
     */
-    final public function insertIgnore(string $tableName, array $data = []): \PDOStatement
+    final public function insertIgnore(string $tableName, array $data = []): bool
     {
         return $this->add(QueryType::INSERT_IGNORE, $tableName, $data);
     }
@@ -54,7 +59,7 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $data
     */
-    final public function replace(string $tableName, array $data = []): \PDOStatement
+    final public function replace(string $tableName, array $data = []): bool
     {
         return $this->add(QueryType::REPLACE, $tableName, $data);
     }
@@ -95,7 +100,7 @@ trait DatabaseTrait
         string $tableName,
         array $addData = [],
         array $updateData = []
-    ): \PDOStatement {
+    ): bool {
         if (!$tableName) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }
@@ -110,6 +115,10 @@ trait DatabaseTrait
             $queryData[] = $item;
         }
 
-        return $this->query($query, $queryData);
+        return $this->transaction(
+            [
+                [$query, $queryData], // item
+            ], // array
+        );
     }
 }
