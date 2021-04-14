@@ -18,7 +18,7 @@ class Application extends AbstractApplication
     protected function getCliOutput(\Throwable $throwable): string
     {
         $output = 'Boo boo' . \PHP_EOL;
-        $output .= \WebServCo\Framework\ErrorHandler::getFormattedMessage($throwable);
+        $output .= \WebServCo\Framework\Helpers\ErrorMessageHelper::format($throwable);
         $output .= \PHP_EOL;
         return $output;
     }

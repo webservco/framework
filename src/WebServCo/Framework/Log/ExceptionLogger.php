@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-use WebServCo\Framework\ErrorHandler;
+use WebServCo\Framework\Helpers\ErrorMessageHelper;
 use WebServCo\Framework\Interfaces\LoggerInterface;
 
 /**
@@ -24,13 +24,13 @@ class ExceptionLogger
 
     public function log(\Throwable $exception): void
     {
-        $this->fileLogger->error(ErrorHandler::getFormattedMessage($exception), $exception->getTrace());
+        $this->fileLogger->error(ErrorMessageHelper::format($exception), $exception->getTrace());
         $previous = $exception->getPrevious();
         if (!$previous instanceof \Throwable) {
             return;
         }
         do {
-            $this->fileLogger->error(ErrorHandler::getFormattedMessage($previous), $previous->getTrace());
+            $this->fileLogger->error(ErrorMessageHelper::format($previous), $previous->getTrace());
         // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
         } while ($previous = $previous->getPrevious());
     }

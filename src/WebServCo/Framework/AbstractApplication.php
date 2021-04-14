@@ -136,7 +136,7 @@ abstract class AbstractApplication
      */
     final protected function handleErrors(?\Throwable $exception = null): bool
     {
-        $throwable = \WebServCo\Framework\ErrorHandler::getThrowable($exception);
+        $throwable = \WebServCo\Framework\Helpers\ErrorObjectHelper::get($exception);
         if ($throwable instanceof \Throwable) {
             return $this->halt($throwable);
         }
