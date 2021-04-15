@@ -26,7 +26,7 @@ trait DatabaseTrait
     /**
     * @param array<int,array<int,mixed>> $queries
     */
-    abstract public function transaction(array $queries): bool;
+    abstract public function transaction(array $queries): int;
 
     /**
     * @param array<string,float|int|string> $addData
@@ -43,7 +43,7 @@ trait DatabaseTrait
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
     */
-    final public function insert(string $tableName, array $addData = [], array $updateData = []): bool
+    final public function insert(string $tableName, array $addData = [], array $updateData = []): int
     {
         return $this->add(QueryType::INSERT, $tableName, $addData, $updateData);
     }
@@ -51,7 +51,7 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $data
     */
-    final public function insertIgnore(string $tableName, array $data = []): bool
+    final public function insertIgnore(string $tableName, array $data = []): int
     {
         return $this->add(QueryType::INSERT_IGNORE, $tableName, $data);
     }
@@ -59,7 +59,7 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $data
     */
-    final public function replace(string $tableName, array $data = []): bool
+    final public function replace(string $tableName, array $data = []): int
     {
         return $this->add(QueryType::REPLACE, $tableName, $data);
     }
@@ -95,12 +95,8 @@ trait DatabaseTrait
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
     */
-    final protected function add(
-        string $queryType,
-        string $tableName,
-        array $addData = [],
-        array $updateData = []
-    ): bool {
+    final protected function add(string $queryType, string $tableName, array $addData = [], array $updateData = []): int
+    {
         if (!$tableName) {
             throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
         }

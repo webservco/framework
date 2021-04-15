@@ -148,9 +148,13 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     }
 
     /**
+    * Perform a transaction.
+    *
+    * Returns lastInsertId regardless of queries executed as it's not possible to retrieve lastInsertId after commit
+    *
     * @param array<int,array<int,mixed>> $queries
     */
-    public function transaction(array $queries): bool
+    public function transaction(array $queries): int
     {
         try {
             $this->db->beginTransaction();
@@ -161,8 +165,9 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 $params = $item[1] ?? [];
                 $this->query($item[0], $params);
             }
+            $lastInsertId = (int) $this->db->lastInsertId();
             $this->db->commit();
-            return true;
+            return $lastInsertId;
         } catch (\Throwable $e) { // DatabaseException, \PDOException, \RuntimeException
             $this->db->rollBack();
             throw new DatabaseException($e->getMessage(), $e);

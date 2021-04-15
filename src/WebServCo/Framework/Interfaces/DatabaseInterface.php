@@ -37,12 +37,12 @@ interface DatabaseInterface
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
     */
-    public function insert(string $tableName, array $addData = [], array $updateData = []): bool;
+    public function insert(string $tableName, array $addData = [], array $updateData = []): int;
 
     /**
     * @param array<mixed> $data
     */
-    public function insertIgnore(string $tableName, array $data = []): bool;
+    public function insertIgnore(string $tableName, array $data = []): int;
 
     public function lastInsertId(): int;
 
@@ -56,14 +56,14 @@ interface DatabaseInterface
     /**
     * @param array<mixed> $data
     */
-    public function replace(string $tableName, array $data = []): bool;
+    public function replace(string $tableName, array $data = []): int;
 
     public function tableExists(string $table): bool;
 
     /**
     * @param array<int,array<int,mixed>> $queries
     */
-    public function transaction(array $queries): bool;
+    public function transaction(array $queries): int;
 
     /**
     * @param float|int|string $value
