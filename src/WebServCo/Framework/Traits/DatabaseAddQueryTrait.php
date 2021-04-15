@@ -50,8 +50,8 @@ trait DatabaseAddQueryTrait
         if ($multiDimensional) {
             $keys = \array_keys(\call_user_func_array('array_merge', $data));
             // fill any missing keys with empty data
-            $key_pair = \array_combine($keys, \array_fill(0, \count($keys), null));
-            $data = \array_map(static fn ($e) => \array_merge((array) $key_pair, $e), $data);
+            $keyPair = \array_combine($keys, \array_fill(0, \count($keys), null));
+            $data = \array_map(static fn ($e) => \array_merge((array) $keyPair, $e), $data);
         } else {
             $keys = \array_keys($data);
         }

@@ -22,15 +22,15 @@ class ErrorObjectHelper
         // A regular Error: create an ErrorException
         // There is already a sys to convert and Error to ErrorException, so in theory we should never arrive here.
 
-        $last_error = \error_get_last();
+        $lastError = \error_get_last();
 
-        if ($last_error) {
+        if ($lastError) {
             return new \ErrorException(
-                $last_error['message'], // message
+                $lastError['message'], // message
                 0, // code
-                $last_error['type'], // severity
-                $last_error['file'], // filename
-                $last_error['line'], // lineno
+                $lastError['type'], // severity
+                $lastError['file'], // filename
+                $lastError['line'], // lineno
                 null, // previous
             );
         }
