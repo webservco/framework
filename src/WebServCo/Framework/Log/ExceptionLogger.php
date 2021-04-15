@@ -24,13 +24,15 @@ class ExceptionLogger
 
     public function log(\Throwable $exception): void
     {
-        $this->fileLogger->error(ErrorMessageHelper::format($exception), $exception->getTrace());
+        $message = ErrorMessageHelper::format($exception);
+        $this->fileLogger->error($message, ['message' => $message, 'trace' => $exception->getTrace()]);
         $previous = $exception->getPrevious();
         if (!$previous instanceof \Throwable) {
             return;
         }
         do {
-            $this->fileLogger->error(ErrorMessageHelper::format($previous), $previous->getTrace());
+            $message = ErrorMessageHelper::format($previous);
+            $this->fileLogger->error($message, ['message' => $message, 'trace' => $previous->getTrace()]);
         // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
         } while ($previous = $previous->getPrevious());
     }
