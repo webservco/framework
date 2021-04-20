@@ -16,5 +16,7 @@ interface I18nInterface
 
     public function init(string $projectPath, string $lang = ''): bool;
 
+    public function reset(): bool;
+
     public function setLanguage(string $lang, ?string $translationsPath = null): bool;
 }
