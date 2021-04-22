@@ -12,7 +12,6 @@ final class RequestHelper
             return \gethostbyname(\php_uname('n'));
         }
 
-
         if (\array_key_exists('REMOTE_ADDR', $_SERVER)) {
             return \WebServCo\Framework\Utils\Request::sanitizeString($_SERVER['REMOTE_ADDR']);
         }

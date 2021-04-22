@@ -82,6 +82,20 @@ trait RequestServerTrait
         return $this->server['HTTP_REFERER'] ?? '';
     }
 
+    /**
+    * Get remote address from current Request object.
+    *
+    * For a general helper method see \WebServCo\Framework\Helpers\RequestHelper.getRemoteAddress
+    */
+    public function getRemoteAddress(): string
+    {
+        if (PhpHelper::isCli()) {
+            return \gethostbyname(\php_uname('n'));
+        }
+
+        return $this->server['REMOTE_ADDR'] ?? '';
+    }
+
     public function getRefererHost(): string
     {
         return (string) \parse_url($this->getReferer(), \PHP_URL_HOST);
