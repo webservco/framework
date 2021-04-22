@@ -10,6 +10,7 @@ class FileLogger extends AbstractFileLogger
     * Logs with an arbitrary level.
     *
     * Uncommon phpdoc syntax used in order to be compatible with \Psr\Log\LoggerInterface
+    * \Psr\Log\LoggerInterface requires $context to be an array
     *
     * @param mixed $level
     * @param string $message
