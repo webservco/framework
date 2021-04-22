@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework\Log;
+namespace WebServCo\Framework\Processors;
 
 use WebServCo\Framework\Helpers\ErrorMessageHelper;
 use WebServCo\Framework\Interfaces\LoggerInterface;
@@ -10,7 +10,7 @@ use WebServCo\Framework\Interfaces\LoggerInterface;
 /**
 * A helper class for logging exceptions to a standard error(CLI) log file.
 */
-class ExceptionLogger
+class ErrorProcessor
 {
     protected LoggerInterface $fileLogger;
 
@@ -22,7 +22,7 @@ class ExceptionLogger
         );
     }
 
-    public function log(\Throwable $exception): void
+    public function logException(\Throwable $exception): void
     {
         $message = ErrorMessageHelper::format($exception);
         $this->fileLogger->error($message, ['message' => $message, 'trace' => $exception->getTrace()]);
@@ -35,5 +35,25 @@ class ExceptionLogger
             $this->fileLogger->error($message, ['message' => $message, 'trace' => $previous->getTrace()]);
         // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
         } while ($previous = $previous->getPrevious());
+    }
+
+    public function logRequest(\WebServCo\Framework\Interfaces\RequestInterface $requestInterface): bool
+    {
+        // \Psr\Log\LoggerInterface requires $context to be an array
+        $this->fileLogger->debug(
+            'RequestInterface debug',
+            [
+                'args' => $requestInterface->getArgs(),
+                'body' => $requestInterface->getBody(),
+                'contentType' => $requestInterface->getContentType(),
+                'data' => $requestInterface->getData(),
+                'method' => $requestInterface->getMethod(),
+                'query' => $requestInterface->getQuery(),
+                'remoteAddress' => $requestInterface->getRemoteAddress(),
+                'url' => $requestInterface->getUrl(),
+                'userAgent' => $requestInterface->getUserAgent(),
+            ],
+        );
+        return true;
     }
 }

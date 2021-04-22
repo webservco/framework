@@ -145,8 +145,8 @@ abstract class AbstractApplication
 
     final protected function halt(\Throwable $throwable): bool
     {
-        $exceptionLogger = new \WebServCo\Framework\Log\ExceptionLogger();
-        $exceptionLogger->log($throwable);
+        $errorProcessor = new \WebServCo\Framework\Processors\ErrorProcessor();
+        $errorProcessor->logException($throwable);
         return \WebServCo\Framework\Helpers\PhpHelper::isCli()
             ? $this->haltCli($throwable)
             : $this->haltHttp($throwable);
