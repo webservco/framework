@@ -42,6 +42,8 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
+    *
+    * Returns lastInsertId
     */
     final public function insert(string $tableName, array $addData = [], array $updateData = []): int
     {
@@ -50,6 +52,8 @@ trait DatabaseTrait
 
     /**
     * @param array<mixed> $data
+    *
+    * Returns lastInsertId
     */
     final public function insertIgnore(string $tableName, array $data = []): int
     {
@@ -58,6 +62,8 @@ trait DatabaseTrait
 
     /**
     * @param array<mixed> $data
+    *
+    * Returns lastInsertId
     */
     final public function replace(string $tableName, array $data = []): int
     {
@@ -94,6 +100,8 @@ trait DatabaseTrait
     /**
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
+    *
+    * Returns lastInsertId
     */
     final protected function add(string $queryType, string $tableName, array $addData = [], array $updateData = []): int
     {

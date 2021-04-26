@@ -36,11 +36,15 @@ interface DatabaseInterface
     /**
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
+    *
+    * Returns lastInsertId
     */
     public function insert(string $tableName, array $addData = [], array $updateData = []): int;
 
     /**
     * @param array<mixed> $data
+    *
+    * Returns lastInsertId
     */
     public function insertIgnore(string $tableName, array $data = []): int;
 
@@ -62,6 +66,8 @@ interface DatabaseInterface
 
     /**
     * @param array<int,array<int,mixed>> $queries
+    *
+    * Returns lastInsertId.
     */
     public function transaction(array $queries): int;
 
