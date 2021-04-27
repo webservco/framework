@@ -28,9 +28,9 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     protected bool $valid;
 
-    abstract protected function filter(): bool;
+    abstract public function validate(): bool;
 
-    abstract protected function validate(): bool;
+    abstract protected function filter(): bool;
 
     /**
     * @param array<string,string|array<mixed>> $settings
@@ -58,6 +58,8 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
         $this->errors = [];
 
         $this->filtered = $this->filter();
+
+        $this->valid = false;
 
         if (!$this->isSent()) {
             return;

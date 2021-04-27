@@ -55,7 +55,7 @@ class MyForm extends \WebServCo\Framework\AbstractForm
         return true;
     }
 
-    protected function validate()
+    public function validate()
     {
         foreach ($this->setting('required', []) as $item) {
             if (empty($this->data($item))) {
