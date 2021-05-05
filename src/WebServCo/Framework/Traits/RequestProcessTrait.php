@@ -41,7 +41,7 @@ trait RequestProcessTrait
         foreach ($data as $key => $value) {
             if (\is_string($value)) {
                 // Sanitize only first level (prevents "argv" from being sanitized)
-                $value = \WebServCo\Framework\Utils\Request::sanitizeString($value);
+                $value = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($value);
             }
             $data[$key] = $value;
         }
@@ -149,7 +149,7 @@ trait RequestProcessTrait
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData(\WebServCo\Framework\Utils\Request::sanitizeString($k), $v);
+            $this->setData(\WebServCo\Framework\Helpers\RequestHelper::sanitizeString($k), $v);
         }
         return true;
     }
@@ -173,7 +173,7 @@ trait RequestProcessTrait
                 if (\in_array($k, [0, 1], true)) {
                     continue;
                 }
-                $this->args[] = \WebServCo\Framework\Utils\Request::sanitizeString($v);
+                $this->args[] = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($v);
             }
         }
         return true;
@@ -198,15 +198,15 @@ trait RequestProcessTrait
             default:
                 break;
         }
-        [$target, $queryString, $suffix] = \WebServCo\Framework\Utils\Request::parse(
+        [$target, $queryString, $suffix] = \WebServCo\Framework\Helpers\RequestHelper::parse(
             $string,
             $this->path,
             $this->filename,
             $this->setting('suffixes', []),
         );
-        $this->target = \WebServCo\Framework\Utils\Request::sanitizeString(\urldecode($target));
-        $this->query = \WebServCo\Framework\Utils\Request::format(
-            \WebServCo\Framework\Utils\Request::sanitizeString($queryString),
+        $this->target = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString(\urldecode($target));
+        $this->query = \WebServCo\Framework\Helpers\RequestHelper::format(
+            \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($queryString),
         );
         $this->suffix = $suffix;
         return true;

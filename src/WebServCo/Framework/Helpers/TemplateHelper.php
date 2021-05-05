@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WebServCo\Framework\Utils;
+namespace WebServCo\Framework\Helpers;
 
-final class Template
+class TemplateHelper
 {
 
     /**

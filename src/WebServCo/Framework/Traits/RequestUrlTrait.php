@@ -59,7 +59,7 @@ trait RequestUrlTrait
 
             unset($query[$item]);
         }
-        return $url . \WebServCo\Framework\Utils\Arrays::toUrlQueryString($query);
+        return $url . \WebServCo\Framework\Helpers\ArrayHelper::toUrlQueryString($query);
     }
 
     /**

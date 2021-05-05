@@ -55,7 +55,7 @@ final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebSer
     {
         $this->translationsPath = $projectPath . 'resources/translations';
 
-        if (\WebServCo\Framework\Utils\Strings::isEmpty($lang)) {
+        if (\WebServCo\Framework\Helpers\StringHelper::isEmpty($lang)) {
             $lang = $this->setting('lang', 'en');
         }
 

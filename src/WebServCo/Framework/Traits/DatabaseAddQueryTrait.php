@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Database\QueryType;
-use WebServCo\Framework\Utils\Arrays;
+use WebServCo\Framework\Helpers\ArrayHelper;
 
 trait DatabaseAddQueryTrait
 {
@@ -24,7 +24,7 @@ trait DatabaseAddQueryTrait
         array $addData = [],
         array $updateData = []
     ): string {
-        $multiDimensional = Arrays::isMultidimensional($addData);
+        $multiDimensional = ArrayHelper::isMultidimensional($addData);
 
         [$keys, $data] = $this->getKeysValues($addData);
 
@@ -46,7 +46,7 @@ trait DatabaseAddQueryTrait
     */
     final protected function getKeysValues(array $data = []): array
     {
-        $multiDimensional = Arrays::isMultidimensional($data);
+        $multiDimensional = ArrayHelper::isMultidimensional($data);
         if ($multiDimensional) {
             $keys = \array_keys(\call_user_func_array('array_merge', $data));
             // fill any missing keys with empty data

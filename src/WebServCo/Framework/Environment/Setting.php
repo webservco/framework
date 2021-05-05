@@ -28,7 +28,7 @@ final class Setting
     public static function getValidatedKey(string $key): string
     {
         $key = \strtoupper($key);
-        if (!\WebServCo\Framework\Utils\Strings::startsWith($key, 'APP_', false)) {
+        if (!\WebServCo\Framework\Helpers\StringHelper::startsWith($key, 'APP_', false)) {
             throw new ConfigurationException(\sprintf('Invalid key name: "%s".', $key));
         }
         return $key;

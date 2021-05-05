@@ -49,7 +49,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         }
         return \setcookie(
             $name,
-            \WebServCo\Framework\Utils\Request::sanitizeString($value),
+            \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($value),
             [
                 'expires' => $expires,
                 'path' => $path,
