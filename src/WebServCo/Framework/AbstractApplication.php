@@ -145,14 +145,12 @@ abstract class AbstractApplication
 
     final protected function halt(\Throwable $throwable): bool
     {
-        $errorProcessor = new \WebServCo\Framework\Processors\ErrorProcessor();
-        $errorProcessor->logException($throwable);
         return \WebServCo\Framework\Helpers\PhpHelper::isCli()
             ? $this->haltCli($throwable)
             : $this->haltHttp($throwable);
     }
 
-    final protected function haltCli(\Throwable $throwable): bool
+    protected function haltCli(\Throwable $throwable): bool
     {
         $output = $this->getCliOutput($throwable);
         $response = new \WebServCo\Framework\Cli\Response($output, 1);
@@ -160,7 +158,7 @@ abstract class AbstractApplication
         return true;
     }
 
-    final protected function haltHttp(\Throwable $throwable): bool
+    protected function haltHttp(\Throwable $throwable): bool
     {
         $output = $this->getHttpOutput($throwable);
 
