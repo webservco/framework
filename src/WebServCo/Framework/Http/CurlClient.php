@@ -154,6 +154,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         }
 
         switch ($this->method) {
+            case Method::DELETE:
             case Method::POST:
                 /*
                 * This sets the header application/x-www-form-urlencoded
