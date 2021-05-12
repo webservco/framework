@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Environment;
 
-use WebServCo\Framework\Exceptions\ConfigurationException;
+use WebServCo\Framework\Exceptions\ConfigurationValidationException;
 
 final class Config
 {
@@ -17,7 +17,7 @@ final class Config
     {
         $value = self::key($key);
         if (!\is_bool($value)) {
-            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
+            throw new ConfigurationValidationException(\sprintf('Value type for key "%s" is not valid', $key));
         }
         return $value;
     }
@@ -32,7 +32,7 @@ final class Config
     public static function key(string $key)
     {
         if (!\array_key_exists($key, $_SERVER)) {
-            throw new ConfigurationException(\sprintf('Key not found: "%s".', $key));
+            throw new \WebServCo\Framework\Exceptions\ConfigurationException(\sprintf('Key not found: "%s".', $key));
         }
         return $_SERVER[$key];
     }
@@ -46,7 +46,7 @@ final class Config
     {
         $value = self::key($key);
         if (!\is_int($value)) {
-            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
+            throw new ConfigurationValidationException(\sprintf('Value type for key "%s" is not valid', $key));
         }
         return $value;
     }
@@ -60,7 +60,7 @@ final class Config
     {
         $value = self::key($key);
         if (!\is_string($value)) {
-            throw new ConfigurationException(\sprintf('Value type for key "%s" is not valid', $key));
+            throw new ConfigurationValidationException(\sprintf('Value type for key "%s" is not valid', $key));
         }
         return $value;
     }
