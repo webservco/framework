@@ -50,6 +50,10 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
     public function retrieve(string $url): Response
     {
+        if (!$url) {
+            throw new \InvalidArgumentException('URL is empty');
+        }
+
         $this->debugInit();
 
         $this->curl = \curl_init();
