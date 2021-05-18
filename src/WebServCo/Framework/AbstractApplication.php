@@ -164,13 +164,13 @@ abstract class AbstractApplication
 
         $code = $throwable->getCode();
         switch ($code) {
-            case 404:
-                $statusCode = 404; //not found
-                break;
-            case 500: //application
-            case 0: //default
-            default:
+            case 0: // non-HTTP
+            case -1: // non-HTTP
                 $statusCode = 500;
+                break;
+            default:
+                // Use Throwable status code
+                $statusCode = $code;
                 break;
         }
 
