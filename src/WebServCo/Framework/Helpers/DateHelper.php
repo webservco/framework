@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
+use WebServCo\Framework\Exceptions\DateTimeException;
+
 class DateHelper
 {
     /**
@@ -13,8 +15,22 @@ class DateHelper
     {
         $dateTime = \DateTime::createFromFormat($format, $date);
         if (false === $dateTime) {
-            throw new \WebServCo\Framework\Exceptions\DateTimeException('Invalid date or format.');
+            throw new DateTimeException('Invalid date or format.');
         }
         return $dateTime->format($format);
+    }
+
+    /**
+    * Validate an already formatted date.
+    */
+    public static function validate(string $date, string $format = 'Y-m-d'): bool
+    {
+        $formattedDate = self::format($date, $format);
+
+        if ($formattedDate !== $date) {
+            throw new DateTimeException('Invalid date or format.');
+        }
+
+        return true;
     }
 }

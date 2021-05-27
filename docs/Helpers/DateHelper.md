@@ -16,4 +16,9 @@ $result = \WebServCo\Framework\Helpers\DateHelper::method($arguments);
 
 Format a date, with validation.
 
+
+### `validate(string $date, string $format = 'Y-m-d')`
+
+Validate an already formatted date.
+
 ---
