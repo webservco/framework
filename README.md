@@ -32,6 +32,14 @@ A PHP Framework
 * [CSV](/docs/Files/CSV.md)
 * [File upload](/docs/Files/Upload.md)
 
+### Forms
+* [Abstract Form](/docs/Forms/AbstractForm.md)
+
+### Helpers
+* [Array](/docs/Helpers/ArrayHelper.md)
+* [Date](/docs/Helpers/DateHelper.md)
+* [String](/docs/Helpers/StringHelper.md)
+
 ### Http
 * [CurlClient](/docs/CurlClients.md)
 * [X-Sendfile](/docs/Http/XSendFile.md)
@@ -53,13 +61,6 @@ A PHP Framework
 ### Output
 * [Methods](/docs/Output/Methods.md)
 * [HtmlOutput](/docs/Output/HtmlOutput.md)
-
-### Forms
-* [Abstract Form](/docs/Forms/AbstractForm.md)
-
-### Utils
-* [Strings](/docs/Utils/Strings.md)
-
 ---
 
 ## Related projects
