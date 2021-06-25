@@ -36,24 +36,4 @@ class ErrorProcessor
         // phpcs:ignore SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition
         } while ($previous = $previous->getPrevious());
     }
-
-    public function logRequest(\WebServCo\Framework\Interfaces\RequestInterface $requestInterface): bool
-    {
-        // \Psr\Log\LoggerInterface requires $context to be an array
-        $this->fileLogger->debug(
-            'RequestInterface debug',
-            [
-                'args' => $requestInterface->getArgs(),
-                'body' => $requestInterface->getBody(),
-                'contentType' => $requestInterface->getContentType(),
-                'data' => $requestInterface->getData(),
-                'method' => $requestInterface->getMethod(),
-                'query' => $requestInterface->getQuery(),
-                'remoteAddress' => $requestInterface->getRemoteAddress(),
-                'url' => $requestInterface->getUrl(),
-                'userAgent' => $requestInterface->getUserAgent(),
-            ],
-        );
-        return true;
-    }
 }
