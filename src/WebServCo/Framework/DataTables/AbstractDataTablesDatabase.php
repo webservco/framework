@@ -64,8 +64,10 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
         $recordsFiltered = $this->getRecordsFiltered();
 
-
-        $recordsTotal = $this->getRecordsTotal($recordsFiltered, $searchPart);
+        // Extra query for total only if there is a search, otherwise the total is equal to the $recordsFiltered
+        $recordsTotal = $searchPart
+            ? $this->getRecordsTotal()
+            : $recordsFiltered;
 
         return new Response(
             $request->getDraw(),
@@ -164,11 +166,8 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         }
     }
 
-    protected function getRecordsTotal(int $recordsFiltered, string $searchPart): int
+    protected function getRecordsTotal(): int
     {
-        if (!$searchPart) {
-            return $recordsFiltered;
-        }
         try {
             return (int) $this->db->getColumn( // grand total - query without the search, order, limits
                 $this->getRecordsTotalQuery(),
