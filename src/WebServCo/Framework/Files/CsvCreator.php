@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Files;
 
-use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Exceptions\FileException;
 
 final class CsvCreator
 {
@@ -23,9 +23,6 @@ final class CsvCreator
     */
     public function getCsvFile(string $fileName, array $data, bool $addHeader = true): CsvFile
     {
-        if (!$data) {
-            throw new ApplicationException('Empty data.');
-        }
         $csvData = $this->getCsvData($data, $addHeader);
         return new CsvFile($fileName, $csvData);
     }
@@ -43,7 +40,7 @@ final class CsvCreator
             $handle = \fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'r+');
 
             if (!\is_resource($handle)) {
-                throw new ApplicationException('Not a valid resource.');
+                throw new FileException('Not a valid resource.');
             }
 
             // Add Byte Order mark (BOM) for UTF-8.
@@ -68,7 +65,7 @@ final class CsvCreator
 
             return $csvData;
         } catch (\Throwable $e) {
-            throw new ApplicationException($e->getMessage());
+            throw new FileException($e->getMessage());
         }
     }
 }
