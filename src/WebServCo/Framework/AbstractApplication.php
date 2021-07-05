@@ -169,8 +169,10 @@ abstract class AbstractApplication
                 $statusCode = 500;
                 break;
             default:
-                // Use Throwable status code
-                $statusCode = $code;
+                $statusCodes = \WebServCo\Framework\Http\StatusCode::getSupported();
+                $statusCode = \array_key_exists($code, $statusCodes)
+                    ? $code //  Use Throwable status code as it is a valid HTTP code
+                    : 500;
                 break;
         }
 
