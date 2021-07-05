@@ -69,10 +69,10 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
     public function setStatus(int $statusCode): bool
     {
         $statusCodes = StatusCode::getSupported();
-        if (!isset($statusCodes[$statusCode])) {
-                throw new \WebServCo\Framework\Exceptions\ApplicationException(
-                    \sprintf('Invalid HTTP status code: %s.', $statusCode),
-                );
+        if (!\array_key_exists($statusCode, $statusCodes)) {
+            throw new \WebServCo\Framework\Exceptions\HttpStatusCodeException(
+                \sprintf('Invalid HTTP status code: %s.', $statusCode),
+            );
         }
         $this->statusCode = $statusCode;
         $this->statusText = $statusCodes[$statusCode];
