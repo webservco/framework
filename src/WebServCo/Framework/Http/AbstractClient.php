@@ -41,6 +41,8 @@ abstract class AbstractClient
 
     protected bool $skipSslVerification;
 
+    protected int $timeout;
+
     abstract public function retrieve(string $url): Response;
 
     public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
@@ -52,6 +54,7 @@ abstract class AbstractClient
         // Default Content-Type for
         $this->requestContentType = 'application/x-www-form-urlencoded';
         $this->response = '';
+        $this->timeout = 60;
     }
 
     public function get(string $url): Response
@@ -143,6 +146,12 @@ abstract class AbstractClient
     public function setSkipSSlVerification(bool $skipSslVerification): bool
     {
         $this->skipSslVerification = $skipSslVerification;
+        return true;
+    }
+
+    public function setTimeout(int $timeout): bool
+    {
+        $this->timeout = $timeout;
         return true;
     }
 }
