@@ -101,7 +101,7 @@ abstract class AbstractApplication
         // \WebServCo\Framework\Objects\Route
         $route = $this->router()->getRoute(
             $target,
-            $this->router()->setting('routes'),
+            $this->router()->setting('routes', []),
             $this->request()->getArgs(),
         );
 
