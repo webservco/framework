@@ -129,7 +129,7 @@ trait RequestServerTrait
         return $this->server['SERVER_PROTOCOL'];
     }
 
-    public function getServerVariable(string $index): ?string
+    public function getServerVariable(string $index): string
     {
         if (!\array_key_exists($index, $this->server)) {
             throw new \OutOfBoundsException('Requested key does not exist.');

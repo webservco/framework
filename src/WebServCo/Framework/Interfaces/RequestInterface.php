@@ -51,6 +51,8 @@ interface RequestInterface
 
     public function getSchema(): string;
 
+    public function getServerVariable(string $index): string;
+
     public function getSuffix(): string;
 
     public function getTarget(): string;
