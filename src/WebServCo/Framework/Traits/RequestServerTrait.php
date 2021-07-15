@@ -10,7 +10,7 @@ trait RequestServerTrait
 {
 
     /**
-    * @return array<int|string,string>
+    * @return array<string,string>
     */
     public function getAcceptContentTypes(): array
     {
@@ -27,8 +27,9 @@ trait RequestServerTrait
                 // divide "mime/type;q=X" into two parts: "mime/type" i "X"
                 [$item, $q] = \explode(';q=', $item);
             }
+            // Make sure key is string, otherwise it is caset by PHP to in and possibly overwritten.
             // WARNING: $q == 0 means, that mime-type isn’t supported!
-            $acceptTypes[$q] = $item;
+            $acceptTypes[\sprintf('q=%s', $q)] = $item;
         }
         \asort($acceptTypes);
         return $acceptTypes;

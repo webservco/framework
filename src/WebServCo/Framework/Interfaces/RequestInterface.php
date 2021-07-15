@@ -16,7 +16,7 @@ interface RequestInterface
     public function data(string $key, $defaultValue = null);
 
     /**
-    * @return array<int|string,string>
+    * @return array<string,string>
     */
     public function getAcceptContentTypes(): array;
 
