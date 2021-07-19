@@ -10,9 +10,11 @@ use WebServCo\Framework\Interfaces\LoggerInterface;
 /**
 * A helper class for logging exceptions to a standard error(CLI) log file.
 */
-class ErrorProcessor
+abstract class AbstractErrorProcessor implements \WebServCo\Framework\Interfaces\ErrorProcessorInterface
 {
     protected LoggerInterface $fileLogger;
+
+    abstract public function report(\Throwable $exception, ?string $reference = null): bool;
 
     public function __construct()
     {
