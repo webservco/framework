@@ -17,7 +17,7 @@ trait LogTrait
     */
     protected function logDebug(string $message, $context = []): void
     {
-        $this->outputLogger->debug($message, $context);
+        $this->outputLogger->debug($message);
         $this->fileLogger->debug($message, $context);
     }
 
@@ -26,7 +26,8 @@ trait LogTrait
     */
     protected function logError(string $message, $context = []): void
     {
-        $this->outputLogger->error($message, $context);
+        $this->outputLogger->output($message);
+
         $this->fileLogger->error($message, $context);
     }
 
@@ -35,7 +36,7 @@ trait LogTrait
     */
     protected function logInfo(string $message, $context = []): void
     {
-        $this->outputLogger->info($message, $context);
+        $this->outputLogger->info($message);
         $this->fileLogger->info($message, $context);
     }
 
@@ -44,7 +45,7 @@ trait LogTrait
     */
     protected function logWarning(string $message, $context = []): void
     {
-        $this->outputLogger->warning($message, $context);
+        $this->outputLogger->warning($message);
         $this->fileLogger->warning($message, $context);
     }
 }
