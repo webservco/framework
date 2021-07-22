@@ -20,7 +20,7 @@ abstract class AbstractCliRunnerProcessor implements \WebServCo\Framework\Interf
 
     protected LoggerInterface $fileLogger;
 
-    protected OutputLoggerInterface $outputLogger;
+    protected ?OutputLoggerInterface $outputLogger = null;
 
     /**
     * Called by the "run" method.
@@ -31,7 +31,7 @@ abstract class AbstractCliRunnerProcessor implements \WebServCo\Framework\Interf
         CliRunnerInterface $cliRunner,
         ErrorProcessorInterface $errorProcessor,
         LoggerInterface $fileLogger,
-        OutputLoggerInterface $outputLogger
+        ?OutputLoggerInterface $outputLogger = null
     ) {
         $this->cliRunner = $cliRunner;
 
