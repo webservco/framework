@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Log;
 
 use WebServCo\Framework\Exceptions\LoggerException;
 
-abstract class AbstractFileLogger extends AbstractLogger
+abstract class AbstractFileLogger extends AbstractLogger implements \WebServCo\Framework\Interfaces\FileLoggerInterface
 {
     protected string $channel;
     protected string $logDir;
@@ -30,5 +30,12 @@ abstract class AbstractFileLogger extends AbstractLogger
     public function clear(): bool
     {
         return (bool) \file_put_contents($this->logPath, null);
+    }
+
+    public function getLastLine(): int
+    {
+        $file = new \SplFileObject($this->logPath, 'r');
+        $file->seek(\PHP_INT_MAX);
+        return $file->key();
     }
 }

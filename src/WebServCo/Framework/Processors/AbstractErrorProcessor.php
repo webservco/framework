@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Processors;
 
 use WebServCo\Framework\Helpers\ErrorMessageHelper;
-use WebServCo\Framework\Interfaces\LoggerInterface;
+use WebServCo\Framework\Interfaces\FileLoggerInterface;
 
 /**
 * A helper class for logging exceptions to a standard error(CLI) log file.
 */
 abstract class AbstractErrorProcessor implements \WebServCo\Framework\Interfaces\ErrorProcessorInterface
 {
-    protected LoggerInterface $fileLogger;
+    protected FileLoggerInterface $fileLogger;
 
     abstract public function report(\Throwable $exception, ?string $reference = null): bool;
 
