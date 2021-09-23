@@ -11,8 +11,9 @@ abstract class AbstractUpload
 
     /**
     * Allowed extensions.
+    * mime / extension
     *
-    * @var array<int,string>
+    * @var array<string,string>
     */
     protected array $allowedExtensions;
     protected string $fileName;

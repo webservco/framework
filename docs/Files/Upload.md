@@ -30,6 +30,7 @@ $upload->setAllowedExtensions($allowedExtensions);
 
 try {
     $upload->do(); // throws \WebServCo\Framework\Exceptions\UploadException
+    $uploadedFileName = $upload->getFileName();
     // functionality
 } catch (\WebServCo\Framework\Exceptions\UploadException $e) {
     // error handling
