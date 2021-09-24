@@ -75,7 +75,7 @@ abstract class AbstractUpload
     }
 
     /**
-    * @param array<int,string> $allowedExtensions
+    * @param array<string,string> $allowedExtensions
     */
     final public function setAllowedExtensions(array $allowedExtensions): bool
     {
