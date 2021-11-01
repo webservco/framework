@@ -32,6 +32,10 @@ final class DatabaseException extends ApplicationException
                 $code = $previous->getCode();
                 $this->sqlState = $previous->getSqlState();
                 break;
+            default:
+                // Prevent "Typed property DatabaseException::$sqlState must not be accessed before initialization"
+                $this->sqlState = '';
+                break;
         }
 
         parent::__construct($message, $code, $previous);
