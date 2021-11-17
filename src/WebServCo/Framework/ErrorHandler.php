@@ -48,6 +48,9 @@ final class ErrorHandler
         }
         /* Handle error reporting disabled or supressed */
 
+        // Make sure \error_get_last will not report this again (used in ErrorObjectHelper::get())
+        \error_clear_last();
+
         throw new \ErrorException(
             \sprintf('%s: %s.', \WebServCo\Framework\Helpers\ErrorTypeHelper::getString($errno), $errstr), // message
             0, // code

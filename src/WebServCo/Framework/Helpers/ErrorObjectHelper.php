@@ -20,7 +20,9 @@ class ErrorObjectHelper
         }
 
         // A regular Error: create an ErrorException
-        // There is already a sys to convert and Error to ErrorException, so in theory we should never arrive here.
+        // ErrorHandler.throwErrorException already converts Error to ErrorException,
+        // and also clears the last error
+        // so in theory $lastError should always be empty.
 
         $lastError = \error_get_last();
 
