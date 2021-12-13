@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface CliRunnerInterface
 {
-
     public function finish(): bool;
 
     public function getPid(): ?string;

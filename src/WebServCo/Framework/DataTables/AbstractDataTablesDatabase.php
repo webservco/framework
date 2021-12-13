@@ -11,7 +11,6 @@ use WebServCo\Framework\Interfaces\DatabaseInterface;
 
 abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interfaces\DataTablesInterface
 {
-
     protected DatabaseInterface $db;
 
     /**

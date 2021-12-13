@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase
 {
-
     /**
      * @test
      */

@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Log;
 
 class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\Interfaces\OutputLoggerInterface
 {
-
     public function clear(): bool
     {
         return false;

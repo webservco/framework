@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Helpers;
 
 class TemplateHelper
 {
-
     /**
     * @param array<int|string,mixed> $data
     */

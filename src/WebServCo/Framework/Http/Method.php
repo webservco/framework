@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Http;
 
 final class Method
 {
-
     public const GET = 'GET';
     public const HEAD = 'HEAD';
     public const POST = 'POST';

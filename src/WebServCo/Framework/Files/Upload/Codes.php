@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Files\Upload;
 
 final class Codes
 {
-
     public const OK = 0;
     public const INI_SIZE = 1;
     public const FORM_SIZE = 2;

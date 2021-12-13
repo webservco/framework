@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Libraries;
 
 final class Security extends \WebServCo\Framework\AbstractLibrary
 {
-
     public function getSalt(string $string, int $saltLength = 20): string
     {
         return \strrev(\substr(\sha1(\strtolower($string)), 1, $saltLength));

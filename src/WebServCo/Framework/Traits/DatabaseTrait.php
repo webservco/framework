@@ -8,7 +8,6 @@ use WebServCo\Framework\Database\QueryType;
 
 trait DatabaseTrait
 {
-
     abstract public function escapeIdentifier(string $string): string;
 
     abstract public function escapeTableName(string $string): string;

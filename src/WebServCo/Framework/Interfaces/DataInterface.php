@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface DataInterface
 {
-
     /**
      * Returns data if exists, $defaultValue otherwise.
      *

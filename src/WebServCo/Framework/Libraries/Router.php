@@ -8,7 +8,6 @@ use WebServCo\Framework\Objects\Route;
 
 final class Router extends \WebServCo\Framework\AbstractLibrary
 {
-
     public function getFourOhfourRoute(): Route
     {
         // Check if we have a 404 route

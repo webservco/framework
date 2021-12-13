@@ -9,7 +9,6 @@ use WebServCo\Framework\Http\Method;
 
 final class MethodTest extends TestCase
 {
-
     /**
      * @test
      */

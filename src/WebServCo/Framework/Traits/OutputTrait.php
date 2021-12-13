@@ -9,7 +9,6 @@ use WebServCo\Framework\Interfaces\OutputLoaderInterface;
 
 trait OutputTrait
 {
-
     protected int $outputCode;
     protected OutputLoaderInterface $outputLoader;
 

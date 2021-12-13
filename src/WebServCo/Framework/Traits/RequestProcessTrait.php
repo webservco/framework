@@ -8,7 +8,6 @@ use WebServCo\Framework\Http\Method;
 
 trait RequestProcessTrait
 {
-
     abstract public function clearData(): bool;
 
     /**

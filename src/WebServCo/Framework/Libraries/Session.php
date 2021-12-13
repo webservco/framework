@@ -11,7 +11,6 @@ use WebServCo\Framework\Settings;
 final class Session extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\SessionInterface
 {
-
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string

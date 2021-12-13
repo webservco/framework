@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface OutputLoaderInterface
 {
-
     public function cli(string $string, bool $eol = true): bool;
 
     /**

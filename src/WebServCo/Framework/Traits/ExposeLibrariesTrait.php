@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Traits;
 
 trait ExposeLibrariesTrait
 {
-
     final protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface
     {
         return \WebServCo\Framework\Helpers\ConfigLibraryHelper::library();

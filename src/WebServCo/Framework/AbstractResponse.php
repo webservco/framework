@@ -6,7 +6,6 @@ namespace WebServCo\Framework;
 
 abstract class AbstractResponse
 {
-
     protected string $content;
 
     protected int $statusCode;

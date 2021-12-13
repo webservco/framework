@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Cli\Runner;
 
 final class Statistics
 {
-
     protected float $duration; // <seconds>.<microseconds>
     protected int $memoryPeakUsage; // K
     protected bool $result;

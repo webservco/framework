@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Files;
 
 class XmlFile extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
-
     public const CONTENT_TYPE = 'text/xml';
 
     public function __construct(string $fileName, string $fileData, bool $formatOutput = false)

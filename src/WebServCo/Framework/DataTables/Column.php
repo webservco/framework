@@ -6,7 +6,6 @@ namespace WebServCo\Framework\DataTables;
 
 class Column
 {
-
     protected string $data;
     protected string $name;
     protected bool $searchable;

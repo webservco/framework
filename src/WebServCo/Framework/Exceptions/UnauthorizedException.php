@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Exceptions;
 
 class UnauthorizedException extends AclException
 {
-
     public const CODE = 401;
 
     public function __construct(string $message, ?\Throwable $previous = null)

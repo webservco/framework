@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Http;
 
 class XSendFileResponse extends Response
 {
-
     public function __construct(
         string $filePath,
         string $outputFilename,

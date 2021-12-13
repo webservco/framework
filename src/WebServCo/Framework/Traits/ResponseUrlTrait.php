@@ -8,7 +8,6 @@ use WebServCo\Framework\Http\Response;
 
 trait ResponseUrlTrait
 {
-
     abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
 
     /**

@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Exceptions;
 
 final class NotImplementedException extends HttpException
 {
-
     public const CODE = 501;
 
     public function __construct(string $message, ?\Throwable $previous = null)

@@ -8,7 +8,6 @@ use WebServCo\Framework\ArrayObject\Items;
 
 class RequestHelper extends AbstractHelper
 {
-
     /**
     * @param array<string,mixed> $data
     * @param array<int,string> $required

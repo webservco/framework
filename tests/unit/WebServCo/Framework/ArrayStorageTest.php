@@ -10,7 +10,6 @@ use WebServCo\Framework\Settings;
 
 final class ArrayStorageTest extends TestCase
 {
-
     /**
     * Original array.
     *

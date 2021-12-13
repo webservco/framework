@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Arrays;
 
 abstract class AbstractValidatedClass
 {
-
     /**
     * @return array<int,string>
     */

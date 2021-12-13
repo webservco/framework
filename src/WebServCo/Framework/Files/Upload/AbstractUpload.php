@@ -8,7 +8,6 @@ use WebServCo\Framework\Exceptions\UploadException;
 
 abstract class AbstractUpload
 {
-
     /**
     * Allowed extensions.
     * mime / extension

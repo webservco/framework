@@ -9,7 +9,6 @@ use WebServCo\Framework\Libraries\Request;
 
 final class RequestInstanceTest extends TestCase
 {
-
     /**
      * Cfg
      *

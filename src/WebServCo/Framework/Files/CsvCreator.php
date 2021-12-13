@@ -8,7 +8,6 @@ use WebServCo\Framework\Exceptions\FileException;
 
 final class CsvCreator
 {
-
     protected string $delimiter;
     protected string $enclosure;
 

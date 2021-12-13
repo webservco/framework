@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Cli;
 
 final class Ansi
 {
-
     /**
     * Select Graphic Rendition
     *

@@ -9,7 +9,6 @@ use WebServCo\Framework\Environment\Value;
 
 final class ValueTest extends TestCase
 {
-
     /**
      * @test
      */

@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface ConfigInterface
 {
-
     /**
      * Add base setting data.
      *

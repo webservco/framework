@@ -8,7 +8,6 @@ use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
 class Items
 {
-
     protected ArrayObjectInterface $arrayObject;
 
     public function __construct(ArrayObjectInterface $arrayObject)

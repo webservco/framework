@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface SessionInterface
 {
-
     /**
      * @param mixed $setting Can be an array, a string,
      *                          or a special formatted string

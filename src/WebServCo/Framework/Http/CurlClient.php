@@ -8,7 +8,6 @@ use WebServCo\Framework\Exceptions\HttpClientException;
 
 final class CurlClient extends AbstractClient implements \WebServCo\Framework\Interfaces\HttpClientInterface
 {
-
     /**
     * cURL
     *

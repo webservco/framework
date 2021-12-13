@@ -10,7 +10,6 @@ use WebServCo\Framework\Settings;
 
 final class ConfigInstanceTest extends TestCase
 {
-
     private Config $object;
 
     private string $settingSimpleString = 'setting';

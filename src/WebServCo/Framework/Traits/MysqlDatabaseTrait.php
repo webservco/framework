@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Traits;
 
 trait MysqlDatabaseTrait
 {
-
     public function escapeIdentifier(string $string): string
     {
         return '`' . \str_replace('`', '``', $string) . '`';

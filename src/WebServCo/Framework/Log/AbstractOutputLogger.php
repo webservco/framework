@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Log;
 
 abstract class AbstractOutputLogger extends AbstractLogger
 {
-
     public function output(string $string, bool $eol = true): void
     {
         echo $string;

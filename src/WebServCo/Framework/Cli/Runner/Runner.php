@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Cli\Runner;
 
 final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
 {
-
     protected string $pid;
     protected Statistics $statistics;
     protected string $workDir;

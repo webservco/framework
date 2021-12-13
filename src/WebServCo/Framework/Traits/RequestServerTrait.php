@@ -8,7 +8,6 @@ use WebServCo\Framework\Helpers\PhpHelper;
 
 trait RequestServerTrait
 {
-
     /**
     * @return array<string,string>
     */

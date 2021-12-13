@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface DatabaseInterface
 {
-
     public function affectedRows(): int;
 
     /**

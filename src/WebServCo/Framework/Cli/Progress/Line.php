@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Cli\Progress;
 
 final class Line
 {
-
     protected int $padding;
 
     protected string $outPad;

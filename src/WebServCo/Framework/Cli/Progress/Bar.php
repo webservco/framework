@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Cli\Progress;
 //https://gist.github.com/mayconbordin/2860547
 final class Bar
 {
-
     protected string $type;
 
     protected int $width;

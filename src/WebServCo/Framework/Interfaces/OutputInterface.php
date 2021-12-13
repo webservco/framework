@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface OutputInterface
 {
-
     /**
      * @param mixed $key Can be an array, a string,
      *                          or a special formatted string

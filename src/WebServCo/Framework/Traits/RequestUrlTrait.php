@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Traits;
 
 trait RequestUrlTrait
 {
-
     abstract public function getHost(): string;
 
     abstract public function getSchema(): string;

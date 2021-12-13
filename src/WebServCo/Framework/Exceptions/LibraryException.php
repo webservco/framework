@@ -6,5 +6,4 @@ namespace WebServCo\Framework\Exceptions;
 
 final class LibraryException extends RunnerException
 {
-
 }

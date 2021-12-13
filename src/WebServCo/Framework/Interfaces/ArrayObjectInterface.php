@@ -9,7 +9,6 @@ namespace WebServCo\Framework\Interfaces;
 */
 interface ArrayObjectInterface extends \Traversable, \Countable
 {
-
     /**
     * @param array<mixed>|object $array
     * @return array<int|string,mixed>|null

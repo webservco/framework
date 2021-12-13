@@ -6,7 +6,6 @@ namespace WebServCo\Framework\DataTables;
 
 abstract class AbstractHelper
 {
-
     /**
     * @param array<string,mixed> $data
     * @param array<int,string> $required

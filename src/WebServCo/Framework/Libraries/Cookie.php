@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Libraries;
 
 final class Cookie extends \WebServCo\Framework\AbstractLibrary
 {
-
     public function get(string $name, string $defaultValue = ''): string
     {
         return $_COOKIE[$name] ?? $defaultValue;

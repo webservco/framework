@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Exceptions;
 
 class UploadException extends ApplicationException
 {
-
     public const CODE = -1;
 
     public function __construct(int $code = self::CODE, ?\Throwable $previous = null)

@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Files;
 
 final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
-
     public function __construct(string $fileName, \DOMElement $domElement, bool $formatOutput = false)
     {
         $domDocument = new \DOMDocument();

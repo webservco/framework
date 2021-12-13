@@ -6,7 +6,6 @@ namespace WebServCo\Framework\DataTables;
 
 class SearchHelper extends AbstractHelper
 {
-
     /**
     * @param array<string,mixed> $data
     * @param array<int,string> $required

@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Libraries;
 final class HtmlOutput extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\OutputInterface
 {
-
     private string $path;
     private string $template;
 

@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Http;
 
 final class StatusCode
 {
-
     /**
     * @return array<int,string>
     */

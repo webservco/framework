@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface I18nInterface
 {
-
     public function getLanguage(): string;
 
     /**

@@ -9,7 +9,6 @@ use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
 class Request
 {
-
     protected int $draw;
 
     protected Items $columns;

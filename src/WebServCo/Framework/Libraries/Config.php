@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Libraries;
 final class Config extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\ConfigInterface
 {
-
     /**
      * Stores configuration data.
      *

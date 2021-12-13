@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Traits;
 
 trait FromArrayTrait
 {
-
     /**
     * Returns an instance of the current class
     *

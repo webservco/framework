@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Traits;
 
 trait ToArrayTrait
 {
-
     /**
     * This works only for public members.
      *

@@ -8,7 +8,6 @@ use WebServCo\Framework\Http\Response;
 
 interface FileInterface
 {
-
     public function getContentType(): string;
 
     public function getDownloadResponse(): Response;

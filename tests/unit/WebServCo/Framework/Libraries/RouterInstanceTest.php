@@ -9,7 +9,6 @@ use WebServCo\Framework\Libraries\Router;
 
 final class RouterInstanceTest extends TestCase
 {
-
     /**
      * Cfg.
      *

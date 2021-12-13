@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Log;
 class CliOutputLogger extends AbstractOutputLogger implements
     \WebServCo\Framework\Interfaces\OutputLoggerInterface
 {
-
     public function clear(): bool
     {
         $this->output(\WebServCo\Framework\Cli\Ansi::clear(), true);

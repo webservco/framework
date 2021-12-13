@@ -9,7 +9,6 @@ use WebServCo\Framework\ErrorHandler;
 
 final class ErrorHandlerTest extends TestCase
 {
-
     /**
      * @test
      */

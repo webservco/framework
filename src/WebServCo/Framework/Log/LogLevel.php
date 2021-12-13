@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Log;
 
 final class LogLevel
 {
-
     public const EMERGENCY = 'emergency';
     public const ALERT = 'alert';
     public const CRITICAL = 'critical';

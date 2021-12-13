@@ -9,7 +9,6 @@ namespace WebServCo\Framework\DataTables;
 */
 class OrderArrayObject extends \ArrayObject implements \WebServCo\Framework\Interfaces\ArrayObjectInterface
 {
-
     /**
     * @param mixed $name
     * @param mixed $value

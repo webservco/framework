@@ -9,7 +9,6 @@ namespace WebServCo\Framework\Helpers;
 */
 abstract class AbstractLibraryHelper
 {
-
     protected static function loadLibraryHelper(string $name): void
     {
         $path = \sprintf(

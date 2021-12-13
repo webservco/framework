@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Database\Utils;
 
 final class PreparedStatements
 {
-
     /**
     * @param array<int,float|int|string> $data
     */

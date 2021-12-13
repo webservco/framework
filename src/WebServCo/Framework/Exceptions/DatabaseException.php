@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Exceptions;
 
 final class DatabaseException extends ApplicationException
 {
-
     public const CODE = 0;
 
     protected string $sqlState;

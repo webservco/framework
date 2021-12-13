@@ -9,7 +9,6 @@ use WebServCo\Framework\Libraries\JsonOutput;
 
 abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\OutputLoaderInterface
 {
-
     protected string $projectPath;
     protected HtmlOutput $htmlOutput;
     protected JsonOutput $jsonOutput;

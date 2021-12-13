@@ -10,7 +10,6 @@ abstract class AbstractLibrary implements
     \WebServCo\Framework\Interfaces\LibraryInterface,
     \WebServCo\Framework\Interfaces\SettingsInterface
 {
-
     /**
      * Data.
      *

@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Http;
 class Response extends \WebServCo\Framework\AbstractResponse implements
     \WebServCo\Framework\Interfaces\ResponseInterface
 {
-
     protected string $statusText;
 
     /**

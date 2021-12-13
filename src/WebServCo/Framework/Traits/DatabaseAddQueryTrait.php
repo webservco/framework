@@ -9,7 +9,6 @@ use WebServCo\Framework\Helpers\ArrayHelper;
 
 trait DatabaseAddQueryTrait
 {
-
     abstract public function escapeIdentifier(string $string): string;
 
     abstract public function escapeTableName(string $string): string;

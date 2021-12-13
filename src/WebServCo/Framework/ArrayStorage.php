@@ -8,7 +8,6 @@ use WebServCo\Framework\Exceptions\ArrayStorageException;
 
 final class ArrayStorage
 {
-
     /**
      * Add data to an existing key of a storage array.
      *

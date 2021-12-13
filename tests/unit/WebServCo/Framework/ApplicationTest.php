@@ -9,7 +9,6 @@ use WebServCo\Framework\Application as App;
 
 final class ApplicationTest extends TestCase
 {
-
     private static string $pathProject = '';
     private static string $pathWeb = '';
 

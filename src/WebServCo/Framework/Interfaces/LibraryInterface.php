@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Interfaces;
 
 interface LibraryInterface
 {
-
     /**
      * Returns data if exists, $defaultValue otherwise.
      *

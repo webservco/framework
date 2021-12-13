@@ -7,7 +7,6 @@ namespace WebServCo\Framework\Libraries;
 final class JsonOutput extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\OutputInterface
 {
-
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
     public function setTemplate(string $template): bool
     {

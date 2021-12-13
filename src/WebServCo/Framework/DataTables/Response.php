@@ -6,7 +6,6 @@ namespace WebServCo\Framework\DataTables;
 
 class Response implements \WebServCo\Framework\Interfaces\JsonInterface
 {
-
     protected int $draw;
 
     protected int $recordsTotal;

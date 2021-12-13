@@ -9,7 +9,6 @@ namespace WebServCo\Framework\Cli;
 */
 final class Sgr
 {
-
     public const RESET = 0;
     public const BOLD = 1;
     public const FAINT = 2;
