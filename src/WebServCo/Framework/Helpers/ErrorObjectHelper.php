@@ -21,13 +21,14 @@ class ErrorObjectHelper
 
         // A regular Error: create an ErrorException
         // ErrorHandler.throwErrorException already converts Error to ErrorException,
-        // and also clears the last error
-        // so in theory $lastError should always be empty.
-
+        // and also clears the last error.
+        // $lastError will contain data if an error happens before PHP script exection
+        // (so before the error handler is registered)
         $lastError = \error_get_last();
 
         if ($lastError) {
-            return new \ErrorException(
+            \error_clear_last();
+            $errorException = new \ErrorException(
                 $lastError['message'], // message
                 0, // code
                 $lastError['type'], // severity
@@ -35,6 +36,16 @@ class ErrorObjectHelper
                 $lastError['line'], // lineno
                 null, // previous
             );
+
+            // Handle: "Error: POST Content-Length of X bytes exceeds the limit of Y bytes in Unknown:0."
+            if (false !== \strpos($lastError['message'], 'POST Content-Length of ')) {
+                return new \WebServCo\Framework\Exceptions\UploadException(
+                    \WebServCo\Framework\Files\Upload\Codes::INI_SIZE, // code
+                    $errorException, // previous
+                );
+            }
+
+            return $errorException;
         }
 
         // No error

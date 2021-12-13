@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
-use WebServCo\Framework\Exceptions\ApplicationException;
-use WebServCo\Framework\Exceptions\NotFoundException;
+use WebServCo\Framework\Exceptions\NonApplicationException;
 use WebServCo\Framework\Helpers\PhpHelper;
 use WebServCo\Framework\Interfaces\ResponseInterface;
 
@@ -31,7 +30,7 @@ abstract class AbstractApplication
         $publicPath = \rtrim($publicPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
         if (!\is_readable($publicPath . 'index.php')) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Public web path is not readable.');
+            throw new NonApplicationException('Public web path is not readable.');
         }
 
         // If no custom project path is set, use parent directory of public.
@@ -60,6 +59,15 @@ abstract class AbstractApplication
             $this->loadEnvironmentSettings();
 
             $response = $this->getResponse();
+
+            // Handle errors that happen before PHP script execution (so before the error handler is registered)
+            // Call helper with no exception as parameter.
+            // Helper will check for last error and return an \ErrorException object.
+            // This code after `execute` and before `send` in order to give the app a change to handle this situation.
+            $throwable = \WebServCo\Framework\Helpers\ErrorObjectHelper::get(null);
+            if ($throwable instanceof \Throwable) {
+                throw new NonApplicationException($throwable->getMessage(), $throwable->getCode(), $throwable);
+            }
 
             $statusCode = $response->send();
 
@@ -108,7 +116,7 @@ abstract class AbstractApplication
         $className = \sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
         if (!\class_exists($className)) {
             if ('Controller' !== $classType) {
-                throw new NotFoundException(
+                throw new NonApplicationException(
                     \sprintf('No matching %s found. Target: "%s"', $classType, $target),
                 );
             }
@@ -121,11 +129,11 @@ abstract class AbstractApplication
         $object = new $className();
         $parent = \get_parent_class($object);
         if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
-            throw new NotFoundException(\sprintf('No matching Action found. Target: "%s".', $target));
+            throw new NonApplicationException(\sprintf('No matching Action found. Target: "%s".', $target));
         }
         $callable = [$object, $route->method];
         if (!\is_callable($callable)) {
-            throw new ApplicationException(\sprintf('Method not found. Target: "%s"', $target));
+            throw new NonApplicationException(\sprintf('Method not found. Target: "%s"', $target));
         }
 
         return \call_user_func_array($callable, $route->arguments);
