@@ -228,7 +228,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         $headers = [];
 
         foreach ($responseHeadersArray as $index => $line) {
-            if (0 === $index) {
+            if ('HTTP' === \substr($line, 0, 4)) {
                 continue; /* we'll get the status code elsewhere */
             }
             $parts = \explode(': ', $line, 2);
