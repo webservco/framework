@@ -72,7 +72,7 @@ $lastInsertId = $this->db->insertIgnore('<tableName>', ['<col1>' => <val1>, '<co
 * Returns lastInsertId regardless of queries executed as it's not possible to retrieve lastInsertId after commit
 
 ```php
-$lastIsnerId = $this->db->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
+$lastInsertId = $this->db->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
 ```
 
 #### Add multiple items at once
