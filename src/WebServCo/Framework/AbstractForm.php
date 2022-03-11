@@ -142,15 +142,13 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 
     /**
      * @param mixed $key
-     * @param mixed $defaultValue
-     * @return mixed
      */
-    final public function required($key, $defaultValue = null)
+    final public function required($key): bool
     {
-        return $this->setting(
-            \sprintf('required/%s', $key),
-            $defaultValue,
-        );
+        // Retrieve list of required fields
+        $required = $this->setting('required', []);
+        // If exists, it's required.
+        return \in_array($key, $required, true);
     }
 
     /**
