@@ -6,11 +6,15 @@ In controller:
 
 ### Default `pageTemplate`, default `mainTemplate`
 
+* Returns `\WebServCo\Framework\Http\Response`
+
 ```php
 return $this->outputHtml($this->getData(), $this->getView(__FUNCTION__));
 ```
 
 ### Custom `mainTemplate`
+
+* Returns `\WebServCo\Framework\Http\Response`
 
 ```php
 return $this->outputHtml($this->getData(), $this->getView(__FUNCTION__), 'customMainTemplate');
@@ -18,8 +22,27 @@ return $this->outputHtml($this->getData(), $this->getView(__FUNCTION__), 'custom
 
 ### `pageTemplate` is optional
 
+* Returns `\WebServCo\Framework\Http\Response`
+
 ```php
 return $this->outputHtml($this->getData(), '', '404');
+```
+
+### Partial template (no main template)
+
+* Returns `\WebServCo\Framework\Http\Response`
+
+```php
+return $this->outputHtmlPartial($this->getData(), 'client/address');
+```
+
+### Partial template (no main template): string only
+
+* Returns string
+* Use case: Using a partial template inside another template (set in controller)
+
+```php
+return $this->output()->html($this->getData(), 'client/address');
 ```
 
 ---
@@ -39,7 +62,7 @@ echo $html;
 
 ---
 
-## Using a partial template inside another template.
+## Using a partial template inside another template (set in template).
 
 * Use inside template code;
 * Eg. using an individual item template in a `foreach` loop;
