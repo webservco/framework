@@ -20,6 +20,8 @@ Warning: Because of how \strtotime works, an invalid date will be converted to t
 
 If you need to validate a date, do not format it beforehand.
 
+Use either format or validaton, but not both.
+
 ### `validate(string $date, string $format = 'Y-m-d')`
 
 Validate an already formatted date.
