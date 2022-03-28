@@ -10,6 +10,9 @@ class DateHelper
 {
     /**
     * Format a date.
+    *
+    * Warning: Because of how \strtotime works, an invalid date will be converted to the next valid value.
+    * If you need to validate a date, do not format it beforehand.
     */
     public static function format(string $date, string $format = 'Y-m-d'): string
     {
