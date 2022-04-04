@@ -43,7 +43,7 @@ class Application extends AbstractApplication
         $output .= \sprintf('<h1>%s</h1>', 404 === $throwable->getCode() ? 'Resource not found' : 'Boo boo');
 
         if (
-            \WebServCo\Framework\Environment\Value::DEVELOPMENT
+            \WebServCo\Framework\Values\Environment::DEVELOPMENT
             === \WebServCo\Framework\Environment\Config::string('APP_ENVIRONMENT')
         ) {
             $output .= \sprintf(

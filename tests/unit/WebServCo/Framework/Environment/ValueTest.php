@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Framework\Environment;
 
 use PHPUnit\Framework\TestCase;
-use WebServCo\Framework\Environment\Value;
+use WebServCo\Framework\Values\Environment;
 
 final class ValueTest extends TestCase
 {
@@ -14,7 +14,7 @@ final class ValueTest extends TestCase
      */
     public function constantEnvDevHasExpectedValue(): void
     {
-        $this->assertEquals('development', Value::DEVELOPMENT);
+        $this->assertEquals('development', Environment::DEVELOPMENT);
     }
 
     /**
@@ -22,7 +22,7 @@ final class ValueTest extends TestCase
      */
     public function constantEnvTestHasExpectedValue(): void
     {
-        $this->assertEquals('testing', Value::TESTING);
+        $this->assertEquals('testing', Environment::TESTING);
     }
 
     /**
@@ -30,7 +30,7 @@ final class ValueTest extends TestCase
      */
     public function constantEnvStagingHasExpectedValue(): void
     {
-        $this->assertEquals('staging', Value::STAGING);
+        $this->assertEquals('staging', Environment::STAGING);
     }
 
     /**
@@ -38,6 +38,6 @@ final class ValueTest extends TestCase
      */
     public function constantEnvProdHasExpectedValue(): void
     {
-        $this->assertEquals('production', Value::PRODUCTION);
+        $this->assertEquals('production', Environment::PRODUCTION);
     }
 }

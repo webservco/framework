@@ -16,7 +16,7 @@ final class Setting
         $key = self::getValidatedKey($key);
         switch ($key) {
             case 'APP_ENVIRONMENT':
-                Value::validate($value);
+                \WebServCo\Framework\Helpers\EnvironmentHelper::validate($value);
                 break;
             default:
                 break;
