@@ -30,10 +30,13 @@ final class RequestHelper
         $parts = self::split($string);
         $num = \count($parts);
         for ($position = 0; $position < $num; $position += 2) {
+            if (!\array_key_exists($position, $parts)) {
+                // Prevents "Notice: Undefined offset: 2." in request like "&lang=/'/"
+                continue;
+            }
             $data[$parts[$position]] = $position === $num - 1
                 ? null
-                :
-            $parts[$position + 1];
+                : $parts[$position + 1];
         }
         return $data;
     }
