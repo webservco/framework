@@ -16,6 +16,7 @@ class Upload extends \WebServCo\Framework\Files\Upload\AbstractUpload
 ```php
 // Handle errors that happen before PHP script execution
 // Example: "Error: POST Content-Length of X bytes exceeds the limit of Y bytes in Unknown:0."
+// Should be placed as early in the code as possible
 $throwable = \WebServCo\Framework\Helpers\ErrorObjectHelper::get(null);
 if ($throwable instanceof \WebServCo\Framework\Exceptions\UploadException) {
     $this->setData('alert/message', $throwable->getMessage());
@@ -39,13 +40,16 @@ $uploadDirectory = ...
 
 $upload = new Upload($uploadDirectory);
 $upload->setFormFieldName('upload');
-$upload->setAllowedExtensions($allowedExtensions);
+$upload->setAllowedExtensions($allowedExtensions); // or set in the AbstractUpload implementing class constructor
 
 try {
     $upload->do(); // throws \WebServCo\Framework\Exceptions\UploadException
-    $uploadedFileName = $upload->getFileName();
+    $uploadedFileName = $upload->getFileName(); // file name only, not complete path
     // functionality
 } catch (\WebServCo\Framework\Exceptions\UploadException $e) {
     // error handling
+    // If upload field is not the only form field, and optional, further validation is needed:
+    //$uploadErrorCode = $e->getCode();
+    //if (4 !== $uploadErrorCode) { // "No file was uploaded". No problem if field not mandatory.
 }
 ```
