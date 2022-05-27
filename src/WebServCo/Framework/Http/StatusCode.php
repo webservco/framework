@@ -71,6 +71,11 @@ final class StatusCode
             508 => 'Loop Detected',
             510 => 'Not Extended',
             511 => 'Network Authentication Required',
+            // Unofficial codes
+            // "Cloudflare's reverse proxy service expands the 5xx series of errors space
+            // to signal issues with the origin server"
+            525 => 'SSL Handshake Failed', // Cloudflare could not negotiate a SSL/TLS handshake with the origin server.
+
         ];
     }
 }
