@@ -41,6 +41,7 @@ final class ErrorHandler
         // Code below handles this.
         // https://www.php.net/manual/en/language.operators.errorcontrol.php
         // https://www.php.net/manual/en/function.set-error-handler.php
+        // https://www.php.net/manual/en/migration80.incompatible.php
         if (!(\error_reporting() & $errno)) { // bitwise operator, not a typo
             // This error code is not included in error_reporting, so let it fall
             // through to the standard PHP error handler
