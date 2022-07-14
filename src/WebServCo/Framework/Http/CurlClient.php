@@ -170,7 +170,9 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
                     if (\is_array($this->requestData)) {
                         $this->setRequestHeader('Content-Type', 'multipart/form-data');
                     } else {
-                        $this->setRequestHeader('Content-Type', $this->requestContentType);
+                        if ($this->requestContentType) {
+                            $this->setRequestHeader('Content-Type', $this->requestContentType);
+                        }
                         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
                         $this->setRequestHeader('Content-Length', (string) \strlen($this->requestData));
                     }

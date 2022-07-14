@@ -14,7 +14,7 @@ abstract class AbstractClient
 
     protected string $method;
 
-    protected string $requestContentType;
+    protected ?string $requestContentType;
 
     /**
     * Request data
@@ -50,11 +50,11 @@ abstract class AbstractClient
         $this->logger = $logger;
         $this->debug = false;
         $this->skipSslVerification = false;
-        $this->requestHeaders = [];
-        // Default Content-Type for
-        $this->requestContentType = 'application/x-www-form-urlencoded';
         $this->response = '';
         $this->timeout = 60;
+
+        // Reset headers and data.
+        $this->reset();
     }
 
     public function get(string $url): Response
@@ -95,6 +95,20 @@ abstract class AbstractClient
             $this->setRequestData($data);
         }
         return $this->retrieve($url);
+    }
+
+    /**
+     * Reset headers and data.
+     *
+     * Needs to be called if running multiple times in a row.
+     */
+    public function reset(): bool
+    {
+        $this->requestContentType = null;
+        $this->requestHeaders = [];
+        $this->requestData = [];
+
+        return true;
     }
 
     public function setDebug(bool $debug): bool

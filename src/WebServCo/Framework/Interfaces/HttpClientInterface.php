@@ -6,6 +6,8 @@ namespace WebServCo\Framework\Interfaces;
 
 interface HttpClientInterface
 {
+    public function reset(): bool;
+
     public function retrieve(string $url): \WebServCo\Framework\Http\Response;
 
     public function setDebug(bool $debug): bool;
