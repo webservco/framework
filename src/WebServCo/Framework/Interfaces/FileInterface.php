@@ -17,4 +17,6 @@ interface FileInterface
     public function getFileName(): string;
 
     public function getOutputResponse(): Response;
+
+    public function setFileName(string $fileName): bool;
 }

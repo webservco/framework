@@ -70,4 +70,10 @@ abstract class AbstractFile
             ],
         );
     }
+
+    public function setFileName(string $fileName): bool
+    {
+        $this->fileName = $fileName;
+        return true;
+    }
 }
