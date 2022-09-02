@@ -63,7 +63,7 @@ abstract class AbstractApplication
             // Handle errors that happen before PHP script execution (so before the error handler is registered)
             // Call helper with no exception as parameter.
             // Helper will check for last error and return an \ErrorException object.
-            // This code after `execute` and before `send` in order to give the app a change to handle this situation.
+            // This code after `execute` and before `send` in order to give the app a chance to handle this situation.
             $throwable = \WebServCo\Framework\Helpers\ErrorObjectHelper::get(null);
             if ($throwable instanceof \Throwable) {
                 throw new NonApplicationException($throwable->getMessage(), $throwable->getCode(), $throwable);
