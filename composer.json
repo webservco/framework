@@ -49,5 +49,10 @@
         "s:8": "phpstan analyse src tests --level=8 --ansi -c phpstan.neon",
         "test" : "phpunit --colors=always",
         "test:d" : "phpunit --testdox"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
