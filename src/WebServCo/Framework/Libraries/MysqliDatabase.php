@@ -1,6 +1,7 @@
 <?php
 namespace WebServCo\Framework\Libraries;
 
+use RuntimeException;
 use WebServCo\Framework\Settings;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
@@ -57,6 +58,11 @@ final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implemen
         $this->mysqliResult = $this->stmt->get_result();
         $row = $this->mysqliResult->fetch_array(MYSQLI_NUM);
         return array_key_exists($columnNumber, $row) ? $row[$columnNumber] : false;
+    }
+
+    public function getPdo()
+    {
+        throw new RuntimeException('Functionality not implemented.');
     }
 
     public function getRow($query, $params = [])

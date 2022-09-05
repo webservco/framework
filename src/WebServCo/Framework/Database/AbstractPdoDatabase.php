@@ -83,6 +83,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         }
     }
 
+    public function getPdo()
+    {
+        return $this->db;
+    }
+
     public function getRow($query, $params = [])
     {
         $this->query($query, $params);

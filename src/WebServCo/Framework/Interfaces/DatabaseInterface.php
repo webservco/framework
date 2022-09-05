@@ -3,6 +3,8 @@ namespace WebServCo\Framework\Interfaces;
 
 interface DatabaseInterface
 {
+    public function getPdo();
+
     public function escape($string);
 
     public function query($query, $values = []);
