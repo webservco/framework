@@ -69,6 +69,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         return $this->stmt->fetchColumn($columnNumber);
     }
 
+    public function getPdo(): \PDO
+    {
+        return $this->db;
+    }
+
     /**
     * @param array<int,float|int|string> $params
     * @return array<string,float|int|string>
