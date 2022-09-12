@@ -6,6 +6,17 @@ namespace WebServCo\Framework\Http;
 
 use WebServCo\Framework\Exceptions\HttpClientException;
 
+/**
+ *  A HTTP client usieng cURL.
+ *
+ * PHP 8 compatibility notes.
+ * https://www.php.net/manual/en/migration80.incompatible.php
+ * "curl_init() will now return a CurlHandle object rather than a resource."
+ * "Return value checks using is_resource() should be replaced with checks for false."
+ * old code:
+ * if (!\is_resource($this->curl)) {
+ * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
+*/
 final class CurlClient extends AbstractClient implements \WebServCo\Framework\Interfaces\HttpClientInterface
 {
     /**
@@ -56,16 +67,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         $this->debugInit();
 
         $this->curl = \curl_init();
-        /**
-         * PHP 8 compatibility.
-         *
-         * https://www.php.net/manual/en/migration80.incompatible.php
-         * "curl_init() will now return a CurlHandle object rather than a resource."
-         * "Return value checks using is_resource() should be replaced with checks for false."
-         * old code:
-         * if (!\is_resource($this->curl)) {
-         * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
-         */
+
         if (false === $this->curl) {
             // Not in the try/catch/finally block as there is nothing to close or debug at this point.
             throw new HttpClientException('Not a valid cURL resource.');
@@ -171,16 +173,6 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
     protected function handleRequestMethod(): bool
     {
-        /**
-         * PHP 8 compatibility.
-         *
-         * https://www.php.net/manual/en/migration80.incompatible.php
-         * "curl_init() will now return a CurlHandle object rather than a resource."
-         * "Return value checks using is_resource() should be replaced with checks for false."
-         * old code:
-         * if (!\is_resource($this->curl)) {
-         * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
-         */
         if (false === $this->curl) {
             throw new HttpClientException('Not a valid resource.');
         }
@@ -272,7 +264,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
     protected function setCurlOptions(string $url): bool
     {
-        if (!\is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpClientException('Not a valid resource.');
         }
 
@@ -301,7 +293,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
     protected function setRequestHeaders(): bool
     {
-        if (!\is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpClientException('Not a valid resource.');
         }
 
