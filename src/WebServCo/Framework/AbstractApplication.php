@@ -128,12 +128,22 @@ abstract class AbstractApplication
 
         $object = new $className();
         $parent = \get_parent_class($object);
-        if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
-            throw new NonApplicationException(\sprintf('No matching Action found. Target: "%s".', $target));
+        /**
+         * PHP 8 compatibility.
+         *
+         * https://www.php.net/manual/en/migration80.incompatible.php
+         * "The ability to call non-static methods statically has been removed.
+         * Thus is_callable() will fail when checking for a non-static method with a classname
+         * (must check with an object instance). "
+         * old line:
+         * if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
+         */
+        if (\method_exists((string) $parent, $route->method) || !\method_exists($className, $route->method)) {
+            throw new NonApplicationException(\sprintf('No valid matching Action found. Target: "%s".', $target));
         }
         $callable = [$object, $route->method];
         if (!\is_callable($callable)) {
-            throw new NonApplicationException(\sprintf('Method not found. Target: "%s"', $target));
+            throw new NonApplicationException(\sprintf('Method is not callable. Target: "%s"', $target));
         }
 
         return \call_user_func_array($callable, $route->arguments);
