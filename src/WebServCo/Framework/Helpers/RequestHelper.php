@@ -99,7 +99,16 @@ final class RequestHelper
     public static function sanitizeString(string $string): string
     {
         // Strip tags, optionally strip or encode special characters.
-        $string = \filter_var($string, \FILTER_SANITIZE_STRING);
+        /**
+         * FILTER_SANITIZE_STRING is deprecated since PHP 8.1.
+         *
+         * $string = \filter_var($string, \FILTER_SANITIZE_STRING);
+         * Use a polyfill instead.
+         * Source: https://stackoverflow.com/a/69207369
+         */
+        $string = \preg_replace('/\x00|<[^>]*>?/', '', $string);
+        $string = \str_replace(["'", '"'], ['&#39;', '&#34;'], $string);
+
         $unwanted = [
             "`",
             //"'",
