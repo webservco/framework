@@ -56,7 +56,17 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         $this->debugInit();
 
         $this->curl = \curl_init();
-        if (!\is_resource($this->curl)) {
+        /**
+         * PHP 8 compatibility.
+         *
+         * https://www.php.net/manual/en/migration80.incompatible.php
+         * "curl_init() will now return a CurlHandle object rather than a resource."
+         * "Return value checks using is_resource() should be replaced with checks for false."
+         * old code:
+         * if (!\is_resource($this->curl)) {
+         * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
+         */
+        if (false === $this->curl) {
             // Not in the try/catch/finally block as there is nothing to close or debug at this point.
             throw new HttpClientException('Not a valid cURL resource.');
         }
@@ -91,7 +101,16 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
             $this->debugInfo = \curl_getinfo($this->curl);
 
+            /**
+             * PHP 8 compatibility.
+             *
+             * https://www.php.net/manual/en/migration80.incompatible.php
+             * "The curl_close() function no longer has an effect,
+             * instead the CurlHandle instance is automatically destroyed if it is no longer referenced. "
+             * Use `unset` for PHP 8 compatibility (https://php.watch/versions/8.0/resource-CurlHandle)
+             */
             \curl_close($this->curl);
+            unset($this->curl);
 
             $this->debugFinish();
         }
