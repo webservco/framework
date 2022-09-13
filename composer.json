@@ -40,10 +40,11 @@
         }
     },
     "scripts" : {
-        "all": "clear && composer lint && composer check && composer s:5 && composer test",
+        "all": "clear && composer lint && composer check && composer s:3",
         "check" : "vendor/bin/phpcs --standard=php-coding-standard.xml --extensions=php -sp config public resources src",
         "check:structure" : "pds-skeleton validate .",
         "lint": "vendor/bin/parallel-lint src tests",
+        "s:3": "phpstan analyse src --level=3 --ansi -c phpstan.neon",
         "s:5": "phpstan analyse src --level=5 --ansi -c phpstan.neon",
         "s:6": "phpstan analyse src --level=6 --ansi -c phpstan.neon",
         "s:7": "phpstan analyse src --level=7 --ansi -c phpstan.neon",
