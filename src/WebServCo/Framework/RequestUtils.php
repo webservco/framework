@@ -16,7 +16,7 @@ final class RequestUtils
 
     public static function transform($string)
     {
-        $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], $string);
+        $string = str_replace(['?','&','=','//'], ['','/','/','/0/'], (string) $string);
         return trim($string, ' /');
     }
 
