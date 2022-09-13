@@ -1,5 +1,4 @@
 parameters:
-	phpVersion: 70100 # PHP 7.1
 	inferPrivatePropertyTypeFromConstructor: true
 	bootstrapFiles:
 		- %currentWorkingDirectory%/src/WebServCo/Framework/Helpers/I18nHelper.php
