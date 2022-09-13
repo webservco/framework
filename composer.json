@@ -15,17 +15,18 @@
         }
     ],
     "require" : {
-        "php" : "^7.1"
+        "php" : "^7.1||^8.1"
     },
     "require-dev" : {
         "pds/skeleton" : "^1.0",
         "phpunit/phpunit" : "~5",
-        "php-parallel-lint/php-parallel-lint": "^1.2",
-        "php-parallel-lint/php-console-highlighter": "^0.5",
-        "phpstan/phpstan-strict-rules": "^0.12",
-        "phpstan/phpstan" : "^0.12",
-        "slevomat/coding-standard": "^6.4",
-        "squizlabs/php_codesniffer" : "^3.5"
+        "php-parallel-lint/php-parallel-lint": "^1",
+        "php-parallel-lint/php-console-highlighter": "^1",
+        "phpcompatibility/php-compatibility": "@dev",
+        "phpstan/phpstan-strict-rules": "^1",
+        "phpstan/phpstan" : "^1",
+        "slevomat/coding-standard": "^8",
+        "squizlabs/php_codesniffer" : "^3"
     },
     "suggest" : {
         "pds/skeleton" : "A standard filesystem skeleton suitable for all PHP packages.",
@@ -40,7 +41,7 @@
     },
     "scripts" : {
         "all": "clear && composer lint && composer check && composer s:5 && composer test",
-        "check" : "phpcs --standard=PSR2 --extensions=php src tests",
+        "check" : "vendor/bin/phpcs --standard=php-coding-standard.xml --extensions=php -sp config public resources src",
         "check:structure" : "pds-skeleton validate .",
         "lint": "vendor/bin/parallel-lint src tests",
         "s:5": "phpstan analyse src tests --level=5 --ansi -c phpstan.neon",
