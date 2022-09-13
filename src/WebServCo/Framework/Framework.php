@@ -6,12 +6,12 @@ use WebServCo\Framework\Exceptions\ApplicationException;
 
 final class Framework
 {
-    const OS_WINDOWS = 'Windows';
-    const OS_LINUX = 'Linux';
-    const OS_UNSUPPORTED = 'Unsupported';
+    public const OS_WINDOWS = 'Windows';
+    public const OS_LINUX = 'Linux';
+    public const OS_UNSUPPORTED = 'Unsupported';
 
-    const TYPE_FRAMEWORK = 'Framework';
-    const TYPE_PROJECT = 'Project';
+    public const TYPE_FRAMEWORK = 'Framework';
+    public const TYPE_PROJECT = 'Project';
 
     /**
      * Stores Framework Library instances.

@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Exceptions;
 
 class HttpBrowserException extends HttpException
 {
-    const CODE = 500;
+    public const CODE = 500;
 
     public function __construct($message, \Exception $previous = null)
     {

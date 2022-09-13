@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Exceptions;
 
 final class NotFoundException extends HttpException
 {
-    const CODE = 404;
+    public const CODE = 404;
 
     public function __construct($message, \Exception $previous = null)
     {

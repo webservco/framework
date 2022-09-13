@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Exceptions;
 
 class ApplicationException extends \Exception
 {
-    const CODE = 500;
+    public const CODE = 500;
 
     public function __construct($message, $code = self::CODE, \Exception $previous = null)
     {

@@ -4,16 +4,16 @@ namespace WebServCo\Framework\Files\Upload;
 
 final class Codes
 {
-    const OK = 0;
-    const INI_SIZE = 1;
-    const FORM_SIZE = 2;
-    const PARTIAL = 3;
-    const NO_FILE = 4;
-    const NO_TMP_DIR = 6;
-    const CANT_WRITE = 7;
-    const EXTENSION = 8;
+    public const OK = 0;
+    public const INI_SIZE = 1;
+    public const FORM_SIZE = 2;
+    public const PARTIAL = 3;
+    public const NO_FILE = 4;
+    public const NO_TMP_DIR = 6;
+    public const CANT_WRITE = 7;
+    public const EXTENSION = 8;
     /* custom codes */
-    const TYPE_NOT_ALLOWED = 91;
+    public const TYPE_NOT_ALLOWED = 91;
 
     public static function getMessage($errorCode)
     {

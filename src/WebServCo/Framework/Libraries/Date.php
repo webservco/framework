@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Libraries;
 
 final class Date extends \WebServCo\Framework\AbstractLibrary
 {
-    const DEFAULT_TIMEZONE = 'Europe/Rome';
+    public const DEFAULT_TIMEZONE = 'Europe/Rome';
 
     public function setTimezone($timezoneIdentifier = null)
     {

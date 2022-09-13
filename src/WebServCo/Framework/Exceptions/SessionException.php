@@ -4,7 +4,7 @@ namespace WebServCo\Framework\Exceptions;
 
 final class SessionException extends ApplicationException
 {
-    const CODE = 0;
+    public const CODE = 0;
 
     public function __construct($message, \Exception $previous = null)
     {

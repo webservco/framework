@@ -10,7 +10,7 @@ abstract class AbstractFile
     protected $fileData;
     protected $contentType;
 
-    const CONTENT_TYPE = 'application/octet-stream';
+    public const CONTENT_TYPE = 'application/octet-stream';
 
     public function __construct($fileName, $fileData, $contentType = self::CONTENT_TYPE)
     {
