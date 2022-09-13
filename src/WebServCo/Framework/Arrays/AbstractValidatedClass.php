@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Arrays;
 
 abstract class AbstractValidatedClass

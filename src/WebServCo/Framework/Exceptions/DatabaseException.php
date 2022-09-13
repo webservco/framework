@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Exceptions;
 
 final class DatabaseException extends ApplicationException

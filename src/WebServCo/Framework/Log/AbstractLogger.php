@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Log;
 
 abstract class AbstractLogger

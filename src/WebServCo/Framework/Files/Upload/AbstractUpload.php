@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Files\Upload;
 
 use WebServCo\Framework\Exceptions\UploadException;
@@ -48,12 +49,12 @@ abstract class AbstractUpload
         );
         $this->fileMimeType = $_FILES[$this->formFieldName]['type'];
 
-        if (!move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory.$this->fileName)) {
+        if (!move_uploaded_file($_FILES[$this->formFieldName]['tmp_name'], $this->uploadDirectory . $this->fileName)) {
             throw new UploadException(Codes::CANT_WRITE);
         }
 
         try {
-            chmod($this->uploadDirectory.$this->fileName, 0664);
+            chmod($this->uploadDirectory . $this->fileName, 0664);
         } catch (\Exception $e) {
             // Operation not permitted
         }

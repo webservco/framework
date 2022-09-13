@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 final class RequestUtils
@@ -24,8 +25,8 @@ final class RequestUtils
         $data = [];
         $parts = self::split($string);
         $num = count($parts);
-        for ($position = 0; $position < $num; $position +=2) {
-            $data[$parts[$position]] = $position == $num -1 ? null :
+        for ($position = 0; $position < $num; $position += 2) {
+            $data[$parts[$position]] = $position == $num - 1 ? null :
             $parts[$position + 1];
         }
         return $data;

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\ErrorHandler;
@@ -45,8 +46,10 @@ class Application extends \WebServCo\Framework\AbstractApplication
         try {
             $response = $this->execute();
             $statusCode = 0;
-            if ($response instanceof
-                \WebServCo\Framework\Interfaces\ResponseInterface) {
+            if (
+                $response instanceof
+                \WebServCo\Framework\Interfaces\ResponseInterface
+            ) {
                 $statusCode = $response->send();
             }
             $this->shutdown(null, true, Framework::isCli() ? $statusCode : 0);
@@ -97,10 +100,12 @@ class Application extends \WebServCo\Framework\AbstractApplication
             /* remove in V10 */
         }
 
-        $object = new $className;
+        $object = new $className();
         $parent = get_parent_class($object);
-        if (method_exists((string) $parent, $method) ||
-            !is_callable([$className, $method])) {
+        if (
+            method_exists((string) $parent, $method) ||
+            !is_callable([$className, $method])
+        ) {
             throw new NotFoundException(sprintf('No matching Action found. Target: "%s".', $target));
         }
         $callable = [$object, $method];
@@ -115,7 +120,7 @@ class Application extends \WebServCo\Framework\AbstractApplication
      *
      * This method is also registered as a shutdown handler.
      */
-    final public function shutdown($exception = null, $manual = false, $statusCode = 0) : void
+    final public function shutdown($exception = null, $manual = false, $statusCode = 0): void
     {
         $hasError = $this->handleErrors($exception);
         if ($hasError) {

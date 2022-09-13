@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Interfaces;
 
 interface OutputLoggerInterface extends LoggerInterface

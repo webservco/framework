@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Cli\Runner;
 
 final class Statistics

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class MysqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements

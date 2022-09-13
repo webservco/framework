@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\DataTables;
 
 class Response implements \WebServCo\Framework\Interfaces\JsonInterface

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Cli;
 
 final class Response extends \WebServCo\Framework\AbstractResponse implements

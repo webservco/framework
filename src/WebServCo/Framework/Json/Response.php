@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Json;
 
 class Response extends \WebServCo\Framework\Http\Response

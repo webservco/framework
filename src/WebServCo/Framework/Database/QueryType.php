@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Database;
 
 final class QueryType

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\DataTables;
 
 use WebServCo\Framework\ArrayObject\Items;

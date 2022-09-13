@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Files;
 
 use WebServCo\Framework\Http\Response;

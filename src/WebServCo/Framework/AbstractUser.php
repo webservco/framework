@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 abstract class AbstractUser extends \WebServCo\Framework\AbstractLibrary

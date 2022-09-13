@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Log;
 
 class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\Interfaces\OutputLoggerInterface

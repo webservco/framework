@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Files;
 
 class XmlFile extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
@@ -7,7 +8,7 @@ class XmlFile extends AbstractFile implements \WebServCo\Framework\Interfaces\Fi
 
     public function __construct($fileName, $fileData, $formatOutput = false)
     {
-        $domDocument = new \DOMDocument;
+        $domDocument = new \DOMDocument();
         $domDocument->preserveWhiteSpace = false;
         if ($formatOutput) {
             $domDocument->formatOutput = true;

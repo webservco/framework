@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Log;
 
 use WebServCo\Framework\Exceptions\ApplicationException;

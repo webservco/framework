@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Exceptions;
 
 class UploadException extends ApplicationException

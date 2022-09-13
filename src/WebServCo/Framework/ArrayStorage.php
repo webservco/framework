@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Exceptions\ArrayStorageException;
@@ -11,8 +12,10 @@ final class ArrayStorage
      */
     private static function parseSetting($setting)
     {
-        if (is_string($setting) &&
-        false !== strpos($setting, \WebServCo\Framework\Settings::DIVIDER)) {
+        if (
+            is_string($setting) &&
+            false !== strpos($setting, \WebServCo\Framework\Settings::DIVIDER)
+        ) {
             return explode(\WebServCo\Framework\Settings::DIVIDER, $setting);
         }
         return $setting;
@@ -191,7 +194,8 @@ final class ArrayStorage
             throw new ArrayStorageException('Invalid parameters specified.');
         }
         foreach ($data as $setting => $value) {
-            if (array_key_exists($setting, $storage) &&
+            if (
+                array_key_exists($setting, $storage) &&
                 is_array($storage[$setting]) &&
                 is_array($value)
             ) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Http\Method;
@@ -53,11 +54,13 @@ trait RequestProcessTrait
 
     protected function setMethod()
     {
-        if (empty($this->server['REQUEST_METHOD']) ||
-        !in_array(
-            $this->server['REQUEST_METHOD'],
-            Method::getSupported()
-        )) {
+        if (
+            empty($this->server['REQUEST_METHOD']) ||
+            !in_array(
+                $this->server['REQUEST_METHOD'],
+                Method::getSupported()
+            )
+        ) {
             return false;
         }
         $this->method = $this->server['REQUEST_METHOD'];

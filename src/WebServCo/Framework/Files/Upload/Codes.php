@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Files\Upload;
 
 final class Codes

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class I18n extends \WebServCo\Framework\AbstractLibrary implements \WebServCo\Framework\Interfaces\I18nInterface

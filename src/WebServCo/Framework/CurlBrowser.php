@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Http\Method;
@@ -193,7 +194,7 @@ final class CurlBrowser implements
 
     protected function getHttpCode()
     {
-        return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code']: false;
+        return isset($this->debugInfo['http_code']) ? $this->debugInfo['http_code'] : false;
     }
 
     protected function handleRequestMethod()

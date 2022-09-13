@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Traits;
 
 trait PgsqlDatabaseTrait

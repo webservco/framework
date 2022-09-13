@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Http;
 
 final class StatusCode

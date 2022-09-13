@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary

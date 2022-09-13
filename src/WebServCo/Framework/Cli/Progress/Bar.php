@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Cli\Progress;
 
 //https://gist.github.com/mayconbordin/2860547
@@ -68,19 +69,19 @@ final class Bar
             "%s%% [%s>%s] %s",
             $percent,
             str_repeat('=', $bar),
-            str_repeat(' ', (int) round($this->width-$bar)),
+            str_repeat(' ', (int) round($this->width - $bar)),
             $this->item . '/' . $this->total
         );
         $this->outMessage = $message;
 
         $padLen = ($this->width + $this->padding) - strlen($this->outBar);
         $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : null;
-        return $this->outBar.$this->outPad.$this->outMessage;
+        return $this->outBar . $this->outPad . $this->outMessage;
     }
 
     protected function suffixSingle($result, $overwrite = false)
     {
-        $totalLen = strlen($this->outBar.$this->outPad.$this->outMessage);
+        $totalLen = strlen($this->outBar . $this->outPad . $this->outMessage);
         $output = null;
 
         if ($overwrite) {

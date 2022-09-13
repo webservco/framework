@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Database;
 
 abstract class AbstractObject

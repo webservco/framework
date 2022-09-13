@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Framework;
@@ -84,11 +85,15 @@ trait RequestServerTrait
 
         if (isset($this->server['HTTPS']) && 'off' != $this->server['HTTPS']) {
             return 'https';
-        } elseif (isset($this->server['HTTP_X_FORWARDED_PROTO']) &&
-        'https' == $this->server['HTTP_X_FORWARDED_PROTO']) {
+        } elseif (
+            isset($this->server['HTTP_X_FORWARDED_PROTO']) &&
+            'https' == $this->server['HTTP_X_FORWARDED_PROTO']
+        ) {
             return 'https';
-        } elseif (isset($this->server['HTTP_X_FORWARDED_SSL']) &&
-        'on' == $this->server['HTTP_X_FORWARDED_SSL']) {
+        } elseif (
+            isset($this->server['HTTP_X_FORWARDED_SSL']) &&
+            'on' == $this->server['HTTP_X_FORWARDED_SSL']
+        ) {
             return 'https';
         }
         return 'http';

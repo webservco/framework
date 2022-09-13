@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class Router extends \WebServCo\Framework\AbstractLibrary
@@ -47,8 +48,9 @@ final class Router extends \WebServCo\Framework\AbstractLibrary
                  /**
                   * Check for a custom route match.
                   */
-                if (preg_match("#^{$k}$#", $requestCustom) ||
-                preg_match("#^{$k}/$#", $requestCustom)
+                if (
+                    preg_match("#^{$k}$#", $requestCustom) ||
+                    preg_match("#^{$k}/$#", $requestCustom)
                 ) {
                     /**
                      * Check for back references.

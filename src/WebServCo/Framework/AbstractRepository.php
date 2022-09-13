@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 abstract class AbstractRepository extends \WebServCo\Framework\AbstractLibrary

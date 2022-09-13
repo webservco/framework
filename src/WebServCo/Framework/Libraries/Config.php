@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class Config extends \WebServCo\Framework\AbstractLibrary implements
@@ -42,7 +43,7 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
      */
     public function load($setting, $pathProject)
     {
-        $pathFull = "{$pathProject}config/".$this->getEnv()."/{$setting}.php";
+        $pathFull = "{$pathProject}config/" . $this->getEnv() . "/{$setting}.php";
         if (!is_readable($pathFull)) {
             return false;
         }

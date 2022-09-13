@@ -1,4 +1,5 @@
 <?php
+
 namespace {
 
     if (!function_exists('__')) {

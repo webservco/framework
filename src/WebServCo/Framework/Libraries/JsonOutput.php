@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class JsonOutput extends \WebServCo\Framework\AbstractLibrary implements

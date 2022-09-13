@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\DataTables;
 
 class SearchHelper extends AbstractHelper

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Libraries;
 
 final class Request extends \WebServCo\Framework\AbstractRequest implements

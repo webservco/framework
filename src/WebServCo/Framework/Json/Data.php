@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Json;
 
 class Data implements \WebServCo\Framework\Interfaces\JsonInterface

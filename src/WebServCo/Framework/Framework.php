@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework;
 
 use WebServCo\Framework\Exceptions\ApplicationException;

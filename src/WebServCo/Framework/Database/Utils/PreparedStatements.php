@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Database\Utils;
 
 final class PreparedStatements

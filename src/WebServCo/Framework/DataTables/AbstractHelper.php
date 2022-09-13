@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\DataTables;
 
 abstract class AbstractHelper

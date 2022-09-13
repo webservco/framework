@@ -1,4 +1,5 @@
 <?php
+
 namespace WebServCo\Framework\Exceptions\Validation;
 
 class ValidationException extends \WebServCo\Framework\Exceptions\ApplicationException
