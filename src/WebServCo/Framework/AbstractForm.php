@@ -4,6 +4,8 @@ namespace WebServCo\Framework;
 
 abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
 {
+    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
+
     protected $errors;
 
     protected $filtered;
@@ -13,8 +15,6 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     protected $submitField;
 
     protected $valid;
-
-    use \WebServCo\Framework\Traits\ExposeLibrariesTrait;
 
     /**
      * @return bool

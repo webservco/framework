@@ -9,13 +9,13 @@ use WebServCo\Framework\Exceptions\DatabaseException;
 final class MysqliDatabase extends \WebServCo\Framework\AbstractLibrary implements
     \WebServCo\Framework\Interfaces\DatabaseInterface
 {
-    protected $db;
-    protected $stmt;
-    protected $rows;
-
     use \WebServCo\Framework\Traits\DatabaseTrait;
     use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
     use \WebServCo\Framework\Traits\MysqlDatabaseTrait;
+
+    protected $db;
+    protected $stmt;
+    protected $rows;
 
     protected $mysqliResult;
 

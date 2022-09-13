@@ -6,12 +6,12 @@ use WebServCo\Framework\Exceptions\DatabaseException;
 
 abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 {
+    use \WebServCo\Framework\Traits\DatabaseTrait;
+    use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
+
     protected $db;
     protected $stmt;
     protected $rows;
-
-    use \WebServCo\Framework\Traits\DatabaseTrait;
-    use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
 
     abstract protected function getDataSourceName($host, $port, $dbname);
 
