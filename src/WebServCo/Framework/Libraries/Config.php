@@ -59,7 +59,9 @@ final class Config extends \WebServCo\Framework\AbstractLibrary implements
             return [];
         }
         $data = (include $pathFull);
-        return \is_array($data) ? $data : [];
+        return \is_array($data)
+            ? $data
+            : [];
     }
 
     /**
