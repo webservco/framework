@@ -5,6 +5,17 @@ namespace WebServCo\Framework;
 use WebServCo\Framework\Http\Method;
 use WebServCo\Framework\Exceptions\HttpBrowserException;
 
+/**
+ *  A HTTP client usieng cURL.
+ *
+ * PHP 8 compatibility notes.
+ * https://www.php.net/manual/en/migration80.incompatible.php
+ * "curl_init() will now return a CurlHandle object rather than a resource."
+ * "Return value checks using is_resource() should be replaced with checks for false."
+ * old code:
+ * if (!\is_resource($this->curl)) {
+ * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
+*/
 final class CurlBrowser implements
     \WebServCo\Framework\Interfaces\HttpBrowserInterface
 {
@@ -71,7 +82,7 @@ final class CurlBrowser implements
         $this->debugInit();
 
         $this->curl = curl_init();
-        if (!is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpBrowserException('Not a valid cURL resource.');
         }
 
@@ -87,7 +98,16 @@ final class CurlBrowser implements
 
         $this->debugInfo = curl_getinfo($this->curl);
 
+        /**
+         * PHP 8 compatibility.
+         *
+         * https://www.php.net/manual/en/migration80.incompatible.php
+         * "The curl_close() function no longer has an effect,
+         * instead the CurlHandle instance is automatically destroyed if it is no longer referenced. "
+         * Use `unset` for PHP 8 compatibility (https://php.watch/versions/8.0/resource-CurlHandle)
+        */
         curl_close($this->curl);
+        unset($this->curl);
 
         $httpCode = $this->getHttpCode();
 
@@ -199,7 +219,7 @@ final class CurlBrowser implements
 
     protected function handleRequestMethod()
     {
-        if (!is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpBrowserException('Not a valid resource.');
         }
 
@@ -314,7 +334,7 @@ final class CurlBrowser implements
 
     protected function setCurlOptions($url)
     {
-        if (!is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpBrowserException('Not a valid resource.');
         }
 
@@ -341,7 +361,7 @@ final class CurlBrowser implements
 
     protected function setRequestHeaders()
     {
-        if (!is_resource($this->curl)) {
+        if (false === $this->curl) {
             throw new HttpBrowserException('Not a valid resource.');
         }
 

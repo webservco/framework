@@ -102,15 +102,22 @@ class Application extends \WebServCo\Framework\AbstractApplication
 
         $object = new $className();
         $parent = get_parent_class($object);
-        if (
-            method_exists((string) $parent, $method) ||
-            !is_callable([$className, $method])
-        ) {
-            throw new NotFoundException(sprintf('No matching Action found. Target: "%s".', $target));
+        /**
+         * PHP 8 compatibility.
+         *
+         * https://www.php.net/manual/en/migration80.incompatible.php
+         * "The ability to call non-static methods statically has been removed.
+         * Thus is_callable() will fail when checking for a non-static method with a classname
+         * (must check with an object instance). "
+         * old line:
+         * if (method_exists((string) $parent, $method) || !is_callable([$className, $method])) {
+         */
+        if (\method_exists((string) $parent, $method) || !\method_exists($className, $method)) {
+            throw new NotFoundException(sprintf('No valid matching Action found. Target: "%s".', $target));
         }
         $callable = [$object, $method];
         if (!is_callable($callable)) {
-            throw new ApplicationException(sprintf('Method not found. Target: "%s"', $target));
+            throw new ApplicationException(sprintf('Method is not callable. Target: "%s"', $target));
         }
         return call_user_func_array($callable, $args);
     }
