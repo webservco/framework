@@ -195,7 +195,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
                             $this->setRequestHeader('Content-Type', $this->requestContentType);
                         }
                         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
-                        $this->setRequestHeader('Content-Length', (string) \strlen($this->requestData));
+                        $this->setRequestHeader('Content-Length', (string) \strlen((string) $this->requestData));
                     }
                 }
                 break;
