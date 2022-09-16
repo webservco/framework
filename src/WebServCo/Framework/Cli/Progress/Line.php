@@ -32,7 +32,7 @@ final class Line
 
     public function suffix($result = true)
     {
-        $totalLen = strlen($this->outPad . $this->outMessage);
+        $totalLen = strlen((string) $this->outPad . (string) $this->outMessage);
         $output = null;
 
         //overwrite current line

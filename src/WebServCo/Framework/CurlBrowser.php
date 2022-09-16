@@ -238,7 +238,7 @@ final class CurlBrowser implements
                     } else {
                         $this->setRequestHeader('Content-Type', $this->requestContentType);
                         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
-                        $this->setRequestHeader('Content-Length', strlen($this->requestData));
+                        $this->setRequestHeader('Content-Length', strlen((string) $this->requestData));
                     }
                 }
                 break;
@@ -257,7 +257,7 @@ final class CurlBrowser implements
         }
         $this->responseHeaderArray[] = $headerData;
 
-        return strlen($headerData);
+        return strlen((string) $headerData);
     }
 
     protected function parseRequestHeaders($headers)

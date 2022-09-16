@@ -63,7 +63,7 @@ class MyForm extends \WebServCo\Framework\AbstractForm
             }
         }
         foreach ($this->setting('minimumLength', []) as $item => $minimumLength) {
-            if (mb_strlen($this->data($item)) < $minimumLength) {
+            if (mb_strlen((string) $this->data($item)) < $minimumLength) {
                 $this->errors[$item][] = sprintf(
                     __('This field is too short: %s'),
                     $this->setting('meta/'.$item)

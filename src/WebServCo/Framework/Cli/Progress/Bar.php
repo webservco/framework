@@ -74,14 +74,14 @@ final class Bar
         );
         $this->outMessage = $message;
 
-        $padLen = ($this->width + $this->padding) - strlen($this->outBar);
+        $padLen = ($this->width + $this->padding) - strlen((string) $this->outBar);
         $this->outPad = (0 < $padLen) ? str_repeat(' ', (int) $padLen) : null;
         return $this->outBar . $this->outPad . $this->outMessage;
     }
 
     protected function suffixSingle($result, $overwrite = false)
     {
-        $totalLen = strlen($this->outBar . $this->outPad . $this->outMessage);
+        $totalLen = strlen((string) $this->outBar . (string) $this->outPad . (string) $this->outMessage);
         $output = null;
 
         if ($overwrite) {

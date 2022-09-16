@@ -45,7 +45,7 @@ final class RequestUtils
             $stringRev = strrev($string);
             foreach ($suffixes as $suffix) {
                 $suffixRev = strrev($suffix);
-                $suffixLen = strlen($suffix);
+                $suffixLen = strlen((string) $suffix);
                 if (0 === strncasecmp($suffixRev, $stringRev, $suffixLen)) {
                     return [strrev(substr($stringRev, $suffixLen)), $suffix];
                 }
@@ -101,11 +101,11 @@ final class RequestUtils
 
     public static function parse($string, $path, $filename, $suffixes)
     {
-        $pathLen = strlen($path);
+        $pathLen = strlen((string) $path);
         if (0 === strncasecmp($path, $string, $pathLen)) {
             $string = substr($string, $pathLen);
         }
-        $filenameLen = strlen($filename);
+        $filenameLen = strlen((string) $filename);
         if (0 === strncasecmp($filename, $string, $filenameLen)) {
             $string = substr($string, $filenameLen);
         }

@@ -95,7 +95,7 @@ class Response extends \WebServCo\Framework\AbstractResponse implements
             }
         }
         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
-        $this->sendHeader('Content-length', strlen($this->content), $this->statusCode);
+        $this->sendHeader('Content-length', strlen((string) $this->content), $this->statusCode);
 
         header(
             sprintf('HTTP/1.1 %s %s', $this->statusCode, $this->statusText),
