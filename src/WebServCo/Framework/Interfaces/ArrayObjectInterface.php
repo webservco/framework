@@ -14,7 +14,7 @@ interface ArrayObjectInterface extends \Traversable, \Countable
     * @return array<int|string,mixed>|null
     */
     // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function exchangeArray($array);
+    public function exchangeArray(array|object $array);
 
     /**
     * @return array<int|string,mixed>
