@@ -8,7 +8,7 @@ final class DatabaseException extends ApplicationException
 {
     public const CODE = 0;
 
-    protected string $sqlState;
+    protected string $sqlState = '';
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {
@@ -32,8 +32,6 @@ final class DatabaseException extends ApplicationException
                 $this->sqlState = $previous->getSqlState();
                 break;
             default:
-                // Prevent "Typed property DatabaseException::$sqlState must not be accessed before initialization"
-                $this->sqlState = '';
                 break;
         }
 
