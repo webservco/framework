@@ -27,4 +27,6 @@ interface DatabaseInterface
     public function escapeIdentifier($string);
 
     public function escapeTableName($string);
+
+    public function valueExists($table, $field, $value);
 }
