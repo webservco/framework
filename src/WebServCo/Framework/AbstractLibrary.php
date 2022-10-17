@@ -46,7 +46,7 @@ abstract class AbstractLibrary implements
      * @param mixed $defaultValue
      * @return mixed
      */
-    final public function data(string $key, $defaultValue = null)
+    final public function data(string $key, mixed $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->data, $key, $defaultValue);
     }
