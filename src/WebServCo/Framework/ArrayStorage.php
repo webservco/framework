@@ -69,7 +69,7 @@ final class ArrayStorage
      * @param mixed $defaultValue
      * @return mixed
      */
-    public static function get($storage, $setting = null, $defaultValue = null): mixed
+    public static function get($storage, $setting = null, $defaultValue = null)
     {
         $setting = self::parseSetting($setting);
 
