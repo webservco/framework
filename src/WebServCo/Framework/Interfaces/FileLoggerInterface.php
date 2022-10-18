@@ -7,4 +7,6 @@ namespace WebServCo\Framework\Interfaces;
 interface FileLoggerInterface extends LoggerInterface
 {
     public function getLastLine(): int;
+
+    public function getLogDirectory(): string;
 }

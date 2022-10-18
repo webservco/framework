@@ -38,4 +38,9 @@ abstract class AbstractFileLogger extends AbstractLogger implements \WebServCo\F
         $file->seek(\PHP_INT_MAX);
         return $file->key();
     }
+
+    public function getLogDirectory(): string
+    {
+        return $this->logDir;
+    }
 }
