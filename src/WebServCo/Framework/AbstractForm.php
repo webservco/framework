@@ -11,7 +11,7 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     /**
      * Errors.
      *
-     * @var array<string, array<int,string>>
+     * @var array<string,array<int,string>>
      */
     protected array $errors;
 
@@ -82,6 +82,16 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function errors($key, $defaultValue = null)
     {
         return \WebServCo\Framework\ArrayStorage::get($this->errors, $key, $defaultValue);
+    }
+
+    /**
+     * Get all errors.
+     *
+     * @return array<string,array<int,string>>
+     */
+    final public function getAllErrors(): array
+    {
+        return $this->errors;
     }
 
     /**
