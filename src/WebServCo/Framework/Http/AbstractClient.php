@@ -49,6 +49,7 @@ abstract class AbstractClient
     {
         $this->logger = $logger;
         $this->debug = false;
+        $this->method = Method::GET;
         $this->skipSslVerification = false;
         $this->response = '';
         $this->timeout = 60;
