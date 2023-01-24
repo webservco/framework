@@ -26,7 +26,7 @@ trait RequestServerTrait
                 // divide "mime/type;q=X" into two parts: "mime/type" i "X"
                 [$item, $q] = \explode(';q=', $item);
             }
-            // Make sure key is string, otherwise it is caset by PHP to in and possibly overwritten.
+            // Make sure key is string, otherwise it is cast by PHP to int and possibly overwritten.
             // WARNING: $q == 0 means, that mime-type isn’t supported!
             $acceptTypes[\sprintf('q=%s', $q)] = $item;
         }
