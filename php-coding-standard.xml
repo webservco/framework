@@ -3,6 +3,6 @@
 	<description>A custom coding standard based on PSR12</description>
 	<config name="installed_paths" value="vendor/phpcompatibility/php-compatibility" />
 	<rule ref="PHPCompatibility"/>
-	<config name="testVersion" value="7.4-8.1"/>
+	<config name="testVersion" value="8.1"/>
 	<rule ref="PSR12"></rule>
 </ruleset>
