@@ -69,7 +69,7 @@ trait RequestServerTrait
 
     public function getReferer()
     {
-        return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
+        return isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : '';
     }
 
     public function getRefererHost()
