@@ -7,7 +7,7 @@ namespace WebServCo\Framework\DataTables;
 abstract class AbstractDataTables implements \WebServCo\Framework\Interfaces\DataTablesInterface
 {
     /**
-    * @return array<int,array<string,float|int|string>>
+    * @return array<int,array<string,float|int|string|null>>
     */
     abstract protected function getData(Request $request): array;
 

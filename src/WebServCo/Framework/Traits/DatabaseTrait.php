@@ -29,8 +29,8 @@ trait DatabaseTrait
     abstract public function transaction(array $queries): int;
 
     /**
-    * @param array<string,float|int|string> $addData
-    * @param array<string,float|int|string> $updateData
+    * @param array<string,float|int|string|null> $addData
+    * @param array<string,float|int|string|null> $updateData
     */
     abstract protected function generateAddQuery(
         string $queryType,

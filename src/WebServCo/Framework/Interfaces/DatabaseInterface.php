@@ -18,13 +18,13 @@ interface DatabaseInterface
 
     /**
     * @param array<int,float|int|string> $params
-    * @return array<string,float|int|string>
+    * @return array<string,float|int|string|null>
     */
     public function getRow(string $query, array $params = []): array;
 
     /**
     * @param array<int,float|int|string> $params
-    * @return array<int,array<string,float|int|string>>
+    * @return array<int,array<string,float|int|string|null>>
     */
     public function getRows(string $query, array $params = []): array;
 
