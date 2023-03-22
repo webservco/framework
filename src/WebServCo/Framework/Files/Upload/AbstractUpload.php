@@ -6,6 +6,9 @@ namespace WebServCo\Framework\Files\Upload;
 
 use WebServCo\Framework\Exceptions\UploadException;
 
+/**
+ * Initial functionality: simple upload.
+ */
 abstract class AbstractUpload
 {
     /**

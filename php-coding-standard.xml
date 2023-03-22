@@ -99,6 +99,8 @@
 		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint" />
 		<exclude name="SlevomatCodingStandard.Exceptions.RequireNonCapturingCatch.NonCapturingCatchRequired" />
 
+		<exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion.DisallowedConstructorPropertyPromotion" />
+
 		<properties>
 			<!-- Namespaces that are allowed to be `use`d -->
 			<property name="namespacesRequiredToUse" type="array">

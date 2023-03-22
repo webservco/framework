@@ -1,5 +1,9 @@
 # File upload
 
+Advanced functionality (pre-processing): `AbstractFileUploadProcessor`.
+
+Simple functionality:
+
 ## Example
 
 ```php

@@ -17,6 +17,8 @@ final class Codes
 
     /* custom codes */
     public const TYPE_NOT_ALLOWED = 91;
+    public const IMAGE_TOO_SMALL = 101;
+    public const IMAGE_WRONG_ASPECT_RATIO = 102;
 
     public static function getMessage(int $errorCode): string
     {
@@ -34,6 +36,10 @@ final class Codes
                 return \__('File type not allowed.');
             case self::CANT_WRITE:
                 return \__('Error saving uploaded file.');
+            case self::IMAGE_TOO_SMALL:
+                return \__('Image is too small.');
+            case self::IMAGE_WRONG_ASPECT_RATIO:
+                return \__('Image has wrong aspect ratio.');
             case self::NO_TMP_DIR:
             case self::EXTENSION:
             default:
