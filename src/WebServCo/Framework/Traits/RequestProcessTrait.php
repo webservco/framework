@@ -182,6 +182,17 @@ trait RequestProcessTrait
     {
         $string = null;
         switch (true) {
+            case isset($this->server['REDIRECT_URL']):
+                /**
+                 * Specific situation:
+                 * - rewrite is done in an external website,
+                 * and current project is used a subfolder (symlink) of the main website.
+                 * In that case the `REQUEST_URI` will contain the source (left part of the rewrite)
+                 * and `REDIRECT_URL` will contain the actual target path (right part of the rewrite).
+                 * So this needs to be before the `REQUEST_URI` check.
+                 */
+                $string = $this->server['REDIRECT_URL'];
+                break;
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
                 break;
