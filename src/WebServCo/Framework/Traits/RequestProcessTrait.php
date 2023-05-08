@@ -156,6 +156,13 @@ trait RequestProcessTrait
                  * So this needs to be before the `REQUEST_URI` check.
                  */
                 $string = $this->server['REDIRECT_URL'];
+                // Seems in this case the query string is not added, so check and added.
+                if (!strpos($string, '?')) {
+                    $queryString = $this->getQueryString();
+                    if ($queryString !== '') {
+                        $string = sprintf('%s?%s', $string, $queryString);
+                    }
+                }
                 break;
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
@@ -182,5 +189,17 @@ trait RequestProcessTrait
         $this->query = RequestUtils::format($this->sanitize($queryString));
         $this->suffix = $suffix;
         return true;
+    }
+
+    private function getQueryString(): string
+    {
+        switch (true) {
+            case isset($this->server['REDIRECT_QUERY_STRING']):
+                return $this->server['REDIRECT_QUERY_STRING'];
+            case isset($this->server['QUERY_STRING']):
+                return $this->server['QUERY_STRING'];
+            default:
+                return '';
+        }
     }
 }
