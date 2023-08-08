@@ -200,3 +200,11 @@ while (...)
 ```
 
 --
+
+## \WebServCo\Framework\Database\Utils\PreparedStatements
+
+### `generatePlaceholdersString(array $data = []): string`
+
+Generate placeholders string from array data.
+
+Eg. if array has 3 items, it generates the string "?, ?, ?".
