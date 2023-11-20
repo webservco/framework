@@ -34,6 +34,8 @@ class ArrayHelper
     }
 
     /**
+     * @deprecated
+     * @see http_build_query
     * @param array<int|string,int|float|string> $array
     */
     public static function toUrlQueryString(array $array): ?string
