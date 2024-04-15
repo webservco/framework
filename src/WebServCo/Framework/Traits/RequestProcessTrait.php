@@ -148,7 +148,7 @@ trait RequestProcessTrait
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData(\WebServCo\Framework\Helpers\RequestHelper::sanitizeString($k), $v);
+            $this->setData(\WebServCo\Framework\Helpers\RequestHelper::sanitizeString((string) $k), $v);
         }
         return true;
     }
