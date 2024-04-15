@@ -34,7 +34,7 @@ class ArrayHelper
     }
 
     /**
-     * @deprecated
+     * @deprecated Use http_build_query instead.
      * @see http_build_query
     * @param array<int|string,int|float|string> $array
     */
