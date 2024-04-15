@@ -112,7 +112,7 @@ trait RequestProcessTrait
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData($this->sanitize($k), $v);
+            $this->setData($this->sanitize((string) $k), $v);
         }
         return true;
     }
