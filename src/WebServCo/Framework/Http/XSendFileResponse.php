@@ -19,8 +19,8 @@ class XSendFileResponse extends Response
             '', // content
             200, // statusCode
             [
-                'Content-Type' => [$contentType],
                 'Content-Disposition' => [\sprintf('attachment; filename="%s"', $outputFilename)],
+                'Content-Type' => [$contentType],
                 'X-Sendfile' => [$filePath],
             ], // headers
         );

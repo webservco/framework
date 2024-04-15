@@ -31,9 +31,9 @@ final class RequestInstanceTest extends TestCase
     {
         $this->cfg = ['suffixes' => ['.htm', '.html'],];
         $this->post = [
+            '<h1>invalid</h1>' => '<tag>tag</tag>',
             'key' => 'value',
             'script' => '<script>hello</script>',
-            '<h1>invalid</h1>' => '<tag>tag</tag>',
         ];
         // phpcs:ignore SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
         $this->object = new Request($this->cfg, $_SERVER, $this->post);

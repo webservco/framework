@@ -152,12 +152,12 @@ final class Session extends \WebServCo\Framework\AbstractLibrary implements
         \ini_set('session.gc_probability', '1');
 
         \session_set_cookie_params([
+            'domain' => $this->setting(\sprintf('cookie%sdomain', Settings::DIVIDER), ''),
+            'httponly' => $this->setting(\sprintf('cookie%shttponly', Settings::DIVIDER), true),
             'lifetime' => $this->setting(\sprintf('cookie%slifetime', Settings::DIVIDER), 60 * 60 * 24 * 14),
             'path' => $this->setting(\sprintf('cookie%spath', Settings::DIVIDER), '/'),
-            'domain' => $this->setting(\sprintf('cookie%sdomain', Settings::DIVIDER), ''),
-            'secure' => $this->setting(\sprintf('cookie%ssecure', Settings::DIVIDER), true),
-            'httponly' => $this->setting(\sprintf('cookie%shttponly', Settings::DIVIDER), true),
             'samesite' => $this->setting(\sprintf('cookie%ssamesite', Settings::DIVIDER), 'Lax'),
+            'secure' => $this->setting(\sprintf('cookie%ssecure', Settings::DIVIDER), true),
         ]);
 
         \session_name('webservco');

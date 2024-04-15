@@ -272,12 +272,12 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         \curl_setopt_array(
             $this->curl,
             [
-                \CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
-                \CURLOPT_URL => $url,
-                \CURLOPT_HEADER => false, /* do not include the header in the output */
-                \CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
                 \CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
+                \CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
+                \CURLOPT_HEADER => false, /* do not include the header in the output */
+                \CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
                 \CURLOPT_TIMEOUT => $this->timeout, // The maximum number of seconds to allow cURL functions to execute.
+                \CURLOPT_URL => $url,
             ],
         );
         // check if we should ignore ssl errors

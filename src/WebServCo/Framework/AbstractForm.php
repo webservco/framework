@@ -167,12 +167,12 @@ abstract class AbstractForm extends \WebServCo\Framework\AbstractLibrary
     final public function toArray(): array
     {
         return [
-            'meta' => $this->setting('meta', []),
-            'help' => $this->setting('help', []),
-            'required' => \array_fill_keys($this->setting('required', []), true),
             'custom' => $this->setting('custom', []),
             'data' => $this->getData(),
             'errors' => $this->errors,
+            'help' => $this->setting('help', []),
+            'meta' => $this->setting('meta', []),
+            'required' => \array_fill_keys($this->setting('required', []), true),
         ];
     }
 }

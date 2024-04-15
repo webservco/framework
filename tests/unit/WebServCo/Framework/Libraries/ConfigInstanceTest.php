@@ -236,15 +236,15 @@ final class ConfigInstanceTest extends TestCase
     {
 
         $config = [
-            'options' => [
-                'setting1' => 'value1',
-                'setting2' => 'value2',
-                'setting3' => 'value3',
-            ],
             'level1' => [
                 'level2' => [
                     'level3' => ['value'],
                 ],
+            ],
+            'options' => [
+                'setting1' => 'value1',
+                'setting2' => 'value2',
+                'setting3' => 'value3',
             ],
         ];
         $this->assertTrue($this->object->set(\sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER), 'old value'));

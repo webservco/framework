@@ -20,7 +20,6 @@ final class ArrayStorageTest extends TestCase
     public function setUp(): void
     {
         $this->originalArray = [
-            'key' => 'value',
             'foo' => [
                 'bar' => [
                     'baz' => [
@@ -28,6 +27,7 @@ final class ArrayStorageTest extends TestCase
                     ],
                 ],
             ],
+            'key' => 'value',
         ];
     }
 
@@ -67,10 +67,10 @@ final class ArrayStorageTest extends TestCase
     {
         $setting = \sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
         $expected = [
-            'key' => 'value',
             'foo' => [
                 'bar' => [],
             ],
+            'key' => 'value',
         ];
         $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
@@ -85,8 +85,8 @@ final class ArrayStorageTest extends TestCase
     {
         $setting = \sprintf('foo%1$sbar', Settings::DIVIDER);
         $expected = [
-            'key' => 'value',
             'foo' => [],
+            'key' => 'value',
         ];
         $this->assertEquals($expected, ArrayStorage::remove(
             $this->originalArray,
@@ -115,12 +115,12 @@ final class ArrayStorageTest extends TestCase
     {
         $setting = \sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
         $expected = [
-            'key' => 'value',
             'foo' => [
                 'bar' => [
                     'baz' => null,
                 ],
             ],
+            'key' => 'value',
         ];
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
@@ -136,10 +136,10 @@ final class ArrayStorageTest extends TestCase
     {
         $setting = \sprintf('foo%1$sbar', Settings::DIVIDER);
         $expected = [
-            'key' => 'value',
             'foo' => [
                 'bar' => null,
             ],
+            'key' => 'value',
         ];
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,
@@ -154,8 +154,8 @@ final class ArrayStorageTest extends TestCase
     public function setEmptyWorksWithSimpleSetting(): void
     {
         $expected = [
-            'key' => 'value',
             'foo' => null,
+            'key' => 'value',
         ];
         $this->assertEquals($expected, ArrayStorage::set(
             $this->originalArray,

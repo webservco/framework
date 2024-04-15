@@ -32,15 +32,15 @@ abstract class AbstractFile
             $this->fileData,
             200,
             [
-                'Last-Modified' => [\gmdate('D, d M Y H:i:s') . ' GMT'],
-                'ETag' => [\md5($this->fileData)],
                 'Accept-Ranges' => ['bytes'],
                 'Cache-Control' => ['public'],
+                'Connection' => ['close'],
                 'Content-Description' => ['File Transfer'],
                 'Content-Disposition' => [\sprintf('attachment; filename="%s"', $this->fileName)],
-                'Content-Type' => [$this->contentType],
                 'Content-Transfer-Encoding' => ['binary'],
-                'Connection' => ['close'],
+                'Content-Type' => [$this->contentType],
+                'ETag' => [\md5($this->fileData)],
+                'Last-Modified' => [\gmdate('D, d M Y H:i:s') . ' GMT'],
             ],
         );
     }
@@ -61,12 +61,12 @@ abstract class AbstractFile
             $this->fileData,
             200,
             [
-                'Last-Modified' => [\gmdate('D, d M Y H:i:s') . ' GMT'],
-                'ETag' => [\md5($this->fileData)],
                 'Accept-Ranges' => ['bytes'],
                 'Cache-Control' => ['public'],
-                'Content-Type' => [$this->contentType],
                 'Content-Transfer-Encoding' => ['binary'],
+                'Content-Type' => [$this->contentType],
+                'ETag' => [\md5($this->fileData)],
+                'Last-Modified' => [\gmdate('D, d M Y H:i:s') . ' GMT'],
             ],
         );
     }

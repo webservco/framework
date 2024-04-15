@@ -35,9 +35,9 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 Config::string('APP_DBMS_USERNAME'),
                 Config::string('APP_DBMS_PASSWD'),
                 [
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                     \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_PERSISTENT => false,
                 ],
             );

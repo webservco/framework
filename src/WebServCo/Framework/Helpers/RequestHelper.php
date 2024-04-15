@@ -48,7 +48,7 @@ final class RequestHelper
         }
 
         if (\array_key_exists('REMOTE_ADDR', $_SERVER)) {
-            return \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($_SERVER['REMOTE_ADDR']);
+            return self::sanitizeString($_SERVER['REMOTE_ADDR']);
         }
 
         return '';

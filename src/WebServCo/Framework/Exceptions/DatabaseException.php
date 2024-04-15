@@ -26,7 +26,7 @@ final class DatabaseException extends ApplicationException
                     $message = $previous->errorInfo[2];
                 }
                 break;
-            case $previous instanceof DatabaseException:
+            case $previous instanceof self:
                 // A \PDOException that was re-thrown
                 $code = $previous->getCode();
                 $this->sqlState = $previous->getSqlState();

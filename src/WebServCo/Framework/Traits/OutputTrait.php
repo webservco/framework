@@ -59,8 +59,8 @@ trait OutputTrait
     protected function outputJson(array $content, bool $result = true): Response
     {
         $data = [
-            'result' => $result,
             'data' => $content,
+            'result' => $result,
         ];
         return new Response(
             $this->output()->json($data),

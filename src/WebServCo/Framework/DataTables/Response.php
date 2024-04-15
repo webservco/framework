@@ -36,10 +36,10 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
     public function toArray(): array
     {
         $array = [
-            'draw' => $this->draw,
-            'recordsTotal' => $this->recordsTotal,
-            'recordsFiltered' => $this->recordsFiltered,
             'data' => [],
+            'draw' => $this->draw,
+            'recordsFiltered' => $this->recordsFiltered,
+            'recordsTotal' => $this->recordsTotal,
         ];
         foreach ($this->data as $item) {
             $array['data'][] = $item;

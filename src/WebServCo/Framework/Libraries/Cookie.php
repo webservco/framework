@@ -50,12 +50,12 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
             $name,
             \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($value),
             [
-                'expires' => $expires,
-                'path' => $path,
                 'domain' => $domain,
-                'secure' => $secure,
+                'expires' => $expires,
                 'httponly' => $httponly,
+                'path' => $path,
                 'samesite' => $samesite,
+                'secure' => $secure,
             ],
         );
     }
