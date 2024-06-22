@@ -7,7 +7,7 @@ namespace WebServCo\Framework\Http;
 use WebServCo\Framework\Exceptions\HttpClientException;
 
 /**
- *  A HTTP client usieng cURL.
+ *  A HTTP client using cURL.
  *
  * PHP 8 compatibility notes.
  * https://www.php.net/manual/en/migration80.incompatible.php
