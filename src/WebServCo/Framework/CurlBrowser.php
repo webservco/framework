@@ -225,6 +225,7 @@ final class CurlBrowser implements
 
         switch ($this->method) {
             case Method::POST:
+            case Method::PUT:
                 /*
                 * This sets the header application/x-www-form-urlencoded
                 * Use custom request instead and handle headers manually
