@@ -6,14 +6,14 @@ namespace WebServCo\Framework\Http;
 
 final class Method
 {
-    public const GET = 'GET';
-    public const HEAD = 'HEAD';
-    public const POST = 'POST';
-    public const PUT = 'PUT';
-    public const DELETE = 'DELETE';
-    public const CONNECT = 'CONNECT';
-    public const OPTIONS = 'OPTIONS';
-    public const TRACE = 'TRACE';
+    public const string GET = 'GET';
+    public const string HEAD = 'HEAD';
+    public const string POST = 'POST';
+    public const string PUT = 'PUT';
+    public const string DELETE = 'DELETE';
+    public const string CONNECT = 'CONNECT';
+    public const string OPTIONS = 'OPTIONS';
+    public const string TRACE = 'TRACE';
 
     /**
      * Retrieve list of supported HTTP methods.

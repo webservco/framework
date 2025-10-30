@@ -8,7 +8,7 @@ use WebServCo\Framework\Exceptions\ConfigurationException;
 
 final class Settings
 {
-    protected const FILENAME = '.env.ini';
+    protected const string FILENAME = '.env.ini';
 
     public static function load(string $projectPath): bool
     {

@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Exceptions;
 
 class MethodNotAllowedException extends HttpException
 {
-    public const CODE = 405;
+    public const int CODE = 405;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

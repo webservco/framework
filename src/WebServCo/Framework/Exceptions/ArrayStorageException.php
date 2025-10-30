@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Exceptions;
 
 final class ArrayStorageException extends ApplicationException
 {
-    public const CODE = 0;
+    public const int CODE = 0;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

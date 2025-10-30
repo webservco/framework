@@ -6,19 +6,19 @@ namespace WebServCo\Framework\Files\Upload;
 
 final class Codes
 {
-    public const OK = 0;
-    public const INI_SIZE = 1;
-    public const FORM_SIZE = 2;
-    public const PARTIAL = 3;
-    public const NO_FILE = 4;
-    public const NO_TMP_DIR = 6;
-    public const CANT_WRITE = 7;
-    public const EXTENSION = 8;
+    public const int OK = 0;
+    public const int INI_SIZE = 1;
+    public const int FORM_SIZE = 2;
+    public const int PARTIAL = 3;
+    public const int NO_FILE = 4;
+    public const int NO_TMP_DIR = 6;
+    public const int CANT_WRITE = 7;
+    public const int EXTENSION = 8;
 
     /* custom codes */
-    public const TYPE_NOT_ALLOWED = 91;
-    public const IMAGE_TOO_SMALL = 101;
-    public const IMAGE_WRONG_ASPECT_RATIO = 102;
+    public const int TYPE_NOT_ALLOWED = 91;
+    public const int IMAGE_TOO_SMALL = 101;
+    public const int IMAGE_WRONG_ASPECT_RATIO = 102;
 
     public static function getMessage(int $errorCode): string
     {

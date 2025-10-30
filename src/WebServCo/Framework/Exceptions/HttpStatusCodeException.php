@@ -6,7 +6,7 @@ namespace WebServCo\Framework\Exceptions;
 
 class HttpStatusCodeException extends HttpException
 {
-    public const CODE = 500;
+    public const int CODE = 500;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

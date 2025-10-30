@@ -8,7 +8,7 @@ use WebServCo\Framework\Http\Response;
 
 abstract class AbstractFile
 {
-    public const CONTENT_TYPE = 'application/octet-stream';
+    public const string CONTENT_TYPE = 'application/octet-stream';
 
     protected string $fileName;
     protected string $fileData;

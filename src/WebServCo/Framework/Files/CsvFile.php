@@ -6,5 +6,5 @@ namespace WebServCo\Framework\Files;
 
 class CsvFile extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
 {
-    public const CONTENT_TYPE = 'text/csv';
+    public const string CONTENT_TYPE = 'text/csv';
 }
