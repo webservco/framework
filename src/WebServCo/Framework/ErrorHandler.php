@@ -35,9 +35,9 @@ final class ErrorHandler
      */
     public static function throwErrorException(int $errno, string $errstr, string $errfile, int $errline): bool
     {
-        /* Handle error reporting disabled or supressed *
-        // CURRENT SITUATION: ignore error reporting disabled or supressed, handle all errors
-        // Custom error handler is called even if errors disable or supressed (@)
+        /* Handle error reporting disabled or suppressed *
+        // CURRENT SITUATION: ignore error reporting disabled or suppressed, handle all errors
+        // Custom error handler is called even if errors disable or suppressed (@)
         // Code below handles this.
         // https://www.php.net/manual/en/language.operators.errorcontrol.php
         // https://www.php.net/manual/en/function.set-error-handler.php
@@ -47,7 +47,7 @@ final class ErrorHandler
             // through to the standard PHP error handler
             return false;
         }
-        /* Handle error reporting disabled or supressed */
+        /* Handle error reporting disabled or suppressed */
 
         // Make sure \error_get_last will not report this again (used in ErrorObjectHelper::get())
         \error_clear_last();
