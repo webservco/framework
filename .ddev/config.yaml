@@ -16,7 +16,7 @@ corepack_enable: false
 
 # Custom configuration
 omit_containers: [db]
-php_version: "8.3"
+php_version: "8.4"
 timezone: Europe/Budapest
 webserver_type: apache-fpm
 
