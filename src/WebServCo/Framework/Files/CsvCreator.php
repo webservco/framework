@@ -11,10 +11,20 @@ final class CsvCreator
     protected string $delimiter;
     protected string $enclosure;
 
-    public function __construct(string $delimiter = ',', string $enclosure = '"')
+    protected string $escape;
+
+    /**
+     * Warning
+     * When escape is set to anything other than an empty string ("") it can result in CSV that is
+     * not compliant with » RFC 4180 or unable to survive a roundtrip through the PHP CSV functions.
+     * The default for escape is "\\" so it is recommended to set it to the empty string explicitly.
+     * The default value will change in a future version of PHP, no earlier than PHP 9.0.
+     */
+    public function __construct(string $delimiter = ',', string $enclosure = '"', string $escape = '')
     {
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;
+        $this->escape = $escape;
     }
 
     /**
@@ -48,12 +58,12 @@ final class CsvCreator
             if ($addHeader) {
                 $headerData = \current($data);
                 if (false !== $headerData) {
-                    \fputcsv($handle, \array_keys($headerData), $this->delimiter, $this->enclosure);
+                    \fputcsv($handle, \array_keys($headerData), $this->delimiter, $this->enclosure, $this->escape);
                 }
             }
 
             foreach ($data as $item) {
-                \fputcsv($handle, $item, $this->delimiter, $this->enclosure);
+                \fputcsv($handle, $item, $this->delimiter, $this->enclosure, $this->escape);
             }
 
             \rewind($handle);
