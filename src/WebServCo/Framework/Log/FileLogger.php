@@ -27,8 +27,20 @@ class FileLogger extends AbstractFileLogger
 
         $contextInfo = null;
         if ($context) {
+            $contextDirectory = \sprintf('%s/context-%s', $this->logDirectory, $this->channel);
+            // Make sure path contains trailing slash (trim + add back).
+            $contextDirectory = \rtrim($contextDirectory, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+            $dirResult = $this->createDirectoryIfNotExists($contextDirectory);
+            if (false === $dirResult) {
+                throw new \OutOfBoundsException('Error creating log directory.');
+            }
+
             $contextAsString = \WebServCo\Framework\Helpers\StringHelper::getContextAsString($context);
-            \file_put_contents(\sprintf('%s/%s.%s.context', $this->logDir, $this->channel, $id), $contextAsString);
+
+            \file_put_contents(
+                \sprintf('%s%s.context', $contextDirectory, $id),
+                $contextAsString,
+            );
             $contextInfo = '[context saved] ';
         }
 
@@ -42,6 +54,9 @@ class FileLogger extends AbstractFileLogger
             \PHP_EOL,
         );
 
-        \file_put_contents($this->logPath, $data, \FILE_APPEND);
+        $fileResult = \file_put_contents($this->logPath, $data, \FILE_APPEND);
+        if (false === $fileResult) {
+            throw new \OutOfBoundsException('Error writing log file.');
+        }
     }
 }

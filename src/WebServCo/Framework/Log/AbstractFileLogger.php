@@ -9,22 +9,37 @@ use WebServCo\Framework\Exceptions\LoggerException;
 abstract class AbstractFileLogger extends AbstractLogger implements \WebServCo\Framework\Interfaces\FileLoggerInterface
 {
     protected string $channel;
-    protected string $logDir;
+    protected string $logDirectory;
+
     protected string $logPath;
 
-    public function __construct(string $channel, string $logDir)
+    public function __construct(string $channel, string $logDirectory)
     {
         $this->channel = $channel;
-        $this->logDir = $logDir;
 
-        if (!$this->logDir) {
-            throw new LoggerException(\sprintf('Log directory not set for channel "%s".', $channel));
+        if ('' === $logDirectory) {
+            throw new LoggerException('Log directory not set.');
         }
 
-        if (!\is_writable($this->logDir)) {
-            throw new LoggerException(\sprintf('Log directory not writeable: %s.', $this->logDir));
+        // Make sure path contains trailing slash (trim + add back).
+        $logDirectory = \rtrim($logDirectory, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
+
+        $dirResult = $this->createDirectoryIfNotExists($logDirectory);
+        if (false === $dirResult) {
+            throw new \OutOfBoundsException('Error creating log directory.');
         }
-        $this->logPath = \sprintf('%s%s.log', $this->logDir, $this->channel);
+
+        if (!\is_dir($logDirectory)) {
+            throw new LoggerException('Log directory not readable.');
+        }
+
+        if (!\is_writable($logDirectory)) {
+            throw new LoggerException('Log directory not writable.');
+        }
+
+        $this->logDirectory = $logDirectory;
+
+        $this->logPath = \sprintf('%s%s.log', $this->logDirectory, $this->channel);
     }
 
     public function clear(): bool
@@ -41,6 +56,23 @@ abstract class AbstractFileLogger extends AbstractLogger implements \WebServCo\F
 
     public function getLogDirectory(): string
     {
-        return $this->logDir;
+        return $this->logDirectory;
+    }
+
+    protected function createDirectoryIfNotExists(string $directory): bool
+    {
+        if (\is_dir($directory)) {
+            // Directory already exists.
+            return true;
+        }
+
+        return \mkdir(
+            $directory,
+            // permissions
+            0775,
+            // recursive
+            true,
+            // context
+        );
     }
 }
