@@ -10,7 +10,7 @@ abstract class AbstractClient
 {
     protected bool $debug;
 
-    protected \WebServCo\Framework\Interfaces\LoggerInterface $logger;
+    protected \Psr\Log\LoggerInterface $logger;
 
     protected string $method;
 
