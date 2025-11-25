@@ -6,7 +6,6 @@ namespace WebServCo\Framework\Processors;
 
 use WebServCo\Framework\Interfaces\CliRunnerInterface;
 use WebServCo\Framework\Interfaces\ErrorProcessorInterface;
-use WebServCo\Framework\Interfaces\LoggerInterface;
 use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 
 abstract class AbstractCliRunnerProcessor implements \WebServCo\Framework\Interfaces\RunnerInterface
@@ -18,7 +17,7 @@ abstract class AbstractCliRunnerProcessor implements \WebServCo\Framework\Interf
 
     protected ErrorProcessorInterface $errorProcessor;
 
-    protected LoggerInterface $fileLogger;
+    protected \Psr\Log\LoggerInterface $fileLogger;
 
     protected ?OutputLoggerInterface $outputLogger = null;
 
@@ -30,7 +29,7 @@ abstract class AbstractCliRunnerProcessor implements \WebServCo\Framework\Interf
     public function __construct(
         CliRunnerInterface $cliRunner,
         ErrorProcessorInterface $errorProcessor,
-        LoggerInterface $fileLogger,
+        \Psr\Log\LoggerInterface $fileLogger,
         ?OutputLoggerInterface $outputLogger = null
     ) {
         $this->cliRunner = $cliRunner;
