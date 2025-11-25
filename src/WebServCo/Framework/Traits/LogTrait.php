@@ -11,7 +11,7 @@ use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 */
 trait LogTrait
 {
-    protected \WebServCo\Framework\Interfaces\LoggerInterface $fileLogger;
+    protected \Psr\Log\LoggerInterface $fileLogger;
     protected ?OutputLoggerInterface $outputLogger = null;
 
     /**
