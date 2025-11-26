@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
-use Psr\Log\LoggerInterface;
 use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 
 /**
@@ -12,9 +11,6 @@ use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 */
 trait LogTrait
 {
-    protected LoggerInterface $fileLogger;
-    protected ?OutputLoggerInterface $outputLogger = null;
-
     protected function logDebug(string $message, mixed $context = []): void
     {
         $this->fileLogger->debug($message, $context);
