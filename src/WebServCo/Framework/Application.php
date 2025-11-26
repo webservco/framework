@@ -21,7 +21,8 @@ use const PHP_EOL;
 * Can be replaced or extended by consumer implementations.
 * Custom functionality in this class: use custom output.
 */
-final class Application extends AbstractApplication
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+class Application extends AbstractApplication
 {
     /**
     * CLI message to output in case of error.
