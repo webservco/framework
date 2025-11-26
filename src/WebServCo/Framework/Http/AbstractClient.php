@@ -45,7 +45,7 @@ abstract class AbstractClient
 
     abstract public function retrieve(string $url): Response;
 
-    public function __construct(\WebServCo\Framework\Interfaces\LoggerInterface $logger)
+    public function __construct(\Psr\Log\LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->debug = false;

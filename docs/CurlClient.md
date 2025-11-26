@@ -2,7 +2,7 @@
 
 ## `\WebServCo\Framework\Http\CurlClient`
 
-Requires `\WebServCo\Framework\Interfaces\LoggerInterface`.
+Requires `\Psr\Log\LoggerInterface`.
 
 Returns `\WebServCo\Framework\Http\Response`.
 
