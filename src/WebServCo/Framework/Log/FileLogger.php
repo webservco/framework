@@ -40,7 +40,7 @@ final class FileLogger extends AbstractFileLogger
 
         $contextInfo = null;
         if ($context) {
-            $contextDirectory = sprintf('%s/context-%s', $this->logDirectory, $this->channel);
+            $contextDirectory = sprintf('%scontext-%s', $this->logDirectory, $this->channel);
             // Make sure path contains trailing slash (trim + add back).
             $contextDirectory = rtrim($contextDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $dirResult = $this->createDirectoryIfNotExists($contextDirectory);
