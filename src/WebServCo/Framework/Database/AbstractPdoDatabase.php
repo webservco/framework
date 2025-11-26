@@ -4,16 +4,25 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Database;
 
+use PDO;
+use PDOStatement;
+use Throwable;
+use WebServCo\Framework\AbstractLibrary;
 use WebServCo\Framework\Environment\Config;
 use WebServCo\Framework\Exceptions\DatabaseException;
+use WebServCo\Framework\Traits\DatabaseAddQueryTrait;
+use WebServCo\Framework\Traits\DatabaseTrait;
 
-abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
+use function gettype;
+use function is_array;
+
+abstract class AbstractPdoDatabase extends AbstractLibrary
 {
-    use \WebServCo\Framework\Traits\DatabaseTrait;
-    use \WebServCo\Framework\Traits\DatabaseAddQueryTrait;
+    use DatabaseTrait;
+    use DatabaseAddQueryTrait;
 
-    protected \PDO $db;
-    protected \PDOStatement $stmt;
+    protected PDO $db;
+    protected PDOStatement $stmt;
 
     abstract protected function getDataSourceName(string $host, int $port, string $dbname): string;
 
@@ -30,27 +39,29 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 Config::int('APP_DBMS_PORT'),
                 Config::string('APP_DBMS_DBNAME'),
             );
-            $this->db = new \PDO(
+            $this->db = new PDO(
                 $dsn,
                 Config::string('APP_DBMS_USERNAME'),
                 Config::string('APP_DBMS_PASSWD'),
                 [
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                    \PDO::ATTR_EMULATE_PREPARES => false,
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_PERSISTENT => false,
                 ],
             );
-        } catch (\Throwable $e) { // PDOException/RuntimeException/Exception
+        } catch (Throwable $e) {
+        // PDOException/RuntimeException/Exception
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
     public function affectedRows(): int
     {
-        if (!($this->stmt instanceof \PDOStatement)) {
+        if (!($this->stmt instanceof PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
         }
+
         return $this->stmt->rowCount();
     }
 
@@ -61,15 +72,15 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
     /**
     * @param array<int,float|int|string> $params
-    * @return bool|int|string|null
     */
-    public function getColumn(string $query, array $params = [], int $columnNumber = 0)
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0): bool|int|string|null
     {
         $this->query($query, $params);
+
         return $this->stmt->fetchColumn($columnNumber);
     }
 
-    public function getPdo(): \PDO
+    public function getPdo(): PDO
     {
         return $this->db;
     }
@@ -81,7 +92,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function getRow(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        $result = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+
         return $this->handleStatementReturn($result);
     }
 
@@ -92,7 +104,8 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     public function getRows(string $query, array $params = []): array
     {
         $this->query($query, $params);
-        $result = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+
         return $this->handleStatementReturn($result);
     }
 
@@ -117,16 +130,17 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
     public function numRows(): int
     {
-        if (!($this->stmt instanceof \PDOStatement)) {
+        if (!($this->stmt instanceof PDOStatement)) {
             throw new DatabaseException('No Statement object available.');
         }
+
         return $this->stmt->rowCount();
     }
 
     /**
     * @param array<int,float|int|string|null> $params
     */
-    public function query(string $query, array $params = []): \PDOStatement
+    public function query(string $query, array $params = []): PDOStatement
     {
         if (!$query) {
             throw new DatabaseException('No query specified.');
@@ -138,16 +152,15 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
                 $this->bindParams($params);
             }
             $this->stmt->execute();
+
             return $this->stmt;
-        } catch (\Throwable $e) { // \PDOException, \RuntimeException
+        } catch (Throwable $e) {
+        // \PDOException, \RuntimeException
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
 
-    /**
-    * @param mixed $value
-    */
-    public function setAttribute(int $attribute, $value): bool
+    public function setAttribute(int $attribute, mixed $value): bool
     {
         return $this->db->setAttribute($attribute, $value);
     }
@@ -172,9 +185,12 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             }
             $lastInsertId = (int) $this->db->lastInsertId();
             $this->db->commit();
+
             return $lastInsertId;
-        } catch (\Throwable $e) { // DatabaseException, \PDOException, \RuntimeException
+        } catch (Throwable $e) {
+        // DatabaseException, \PDOException, \RuntimeException
             $this->db->rollBack();
+
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
@@ -190,30 +206,31 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
 
         $i = 1;
         foreach ($data as $item) {
-            if (\is_array($item)) {
+            if (is_array($item)) {
                 foreach ($item as $v) {
                     $this->validateParam($v);
                     $this->stmt->bindValue($i, $v, $this->getDataType((string) $v));
-                    $i++;
+                    $i += 1;
                 }
             } else {
                 $this->validateParam($item);
                 $this->stmt->bindValue($i, $item, $this->getDataType((string) $item));
-                $i++;
+                $i += 1;
             }
         }
+
         return true;
     }
 
     protected function getDataType(string $variable): int
     {
-        $type = \gettype($variable);
+        $type = gettype($variable);
 
         switch ($type) {
             case 'NULL':
-                return \PDO::PARAM_NULL;
+                return PDO::PARAM_NULL;
             case 'integer':
-                return \PDO::PARAM_INT;
+                return PDO::PARAM_INT;
             case 'boolean':
             // causes data not to be inserted
             //return \PDO::PARAM_BOOL;
@@ -225,18 +242,16 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
             case 'resource (closed)':
             case 'unknown type':
             default:
-                return \PDO::PARAM_STR;
+                return PDO::PARAM_STR;
         }
     }
 
-    /**
-    * @param mixed $param
-    */
-    protected function validateParam($param): bool
+    protected function validateParam(mixed $param): bool
     {
-        if (\is_array($param)) {
+        if (is_array($param)) {
             throw new DatabaseException('Parameter is an array.');
         }
+
         return true;
     }
 
@@ -249,9 +264,9 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
     * @param bool|array<mixed> $result
     * @return array<mixed>
     */
-    protected function handleStatementReturn($result): array
+    protected function handleStatementReturn(bool|array $result): array
     {
-        if (\is_array($result)) {
+        if (is_array($result)) {
             // All is ok.
             return $result;
         }
@@ -259,10 +274,11 @@ abstract class AbstractPdoDatabase extends \WebServCo\Framework\AbstractLibrary
         // 0 = "SQLSTATE"
         // 1 = "Driver specific error code"
         // 2 = "Driver specific error message"
-        if ('00000' === $errorInfo[0]) {
+        if ($errorInfo[0] === '00000') {
             // "Successful completion", so no results
             return [];
         }
+
         throw new DatabaseException($errorInfo[2]);
     }
 }

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework;
+namespace Tests\Unit\WebServCo\Framework;
 
+use ErrorException;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\ErrorHandler;
 
@@ -30,7 +31,7 @@ final class ErrorHandlerTest extends TestCase
      */
     public function throwsErrorExceptionWorks(): void
     {
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         ErrorHandler::throwErrorException(256, 'Custom error message', 'foo/bar.php', 13);
     }
 }

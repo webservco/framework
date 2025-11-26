@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework\Environment;
+namespace Tests\Unit\WebServCo\Framework\Environment;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Values\Environment;

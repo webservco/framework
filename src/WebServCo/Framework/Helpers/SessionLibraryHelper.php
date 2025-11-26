@@ -16,6 +16,7 @@ final class SessionLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('Session');
             self::$object = new Session($settings);
         }
+
         return self::$object;
     }
 }

@@ -14,8 +14,10 @@ trait OutputTrait
 
     final protected function setOutputLoader(OutputLoaderInterface $outputLoader): bool
     {
-        $this->outputCode = 200; // default
+        // default
+        $this->outputCode = 200;
         $this->outputLoader = $outputLoader;
+
         return true;
     }
 
@@ -62,6 +64,7 @@ trait OutputTrait
             'data' => $content,
             'result' => $result,
         ];
+
         return new Response(
             $this->output()->json($data),
             $this->outputCode,
@@ -72,6 +75,7 @@ trait OutputTrait
     protected function setOutputCode(int $outputCode): bool
     {
         $this->outputCode = $outputCode;
+
         return true;
     }
 }

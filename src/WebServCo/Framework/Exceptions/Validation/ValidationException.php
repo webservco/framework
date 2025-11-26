@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Exceptions\Validation;
 
-class ValidationException extends \WebServCo\Framework\Exceptions\ApplicationException
+use Throwable;
+use WebServCo\Framework\Exceptions\ApplicationException;
+
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+class ValidationException extends ApplicationException
 {
     public const int CODE = 400;
 
-    public function __construct(string $message, ?\Throwable $previous = null)
+    public function __construct(string $message, ?Throwable $previous = null)
     {
         parent::__construct($message, self::CODE, $previous);
     }

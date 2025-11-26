@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
+use WebServCo\Framework\Environment\Config as EnvironmentConfig;
 use WebServCo\Framework\Libraries\Config;
 
 final class ConfigLibraryHelper extends AbstractLibraryHelper
@@ -15,7 +16,7 @@ final class ConfigLibraryHelper extends AbstractLibraryHelper
     */
     public static function getSettings(string $name): array
     {
-        return self::library()->load($name, \WebServCo\Framework\Environment\Config::string('APP_PATH_PROJECT'));
+        return self::library()->load($name, EnvironmentConfig::string('APP_PATH_PROJECT'));
     }
 
     public static function library(): Config
@@ -23,6 +24,7 @@ final class ConfigLibraryHelper extends AbstractLibraryHelper
         if (!self::$object instanceof Config) {
             self::$object = new Config();
         }
+
         return self::$object;
     }
 }

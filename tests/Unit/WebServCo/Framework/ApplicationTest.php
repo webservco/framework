@@ -2,10 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework;
+namespace Tests\Unit\WebServCo\Framework;
 
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionMethod;
 use WebServCo\Framework\Application as App;
+use WebServCo\Framework\Exceptions\ApplicationException;
+
+use function is_readable;
+use function mkdir;
+use function rmdir;
+use function touch;
+use function unlink;
 
 final class ApplicationTest extends TestCase
 {
@@ -17,7 +27,7 @@ final class ApplicationTest extends TestCase
     */
     public function dummyProjectPathIsReadable(): void
     {
-        $this->assertTrue(\is_readable(self::$pathProject));
+        $this->assertTrue(is_readable(self::$pathProject));
     }
 
     /**
@@ -25,7 +35,7 @@ final class ApplicationTest extends TestCase
     */
     public function dummyWebPathIsReadable(): void
     {
-        $this->assertTrue(\is_readable(self::$pathWeb));
+        $this->assertTrue(is_readable(self::$pathWeb));
     }
 
     /**
@@ -33,7 +43,7 @@ final class ApplicationTest extends TestCase
     */
     public function instantiationWithEmptyParametersThrowsException(): void
     {
-        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
+        $this->expectException(ApplicationException::class);
         new App('', '', null);
     }
 
@@ -42,7 +52,7 @@ final class ApplicationTest extends TestCase
     */
     public function instantiationWithDummyParametersThrowsException(): void
     {
-        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
+        $this->expectException(ApplicationException::class);
         new App('foo', 'bar', 'Project');
     }
 
@@ -51,7 +61,7 @@ final class ApplicationTest extends TestCase
     */
     public function instantiationInvalidParametersThrowsException(): void
     {
-        $this->expectException(\WebServCo\Framework\Exceptions\ApplicationException::class);
+        $this->expectException(ApplicationException::class);
         new App('/tmp', '/tmp', null);
     }
 
@@ -74,7 +84,7 @@ final class ApplicationTest extends TestCase
     public function shutdownMethodIsPublic(): void
     {
         $app = new App(self::$pathWeb, self::$pathProject, 'Project');
-        $reflection = new \ReflectionMethod($app, 'shutdown');
+        $reflection = new ReflectionMethod($app, 'shutdown');
         $this->assertTrue($reflection->isPublic());
     }
 
@@ -83,9 +93,9 @@ final class ApplicationTest extends TestCase
         $pathProject = '/tmp/webservco/project/';
         $pathWeb = "{$pathProject}public/";
 
-        if (!\is_readable($pathWeb)) {
-            \mkdir($pathWeb, 0775, true);
-            \touch("{$pathWeb}index.php");
+        if (!is_readable($pathWeb)) {
+            mkdir($pathWeb, 0775, true);
+            touch("{$pathWeb}index.php");
         }
         self::$pathProject = $pathProject;
         self::$pathWeb = $pathWeb;
@@ -94,16 +104,16 @@ final class ApplicationTest extends TestCase
     public static function tearDownAfterClass(): void
     {
         $pathBase = '/tmp/webservco/';
-        $it = new \RecursiveDirectoryIterator($pathBase, \RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+        $it = new RecursiveDirectoryIterator($pathBase, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $item) {
             if ($item->isDir()) {
-                \rmdir($item->getRealPath());
+                rmdir($item->getRealPath());
             } else {
-                \unlink($item->getRealPath());
+                unlink($item->getRealPath());
             }
         }
-        \rmdir($pathBase);
+        rmdir($pathBase);
     }
 }

@@ -8,11 +8,8 @@ interface RequestInterface
 {
     /**
      * Returns data if exists, $defaultValue otherwise.
-     *
-     * @param mixed $defaultValue
-     * @return mixed
      */
-    public function data(string $key, $defaultValue = null);
+    public function data(string $key, mixed $defaultValue = null): mixed;
 
     /**
     * @return array<string,string>
@@ -69,8 +66,6 @@ interface RequestInterface
      * @param mixed $key Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'i18n/lang').
-     * @param mixed $defaultValue
-     * @return mixed
      */
-    public function query($key, $defaultValue = null);
+    public function query(mixed $key, mixed $defaultValue = null): mixed;
 }

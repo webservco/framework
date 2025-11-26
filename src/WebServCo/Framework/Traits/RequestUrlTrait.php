@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\ArrayStorage;
+use WebServCo\Framework\Helpers\ArrayHelper;
+use WebServCo\Framework\Helpers\PhpHelper;
+
+use function array_key_exists;
+use function rtrim;
+use function sprintf;
+
 trait RequestUrlTrait
 {
     abstract public function getHost(): string;
@@ -22,16 +30,17 @@ trait RequestUrlTrait
 
     public function getAppUrl(): string
     {
-        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
+        if (PhpHelper::isCli()) {
             return '';
         }
-        $url = \sprintf(
+        $url = sprintf(
             '%s://%s%s',
             $this->getSchema(),
             $this->getHost(),
             $this->path,
         );
-        return \rtrim($url, '/') . '/';
+
+        return rtrim($url, '/') . '/';
     }
 
     public function getShortUrl(): string
@@ -41,6 +50,7 @@ trait RequestUrlTrait
             $url .= $this->getTarget();
             $url .= $this->getSuffix();
         }
+
         return $url;
     }
 
@@ -52,13 +62,14 @@ trait RequestUrlTrait
         $url = $this->getShortUrl();
         $query = $this->getQuery();
         foreach ($removeParameters as $item) {
-            if (!\array_key_exists($item, $query)) {
+            if (!array_key_exists($item, $query)) {
                 continue;
             }
 
             unset($query[$item]);
         }
-        return $url . \WebServCo\Framework\Helpers\ArrayHelper::toUrlQueryString($query);
+
+        return $url . ArrayHelper::toUrlQueryString($query);
     }
 
     /**
@@ -73,11 +84,9 @@ trait RequestUrlTrait
      * @param mixed $key Can be an array, a string,
      *                          or a special formatted string
      *                          (eg 'i18n/lang').
-     * @param mixed $defaultValue
-     * @return mixed
      */
-    public function query($key, $defaultValue = null)
+    public function query(mixed $key, mixed $defaultValue = null): mixed
     {
-        return \WebServCo\Framework\ArrayStorage::get($this->query, $key, $defaultValue);
+        return ArrayStorage::get($this->query, $key, $defaultValue);
     }
 }

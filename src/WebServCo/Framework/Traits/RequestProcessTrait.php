@@ -4,7 +4,21 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Helpers\PhpHelper;
+use WebServCo\Framework\Helpers\RequestHelper;
 use WebServCo\Framework\Http\Method;
+
+use function basename;
+use function file_get_contents;
+use function in_array;
+use function is_string;
+use function rtrim;
+use function sprintf;
+use function str_replace;
+use function strpos;
+use function urldecode;
+
+use const DIRECTORY_SEPARATOR;
 
 trait RequestProcessTrait
 {
@@ -17,16 +31,14 @@ trait RequestProcessTrait
      * @param mixed $value The value to be stored.
      * @return bool True on success and false on failure.
      */
-    abstract public function setData($key, $value): bool;
+    abstract public function setData(mixed $key, mixed $value): bool;
 
     /**
     * @param mixed $key Can be an array, a string,
     *                          or a special formatted string
     *                          (eg 'i18n/lang').
-    * @param mixed $defaultValue
-    * @return mixed
     */
-    abstract public function setting($key, $defaultValue = null);
+    abstract public function setting(mixed $key, mixed $defaultValue = null): mixed;
 
     /**
     * Data value can be another array, for example _SERVER in CLI ("argv" is an array)
@@ -38,12 +50,13 @@ trait RequestProcessTrait
     public function sanitize(array $data): array
     {
         foreach ($data as $key => $value) {
-            if (\is_string($value)) {
+            if (is_string($value)) {
                 // Sanitize only first level (prevents "argv" from being sanitized)
-                $value = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($value);
+                $value = RequestHelper::sanitizeString($value);
             }
             $data[$key] = $value;
         }
+
         return $data;
     }
 
@@ -68,17 +81,20 @@ trait RequestProcessTrait
                 break;
             case Method::POST:
                 $this->processPost($post);
+
                 break;
         }
         if ($this->setting('clear_globals', false)) {
             $this->clearGlobals();
         }
+
         return true;
     }
 
     protected function setBody(): bool
     {
-        $this->body = (string) \file_get_contents('php://input');
+        $this->body = (string) file_get_contents('php://input');
+
         return true;
     }
 
@@ -86,7 +102,7 @@ trait RequestProcessTrait
     {
         if (
             empty($this->server['REQUEST_METHOD']) ||
-            !\in_array(
+            !in_array(
                 $this->server['REQUEST_METHOD'],
                 Method::getSupported(),
                 true,
@@ -95,6 +111,7 @@ trait RequestProcessTrait
             return false;
         }
         $this->method = $this->server['REQUEST_METHOD'];
+
         return true;
     }
 
@@ -103,7 +120,8 @@ trait RequestProcessTrait
         if (empty($this->server['SCRIPT_NAME'])) {
             return false;
         }
-        $this->filename = \basename($this->server['SCRIPT_NAME']);
+        $this->filename = basename($this->server['SCRIPT_NAME']);
+
         return true;
     }
 
@@ -113,13 +131,13 @@ trait RequestProcessTrait
             return false;
         }
 
-        $this->path = \rtrim(
-            \str_replace(
+        $this->path = rtrim(
+            str_replace(
                 $this->filename,
                 '',
                 $this->server['SCRIPT_NAME'],
             ),
-            \DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
         );
 
         return true;
@@ -138,6 +156,7 @@ trait RequestProcessTrait
         if (!empty($_POST)) {
             $_POST = [];
         }
+
         return true;
     }
 
@@ -148,14 +167,15 @@ trait RequestProcessTrait
     {
         $this->clearData();
         foreach ($post as $k => $v) {
-            $this->setData(\WebServCo\Framework\Helpers\RequestHelper::sanitizeString((string) $k), $v);
+            $this->setData(RequestHelper::sanitizeString((string) $k), $v);
         }
+
         return true;
     }
 
     protected function process(): bool
     {
-        if (\WebServCo\Framework\Helpers\PhpHelper::isCli()) {
+        if (PhpHelper::isCli()) {
             return $this->processCli();
         }
 
@@ -169,12 +189,13 @@ trait RequestProcessTrait
         }
         if (isset($this->server['argv'][2])) {
             foreach ($this->server['argv'] as $k => $v) {
-                if (\in_array($k, [0, 1], true)) {
+                if (in_array($k, [0, 1], true)) {
                     continue;
                 }
-                $this->args[] = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($v);
+                $this->args[] = RequestHelper::sanitizeString($v);
             }
         }
+
         return true;
     }
 
@@ -193,39 +214,45 @@ trait RequestProcessTrait
                  */
                 $string = $this->server['REDIRECT_URL'];
                 // Seems in this case the query string is not added, so check and added.
-                if (!\strpos($string, '?')) {
+                if (!strpos($string, '?')) {
                     $queryString = $this->getQueryString();
-                    if ('' !== $queryString) {
-                        $string = \sprintf('%s?%s', $string, $queryString);
+                    if ($queryString !== '') {
+                        $string = sprintf('%s?%s', $string, $queryString);
                     }
                 }
+
                 break;
             case isset($this->server['REQUEST_URI']):
                 $string = $this->server['REQUEST_URI'];
+
                 break;
             case isset($this->server['PATH_INFO']):
                 $string = $this->server['PATH_INFO'];
+
                 break;
             case isset($this->server['ORIG_PATH_INFO']):
                 $string = $this->server['ORIG_PATH_INFO'];
+
                 break;
             case !empty($this->server['QUERY_STRING']):
                 $string = $this->server['ORIG_PATH_INFO'];
+
                 break;
             default:
                 break;
         }
-        [$target, $queryString, $suffix] = \WebServCo\Framework\Helpers\RequestHelper::parse(
+        [$target, $queryString, $suffix] = RequestHelper::parse(
             $string,
             $this->path,
             $this->filename,
             $this->setting('suffixes', []),
         );
-        $this->target = \WebServCo\Framework\Helpers\RequestHelper::sanitizeString(\urldecode($target));
-        $this->query = \WebServCo\Framework\Helpers\RequestHelper::format(
-            \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($queryString),
+        $this->target = RequestHelper::sanitizeString(urldecode($target));
+        $this->query = RequestHelper::format(
+            RequestHelper::sanitizeString($queryString),
         );
         $this->suffix = $suffix;
+
         return true;
     }
 

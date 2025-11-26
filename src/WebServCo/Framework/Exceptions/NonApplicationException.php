@@ -9,6 +9,7 @@ namespace WebServCo\Framework\Exceptions;
 *
 * It means it can not be handled by the app because it doesn't have access to it.
 */
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class NonApplicationException extends ApplicationException
 {
 }

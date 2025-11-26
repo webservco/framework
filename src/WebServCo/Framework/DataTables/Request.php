@@ -7,28 +7,16 @@ namespace WebServCo\Framework\DataTables;
 use WebServCo\Framework\ArrayObject\Items;
 use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
-class Request
+final class Request
 {
-    protected int $draw;
-
-    protected Items $columns;
-
-    protected Items $order;
-
-    protected int $start;
-
-    protected int $length;
-
-    protected Search $search;
-
-    public function __construct(int $draw, Items $columns, Items $order, int $start, int $length, Search $search)
-    {
-        $this->draw = $draw;
-        $this->columns = $columns;
-        $this->order = $order;
-        $this->start = $start;
-        $this->length = $length;
-        $this->search = $search;
+    public function __construct(
+        protected int $draw,
+        protected Items $columns,
+        protected Items $order,
+        protected int $start,
+        protected int $length,
+        protected Search $search,
+    ) {
     }
 
     /**

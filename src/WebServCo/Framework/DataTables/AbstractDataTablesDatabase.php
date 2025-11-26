@@ -4,15 +4,25 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
+use InvalidArgumentException;
+use PDO;
+use PDOStatement;
 use WebServCo\Framework\Database\Order as DatabaseOrder;
 use WebServCo\Framework\Exceptions\DatabaseException;
 use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 use WebServCo\Framework\Interfaces\DatabaseInterface;
+use WebServCo\Framework\Interfaces\DataTablesInterface;
 
-abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interfaces\DataTablesInterface
+use function array_merge;
+use function implode;
+use function in_array;
+use function is_array;
+use function is_string;
+use function sprintf;
+use function strtoupper;
+
+abstract class AbstractDataTablesDatabase implements DataTablesInterface
 {
-    protected DatabaseInterface $db;
-
     /**
     * @param string $orderPart,
     */
@@ -20,9 +30,8 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     abstract protected function getRecordsTotalQuery(): string;
 
-    public function __construct(DatabaseInterface $db)
+    public function __construct(protected DatabaseInterface $db)
     {
-        $this->db = $db;
     }
 
     public function getResponse(Request $request): Response
@@ -33,20 +42,20 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
         $columnArrayObject = $request->getColumns();
         [$searchPart, $searchParams] = $this->getSearchQueryPart($columnArrayObject);
 
-        if (!\is_string($searchPart)) {
-            throw new \InvalidArgumentException('"searchQueryPart" is not a string');
+        if (!is_string($searchPart)) {
+            throw new InvalidArgumentException('"searchQueryPart" is not a string');
         }
-        if (!\is_array($searchParams)) {
-            throw new \InvalidArgumentException('"searchParams" is not an array');
+        if (!is_array($searchParams)) {
+            throw new InvalidArgumentException('"searchParams" is not an array');
         }
 
-        $params = \array_merge($params, $searchParams);
+        $params = array_merge($params, $searchParams);
 
         $orderArrayObject = $request->getOrder();
         $orderPart = $this->getOrderQueryPart($columnArrayObject, $orderArrayObject);
 
         $length = $request->getLength();
-        if (-1 !== $length) {
+        if ($length !== -1) {
             $limitPart = 'LIMIT ?, ?';
             $params[] = $request->getStart();
             $params[] = $length;
@@ -79,27 +88,29 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected function assertColumnArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof ColumnArrayObject) {
-            throw new \InvalidArgumentException(\sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
+            throw new InvalidArgumentException(sprintf('Object is not an instance of %s.', 'ColumnArrayObject'));
         }
+
         return true;
     }
 
     protected function assertOrderArrayObject(ArrayObjectInterface $arrayObject): bool
     {
         if (!$arrayObject instanceof OrderArrayObject) {
-            throw new \InvalidArgumentException(\sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
+            throw new InvalidArgumentException(sprintf('Object is not an instance of %s.', 'OrderArrayObject'));
         }
+
         return true;
     }
 
     /**
     * @return array<int,array<int|string,mixed>>
     */
-    protected function getData(ArrayObjectInterface $columnArrayObject, \PDOStatement $pdoStatement): array
+    protected function getData(ArrayObjectInterface $columnArrayObject, PDOStatement $pdoStatement): array
     {
         $this->assertColumnArrayObject($columnArrayObject);
         $data = [];
-        while ($row = $pdoStatement->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $pdoStatement->fetch(PDO::FETCH_ASSOC)) {
             $item = [];
             foreach ($columnArrayObject as $column) {
                 $name = $column->getData();
@@ -107,6 +118,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
             }
             $data[] = $item;
         }
+
         return $data;
     }
 
@@ -122,7 +134,7 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
     protected function getOrderQueryPart(
         ArrayObjectInterface $columnArrayObject,
-        ArrayObjectInterface $orderArrayObject
+        ArrayObjectInterface $orderArrayObject,
     ): string {
         $this->assertColumnArrayObject($columnArrayObject);
         $this->assertOrderArrayObject($orderArrayObject);
@@ -138,20 +150,21 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
                 continue;
             }
 
-            $dir = \strtoupper($order->getDir());
-            $dir = \in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC], true)
+            $dir = strtoupper($order->getDir());
+            $dir = in_array($dir, [DatabaseOrder::ASC, DatabaseOrder::DESC], true)
                 ? $dir
                 : DatabaseOrder::ASC;
             $columnName = $this->getDatabaseColumnName($column->getData());
-            $items[] = \sprintf(' %s %s', $columnName, $dir);
+            $items[] = sprintf(' %s %s', $columnName, $dir);
         }
         if (!$items) {
             // No order, or none of the columns are actually orderable
             return '';
         }
-        return \sprintf(
+
+        return sprintf(
             'ORDER BY%s',
-            \implode(",", $items),
+            implode(",", $items),
         );
     }
 
@@ -168,7 +181,8 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
     protected function getRecordsTotal(): int
     {
         try {
-            return (int) $this->db->getColumn( // grand total - query without the search, order, limits
+            // grand total - query without the search, order, limits
+            return (int) $this->db->getColumn(
                 $this->getRecordsTotalQuery(),
                 [],
             );
@@ -193,16 +207,17 @@ abstract class AbstractDataTablesDatabase implements \WebServCo\Framework\Interf
 
             $search = $column->getSearch();
             $searchValue = $search->getValue();
-            if ('' === $searchValue) {
+            if ($searchValue === '') {
                 continue;
             }
             // make sure it works also for "0"
-            $query .= \sprintf(
+            $query .= sprintf(
                 " AND %s LIKE ?",
                 $this->getDatabaseColumnName($column->getData()),
             );
-            $params[] = \sprintf('%%%s%%', $searchValue);
+            $params[] = sprintf('%%%s%%', $searchValue);
         }
+
         return [$query, $params];
     }
 }

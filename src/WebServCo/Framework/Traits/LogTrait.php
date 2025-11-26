@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use Psr\Log\LoggerInterface;
 use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 
 /**
@@ -11,13 +12,10 @@ use WebServCo\Framework\Interfaces\OutputLoggerInterface;
 */
 trait LogTrait
 {
-    protected \Psr\Log\LoggerInterface $fileLogger;
+    protected LoggerInterface $fileLogger;
     protected ?OutputLoggerInterface $outputLogger = null;
 
-    /**
-    * @param mixed $context
-    */
-    protected function logDebug(string $message, $context = []): void
+    protected function logDebug(string $message, mixed $context = []): void
     {
         $this->fileLogger->debug($message, $context);
         if (!$this->outputLogger instanceof OutputLoggerInterface) {
@@ -26,10 +24,7 @@ trait LogTrait
         $this->outputLogger->output($message);
     }
 
-    /**
-    * @param mixed $context
-    */
-    protected function logError(string $message, $context = []): void
+    protected function logError(string $message, mixed $context = []): void
     {
         $this->fileLogger->error($message, $context);
         if (!$this->outputLogger instanceof OutputLoggerInterface) {
@@ -38,10 +33,7 @@ trait LogTrait
         $this->outputLogger->output($message);
     }
 
-    /**
-    * @param mixed $context
-    */
-    protected function logInfo(string $message, $context = []): void
+    protected function logInfo(string $message, mixed $context = []): void
     {
         $this->fileLogger->info($message, $context);
         if (!$this->outputLogger instanceof OutputLoggerInterface) {
@@ -50,10 +42,7 @@ trait LogTrait
         $this->outputLogger->output($message);
     }
 
-    /**
-    * @param mixed $context
-    */
-    protected function logWarning(string $message, $context = []): void
+    protected function logWarning(string $message, mixed $context = []): void
     {
         $this->fileLogger->warning($message, $context);
         if (!$this->outputLogger instanceof OutputLoggerInterface) {

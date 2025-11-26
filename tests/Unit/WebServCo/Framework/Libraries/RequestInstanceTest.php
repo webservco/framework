@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework\Libraries;
+namespace Tests\Unit\WebServCo\Framework\Libraries;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Libraries\Request;

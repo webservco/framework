@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Http\Response;
+use WebServCo\Framework\Interfaces\RequestInterface;
 
 trait ResponseUrlTrait
 {
-    abstract protected function request(): \WebServCo\Framework\Interfaces\RequestInterface;
-
     /**
      * Redirect to an application location (Request target).
      * This method returns a Response object that needs to be in turn returned to the application.
@@ -21,6 +20,7 @@ trait ResponseUrlTrait
         if ($addSuffix) {
             $url .= $this->request()->getSuffix();
         }
+
         return $this->getRedirectUrlResponse($url);
     }
 
@@ -33,6 +33,7 @@ trait ResponseUrlTrait
     final protected function getReloadResponse(array $removeParameters = []): Response
     {
         $url = $this->request()->getUrl($removeParameters);
+
         return $this->getRedirectUrlResponse($url);
     }
 
@@ -53,4 +54,6 @@ trait ResponseUrlTrait
             ['Location' => [$url]],
         );
     }
+
+    abstract protected function request(): RequestInterface;
 }

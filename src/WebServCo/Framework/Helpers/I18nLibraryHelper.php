@@ -17,6 +17,7 @@ final class I18nLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('I18n');
             self::$object = new I18n($settings);
         }
+
         return self::$object;
     }
 }

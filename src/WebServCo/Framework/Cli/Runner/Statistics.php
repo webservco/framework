@@ -4,26 +4,40 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli\Runner;
 
+use DateTime;
+use DateTimeZone;
+use WebServCo\Framework\Exceptions\ApplicationException;
+
+use function date_default_timezone_get;
+use function floatval;
+use function memory_get_peak_usage;
+use function microtime;
+use function sprintf;
+
 final class Statistics
 {
-    protected float $duration; // <seconds>.<microseconds>
-    protected int $memoryPeakUsage; // K
+    // <seconds>.<microseconds>
+    protected float $duration;
+
+    // K
+    protected int $memoryPeakUsage;
     protected bool $result;
-    protected \DateTime $timeStart;
-    protected \DateTime $timeFinish;
+    protected DateTime $timeStart;
+    protected DateTime $timeFinish;
     protected string $timeZone;
 
     public function __construct()
     {
-        $this->timeZone = \date_default_timezone_get();
+        $this->timeZone = date_default_timezone_get();
     }
 
     public function finish(bool $result): bool
     {
         $this->result = $result;
         $this->timeFinish = $this->createCurrentTimeObject();
-        $this->duration = \floatval($this->timeFinish->format("U.u")) - \floatval($this->timeStart->format("U.u"));
-        $this->memoryPeakUsage = \memory_get_peak_usage(true) / 1024;
+        $this->duration = floatval($this->timeFinish->format("U.u")) - floatval($this->timeStart->format("U.u"));
+        $this->memoryPeakUsage = memory_get_peak_usage(true) / 1024;
+
         return true;
     }
 
@@ -45,17 +59,20 @@ final class Statistics
     public function start(): bool
     {
         $this->timeStart = $this->createCurrentTimeObject();
+
         return true;
     }
 
-    protected function createCurrentTimeObject(): \DateTime
+    protected function createCurrentTimeObject(): DateTime
     {
-        $microtime = \sprintf('%.4f', \microtime(true)); // https://www.php.net/manual/en/function.microtime.php#124984
-        $dateTime = \DateTime::createFromFormat('U.u', $microtime);
-        if (!($dateTime instanceof \DateTime)) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Error initializing DateTime object:');
+        // https://www.php.net/manual/en/function.microtime.php#124984
+        $microtime = sprintf('%.4f', microtime(true));
+        $dateTime = DateTime::createFromFormat('U.u', $microtime);
+        if (!($dateTime instanceof DateTime)) {
+            throw new ApplicationException('Error initializing DateTime object:');
         }
-        $dateTime->setTimezone(new \DateTimeZone($this->timeZone));
+        $dateTime->setTimezone(new DateTimeZone($this->timeZone));
+
         return $dateTime;
     }
 }

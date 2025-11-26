@@ -16,6 +16,7 @@ final class HtmlOutputLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('HtmlOutput');
             self::$object = new HtmlOutput($settings);
         }
+
         return self::$object;
     }
 }

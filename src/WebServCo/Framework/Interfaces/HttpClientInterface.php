@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Interfaces;
 
+use WebServCo\Framework\Http\Response;
+
 interface HttpClientInterface
 {
     public function reset(): bool;
 
-    public function retrieve(string $url): \WebServCo\Framework\Http\Response;
+    public function retrieve(string $url): Response;
 
     public function setDebug(bool $debug): bool;
 
@@ -19,7 +21,7 @@ interface HttpClientInterface
     /**
     * @param array<mixed>|string $data
     */
-    public function setRequestData($data): bool;
+    public function setRequestData(array|string $data): bool;
 
     public function setRequestHeader(string $name, string $value): bool;
 }

@@ -6,13 +6,10 @@ namespace WebServCo\Framework\ArrayObject;
 
 use WebServCo\Framework\Interfaces\ArrayObjectInterface;
 
-class Items
+final class Items
 {
-    protected ArrayObjectInterface $arrayObject;
-
-    public function __construct(ArrayObjectInterface $arrayObject)
+    public function __construct(protected ArrayObjectInterface $arrayObject)
     {
-        $this->arrayObject = $arrayObject;
     }
 
     public function getArrayObject(): ArrayObjectInterface
@@ -20,13 +17,10 @@ class Items
         return $this->arrayObject;
     }
 
-    /**
-    * @param int|string|null $index
-    * @param mixed $item
-    */
-    public function set($index, $item): bool
+    public function set(int|string|null $index, mixed $item): bool
     {
         $this->arrayObject->offsetSet($index, $item);
+
         return true;
     }
 
@@ -34,6 +28,7 @@ class Items
     {
         $this->arrayObject->offsetUnset($index);
         $this->rebuildIndex();
+
         return true;
     }
 
@@ -44,6 +39,7 @@ class Items
         foreach ($data as $item) {
             $this->set(null, $item);
         }
+
         return true;
     }
 }

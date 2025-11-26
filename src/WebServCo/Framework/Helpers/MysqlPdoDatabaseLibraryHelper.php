@@ -16,6 +16,7 @@ final class MysqlPdoDatabaseLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('MysqlPdoDatabase');
             self::$object = new MysqlPdoDatabase($settings);
         }
+
         return self::$object;
     }
 }

@@ -4,29 +4,41 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use Throwable;
+use WebServCo\Framework\Environment\Config;
+use WebServCo\Framework\Helpers\ErrorMessageHelper;
+use WebServCo\Framework\Interfaces\ResponseInterface;
+use WebServCo\Framework\Values\Environment;
+
+use function basename;
+use function sprintf;
+
+use const PHP_EOL;
+
 /**
 * An example Application implementation.
 *
 * Can be replaced or extended by consumer implementations.
 * Custom functionality in this class: use custom output.
 */
-class Application extends AbstractApplication
+final class Application extends AbstractApplication
 {
     /**
     * CLI message to output in case of error.
     */
-    protected function getCliOutput(\Throwable $throwable): string
+    protected function getCliOutput(Throwable $throwable): string
     {
-        $output = 'Boo boo' . \PHP_EOL;
-        $output .= \WebServCo\Framework\Helpers\ErrorMessageHelper::format($throwable);
-        $output .= \PHP_EOL;
+        $output = 'Boo boo' . PHP_EOL;
+        $output .= ErrorMessageHelper::format($throwable);
+        $output .= PHP_EOL;
+
         return $output;
     }
 
     /**
     * HTML code to output in case of error.
     */
-    protected function getHttpOutput(\Throwable $throwable): string
+    protected function getHttpOutput(Throwable $throwable): string
     {
         $output = '<!doctype html>
             <html>
@@ -40,13 +52,10 @@ class Application extends AbstractApplication
                 </style>
             </head>
             <body><div class="i"><br>';
-        $output .= \sprintf('<h1>%s</h1>', 404 === $throwable->getCode() ? 'Resource not found' : 'Boo boo');
+        $output .= sprintf('<h1>%s</h1>', $throwable->getCode() === 404 ? 'Resource not found' : 'Boo boo');
 
-        if (
-            \WebServCo\Framework\Values\Environment::DEVELOPMENT
-            === \WebServCo\Framework\Environment\Config::string('APP_ENVIRONMENT')
-        ) {
-            $output .= \sprintf(
+        if (Config::string('APP_ENVIRONMENT') === Environment::DEVELOPMENT) {
+            $output .= sprintf(
                 '<p><i>%s</i></p><p>%s:%s</p>',
                 $throwable->getMessage(),
                 $throwable->getFile(),
@@ -58,17 +67,17 @@ class Application extends AbstractApplication
                 $output .= "<small>";
                 foreach ($trace as $item) {
                     if (!empty($item['class'])) {
-                        $output .= \sprintf('%s%s', $item['class'], $item['type']);
+                        $output .= sprintf('%s%s', $item['class'], $item['type']);
                         $output .= "";
                     }
                     if (!empty($item['function'])) {
-                        $output .= \sprintf('%s', $item['function']);
+                        $output .= sprintf('%s', $item['function']);
                         $output .= "";
                     }
                     if (!empty($item['file'])) {
-                        $output .= \sprintf(
+                        $output .= sprintf(
                             ' [%s:%s]',
-                            \basename($item['file']),
+                            basename($item['file']),
                             $item['line'],
                         );
                         $output .= " ";
@@ -88,7 +97,7 @@ class Application extends AbstractApplication
     /**
     * Get Response.
     */
-    protected function getResponse(): \WebServCo\Framework\Interfaces\ResponseInterface
+    protected function getResponse(): ResponseInterface
     {
         return $this->execute();
     }

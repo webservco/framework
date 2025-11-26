@@ -4,7 +4,44 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Http;
 
+use InvalidArgumentException;
 use WebServCo\Framework\Exceptions\HttpClientException;
+use WebServCo\Framework\Helpers\Http\HeadersHelper;
+use WebServCo\Framework\Interfaces\HttpClientInterface;
+
+use function curl_close;
+use function curl_error;
+use function curl_exec;
+use function curl_getinfo;
+use function curl_init;
+use function curl_setopt;
+use function curl_setopt_array;
+use function end;
+use function fclose;
+use function fopen;
+use function is_array;
+use function ob_get_clean;
+use function ob_start;
+use function sprintf;
+use function strlen;
+use function trim;
+
+use const CURLINFO_RESPONSE_CODE;
+use const CURLOPT_CONNECTTIMEOUT;
+use const CURLOPT_CUSTOMREQUEST;
+use const CURLOPT_FOLLOWLOCATION;
+use const CURLOPT_HEADER;
+use const CURLOPT_HEADERFUNCTION;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_NOBODY;
+use const CURLOPT_POSTFIELDS;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYHOST;
+use const CURLOPT_SSL_VERIFYPEER;
+use const CURLOPT_STDERR;
+use const CURLOPT_TIMEOUT;
+use const CURLOPT_URL;
+use const CURLOPT_VERBOSE;
 
 /**
  *  A HTTP client using cURL.
@@ -17,7 +54,7 @@ use WebServCo\Framework\Exceptions\HttpClientException;
  * if (!\is_resource($this->curl)) {
  * Not using CurlHandle for the moment so that the code is still compatible with PHP 7.4
 */
-final class CurlClient extends AbstractClient implements \WebServCo\Framework\Interfaces\HttpClientInterface
+final class CurlClient extends AbstractClient implements HttpClientInterface
 {
     /**
     * cURL
@@ -61,14 +98,14 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     public function retrieve(string $url): Response
     {
         if (!$url) {
-            throw new \InvalidArgumentException('URL is empty');
+            throw new InvalidArgumentException('URL is empty');
         }
 
         $this->debugInit();
 
-        $this->curl = \curl_init();
+        $this->curl = curl_init();
 
-        if (false === $this->curl) {
+        if ($this->curl === false) {
             // Not in the try/catch/finally block as there is nothing to close or debug at this point.
             throw new HttpClientException('Not a valid cURL resource.');
         }
@@ -84,15 +121,19 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
             $this->processResponse();
 
-            $body = \trim($this->response);
+            $body = trim($this->response);
 
             $this->processResponseHeaders();
 
-            $headers = \end($this->responseHeaders);
+            $headers = end($this->responseHeaders);
+
             return new Response(
-                $body, // content
-                $this->getHttpCode(), // statusCode
-                \is_array($headers) ? $headers : [], // headers
+                // content
+                $body,
+                // statusCode
+                $this->getHttpCode(),
+                // headers
+                is_array($headers) ? $headers : [],
             );
         } catch (HttpClientException $e) {
             // Re-throw same exception
@@ -101,7 +142,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
         } finally {
             // Debug and close connection in any situation.
 
-            $this->debugInfo = \curl_getinfo($this->curl);
+            $this->debugInfo = curl_getinfo($this->curl);
 
             /**
              * PHP 8 compatibility.
@@ -111,7 +152,7 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
              * instead the CurlHandle instance is automatically destroyed if it is no longer referenced. "
              * Use `unset` for PHP 8 compatibility (https://php.watch/versions/8.0/resource-CurlHandle)
              */
-            \curl_close($this->curl);
+            curl_close($this->curl);
             unset($this->curl);
 
             $this->debugFinish();
@@ -121,8 +162,8 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     protected function debugFinish(): bool
     {
         if ($this->debug) {
-            \fclose($this->debugStderr);
-            $this->debugOutput = (string) \ob_get_clean();
+            fclose($this->debugStderr);
+            $this->debugOutput = (string) ob_get_clean();
 
             $this->logger->debug('CURL INFO:', $this->debugInfo);
             $this->logger->debug('CURL VERBOSE:', ['debugOutput' => $this->debugOutput]);
@@ -135,19 +176,22 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
             return true;
         }
+
         return false;
     }
 
     protected function debugInit(): bool
     {
         if ($this->debug) {
-            \ob_start();
-            $debugStderr = \fopen('php://output', 'w');
+            ob_start();
+            $debugStderr = fopen('php://output', 'w');
             if ($debugStderr) {
                 $this->debugStderr = $debugStderr;
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -155,25 +199,28 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     {
         if ($this->debug) {
             //curl_setopt($this->curl, CURLINFO_HEADER_OUT, 1); /* verbose not working if this is enabled */
-            \curl_setopt($this->curl, \CURLOPT_VERBOSE, 1);
-            \curl_setopt($this->curl, \CURLOPT_STDERR, $this->debugStderr);
+            curl_setopt($this->curl, CURLOPT_VERBOSE, 1);
+            curl_setopt($this->curl, CURLOPT_STDERR, $this->debugStderr);
+
             return true;
         }
+
         return false;
     }
 
     protected function getHttpCode(): int
     {
-        $httpCode = \curl_getinfo($this->curl, \CURLINFO_RESPONSE_CODE);
+        $httpCode = curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
         if (!$httpCode) {
-            throw new HttpClientException(\sprintf("Empty HTTP status code. cURL error: %s.", $this->curlError));
+            throw new HttpClientException(sprintf("Empty HTTP status code. cURL error: %s.", $this->curlError));
         }
+
         return $httpCode;
     }
 
     protected function handleRequestMethod(): bool
     {
-        if (false === $this->curl) {
+        if ($this->curl === false) {
             throw new HttpClientException('Not a valid resource.');
         }
 
@@ -186,22 +233,24 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
                 * Use custom request instead and handle headers manually
                 * curl_setopt($this->curl, CURLOPT_POST, true);
                 */
-                \curl_setopt($this->curl, \CURLOPT_CUSTOMREQUEST, $this->method);
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $this->method);
                 if ($this->requestData) {
-                    \curl_setopt($this->curl, \CURLOPT_POSTFIELDS, $this->requestData);
-                    if (\is_array($this->requestData)) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->requestData);
+                    if (is_array($this->requestData)) {
                         $this->setRequestHeader('Content-Type', 'multipart/form-data');
                     } else {
                         if ($this->requestContentType) {
                             $this->setRequestHeader('Content-Type', $this->requestContentType);
                         }
                         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."
-                        $this->setRequestHeader('Content-Length', (string) \strlen((string) $this->requestData));
+                        $this->setRequestHeader('Content-Length', (string) strlen((string) $this->requestData));
                     }
                 }
+
                 break;
             case Method::HEAD:
-                \curl_setopt($this->curl, \CURLOPT_NOBODY, true);
+                curl_setopt($this->curl, CURLOPT_NOBODY, true);
+
                 break;
         }
 
@@ -214,14 +263,14 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
     protected function headerCallback($curlResource, string $headerData): int
     {
-        $headerDataTrimmed = \trim($headerData);
+        $headerDataTrimmed = trim($headerData);
         if (!$headerDataTrimmed) {
             $this->responseHeadersArray[] = $this->responseHeaderArray;
             $this->responseHeaderArray = [];
         }
         $this->responseHeaderArray[] = $headerData;
 
-        return \strlen($headerData);
+        return strlen($headerData);
     }
 
     /**
@@ -232,25 +281,27 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     {
         $data = [];
         foreach ($headers as $k => $v) {
-            if (\is_array($v)) {
+            if (is_array($v)) {
                 foreach ($v as $item) {
-                    $data[] = \sprintf('%s: %s', $k, $item);
+                    $data[] = sprintf('%s: %s', $k, $item);
                 }
             } else {
-                $data[] = \sprintf('%s: %s', $k, $v);
+                $data[] = sprintf('%s: %s', $k, $v);
             }
         }
+
         return $data;
     }
 
     protected function processResponse(): bool
     {
-        $response = \curl_exec($this->curl);
-        $this->curlError = \curl_error($this->curl);
-        if (false === $response) {
-            throw new HttpClientException(\sprintf("cURL error: %s.", $this->curlError));
+        $response = curl_exec($this->curl);
+        $this->curlError = curl_error($this->curl);
+        if ($response === false) {
+            throw new HttpClientException(sprintf("cURL error: %s.", $this->curlError));
         }
         $this->response = (string) $response;
+
         return true;
     }
 
@@ -258,35 +309,41 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
     {
         $this->responseHeaders = [];
         foreach ($this->responseHeadersArray as $item) {
-            $this->responseHeaders[] = \WebServCo\Framework\Helpers\Http\HeadersHelper::parseArray($item);
+            $this->responseHeaders[] = HeadersHelper::parseArray($item);
         }
+
         return true;
     }
 
     protected function setCurlOptions(string $url): bool
     {
-        if (false === $this->curl) {
+        if ($this->curl === false) {
             throw new HttpClientException('Not a valid resource.');
         }
 
         // set options
-        \curl_setopt_array(
+        curl_setopt_array(
             $this->curl,
             [
-                \CURLOPT_CONNECTTIMEOUT => 60, // The number of seconds to wait while trying to connect.
-                \CURLOPT_FOLLOWLOCATION => true, /* follow redirects */
-                \CURLOPT_HEADER => false, /* do not include the header in the output */
-                \CURLOPT_RETURNTRANSFER => true, /* return instead of outputting */
-                \CURLOPT_TIMEOUT => $this->timeout, // The maximum number of seconds to allow cURL functions to execute.
-                \CURLOPT_URL => $url,
+                // The number of seconds to wait while trying to connect.
+                CURLOPT_CONNECTTIMEOUT => 60,
+                /* follow redirects */
+                CURLOPT_FOLLOWLOCATION => true,
+                /* do not include the header in the output */
+                CURLOPT_HEADER => false,
+                /* return instead of outputting */
+                CURLOPT_RETURNTRANSFER => true,
+                // The maximum number of seconds to allow cURL functions to execute.
+                CURLOPT_TIMEOUT => $this->timeout,
+                CURLOPT_URL => $url,
             ],
         );
         // check if we should ignore ssl errors
         if ($this->skipSslVerification) {
             // stop cURL from verifying the peer's certificate
-            \curl_setopt($this->curl, \CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
             // don't check the existence of a common name in the SSL peer certificate
-            \curl_setopt($this->curl, \CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 0);
         }
 
         return true;
@@ -294,21 +351,21 @@ final class CurlClient extends AbstractClient implements \WebServCo\Framework\In
 
     protected function setRequestHeaders(): bool
     {
-        if (false === $this->curl) {
+        if ($this->curl === false) {
             throw new HttpClientException('Not a valid resource.');
         }
 
         // set headers
         if ($this->requestHeaders) {
-            \curl_setopt(
+            curl_setopt(
                 $this->curl,
-                \CURLOPT_HTTPHEADER,
+                CURLOPT_HTTPHEADER,
                 $this->parseRequestHeaders($this->requestHeaders),
             );
         }
 
         // Callback to process response headers
-        \curl_setopt($this->curl, \CURLOPT_HEADERFUNCTION, [$this, 'headerCallback']);
+        curl_setopt($this->curl, CURLOPT_HEADERFUNCTION, [$this, 'headerCallback']);
 
         return true;
     }

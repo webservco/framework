@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Http;
 
+use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use WebServCo\Framework\Exceptions\HttpClientException;
+
+use function in_array;
+use function is_array;
 
 abstract class AbstractClient
 {
     protected bool $debug;
-
-    protected \Psr\Log\LoggerInterface $logger;
 
     protected string $method;
 
@@ -21,7 +24,7 @@ abstract class AbstractClient
     *
     * @var array<string,string>|string
     */
-    protected $requestData;
+    protected array|string $requestData;
 
     /**
     * Request headers
@@ -45,9 +48,8 @@ abstract class AbstractClient
 
     abstract public function retrieve(string $url): Response;
 
-    public function __construct(\Psr\Log\LoggerInterface $logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
         $this->debug = false;
         $this->method = Method::GET;
         $this->skipSslVerification = false;
@@ -61,6 +63,7 @@ abstract class AbstractClient
     public function get(string $url): Response
     {
         $this->setMethod(Method::GET);
+
         return $this->retrieve($url);
     }
 
@@ -83,18 +86,20 @@ abstract class AbstractClient
     public function head(string $url): Response
     {
         $this->setMethod(Method::HEAD);
+
         return $this->retrieve($url);
     }
 
     /**
     * @param array<string,mixed>|string $data
     */
-    public function post(string $url, $data = null): Response
+    public function post(string $url, array|string|null $data = null): Response
     {
         $this->setMethod(Method::POST);
         if ($data) {
             $this->setRequestData($data);
         }
+
         return $this->retrieve($url);
     }
 
@@ -115,58 +120,66 @@ abstract class AbstractClient
     public function setDebug(bool $debug): bool
     {
         $this->debug = $debug;
+
         return true;
     }
 
     public function setMethod(string $method): bool
     {
-        if (!\in_array($method, Method::getSupported(), true)) {
+        if (!in_array($method, Method::getSupported(), true)) {
             throw new HttpClientException('Unsupported method.');
         }
         $this->method = $method;
+
         return true;
     }
 
     /**
     * @param array<string,mixed>|string $data
     */
-    public function setRequestData($data): bool
+    public function setRequestData(array|string $data): bool
     {
-        if (\is_array($data)) {
+        if (is_array($data)) {
             $this->requestData = [];
             foreach ($data as $key => $value) {
-                if (\is_array($value)) {
-                    throw new \InvalidArgumentException('Request data value can not be an array.');
+                if (is_array($value)) {
+                    throw new InvalidArgumentException('Request data value can not be an array.');
                 }
                 $this->requestData[$key] = $value;
             }
+
             return true;
         }
         $this->requestData = $data;
+
         return true;
     }
 
     public function setRequestContentType(string $contentType): bool
     {
         $this->requestContentType = $contentType;
+
         return true;
     }
 
     public function setRequestHeader(string $name, string $value): bool
     {
         $this->requestHeaders[$name] = $value;
+
         return true;
     }
 
     public function setSkipSSlVerification(bool $skipSslVerification): bool
     {
         $this->skipSslVerification = $skipSslVerification;
+
         return true;
     }
 
     public function setTimeout(int $timeout): bool
     {
         $this->timeout = $timeout;
+
         return true;
     }
 }

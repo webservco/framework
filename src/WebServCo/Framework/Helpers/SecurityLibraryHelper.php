@@ -16,6 +16,7 @@ final class SecurityLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('Security');
             self::$object = new Security($settings);
         }
+
         return self::$object;
     }
 }

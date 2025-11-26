@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
-class ErrorMessageHelper
+use Throwable;
+
+use function basename;
+use function sprintf;
+
+final class ErrorMessageHelper
 {
-    public static function format(\Throwable $exception): string
+    public static function format(Throwable $exception): string
     {
-        return \sprintf(
+        return sprintf(
             'Error: %s in %s:%s.',
             $exception->getMessage(),
             // Do not use full path for security reasons; errors are sometimes forwarded to customers.
-            \basename($exception->getFile(), '.php'),
+            basename($exception->getFile(), '.php'),
             $exception->getLine(),
         );
     }

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Json;
 
+use WebServCo\Framework\Interfaces\JsonInterface;
+
+use function json_encode;
+
 /**
 * A basic JSON data object.
 * Used in Json\Response
 */
-class Data implements \WebServCo\Framework\Interfaces\JsonInterface
+final class Data implements JsonInterface
 {
     /**
     * Data
@@ -27,6 +31,6 @@ class Data implements \WebServCo\Framework\Interfaces\JsonInterface
 
     public function toJson(): string
     {
-        return (string) \json_encode($this->data);
+        return (string) json_encode($this->data);
     }
 }

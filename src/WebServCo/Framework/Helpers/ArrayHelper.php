@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
-class ArrayHelper
+use function array_key_exists;
+use function implode;
+use function is_array;
+use function key;
+use function sprintf;
+
+final class ArrayHelper
 {
     /**
     * Get a value from an array if it exists, otherwise a specified default value.
     * For multi dimensional arrays please see ArrayStorage.
     *
     * @param array<mixed> $array
-    * @param mixed $key
-    * @param mixed $defaultValue
-    * @return mixed
     */
-    public static function get(array $array, $key, $defaultValue = null)
+    public static function get(array $array, mixed $key, mixed $defaultValue = null): mixed
     {
-        return \array_key_exists($key, $array)
+        return array_key_exists($key, $array)
             ? $array[$key]
             : $defaultValue;
     }
@@ -30,7 +33,8 @@ class ArrayHelper
         if (!$array) {
             return false;
         }
-        return \is_array($array[\key($array)]);
+
+        return is_array($array[key($array)]);
     }
 
     /**
@@ -45,8 +49,9 @@ class ArrayHelper
         }
         $queries = [];
         foreach ($array as $k => $v) {
-            $queries[] = \sprintf('%s=%s', $k, $v);
+            $queries[] = sprintf('%s=%s', $k, $v);
         }
-        return '?' . \implode('&', $queries);
+
+        return '?' . implode('&', $queries);
     }
 }

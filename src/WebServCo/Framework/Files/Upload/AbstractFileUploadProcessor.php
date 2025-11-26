@@ -6,6 +6,10 @@ namespace WebServCo\Framework\Files\Upload;
 
 use WebServCo\Framework\Exceptions\UploadException;
 
+use function array_key_exists;
+use function move_uploaded_file;
+use function umask;
+
 /**
  * Advanced functionality.
  *
@@ -31,7 +35,7 @@ abstract class AbstractFileUploadProcessor
      */
     public function handleUpload(string $fieldName, string $uploadDirectory, array $uploadedFiles): ?string
     {
-        if ([] === $uploadedFiles) {
+        if ($uploadedFiles === []) {
             return null;
         }
 
@@ -39,7 +43,7 @@ abstract class AbstractFileUploadProcessor
             throw new UploadException(Codes::NO_FILE);
         }
 
-        if (Codes::OK !== $uploadedFiles[$fieldName]['error']) {
+        if ($uploadedFiles[$fieldName]['error'] !== Codes::OK) {
             throw new UploadException($uploadedFiles[$fieldName]['error']);
         }
 
@@ -54,10 +58,10 @@ abstract class AbstractFileUploadProcessor
             $uploadedFiles[$fieldName]['type'],
         );
         $uploadPath = $uploadDirectory . $uploadedFileName;
-        \umask(0002);
-        $result = \move_uploaded_file($uploadedFiles[$fieldName]['tmp_name'], $uploadPath);
+        umask(0002);
+        $result = move_uploaded_file($uploadedFiles[$fieldName]['tmp_name'], $uploadPath);
 
-        if (false === $result) {
+        if ($result === false) {
             throw new UploadException(Codes::CANT_WRITE);
         }
 
@@ -66,12 +70,12 @@ abstract class AbstractFileUploadProcessor
 
     private function validateFileMimeType(string $fileMimeType): bool
     {
-        if ([] === $this->allowedExtensions) {
+        if ($this->allowedExtensions === []) {
             // All extensions allowed.
             return true;
         }
 
-        if (\array_key_exists($fileMimeType, $this->allowedExtensions)) {
+        if (array_key_exists($fileMimeType, $this->allowedExtensions)) {
             return true;
         }
 

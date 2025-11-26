@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
+use const PHP_SAPI;
+
 final class PhpHelper
 {
     /**
@@ -11,6 +13,6 @@ final class PhpHelper
      */
     public static function isCli(): bool
     {
-        return 'cli' === \PHP_SAPI;
+        return PHP_SAPI === 'cli';
     }
 }

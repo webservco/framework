@@ -17,6 +17,7 @@ final class RequestLibraryHelper extends AbstractLibraryHelper
 
             self::$object = new Request($settings, $_SERVER, $_POST);
         }
+
         return self::$object;
     }
 }

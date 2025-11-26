@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use ErrorException;
+use WebServCo\Framework\Helpers\ErrorTypeHelper;
+
+use function error_clear_last;
+use function ini_set;
+use function restore_error_handler;
+use function set_error_handler;
+use function sprintf;
+
 final class ErrorHandler
 {
     /**
@@ -11,7 +20,7 @@ final class ErrorHandler
      */
     public static function restore(): bool
     {
-        return \restore_error_handler();
+        return restore_error_handler();
     }
 
     /**
@@ -19,8 +28,9 @@ final class ErrorHandler
      */
     public static function set(): bool
     {
-        \ini_set('display_errors', '0');
-        \set_error_handler(['\WebServCo\Framework\ErrorHandler', 'throwErrorException']);
+        ini_set('display_errors', '0');
+        set_error_handler(['\WebServCo\Framework\ErrorHandler', 'throwErrorException']);
+
         return true;
     }
 
@@ -50,15 +60,21 @@ final class ErrorHandler
         /* Handle error reporting disabled or suppressed */
 
         // Make sure \error_get_last will not report this again (used in ErrorObjectHelper::get())
-        \error_clear_last();
+        error_clear_last();
 
-        throw new \ErrorException(
-            \sprintf('%s: %s.', \WebServCo\Framework\Helpers\ErrorTypeHelper::getString($errno), $errstr), // message
-            0, // code
-            $errno, // severity
-            $errfile, // filename
-            $errline, // lineno
-            null, // previous
+        throw new ErrorException(
+            // message
+            sprintf('%s: %s.', ErrorTypeHelper::getString($errno), $errstr),
+            // code
+            0,
+            // severity
+            $errno,
+            // filename
+            $errfile,
+            // lineno
+            $errline,
+            // previous
+            null,
         );
     }
 }

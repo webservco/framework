@@ -16,6 +16,7 @@ final class RouterLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('Router');
             self::$object = new Router($settings);
         }
+
         return self::$object;
     }
 }

@@ -4,28 +4,31 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Helpers\StringHelper;
+use WebServCo\Framework\Interfaces\OutputLoaderInterface;
 use WebServCo\Framework\Libraries\HtmlOutput;
 use WebServCo\Framework\Libraries\JsonOutput;
 
-abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\OutputLoaderInterface
-{
-    protected string $projectPath;
-    protected HtmlOutput $htmlOutput;
-    protected JsonOutput $jsonOutput;
+use function is_array;
 
-    public function __construct(string $projectPath, HtmlOutput $htmlOutput, JsonOutput $jsonOutput)
-    {
-        $this->projectPath = $projectPath;
-        $this->htmlOutput = $htmlOutput;
-        $this->jsonOutput = $jsonOutput;
+use const PHP_EOL;
+
+abstract class AbstractOutputLoader implements OutputLoaderInterface
+{
+    public function __construct(
+        protected string $projectPath,
+        protected HtmlOutput $htmlOutput,
+        protected JsonOutput $jsonOutput,
+    ) {
     }
 
     public function cli(string $string, bool $eol = true): bool
     {
         echo $string;
         if ($eol) {
-            echo \PHP_EOL;
+            echo PHP_EOL;
         }
+
         return true;
     }
 
@@ -35,6 +38,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     public function html(array $data, string $template): string
     {
         $this->setHtmlTemplateData($data);
+
         return $this->getRenderedHtml($template);
     }
 
@@ -65,7 +69,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
         /**
          * Page content
          */
-        if (!\WebServCo\Framework\Helpers\StringHelper::isEmpty($pageTemplate)) {
+        if (!StringHelper::isEmpty($pageTemplate)) {
             $this->htmlOutput()->setData(
                 'tpl_content',
                 $this->getRenderedHtml($pageTemplate),
@@ -76,6 +80,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
          * Main template
          */
         $mainTemplate ??= $this->htmlOutput()->setting('main_template', 'layout');
+
         return $this->getRenderedHtml($mainTemplate);
     }
 
@@ -84,11 +89,12 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     */
     public function json(array $data): string
     {
-        if (\is_array($data)) {
+        if (is_array($data)) {
             foreach ($data as $key => $value) {
                 $this->jsonOutput()->setData($key, $value);
             }
         }
+
         return $this->jsonOutput()->render();
     }
 
@@ -102,12 +108,13 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
     */
     protected function setHtmlTemplateData(array $data): bool
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             return false;
         }
         foreach ($data as $key => $value) {
             $this->htmlOutput()->setData($key, $value);
         }
+
         return true;
     }
 
@@ -121,6 +128,7 @@ abstract class AbstractOutputLoader implements \WebServCo\Framework\Interfaces\O
          * Set page template
          */
         $this->htmlOutput()->setTemplate($template);
+
         return $this->htmlOutput()->render();
     }
 }

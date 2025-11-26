@@ -4,41 +4,15 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use PDOStatement;
 use WebServCo\Framework\Database\QueryType;
+use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Exceptions\DatabaseException;
+
+use function sprintf;
 
 trait DatabaseTrait
 {
-    abstract public function escapeIdentifier(string $string): string;
-
-    abstract public function escapeTableName(string $string): string;
-
-    /**
-    * @param array<int,float|int|string> $params
-    * @return bool|int|string|null
-    */
-    abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0);
-
-    /**
-    * @param array<int,float|int|string|null> $params
-    */
-    abstract public function query(string $query, array $params = []): \PDOStatement;
-
-    /**
-    * @param array<int,array<int,mixed>> $queries
-    */
-    abstract public function transaction(array $queries): int;
-
-    /**
-    * @param array<string,float|int|string|null> $addData
-    * @param array<string,float|int|string|null> $updateData
-    */
-    abstract protected function generateAddQuery(
-        string $queryType,
-        string $tableName,
-        array $addData = [],
-        array $updateData = []
-    ): string;
-
     /**
     * @param array<mixed> $addData
     * @param array<mixed> $updateData
@@ -70,13 +44,10 @@ trait DatabaseTrait
         return $this->add(QueryType::REPLACE, $tableName, $data);
     }
 
-    /**
-    * @param float|int|string $value
-    */
-    final public function valueExists(string $table, string $field, $value): bool
+    final public function valueExists(string $table, string $field, float|int|string $value): bool
     {
         return (bool) $this->getColumn(
-            \sprintf(
+            sprintf(
                 "SELECT 1 FROM %s WHERE %s = ? LIMIT 1",
                 $this->escapeTableName($table),
                 $this->escapeIdentifier($field),
@@ -90,12 +61,32 @@ trait DatabaseTrait
         $name = $this->escapeTableName($table);
 
         try {
-            $this->query(\sprintf('SELECT 1 FROM %s LIMIT 1', $name));
+            $this->query(sprintf('SELECT 1 FROM %s LIMIT 1', $name));
+
             return true;
-        } catch (\WebServCo\Framework\Exceptions\DatabaseException $e) {
+        } catch (DatabaseException) {
             return false;
         }
     }
+
+    abstract public function escapeIdentifier(string $string): string;
+
+    abstract public function escapeTableName(string $string): string;
+
+    /**
+    * @param array<int,float|int|string> $params
+    */
+    abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0): bool|int|string|null;
+
+    /**
+    * @param array<int,float|int|string|null> $params
+    */
+    abstract public function query(string $query, array $params = []): PDOStatement;
+
+    /**
+    * @param array<int,array<int,mixed>> $queries
+    */
+    abstract public function transaction(array $queries): int;
 
     /**
     * @param array<mixed> $addData
@@ -106,7 +97,7 @@ trait DatabaseTrait
     final protected function add(string $queryType, string $tableName, array $addData = [], array $updateData = []): int
     {
         if (!$tableName) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('No data specified.');
+            throw new ApplicationException('No data specified.');
         }
 
         $query = $this->generateAddQuery($queryType, $tableName, $addData, $updateData);
@@ -121,8 +112,21 @@ trait DatabaseTrait
 
         return $this->transaction(
             [
-                [$query, $queryData], // item
-            ], // array
+                // item
+                [$query, $queryData],
+            // array
+            ],
         );
     }
+
+    /**
+    * @param array<string,float|int|string|null> $addData
+    * @param array<string,float|int|string|null> $updateData
+    */
+    abstract protected function generateAddQuery(
+        string $queryType,
+        string $tableName,
+        array $addData = [],
+        array $updateData = [],
+    ): string;
 }

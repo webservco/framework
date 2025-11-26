@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
-abstract class AbstractDataTables implements \WebServCo\Framework\Interfaces\DataTablesInterface
+use WebServCo\Framework\Interfaces\DataTablesInterface;
+
+abstract class AbstractDataTables implements DataTablesInterface
 {
     /**
     * @return array<int,array<string,float|int|string|null>>

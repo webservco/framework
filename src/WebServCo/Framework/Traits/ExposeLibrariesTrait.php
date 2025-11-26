@@ -4,45 +4,62 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use WebServCo\Framework\Helpers\ConfigLibraryHelper;
+use WebServCo\Framework\Helpers\CookieLibraryHelper;
+use WebServCo\Framework\Helpers\I18nLibraryHelper;
+use WebServCo\Framework\Helpers\MysqlPdoDatabaseLibraryHelper;
+use WebServCo\Framework\Helpers\RequestLibraryHelper;
+use WebServCo\Framework\Helpers\RouterLibraryHelper;
+use WebServCo\Framework\Helpers\SecurityLibraryHelper;
+use WebServCo\Framework\Helpers\SessionLibraryHelper;
+use WebServCo\Framework\Interfaces\ConfigInterface;
+use WebServCo\Framework\Interfaces\DatabaseInterface;
+use WebServCo\Framework\Interfaces\I18nInterface;
+use WebServCo\Framework\Interfaces\RequestInterface;
+use WebServCo\Framework\Interfaces\SessionInterface;
+use WebServCo\Framework\Libraries\Cookie;
+use WebServCo\Framework\Libraries\Router;
+use WebServCo\Framework\Libraries\Security;
+
 trait ExposeLibrariesTrait
 {
-    final protected function config(): \WebServCo\Framework\Interfaces\ConfigInterface
+    final protected function config(): ConfigInterface
     {
-        return \WebServCo\Framework\Helpers\ConfigLibraryHelper::library();
+        return ConfigLibraryHelper::library();
     }
 
-    final protected function cookie(): \WebServCo\Framework\Libraries\Cookie
+    final protected function cookie(): Cookie
     {
-        return \WebServCo\Framework\Helpers\CookieLibraryHelper::library();
+        return CookieLibraryHelper::library();
     }
 
-    final protected function i18n(): \WebServCo\Framework\Interfaces\I18nInterface
+    final protected function i18n(): I18nInterface
     {
-        return \WebServCo\Framework\Helpers\I18nLibraryHelper::library();
+        return I18nLibraryHelper::library();
     }
 
-    final protected function mysqlPdoDb(): \WebServCo\Framework\Interfaces\DatabaseInterface
+    final protected function mysqlPdoDb(): DatabaseInterface
     {
-        return \WebServCo\Framework\Helpers\MysqlPdoDatabaseLibraryHelper::library();
+        return MysqlPdoDatabaseLibraryHelper::library();
     }
 
-    final protected function request(): \WebServCo\Framework\Interfaces\RequestInterface
+    final protected function request(): RequestInterface
     {
-        return \WebServCo\Framework\Helpers\RequestLibraryHelper::library();
+        return RequestLibraryHelper::library();
     }
 
-    final protected function router(): \WebServCo\Framework\Libraries\Router
+    final protected function router(): Router
     {
-        return \WebServCo\Framework\Helpers\RouterLibraryHelper::library();
+        return RouterLibraryHelper::library();
     }
 
-    final protected function security(): \WebServCo\Framework\Libraries\Security
+    final protected function security(): Security
     {
-        return \WebServCo\Framework\Helpers\SecurityLibraryHelper::library();
+        return SecurityLibraryHelper::library();
     }
 
-    final protected function session(): \WebServCo\Framework\Interfaces\SessionInterface
+    final protected function session(): SessionInterface
     {
-        return \WebServCo\Framework\Helpers\SessionLibraryHelper::library();
+        return SessionLibraryHelper::library();
     }
 }

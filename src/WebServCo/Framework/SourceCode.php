@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Exceptions\NotImplementedException;
+
+use function htmlentities;
+use function str_replace;
+
 final class SourceCode
 {
     public const string TYPE_XML = 'XML';
 
-    protected string $type;
-    protected string $data;
-
-    public function __construct(string $type, string $data)
+    public function __construct(protected string $type, protected string $data)
     {
         switch ($type) {
             case self::TYPE_XML:
                 break;
             default:
-                throw new \WebServCo\Framework\Exceptions\NotImplementedException('Type not implemented.');
+                throw new NotImplementedException('Type not implemented.');
         }
-        $this->type = $type;
-        $this->data = $data;
     }
 
     public function highlight(): string
@@ -29,15 +29,16 @@ final class SourceCode
             case self::TYPE_XML:
                 return $this->highlightXml($this->data);
             default:
-                throw new \WebServCo\Framework\Exceptions\NotImplementedException('Type not implemented.');
+                throw new NotImplementedException('Type not implemented.');
         }
     }
 
     protected function highlightXml(string $data): string
     {
-        $data = \htmlentities($data);
-        $data = \str_replace('&lt;', '<span style="color: purple">&lt;', $data);
-        $data = \str_replace('&gt;', '&gt;</span>', $data);
+        $data = htmlentities($data);
+        $data = str_replace('&lt;', '<span style="color: purple">&lt;', $data);
+        $data = str_replace('&gt;', '&gt;</span>', $data);
+
         return $data;
     }
 }

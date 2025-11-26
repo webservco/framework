@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli\Progress;
 
+use function str_repeat;
+use function strlen;
+
 final class Line
 {
     protected int $padding;
@@ -22,6 +25,7 @@ final class Line
     public function setShowResult(bool $showResult): bool
     {
         $this->showResult = $showResult;
+
         return true;
     }
 
@@ -30,24 +34,25 @@ final class Line
         $this->outMessage = $message;
 
         $this->outPad = 0 < $this->padding
-            ? \str_repeat(' ', (int) $this->padding)
+            ? str_repeat(' ', (int) $this->padding)
             : '';
+
         return $this->outPad . $this->outMessage;
     }
 
     public function suffix(bool $result = true): string
     {
-        $totalLen = \strlen($this->outPad . $this->outMessage);
+        $totalLen = strlen($this->outPad . $this->outMessage);
         $output = null;
 
         //overwrite current line
         $output .= "\033[" . $totalLen . 'D';
-        $output .= \str_repeat(' ', $this->padding);
+        $output .= str_repeat(' ', $this->padding);
         $output .= $this->outMessage;
 
         $padLen = 74 - $totalLen;
         if (0 < $padLen) {
-            $output .= \str_repeat(' ', $padLen);
+            $output .= str_repeat(' ', $padLen);
         }
         if ($this->showResult) {
             $output .= '[';
@@ -64,6 +69,6 @@ final class Line
 
     public function finish(): string
     {
-        return "\033[" . 0 . 'D' . \str_repeat(' ', 74) . "\r";
+        return "\033[" . 0 . 'D' . str_repeat(' ', 74) . "\r";
     }
 }

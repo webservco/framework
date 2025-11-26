@@ -4,7 +4,23 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Traits;
 
+use OutOfBoundsException;
 use WebServCo\Framework\Helpers\PhpHelper;
+
+use function array_key_exists;
+use function asort;
+use function end;
+use function explode;
+use function gethostbyname;
+use function parse_url;
+use function php_uname;
+use function sprintf;
+use function str_replace;
+use function strpos;
+use function strtolower;
+use function substr;
+
+use const PHP_URL_HOST;
 
 trait RequestServerTrait
 {
@@ -17,20 +33,23 @@ trait RequestServerTrait
             return [];
         }
         $acceptTypes = [];
-        $httpAccept = \strtolower(\str_replace(' ', '', $this->server['HTTP_ACCEPT']));
-        $parts = \explode(',', $httpAccept);
+        $httpAccept = strtolower(str_replace(' ', '', $this->server['HTTP_ACCEPT']));
+        $parts = explode(',', $httpAccept);
 
         foreach ($parts as $item) {
-            $q = 1; // the default quality is 1.
-            if (\strpos($item, ';q=')) { // check if there is a different quality
+            // the default quality is 1.
+            $q = 1;
+            // check if there is a different quality
+            if (strpos($item, ';q=')) {
                 // divide "mime/type;q=X" into two parts: "mime/type" i "X"
-                [$item, $q] = \explode(';q=', $item);
+                [$item, $q] = explode(';q=', $item);
             }
             // Make sure key is string, otherwise it is cast by PHP to int and possibly overwritten.
             // WARNING: $q == 0 means, that mime-type isn’t supported!
-            $acceptTypes[\sprintf('q=%s', $q)] = $item;
+            $acceptTypes[sprintf('q=%s', $q)] = $item;
         }
-        \asort($acceptTypes);
+        asort($acceptTypes);
+
         return $acceptTypes;
     }
 
@@ -39,7 +58,8 @@ trait RequestServerTrait
         if (!isset($this->server['HTTP_ACCEPT_LANGUAGE'])) {
             return '';
         }
-        return \substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+
+        return substr($this->server['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     }
 
     public function getContentType(): string
@@ -47,6 +67,7 @@ trait RequestServerTrait
         if (!isset($this->server['CONTENT_TYPE'])) {
             return '';
         }
+
         return $this->server['CONTENT_TYPE'];
     }
 
@@ -61,8 +82,10 @@ trait RequestServerTrait
         }
 
         if (!empty($this->server['HOSTNAME'])) {
-            return $this->server['HOSTNAME']; //CLI
+            //CLI
+            return $this->server['HOSTNAME'];
         }
+
         return '';
     }
 
@@ -73,8 +96,9 @@ trait RequestServerTrait
             return '';
         }
 
-        $parts = \explode('.', $host);
-        return \end($parts);
+        $parts = explode('.', $host);
+
+        return end($parts);
     }
 
     public function getReferer(): string
@@ -90,7 +114,7 @@ trait RequestServerTrait
     public function getRemoteAddress(): string
     {
         if (PhpHelper::isCli()) {
-            return \gethostbyname(\php_uname('n'));
+            return gethostbyname(php_uname('n'));
         }
 
         return $this->server['REMOTE_ADDR'] ?? '';
@@ -98,7 +122,7 @@ trait RequestServerTrait
 
     public function getRefererHost(): string
     {
-        return (string) \parse_url($this->getReferer(), \PHP_URL_HOST);
+        return (string) parse_url($this->getReferer(), PHP_URL_HOST);
     }
 
     public function getSchema(): string
@@ -107,17 +131,18 @@ trait RequestServerTrait
             return '';
         }
 
-        if (isset($this->server['HTTPS']) && 'off' !== $this->server['HTTPS']) {
+        if (isset($this->server['HTTPS']) && $this->server['HTTPS'] !== 'off') {
             return 'https';
         }
 
-        if (isset($this->server['HTTP_X_FORWARDED_PROTO']) && 'https' === $this->server['HTTP_X_FORWARDED_PROTO']) {
+        if (isset($this->server['HTTP_X_FORWARDED_PROTO']) && $this->server['HTTP_X_FORWARDED_PROTO'] === 'https') {
             return 'https';
         }
 
-        if (isset($this->server['HTTP_X_FORWARDED_SSL']) && 'on' === $this->server['HTTP_X_FORWARDED_SSL']) {
+        if (isset($this->server['HTTP_X_FORWARDED_SSL']) && $this->server['HTTP_X_FORWARDED_SSL'] === 'on') {
             return 'https';
         }
+
         return 'http';
     }
 
@@ -126,14 +151,16 @@ trait RequestServerTrait
         if (!isset($this->server['SERVER_PROTOCOL'])) {
             return '';
         }
+
         return $this->server['SERVER_PROTOCOL'];
     }
 
     public function getServerVariable(string $index): string
     {
-        if (!\array_key_exists($index, $this->server)) {
-            throw new \OutOfBoundsException('Requested key does not exist.');
+        if (!array_key_exists($index, $this->server)) {
+            throw new OutOfBoundsException('Requested key does not exist.');
         }
+
         return $this->server[$index];
     }
 
@@ -142,6 +169,7 @@ trait RequestServerTrait
         if (PhpHelper::isCli()) {
             return '';
         }
+
         return $this->server['HTTP_USER_AGENT'] ?? '';
     }
 }

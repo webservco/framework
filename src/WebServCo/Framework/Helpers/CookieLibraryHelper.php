@@ -16,6 +16,7 @@ final class CookieLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('Cookie');
             self::$object = new Cookie($settings);
         }
+
         return self::$object;
     }
 }

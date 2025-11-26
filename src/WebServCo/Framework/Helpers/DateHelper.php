@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
+use DateTime;
 use WebServCo\Framework\Exceptions\DateTimeException;
 
-class DateHelper
+use function date;
+use function sprintf;
+use function strtotime;
+
+final class DateHelper
 {
     /**
     * Format a date.
@@ -17,7 +22,7 @@ class DateHelper
     */
     public static function format(string $date, string $format = 'Y-m-d'): string
     {
-        return \date($format, (int) \strtotime($date));
+        return date($format, (int) strtotime($date));
     }
 
     /**
@@ -30,8 +35,8 @@ class DateHelper
         // to zero-like values ( 0 for hour, minute, second and fraction, 1 for month and day, 1970 for year
         // and UTC for timezone information)"
         // "Without !, all fields will be set to the current date and time."
-        $dateTime = \DateTime::createFromFormat(\sprintf('!%s', $format), $date);
-        if (false === $dateTime) {
+        $dateTime = DateTime::createFromFormat(sprintf('!%s', $format), $date);
+        if ($dateTime === false) {
             throw new DateTimeException('Invalid date or format.');
         }
 

@@ -5,7 +5,18 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Traits;
 
 use WebServCo\Framework\Database\QueryType;
+use WebServCo\Framework\Database\Utils\PreparedStatements;
 use WebServCo\Framework\Helpers\ArrayHelper;
+
+use function array_combine;
+use function array_fill;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function call_user_func_array;
+use function count;
+use function implode;
+use function sprintf;
 
 trait DatabaseAddQueryTrait
 {
@@ -21,7 +32,7 @@ trait DatabaseAddQueryTrait
         string $queryType,
         string $tableName,
         array $addData = [],
-        array $updateData = []
+        array $updateData = [],
     ): string {
         $multiDimensional = ArrayHelper::isMultidimensional($addData);
 
@@ -47,12 +58,14 @@ trait DatabaseAddQueryTrait
     {
         $multiDimensional = ArrayHelper::isMultidimensional($data);
         if ($multiDimensional) {
-            $keys = \array_keys(\call_user_func_array('array_merge', $data));
+            $keys = array_keys(call_user_func_array('array_merge', $data));
             // fill any missing keys with empty data
-            $keyPair = \array_combine($keys, \array_fill(0, \count($keys), null));
-            $data = \array_map(static fn ($e) => \array_merge((array) $keyPair, $e), $data);
+            $keyPair = array_combine($keys, array_fill(0, count($keys), null));
+            // @todo solve
+            // @phpcs:ignore SlevomatCodingStandard.Functions.DisallowArrowFunction.DisallowedArrowFunction
+            $data = array_map(static fn ($e) => array_merge((array) $keyPair, $e), $data);
         } else {
-            $keys = \array_keys($data);
+            $keys = array_keys($data);
         }
 
         return [$keys, $data];
@@ -63,13 +76,16 @@ trait DatabaseAddQueryTrait
         switch ($queryType) {
             case QueryType::REPLACE:
                 $query = QueryType::REPLACE . ' INTO';
+
                 break;
             case QueryType::INSERT_IGNORE:
                 $query = QueryType::INSERT_IGNORE . ' INTO';
+
                 break;
             case QueryType::INSERT:
             default:
                 $query = QueryType::INSERT . ' INTO';
+
                 break;
         }
 
@@ -81,9 +97,9 @@ trait DatabaseAddQueryTrait
     */
     final protected function generateAddQueryFieldsPart(array $fields): string
     {
-        return ' (' . \implode(
+        return ' (' . implode(
             ', ',
-            \array_map([$this, 'escapeIdentifier'], $fields),
+            array_map([$this, 'escapeIdentifier'], $fields),
         ) .
         ')';
     }
@@ -99,10 +115,11 @@ trait DatabaseAddQueryTrait
             foreach ($data as $item) {
                 $valuesStrings[] = $this->generateValuesString($item);
             }
-            $query .= \implode(', ', $valuesStrings);
+            $query .= implode(', ', $valuesStrings);
         } else {
             $query .= $this->generateValuesString($data);
         }
+
         return $query;
     }
 
@@ -117,11 +134,12 @@ trait DatabaseAddQueryTrait
 
         $strings = [];
         foreach ($data as $k => $v) {
-            $strings[] = \sprintf('%s = ?', $this->escapeIdentifier((string) $k));
+            $strings[] = sprintf('%s = ?', $this->escapeIdentifier((string) $k));
         }
 
         $query = " ON DUPLICATE KEY UPDATE ";
-        $query .= \implode(', ', $strings);
+        $query .= implode(', ', $strings);
+
         return $query;
     }
 
@@ -130,7 +148,8 @@ trait DatabaseAddQueryTrait
     */
     final protected function generateValuesString(array $data): string
     {
-        $placeholdersString = \WebServCo\Framework\Database\Utils\PreparedStatements::generatePlaceholdersString($data);
+        $placeholdersString = PreparedStatements::generatePlaceholdersString($data);
+
         return ' (' . $placeholdersString . ')';
     }
 }

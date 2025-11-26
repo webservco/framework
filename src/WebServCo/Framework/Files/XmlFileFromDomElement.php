@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Files;
 
-final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
+use DOMDocument;
+use DOMElement;
+use WebServCo\Framework\Interfaces\FileInterface;
+
+final class XmlFileFromDomElement extends AbstractFile implements FileInterface
 {
-    public function __construct(string $fileName, \DOMElement $domElement, bool $formatOutput = false)
+    public function __construct(string $fileName, DOMElement $domElement, bool $formatOutput = false)
     {
-        $domDocument = new \DOMDocument();
+        $domDocument = new DOMDocument();
         $domDocument->preserveWhiteSpace = false;
         if ($formatOutput) {
             $domDocument->formatOutput = true;
@@ -17,9 +21,7 @@ final class XmlFileFromDomElement extends AbstractFile implements \WebServCo\Fra
         $domDocument->appendChild($element);
         $fileData = (string) $domDocument->saveXML();
 
-        // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
         $domDocument = null;
-        // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
         $element = null;
 
         parent::__construct($fileName, $fileData, XmlFile::CONTENT_TYPE);

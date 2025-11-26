@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Interfaces;
 
+use Countable;
+use Traversable;
+
 /**
 * @extends \Traversable<int|string,mixed>
 */
-interface ArrayObjectInterface extends \Traversable, \Countable
+interface ArrayObjectInterface extends Traversable, Countable
 {
     /**
     * @param array<mixed>|object $array
@@ -22,24 +25,17 @@ interface ArrayObjectInterface extends \Traversable, \Countable
     // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function getArrayCopy();
 
-    /**
-     * @param string|int $key
-     * @return mixed
-     */
-    public function offsetGet($key);
+    public function offsetGet(string|int $key): mixed;
 
     /**
-    * @param int|string|null $key
-    * @param mixed $value
     * @return void
     */
     // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function offsetSet($key, $value);
+    public function offsetSet(int|string|null $key, mixed $value);
 
     /**
-    * @param string|int $key
     * @return void
     */
     // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function offsetUnset($key);
+    public function offsetUnset(string|int $key);
 }

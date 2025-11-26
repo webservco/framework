@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+// @phpcs:disable
 namespace { // global code
     if (!\function_exists('__')) {
         /**
@@ -10,9 +11,10 @@ namespace { // global code
         function __(string $msg, ?string $domain = null): string
         {
             if ($domain) {
-                return \dgettext($domain, $msg);
+                return dgettext($domain, $msg);
             }
-            return \gettext($msg);
+
+            return gettext($msg);
         }
     }
 
@@ -23,9 +25,10 @@ namespace { // global code
         function ___(string $msgSingular, string $msgPlural, int $msgNumber, ?string $domain = null): string
         {
             if ($domain) {
-                return \dngettext($domain, $msgSingular, $msgPlural, $msgNumber);
+                return dngettext($domain, $msgSingular, $msgPlural, $msgNumber);
             }
-            return \ngettext($msgSingular, $msgPlural, $msgNumber);
+
+            return ngettext($msgSingular, $msgPlural, $msgNumber);
         }
     }
 }

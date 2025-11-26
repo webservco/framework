@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Files\Upload;
 
+use function __;
+
 final class Codes
 {
     public const int OK = 0;
@@ -27,23 +29,23 @@ final class Codes
                 return '';
             case self::INI_SIZE:
             case self::FORM_SIZE:
-                return \__('Uploaded file size exceeds maximum file size allowed.');
+                return __('Uploaded file size exceeds maximum file size allowed.');
             case self::PARTIAL:
-                return \__('The uploaded file was only partially uploaded.');
+                return __('The uploaded file was only partially uploaded.');
             case self::NO_FILE:
-                return \__('No file was uploaded.');
+                return __('No file was uploaded.');
             case self::TYPE_NOT_ALLOWED:
-                return \__('File type not allowed.');
+                return __('File type not allowed.');
             case self::CANT_WRITE:
-                return \__('Error saving uploaded file.');
+                return __('Error saving uploaded file.');
             case self::IMAGE_TOO_SMALL:
-                return \__('Image is too small.');
+                return __('Image is too small.');
             case self::IMAGE_WRONG_ASPECT_RATIO:
-                return \__('Image has wrong aspect ratio.');
+                return __('Image has wrong aspect ratio.');
             case self::NO_TMP_DIR:
             case self::EXTENSION:
             default:
-                return \__('Upload error.');
+                return __('Upload error.');
         }
     }
 }

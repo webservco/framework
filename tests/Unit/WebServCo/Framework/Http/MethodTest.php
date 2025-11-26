@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework\Http;
+namespace Tests\Unit\WebServCo\Framework\Http;
 
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Http\Method;

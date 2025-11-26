@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Files;
 
-class File extends AbstractFile implements \WebServCo\Framework\Interfaces\FileInterface
+use WebServCo\Framework\Interfaces\FileInterface;
+
+final class File extends AbstractFile implements FileInterface
 {
 }

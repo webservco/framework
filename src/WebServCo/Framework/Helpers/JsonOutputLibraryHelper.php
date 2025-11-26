@@ -16,6 +16,7 @@ final class JsonOutputLibraryHelper extends AbstractLibraryHelper
             $settings = ConfigLibraryHelper::getSettings('JsonOutput');
             self::$object = new JsonOutput($settings);
         }
+
         return self::$object;
     }
 }

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Interfaces;
 
+use PDO;
+use PDOStatement;
+
 interface DatabaseInterface
 {
     public function affectedRows(): int;
 
     /**
     * @param array<int,float|int|string> $params
-    * @return bool|int|string|null
     */
-    public function getColumn(string $query, array $params = [], int $columnNumber = 0);
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0): bool|int|string|null;
 
-    public function getPdo(): \PDO;
+    public function getPdo(): PDO;
 
     /**
     * @param array<int,float|int|string> $params
@@ -56,7 +58,7 @@ interface DatabaseInterface
     /**
     * @param array<int,float|int|string|null> $params
     */
-    public function query(string $query, array $params = []): \PDOStatement;
+    public function query(string $query, array $params = []): PDOStatement;
 
     /**
     * @param array<mixed> $data
@@ -72,8 +74,5 @@ interface DatabaseInterface
     */
     public function transaction(array $queries): int;
 
-    /**
-    * @param float|int|string $value
-    */
-    public function valueExists(string $table, string $field, $value): bool;
+    public function valueExists(string $table, string $field, float|int|string $value): bool;
 }

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Exceptions;
 
+use Throwable;
+
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
 class AclException extends HttpException
 {
     public const int CODE = 401;
 
-    public function __construct(string $message, int $code = self::CODE, ?\Throwable $previous = null)
+    public function __construct(string $message, int $code = self::CODE, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

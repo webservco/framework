@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli;
 
+use function sprintf;
+
 final class Ansi
 {
     /**
@@ -16,9 +18,10 @@ final class Ansi
     {
         $result = '';
         foreach ($parameters as $parameter) {
-            $result .= \sprintf("\e[%sm", $parameter);
+            $result .= sprintf("\e[%sm", $parameter);
         }
-        $result .= $string . \sprintf("\e[%sm", Sgr::RESET);
+        $result .= $string . sprintf("\e[%sm", Sgr::RESET);
+
         return $result;
     }
 

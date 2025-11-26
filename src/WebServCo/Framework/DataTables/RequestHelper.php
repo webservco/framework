@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
+use InvalidArgumentException;
 use WebServCo\Framework\ArrayObject\Items;
 
-class RequestHelper extends AbstractHelper
+use function array_key_exists;
+use function filter_var;
+use function is_array;
+use function sprintf;
+
+use const FILTER_VALIDATE_BOOLEAN;
+
+final class RequestHelper extends AbstractHelper
 {
     /**
     * @param array<string,mixed> $data
@@ -14,26 +22,27 @@ class RequestHelper extends AbstractHelper
     */
     public static function init(array $data, array $required = []): Request
     {
-        $required = $required; // reserved for future use.
+        // reserved for future use.
+        $required = $required;
 
         parent::validate($data, ['draw', 'columns', 'order', 'start', 'length', 'search']);
 
         foreach (['columns', 'order', 'search'] as $item) {
-            if (!\is_array($data[$item])) {
-                throw new \InvalidArgumentException(\sprintf('Invalid parameter: %s.', $item));
+            if (!is_array($data[$item])) {
+                throw new InvalidArgumentException(sprintf('Invalid parameter: %s.', $item));
             }
         }
 
         $columns = new Items(new ColumnArrayObject());
         foreach ($data['columns'] as $item) {
-            if (!\array_key_exists('data', $item) || !\array_key_exists('name', $item)) {
+            if (!array_key_exists('data', $item) || !array_key_exists('name', $item)) {
                 //continue;
             }
             $columnItem = new Column(
                 $item['data'],
                 $item['name'],
-                \filter_var($item['searchable'], \FILTER_VALIDATE_BOOLEAN),
-                \filter_var($item['orderable'], \FILTER_VALIDATE_BOOLEAN),
+                filter_var($item['searchable'], FILTER_VALIDATE_BOOLEAN),
+                filter_var($item['orderable'], FILTER_VALIDATE_BOOLEAN),
                 SearchHelper::init($item['search']),
             );
             $columns->set(null, $columnItem);
@@ -41,7 +50,7 @@ class RequestHelper extends AbstractHelper
 
         $order = new Items(new OrderArrayObject());
         foreach ($data['order'] as $item) {
-            if (!\array_key_exists('column', $item) || !\array_key_exists('dir', $item)) {
+            if (!array_key_exists('column', $item) || !array_key_exists('dir', $item)) {
                 continue;
             }
             $orderItem = new Order($item['column'], $item['dir']);

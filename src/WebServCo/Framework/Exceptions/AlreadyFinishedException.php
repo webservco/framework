@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Exceptions;
 
-final class AlreadyFinishedException extends AlreadyHappenedException
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+class AlreadyFinishedException extends AlreadyHappenedException
 {
 }

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Framework;
+namespace Tests\Unit\WebServCo\Framework;
 
 use PHPUnit\Framework\TestCase;
+use WebServCo\Framework\Path;
 
 final class PathTest extends TestCase
 {
@@ -13,6 +14,6 @@ final class PathTest extends TestCase
      */
     public function getPathReturnsString(): void
     {
-        $this->assertIsString(\WebServCo\Framework\Path::get());
+        $this->assertIsString(Path::get());
     }
 }

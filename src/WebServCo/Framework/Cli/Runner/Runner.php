@@ -4,32 +4,45 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli\Runner;
 
-final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
+use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Interfaces\CliRunnerInterface;
+
+use function bin2hex;
+use function is_file;
+use function is_readable;
+use function random_bytes;
+use function realpath;
+use function sprintf;
+use function touch;
+use function unlink;
+
+use const DIRECTORY_SEPARATOR;
+
+final class Runner implements CliRunnerInterface
 {
     protected string $pid;
     protected Statistics $statistics;
-    protected string $workDir;
 
-    public function __construct(string $workDir)
+    public function __construct(protected string $workDir)
     {
-        if (!\is_readable($workDir)) {
-            throw new \WebServCo\Framework\Exceptions\ApplicationException('Working directory not readable.');
+        if (!is_readable($workDir)) {
+            throw new ApplicationException('Working directory not readable.');
         }
 
         $this->statistics = new Statistics();
-        $this->workDir = $workDir;
     }
 
     public function finish(): bool
     {
-        if (!$this->pid || !\is_file($this->pid) || !\is_readable($this->pid)) {
+        if (!$this->pid || !is_file($this->pid) || !is_readable($this->pid)) {
             $result = false;
         } else {
-            \unlink($this->pid);
+            unlink($this->pid);
             $this->pid = '';
             $result = true;
         }
         $this->statistics->finish($result);
+
         return $result;
     }
 
@@ -38,6 +51,7 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         if (!$this->isRunning()) {
             return null;
         }
+
         return $this->pid;
     }
 
@@ -51,19 +65,21 @@ final class Runner implements \WebServCo\Framework\Interfaces\CliRunnerInterface
         if (!$this->pid) {
             return false;
         }
-        return \is_readable($this->pid);
+
+        return is_readable($this->pid);
     }
 
     public function start(): bool
     {
         $this->statistics->start();
-        $this->pid = \sprintf(
+        $this->pid = sprintf(
             '%s%s%s.pid',
-            \realpath($this->workDir),
-            \DIRECTORY_SEPARATOR,
-            \bin2hex(\random_bytes(5)),
+            realpath($this->workDir),
+            DIRECTORY_SEPARATOR,
+            bin2hex(random_bytes(5)),
         );
-        \touch($this->pid);
+        touch($this->pid);
+
         return true;
     }
 }

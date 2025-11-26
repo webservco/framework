@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Cli;
 
-final class Response extends \WebServCo\Framework\AbstractResponse implements
-    \WebServCo\Framework\Interfaces\ResponseInterface
+use WebServCo\Framework\AbstractResponse;
+use WebServCo\Framework\Interfaces\ResponseInterface;
+
+final class Response extends AbstractResponse implements
+    ResponseInterface
 {
     public function __construct(string $content = '', int $exitStatus = 0)
     {
@@ -17,6 +20,7 @@ final class Response extends \WebServCo\Framework\AbstractResponse implements
     public function setStatus(int $statusCode): bool
     {
         $this->statusCode = $statusCode;
+
         return true;
     }
 
@@ -25,6 +29,7 @@ final class Response extends \WebServCo\Framework\AbstractResponse implements
         if ($this->content) {
             echo $this->content;
         }
+
         return $this->statusCode;
     }
 }

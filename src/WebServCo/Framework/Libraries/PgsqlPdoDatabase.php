@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
-final class PgsqlPdoDatabase extends \WebServCo\Framework\Database\AbstractPdoDatabase implements
-    \WebServCo\Framework\Interfaces\DatabaseInterface
+use WebServCo\Framework\Database\AbstractPdoDatabase;
+use WebServCo\Framework\Interfaces\DatabaseInterface;
+use WebServCo\Framework\Traits\PgsqlDatabaseTrait;
+
+use function sprintf;
+
+final class PgsqlPdoDatabase extends AbstractPdoDatabase implements
+    DatabaseInterface
 {
-    use \WebServCo\Framework\Traits\PgsqlDatabaseTrait;
+    use PgsqlDatabaseTrait;
 
     protected function getDataSourceName(string $host, int $port, string $dbname): string
     {
-        return \sprintf('%s:host=%s;port=%s;dbname=%s', 'pgsql', $host, $port, $dbname);
+        return sprintf('%s:host=%s;port=%s;dbname=%s', 'pgsql', $host, $port, $dbname);
     }
 }

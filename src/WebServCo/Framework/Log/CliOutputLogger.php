@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-class CliOutputLogger extends AbstractOutputLogger implements
-    \WebServCo\Framework\Interfaces\OutputLoggerInterface
+use WebServCo\Framework\Cli\Ansi;
+use WebServCo\Framework\Interfaces\OutputLoggerInterface;
+
+use function sprintf;
+
+final class CliOutputLogger extends AbstractOutputLogger implements
+    OutputLoggerInterface
 {
     public function clear(): bool
     {
-        $this->output(\WebServCo\Framework\Cli\Ansi::clear(), true);
+        $this->output(Ansi::clear(), true);
+
         return true;
     }
 
@@ -29,7 +35,7 @@ class CliOutputLogger extends AbstractOutputLogger implements
         $this->validateLogLevel($level);
 
         if ($context) {
-            $message = \sprintf('[context not outputted] %s', $message);
+            $message = sprintf('[context not outputted] %s', $message);
         }
         $this->output($message, true);
     }

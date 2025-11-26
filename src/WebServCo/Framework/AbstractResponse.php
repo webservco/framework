@@ -23,6 +23,7 @@ abstract class AbstractResponse
     public function setContent(string $content): bool
     {
         $this->content = $content;
+
         return true;
     }
 }

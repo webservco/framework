@@ -6,24 +6,19 @@ namespace WebServCo\Framework\Objects;
 
 final class Route
 {
-    public string $class;
-
-    public string $method;
-
     /**
     * Arguments.
     *
     * @var array<int,string>
     */
+    // @phpcs:ignore SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty
     public array $arguments;
 
     /**
     * @param array<int,string> $arguments
     */
-    public function __construct(string $class, string $method, array $arguments)
+    public function __construct(public string $class, public string $method, array $arguments)
     {
-        $this->class = $class;
-        $this->method = $method;
         $this->arguments = $arguments;
     }
 }

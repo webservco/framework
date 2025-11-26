@@ -27,20 +27,22 @@
         "phpstan/phpstan-strict-rules": "^1",
         "phpstan/phpstan" : "^1",
         "slevomat/coding-standard": "^8",
-        "squizlabs/php_codesniffer" : "^3"
+        "squizlabs/php_codesniffer" : "^3",
+        "webservco/coding-standards": "^1",
+        "webservco/component-common": "^1"
     },
     "suggest" : {
         "phpdocumentor/phpdocumentor": "phpDocumentor v3 (global installation)"
     },
     "autoload" : {
         "psr-4" : {
-            "WebServCo\\" : "src/WebServCo/",
-            "Tests\\" : "tests/unit/WebServCo/"
+          "Tests\\Unit\\" : "tests/Unit/",
+          "WebServCo\\" : "src/WebServCo/"
         }
     },
     "scripts" : {
-        "all": "composer lint && composer check && composer s:1 && composer test",
-        "check" : "vendor/bin/phpcs --standard=php-coding-standard.xml --extensions=php -sp src tests",
+        "check": "composer lint && composer check:phpcs && composer s:1 && composer test",
+        "check:phpcs": "vendor/bin/phpcs --standard=.phpcs/php-coding-standard.xml --extensions=php -sp bin config public resources src tests",
         "check:structure" : "vendor/bin/pds-skeleton validate .",
         "doc" : [
             "Composer\\Config::disableProcessTimeout",

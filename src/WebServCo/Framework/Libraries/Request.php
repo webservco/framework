@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
-final class Request extends \WebServCo\Framework\AbstractRequest implements
-    \WebServCo\Framework\Interfaces\RequestInterface
+use WebServCo\Framework\AbstractRequest;
+use WebServCo\Framework\Interfaces\RequestInterface;
+use WebServCo\Framework\Traits\RequestProcessTrait;
+use WebServCo\Framework\Traits\RequestServerTrait;
+use WebServCo\Framework\Traits\RequestUrlTrait;
+
+final class Request extends AbstractRequest implements
+    RequestInterface
 {
-    use \WebServCo\Framework\Traits\RequestProcessTrait;
-    use \WebServCo\Framework\Traits\RequestServerTrait;
-    use \WebServCo\Framework\Traits\RequestUrlTrait;
+    use RequestProcessTrait;
+    use RequestServerTrait;
+    use RequestUrlTrait;
 
     /**
     * @param array<string,string|array<mixed>> $settings

@@ -4,43 +4,75 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers;
 
-class ErrorTypeHelper
+use const E_ALL;
+use const E_COMPILE_ERROR;
+use const E_COMPILE_WARNING;
+use const E_CORE_ERROR;
+use const E_CORE_WARNING;
+use const E_DEPRECATED;
+use const E_ERROR;
+use const E_NOTICE;
+use const E_PARSE;
+use const E_RECOVERABLE_ERROR;
+use const E_USER_DEPRECATED;
+use const E_USER_ERROR;
+use const E_USER_NOTICE;
+use const E_USER_WARNING;
+use const E_WARNING;
+
+final class ErrorTypeHelper
 {
     public static function getString(int $type): string
     {
         switch ($type) {
-            case \E_ERROR: // 1
+            // 1
+            case E_ERROR:
                 return 'E_ERROR';
-            case \E_WARNING: // 2
+            // 2
+            case E_WARNING:
                 return 'Warning';
-            case \E_PARSE: // 4
+            // 4
+            case E_PARSE:
                 return 'E_PARSE';
-            case \E_NOTICE: // 8
+            // 8
+            case E_NOTICE:
                 return 'Notice';
-            case \E_CORE_ERROR: // 16
+            // 16
+            case E_CORE_ERROR:
                 return 'E_CORE_ERROR';
-            case \E_CORE_WARNING: // 32
+            // 32
+            case E_CORE_WARNING:
                 return 'E_CORE_WARNING';
-            case \E_COMPILE_ERROR: // 64
+            // 64
+            case E_COMPILE_ERROR:
                 return 'E_COMPILE_ERROR';
-            case \E_COMPILE_WARNING: // 128
+            // 128
+            case E_COMPILE_WARNING:
                 return 'E_COMPILE_WARNING';
-            case \E_USER_ERROR: // 256
+            // 256
+            case E_USER_ERROR:
                 return 'E_USER_ERROR';
-            case \E_USER_WARNING: // 512
+            // 512
+            case E_USER_WARNING:
                 return 'E_USER_WARNING';
-            case \E_USER_NOTICE: // 1024
+            // 1024
+            case E_USER_NOTICE:
                 return 'E_USER_NOTICE';
+
             /* This error level is unused, and has been deprecated as of PHP 8.4.0.
              * case \E_STRICT: // 2048
                 return 'E_STRICT';*/
-            case \E_RECOVERABLE_ERROR: // 4096
+            // 4096
+            case E_RECOVERABLE_ERROR:
                 return 'E_RECOVERABLE_ERROR';
-            case \E_DEPRECATED: // 8192
+            // 8192
+            case E_DEPRECATED:
                 return 'Deprecated';
-            case \E_USER_DEPRECATED: // 16384
+            // 16384
+            case E_USER_DEPRECATED:
                 return 'E_USER_DEPRECATED';
-            case \E_ALL: // 32767
+            // 32767
+            case E_ALL:
                 return 'E_ALL';
             default:
                 return 'Unknown';

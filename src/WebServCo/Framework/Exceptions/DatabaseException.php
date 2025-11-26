@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Exceptions;
 
-final class DatabaseException extends ApplicationException
+use PDOException;
+use Throwable;
+
+// @phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+class DatabaseException extends ApplicationException
 {
     public const int CODE = 0;
 
     protected string $sqlState = '';
 
-    public function __construct(string $message, ?\Throwable $previous = null)
+    public function __construct(string $message, ?Throwable $previous = null)
     {
         $code = self::CODE;
 
         switch (true) {
-            case $previous instanceof \PDOException:
+            case $previous instanceof PDOException:
                 if (!empty($previous->errorInfo[1])) {
                     $code = $previous->errorInfo[1];
                     $this->sqlState = $previous->errorInfo[0];
@@ -25,11 +29,13 @@ final class DatabaseException extends ApplicationException
                     // cleaner error message without all the codes.
                     $message = $previous->errorInfo[2];
                 }
+
                 break;
             case $previous instanceof self:
                 // A \PDOException that was re-thrown
                 $code = $previous->getCode();
                 $this->sqlState = $previous->getSqlState();
+
                 break;
             default:
                 break;

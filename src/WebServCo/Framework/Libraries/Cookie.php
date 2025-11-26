@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Libraries;
 
-final class Cookie extends \WebServCo\Framework\AbstractLibrary
+use InvalidArgumentException;
+use WebServCo\Framework\AbstractLibrary;
+use WebServCo\Framework\Helpers\RequestHelper;
+
+use function in_array;
+use function setcookie;
+
+final class Cookie extends AbstractLibrary
 {
     public function get(string $name, string $defaultValue = ''): string
     {
@@ -20,6 +27,7 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
 
         unset($_COOKIE[$name]);
         $this->set($name, '', -1);
+
         return true;
     }
 
@@ -41,14 +49,15 @@ final class Cookie extends \WebServCo\Framework\AbstractLibrary
         string $domain = '',
         bool $secure = true,
         bool $httponly = false,
-        string $samesite = 'Lax'
+        string $samesite = 'Lax',
     ): bool {
-        if (!\in_array($samesite, ['Lax', 'None', 'Strict'], true)) {
-            throw new \InvalidArgumentException('Invalid argument: samesite');
+        if (!in_array($samesite, ['Lax', 'None', 'Strict'], true)) {
+            throw new InvalidArgumentException('Invalid argument: samesite');
         }
-        return \setcookie(
+
+        return setcookie(
             $name,
-            \WebServCo\Framework\Helpers\RequestHelper::sanitizeString($value),
+            RequestHelper::sanitizeString($value),
             [
                 'domain' => $domain,
                 'expires' => $expires,

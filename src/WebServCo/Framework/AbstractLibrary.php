@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use WebServCo\Framework\Interfaces\ArrayInterface;
+use WebServCo\Framework\Interfaces\DataInterface;
+use WebServCo\Framework\Interfaces\LibraryInterface;
+use WebServCo\Framework\Interfaces\SettingsInterface;
+
 abstract class AbstractLibrary implements
-    \WebServCo\Framework\Interfaces\ArrayInterface,
-    \WebServCo\Framework\Interfaces\DataInterface,
-    \WebServCo\Framework\Interfaces\LibraryInterface,
-    \WebServCo\Framework\Interfaces\SettingsInterface
+    ArrayInterface,
+    DataInterface,
+    LibraryInterface,
+    SettingsInterface
 {
     /**
      * Data.
@@ -24,19 +29,10 @@ abstract class AbstractLibrary implements
      */
     private array $settings;
 
-    /**
-    * @param array<string,string|array<mixed>> $settings
-    */
-    public function __construct(array $settings = [])
-    {
-        $this->clearData();
-
-        $this->settings = $settings;
-    }
-
     final public function clearData(): bool
     {
         $this->data = [];
+
         return true;
     }
 
@@ -45,20 +41,17 @@ abstract class AbstractLibrary implements
      */
     final public function data(string $key, mixed $defaultValue = null): mixed
     {
-        return \WebServCo\Framework\ArrayStorage::get($this->data, $key, $defaultValue);
+        return ArrayStorage::get($this->data, $key, $defaultValue);
     }
 
     /**
      * Returns data if not empty, $defaultValue otherwise.
      * $this->data returns data if it exists (can be empty).
      * This method returns data if both exists and not empty.
-     *
-     * @param mixed $defaultValue
-     * @return mixed
      */
-    final public function dataElse(string $key, $defaultValue = null)
+    final public function dataElse(string $key, mixed $defaultValue = null): mixed
     {
-        return \WebServCo\Framework\ArrayStorage::getElse($this->data, $key, $defaultValue);
+        return ArrayStorage::getElse($this->data, $key, $defaultValue);
     }
 
     /**
@@ -76,12 +69,13 @@ abstract class AbstractLibrary implements
      * @param mixed $value The value to be stored.
      * @return bool True on success and false on failure.
      */
-    final public function setData($key, $value): bool
+    final public function setData(mixed $key, mixed $value): bool
     {
         if (!$key) {
             return false;
         }
-        $this->data = \WebServCo\Framework\ArrayStorage::set($this->data, $key, $value);
+        $this->data = ArrayStorage::set($this->data, $key, $value);
+
         return true;
     }
 
@@ -92,12 +86,13 @@ abstract class AbstractLibrary implements
      * @param mixed $value The value to be stored.
      * @return bool True on success and false on failure.
      */
-    final public function setSetting($key, $value): bool
+    final public function setSetting(mixed $key, mixed $value): bool
     {
         if (!$key) {
             return false;
         }
-        $this->settings = \WebServCo\Framework\ArrayStorage::set($this->settings, $key, $value);
+        $this->settings = ArrayStorage::set($this->settings, $key, $value);
+
         return true;
     }
 
@@ -105,12 +100,20 @@ abstract class AbstractLibrary implements
     * @param mixed $key Can be an array, a string,
     *                          or a special formatted string
     *                          (eg 'i18n/lang').
-    * @param mixed $defaultValue
-    * @return mixed
     */
-    final public function setting($key, $defaultValue = null)
+    final public function setting(mixed $key, mixed $defaultValue = null): mixed
     {
-        return \WebServCo\Framework\ArrayStorage::get($this->settings, $key, $defaultValue);
+        return ArrayStorage::get($this->settings, $key, $defaultValue);
+    }
+
+    /**
+    * @param array<string,string|array<mixed>> $settings
+    */
+    public function __construct(array $settings = [])
+    {
+        $this->clearData();
+
+        $this->settings = $settings;
     }
 
     /**

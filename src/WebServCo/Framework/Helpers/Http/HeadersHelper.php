@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Helpers\Http;
 
-class HeadersHelper
+use function array_values;
+use function explode;
+use function is_array;
+use function mb_stripos;
+use function strtolower;
+use function substr;
+use function trim;
+
+use const PHP_EOL;
+
+final class HeadersHelper
 {
     /**
     * Convert headers array (one header per line) into parsed array
@@ -21,29 +31,31 @@ class HeadersHelper
         $headers = [];
 
         foreach ($responseHeadersArray as $index => $line) {
-            if ('HTTP' === \substr($line, 0, 4)) {
-                continue; /* we'll get the status code elsewhere */
+            if (substr($line, 0, 4) === 'HTTP') {
+                /* we'll get the status code elsewhere */
+                continue;
             }
-            $parts = \explode(': ', $line, 2);
+            $parts = explode(': ', $line, 2);
             if (!isset($parts[1])) {
-                continue; // invalid header (missing colon)
+                // invalid header (missing colon)
+                continue;
             }
             [$key, $value] = $parts;
             if ($lowercaseKey) {
-                $key = \strtolower($key);
+                $key = strtolower($key);
             }
             if (isset($headers[$key])) {
-                if (!\is_array($headers[$key])) {
+                if (!is_array($headers[$key])) {
                     $headers[$key] = [$headers[$key]];
                 }
                 // check cookies
-                if ('Set-Cookie' === $key) {
-                    $parts = \explode('=', $value, 2);
+                if ($key === 'Set-Cookie') {
+                    $parts = explode('=', $value, 2);
                     $cookieName = $parts[0];
-                    if (\is_array($headers[$key])) {
+                    if (is_array($headers[$key])) {
                         foreach ($headers[$key] as $cookieIndex => $existingCookie) {
                             // check if we already have a cookie with the same name
-                            if (0 !== \mb_stripos($existingCookie, $cookieName)) {
+                            if (mb_stripos($existingCookie, $cookieName) !== 0) {
                                 continue;
                             }
 
@@ -52,12 +64,14 @@ class HeadersHelper
                         }
                     }
                 }
-                $headers[$key][] = \trim($value);
-                $headers[$key] = \array_values((array) $headers[$key]); // re-index array
+                $headers[$key][] = trim($value);
+                // re-index array
+                $headers[$key] = array_values((array) $headers[$key]);
             } else {
-                $headers[$key][] = \trim($value);
+                $headers[$key][] = trim($value);
             }
         }
+
         return $headers;
     }
 
@@ -71,7 +85,8 @@ class HeadersHelper
     */
     public static function parseString(string $headers, bool $lowercaseKey = true): array
     {
-        $array = \explode(\PHP_EOL, $headers);
+        $array = explode(PHP_EOL, $headers);
+
         return self::parseArray($array, $lowercaseKey);
     }
 }

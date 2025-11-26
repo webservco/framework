@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\Log;
 
-class OutputLogger extends AbstractOutputLogger implements \WebServCo\Framework\Interfaces\OutputLoggerInterface
+use WebServCo\Framework\Interfaces\OutputLoggerInterface;
+
+final class OutputLogger extends AbstractOutputLogger implements OutputLoggerInterface
 {
     public function clear(): bool
     {

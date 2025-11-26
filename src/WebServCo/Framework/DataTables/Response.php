@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework\DataTables;
 
-class Response implements \WebServCo\Framework\Interfaces\JsonInterface
+use WebServCo\Framework\Interfaces\JsonInterface;
+
+use function json_encode;
+
+final class Response implements JsonInterface
 {
-    protected int $draw;
-
-    protected int $recordsTotal;
-
-    protected int $recordsFiltered;
-
     /**
      * Data.
      *
@@ -22,11 +20,12 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
     /**
     * @param array<int,array<int|string,mixed>> $data
     */
-    public function __construct(int $draw, int $recordsTotal, int $recordsFiltered, array $data = [])
-    {
-        $this->draw = $draw;
-        $this->recordsTotal = $recordsTotal;
-        $this->recordsFiltered = $recordsFiltered;
+    public function __construct(
+        protected int $draw,
+        protected int $recordsTotal,
+        protected int $recordsFiltered,
+        array $data = [],
+    ) {
         $this->data = $data;
     }
 
@@ -44,12 +43,14 @@ class Response implements \WebServCo\Framework\Interfaces\JsonInterface
         foreach ($this->data as $item) {
             $array['data'][] = $item;
         }
+
         return $array;
     }
 
     public function toJson(): string
     {
         $array = $this->toArray();
-        return (string) \json_encode($array);
+
+        return (string) json_encode($array);
     }
 }
