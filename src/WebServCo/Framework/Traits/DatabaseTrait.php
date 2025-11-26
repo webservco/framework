@@ -76,7 +76,11 @@ trait DatabaseTrait
     /**
     * @param array<int,float|int|string> $params
     */
-    abstract public function getColumn(string $query, array $params = [], int $columnNumber = 0): bool|int|string|null;
+    abstract public function getColumn(
+        string $query,
+        array $params = [],
+        int $columnNumber = 0,
+    ): string|float|int|bool|null;
 
     /**
     * @param array<int,float|int|string|null> $params

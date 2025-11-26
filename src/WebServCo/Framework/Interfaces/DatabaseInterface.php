@@ -14,7 +14,7 @@ interface DatabaseInterface
     /**
     * @param array<int,float|int|string> $params
     */
-    public function getColumn(string $query, array $params = [], int $columnNumber = 0): bool|int|string|null;
+    public function getColumn(string $query, array $params = [], int $columnNumber = 0): string|float|int|bool|null;
 
     public function getPdo(): PDO;
 
