@@ -69,6 +69,7 @@ trait RequestUrlTrait
             unset($query[$item]);
         }
 
+        // @phpstan-ignore staticMethod.deprecated
         return $url . ArrayHelper::toUrlQueryString($query);
     }
 
