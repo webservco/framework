@@ -19,6 +19,8 @@ abstract class AbstractFileUploadProcessor
 {
     abstract protected function generateUploadedFileName(string $uploadFileName, string $uploadFileMimeType): string;
 
+    abstract protected function processUploadedFileAfterSaving(string $filePath): bool;
+
     abstract protected function processUploadedFileBeforeSaving(string $filePath): bool;
 
     abstract protected function validateUploadedFileBeforeSaving(string $filePath): bool;
@@ -64,6 +66,8 @@ abstract class AbstractFileUploadProcessor
         if ($result === false) {
             throw new UploadException(Codes::CANT_WRITE);
         }
+
+        $this->processUploadedFileAfterSaving($uploadPath);
 
         return $uploadedFileName;
     }
