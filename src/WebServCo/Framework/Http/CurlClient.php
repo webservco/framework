@@ -9,7 +9,6 @@ use WebServCo\Framework\Exceptions\HttpClientException;
 use WebServCo\Framework\Helpers\Http\HeadersHelper;
 use WebServCo\Framework\Interfaces\HttpClientInterface;
 
-use function curl_close;
 use function curl_error;
 use function curl_exec;
 use function curl_getinfo;
@@ -151,8 +150,8 @@ final class CurlClient extends AbstractClient implements HttpClientInterface
              * "The curl_close() function no longer has an effect,
              * instead the CurlHandle instance is automatically destroyed if it is no longer referenced. "
              * Use `unset` for PHP 8 compatibility (https://php.watch/versions/8.0/resource-CurlHandle)
+             * curl_close($this->curl);
              */
-            curl_close($this->curl);
             unset($this->curl);
 
             $this->debugFinish();
