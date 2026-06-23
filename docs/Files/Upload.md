@@ -57,3 +57,20 @@ try {
     //if (4 !== $uploadErrorCode) { // "No file was uploaded". No problem if field not mandatory.
 }
 ```
+
+### Multiple file upload.
+
+- Form: `name="FILED_NAME[]"`
+- - Extend: `AbstractMultipleUpload`
+- Code (in the try block, check above for the rest):
+
+```php
+$totalUploaded = $upload->getTotalUploaded();
+for ($index = 0; $index <= $totalUploaded; $index += 1) {
+    // throws \WebServCo\Framework\Exceptions\UploadException
+    $upload->doItem($index);
+    // file name only, not complete path
+    $uploadedFileName = $upload->getItemFileName($index);
+    /** @todo do something with the file name */
+}
+```
