@@ -17,11 +17,11 @@ use function move_uploaded_file;
 abstract class AbstractUpload
 {
     /**
-    * Allowed extensions.
-    * mime / extension
-    *
-    * @var array<string,string>
-    */
+     * Allowed extensions.
+     * mime / extension
+     *
+     * @var array<string,string>
+     */
     protected array $allowedExtensions;
     protected string $fileName;
     protected string $fileMimeType;
@@ -40,7 +40,7 @@ abstract class AbstractUpload
         if ($_FILES[$this->formFieldName]['error'] !== Codes::OK) {
             throw new UploadException($_FILES[$this->formFieldName]['error']);
         }
-        $this->checkAllowedExtensions();
+        $this->validateFileType($_FILES[$this->formFieldName]['type']);
         $this->fileName = $this->generateUploadedFileName(
             $_FILES[$this->formFieldName]['name'],
             $_FILES[$this->formFieldName]['type'],
@@ -62,8 +62,8 @@ abstract class AbstractUpload
     }
 
     /**
-    * @param array<string,string> $allowedExtensions
-    */
+     * @param array<string,string> $allowedExtensions
+     */
     final public function setAllowedExtensions(array $allowedExtensions): bool
     {
         $this->allowedExtensions = $allowedExtensions;
@@ -78,10 +78,10 @@ abstract class AbstractUpload
         return true;
     }
 
-    final protected function checkAllowedExtensions(): bool
+    final protected function validateFileType(string $fileType): bool
     {
         if ($this->allowedExtensions) {
-            if (!array_key_exists($_FILES[$this->formFieldName]['type'], $this->allowedExtensions)) {
+            if (!array_key_exists($fileType, $this->allowedExtensions)) {
                 throw new UploadException(Codes::TYPE_NOT_ALLOWED);
             }
         }
