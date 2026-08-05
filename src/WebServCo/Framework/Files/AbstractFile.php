@@ -6,9 +6,13 @@ namespace WebServCo\Framework\Files;
 
 use WebServCo\Framework\Http\Response;
 
+use function finfo_buffer;
+use function finfo_open;
 use function gmdate;
 use function md5;
 use function sprintf;
+
+use const FILEINFO_MIME_TYPE;
 
 abstract class AbstractFile
 {
@@ -17,8 +21,13 @@ abstract class AbstractFile
     public function __construct(
         protected string $fileName,
         protected string $fileData,
-        protected string $contentType = self::CONTENT_TYPE,
+        protected ?string $contentType = self::CONTENT_TYPE,
     ) {
+        if ($contentType !== null) {
+            return;
+        }
+
+        $this->contentType = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $fileData);
     }
 
     public function getContentType(): string
