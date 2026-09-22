@@ -51,6 +51,13 @@ final class RequestHelper
                 // Prevents "Notice: Undefined offset: 2." in request like "&lang=/'/"
                 continue;
             }
+            if (!array_key_exists($position + 1, $parts)) {
+                /**
+                 * Prevents "Warning: Undefined array key 3" in request like
+                 * "/__vite_rsc_findSourceMapURL?filename=file:///app/.env&environmentName=rsc"
+                 */
+                continue;
+            }
             $data[$parts[$position]] = $position === $num - 1
                 ? null
                 : $parts[$position + 1];
