@@ -123,7 +123,7 @@ final class RequestHelper
         return [$string, ''];
     }
 
-    public static function sanitizeString(string $string): string
+    public static function sanitizeString(string $string, bool $removeNewlines = true): string
     {
         // Strip tags, optionally strip or encode special characters.
         /**
@@ -141,8 +141,6 @@ final class RequestHelper
             //"'",
             //'"',
             "\b",
-            "\n",
-            "\r",
             "\t",
             //"?",
             //"!",
@@ -165,6 +163,10 @@ final class RequestHelper
             //")",
             "\$",
         ];
+        if ($removeNewlines) {
+            $unwanted[] = "\n";
+            $unwanted[] = "\r";
+        }
         $string = str_replace($unwanted, '', (string) $string);
 
         return $string;
