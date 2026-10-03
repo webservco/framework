@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework\Libraries;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Helpers\RequestLibraryHelper;
 
 final class RequestTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedViaFramework(): void
     {
         $this->assertInstanceOf(
@@ -20,33 +19,25 @@ final class RequestTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSchemaReturnsEmptyStringOnCli(): void
     {
         $this->assertEquals('', RequestLibraryHelper::library()->getSchema());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRefererReturnsEmptyStringOnCli(): void
     {
         $this->assertEquals('', RequestLibraryHelper::library()->getReferer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHostReturnsString(): void
     {
         $this->assertIsString(RequestLibraryHelper::library()->getHost());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeRemovesBadChars(): void
     {
         $this->assertEquals(
@@ -57,9 +48,7 @@ final class RequestTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeRemovesTags(): void
     {
         $this->assertEquals(

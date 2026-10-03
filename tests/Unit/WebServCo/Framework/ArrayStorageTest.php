@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\ArrayStorage;
 use WebServCo\Framework\Exceptions\ArrayStorageException;
@@ -34,9 +35,7 @@ final class ArrayStorageTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWithNonExistingTripleSettingThrowsException(): void
     {
         $this->expectException(ArrayStorageException::class);
@@ -44,9 +43,7 @@ final class ArrayStorageTest extends TestCase
         ArrayStorage::remove($this->originalArray, $setting);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWithNonExistingDoubleSettingThrowsException(): void
     {
         $this->expectException(ArrayStorageException::class);
@@ -54,18 +51,14 @@ final class ArrayStorageTest extends TestCase
         ArrayStorage::remove($this->originalArray, $setting);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWithNonExistingSimpleSettingThrowsException(): void
     {
         $this->expectException(ArrayStorageException::class);
         ArrayStorage::remove($this->originalArray, 'noexist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWorksWithTripleSetting(): void
     {
         $setting = sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
@@ -81,9 +74,7 @@ final class ArrayStorageTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWorksWithDoubleSetting(): void
     {
         $setting = sprintf('foo%1$sbar', Settings::DIVIDER);
@@ -97,9 +88,7 @@ final class ArrayStorageTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unsetWorksWithSimpleSetting(): void
     {
         $expected = [
@@ -111,9 +100,7 @@ final class ArrayStorageTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setEmptyWorksWithTripleSetting(): void
     {
         $setting = sprintf('foo%1$sbar%1$sbaz', Settings::DIVIDER);
@@ -132,9 +119,7 @@ final class ArrayStorageTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setEmptyWorksWithDoubleSetting(): void
     {
         $setting = sprintf('foo%1$sbar', Settings::DIVIDER);
@@ -151,9 +136,7 @@ final class ArrayStorageTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setEmptyWorksWithSimpleSetting(): void
     {
         $expected = [

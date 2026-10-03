@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework\Libraries;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Libraries\Router;
 
@@ -30,44 +31,34 @@ final class RouterInstanceTest extends TestCase
         $this->object = new Router($this->cfg);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeInstantiatedIndividually(): void
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Router', $this->object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsArrayOnEmptyData(): void
     {
         $route = $this->object->getRoute('', []);
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsArrayOnNullData(): void
     {
         $route = $this->object->getRoute('', []);
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsArrayOnValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsValidData(): void
     {
         $route = $this->object->getRoute('foo/bar/baz', $this->cfg['routes']);
@@ -77,9 +68,7 @@ final class RouterInstanceTest extends TestCase
         $this->assertEquals(['baz'], $route->arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
         $route = $this->object->getRoute('qwerty', $this->cfg['routes']);

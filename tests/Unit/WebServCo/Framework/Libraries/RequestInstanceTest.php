@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework\Libraries;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Libraries\Request;
 
@@ -44,41 +45,31 @@ final class RequestInstanceTest extends TestCase
         $this->objectPost = new Request($this->cfg, $_SERVER, $this->post);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeInstantiatedIndividually(): void
     {
         $this->assertInstanceOf('WebServCo\Framework\Libraries\Request', $this->object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSchemaReturnsEmptyStringOnCli(): void
     {
         $this->assertEquals('', $this->object->getSchema());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRefererReturnsEmptyStringOnCli(): void
     {
         $this->assertEquals('', $this->object->getReferer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHostReturnsString(): void
     {
         $this->assertIsString($this->object->getHost());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeRemovesBadChars(): void
     {
         $this->assertEquals(
@@ -87,9 +78,7 @@ final class RequestInstanceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sanitizeRemovesTags(): void
     {
         $this->assertEquals(
@@ -100,9 +89,7 @@ final class RequestInstanceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postRequestIsParsedCorrectly(): void
     {
         $this->assertEquals(
@@ -111,9 +98,7 @@ final class RequestInstanceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postRequestTagsNotDisabledInValues(): void
     {
         $this->assertEquals(
@@ -122,9 +107,7 @@ final class RequestInstanceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postRequestTagsDisabledInKeys(): void
     {
         $this->assertNull($this->objectPost->data('<h1>invalid</h1>'));

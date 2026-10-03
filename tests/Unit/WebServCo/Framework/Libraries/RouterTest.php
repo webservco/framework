@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework\Libraries;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\Helpers\RouterLibraryHelper;
 
@@ -27,9 +28,7 @@ final class RouterTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedViaFramework(): void
     {
         $this->assertInstanceOf(
@@ -38,18 +37,14 @@ final class RouterTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsArrayOnValidData(): void
     {
         $route = RouterLibraryHelper::library()->getRoute('foo/bar/baz', $this->cfg['routes']);
         $this->assertInstanceOf('WebServCo\Framework\Objects\Route', $route);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsValidData(): void
     {
         $route = RouterLibraryHelper::library()->getRoute('foo/bar/baz', $this->cfg['routes']);
@@ -59,9 +54,7 @@ final class RouterTest extends TestCase
         $this->assertEquals(['baz'], $route->arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRouteReturnsValidDataWithCustomRoutes(): void
     {
         $route = RouterLibraryHelper::library()->getRoute('qwerty', $this->cfg['routes']);

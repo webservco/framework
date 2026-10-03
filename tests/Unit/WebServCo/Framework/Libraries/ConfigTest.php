@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework\Libraries;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -43,9 +45,7 @@ final class ConfigTest extends TestCase
         ConfigLibraryHelper::library()->set('foo', null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeAccessedViaFramework(): void
     {
         $this->assertInstanceOf(
@@ -54,114 +54,86 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullSettingReturnsFalse(): void
     {
         $this->assertFalse(ConfigLibraryHelper::library()->set(null, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function falseSettingReturnsFalse(): void
     {
         $this->assertFalse(ConfigLibraryHelper::library()->set(false, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptySettingReturnsFalse(): void
     {
         $this->assertFalse(ConfigLibraryHelper::library()->set('', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validSettingReturnsTrue(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->set('setting', 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingNullValueReturnsTrue(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->set('key', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingFalseValueReturnsTrue(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->set('key', false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingEmptyValueReturnsTrue(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->set('key', ''));
     }
 
-    /**
-     * @test
-     * @depends validSettingReturnsTrue
-     */
+    #[Depends('validSettingReturnsTrue')]
+    #[Test]
     public function frameworkAccessUsesSingleInstance(): void
     {
         $this->assertEquals('value', ConfigLibraryHelper::library()->get('setting'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingNonExistentSettingReturnsNull(): void
     {
         $this->assertNull(ConfigLibraryHelper::library()->get('noexist'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingNullSettingReturnsNull(): void
     {
         $this->assertNull(ConfigLibraryHelper::library()->get(null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingFalseSettingReturnsNull(): void
     {
         $this->assertNull(ConfigLibraryHelper::library()->get(false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingEmptySettingReturnsNull(): void
     {
         $this->assertNull(ConfigLibraryHelper::library()->get(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingEmptyArraySettingReturnsNull(): void
     {
         $this->assertNull(ConfigLibraryHelper::library()->get([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function storingAndRetrievingSimpleStringSettingWorks(): void
     {
         $this->assertTrue(
@@ -176,9 +148,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function storingAndRetrievingArraySettingWorks(): void
     {
         $this->assertTrue(
@@ -193,9 +163,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function storingAndRetrievingSpecialStringSettingWorks(): void
     {
         $this->assertTrue(
@@ -207,9 +175,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingsTreeIsNoOverwrittenOnSpecialStringSetting(): void
     {
         $this->assertTrue(
@@ -238,9 +204,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingsTreeIsOverwrittenOnRootKeySimpleStringSetting(): void
     {
         $this->assertTrue(
@@ -270,9 +234,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingSameKeyTwiceOverwritesTheFirst(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->set('foo', 'old value'));
@@ -280,9 +242,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals('new value', ConfigLibraryHelper::library()->get('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingSameMultilevelKeyTwiceOverwritesTheFirst(): void
     {
         $this->assertTrue(
@@ -305,17 +265,13 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addReturnsTrue(): void
     {
         $this->assertTrue(ConfigLibraryHelper::library()->add('add', 'dda'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addAppendsDataInsteadOfOverwriting(): void
     {
 
@@ -362,9 +318,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadReturnsEmptyArrayOnInvalidPath(): void
     {
         $this->assertEquals(
@@ -373,9 +327,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dummyConfigFileExists(): void
     {
         $this->assertTrue(
@@ -383,10 +335,8 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @depends dummyConfigFileExists
-     */
+    #[Depends('dummyConfigFileExists')]
+    #[Test]
     public function loadReturnsArrayOnValidPath(): void
     {
         $this->assertIsArray(
@@ -394,10 +344,8 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @depends loadReturnsArrayOnValidPath
-     */
+    #[Depends('loadReturnsArrayOnValidPath')]
+    #[Test]
     public function addDataFromFileWorks(): void
     {
         $data = ConfigLibraryHelper::library()->load('foo', self::$pathProject);
@@ -410,10 +358,8 @@ final class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @depends loadReturnsArrayOnValidPath
-     */
+    #[Depends('loadReturnsArrayOnValidPath')]
+    #[Test]
     public function loadAppendsDataInsteadOfOverwriting(): void
     {
         $this->assertTrue(

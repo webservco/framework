@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\WebServCo\Framework;
 
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -22,54 +24,42 @@ final class ApplicationTest extends TestCase
     private static string $pathProject = '';
     private static string $pathWeb = '';
 
-    /**
-    * @test
-    */
+    #[Test]
     public function dummyProjectPathIsReadable(): void
     {
         $this->assertTrue(is_readable(self::$pathProject));
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function dummyWebPathIsReadable(): void
     {
         $this->assertTrue(is_readable(self::$pathWeb));
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function instantiationWithEmptyParametersThrowsException(): void
     {
         $this->expectException(ApplicationException::class);
         new App('', '', null);
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function instantiationWithDummyParametersThrowsException(): void
     {
         $this->expectException(ApplicationException::class);
         new App('foo', 'bar', 'Project');
     }
 
-    /**
-    * @test
-    */
+    #[Test]
     public function instantiationInvalidParametersThrowsException(): void
     {
         $this->expectException(ApplicationException::class);
         new App('/tmp', '/tmp', null);
     }
 
-    /**
-    * @test
-    * @depends dummyProjectPathIsReadable
-    * @depends dummyWebPathIsReadable
-    */
+    #[Depends('dummyProjectPathIsReadable')]
+    #[Depends('dummyWebPathIsReadable')]
+    #[Test]
     public function instantiationWithValidParametersWorks(): void
     {
         $this->assertInstanceOf(
@@ -78,9 +68,7 @@ final class ApplicationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shutdownMethodIsPublic(): void
     {
         $app = new App(self::$pathWeb, self::$pathProject, 'Project');

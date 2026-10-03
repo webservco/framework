@@ -5,30 +5,25 @@ declare(strict_types=1);
 namespace Tests\Unit\WebServCo\Framework;
 
 use ErrorException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use WebServCo\Framework\ErrorHandler;
 
 final class ErrorHandlerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setReturnsTrue(): void
     {
         $this->assertTrue(ErrorHandler::set());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreReturnsTrue(): void
     {
         $this->assertTrue(ErrorHandler::restore());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsErrorExceptionWorks(): void
     {
         $this->expectException(ErrorException::class);
