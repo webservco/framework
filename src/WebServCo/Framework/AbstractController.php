@@ -11,8 +11,8 @@ use WebServCo\Framework\Traits\ResponseUrlTrait;
 
 abstract class AbstractController extends AbstractLibrary
 {
-    use OutputTrait;
     use ExposeLibrariesTrait;
+    use OutputTrait;
     use ResponseUrlTrait;
 
     public function __construct(OutputLoaderInterface $outputLoader)

@@ -18,8 +18,8 @@ use function is_array;
 
 abstract class AbstractPdoDatabase extends AbstractLibrary
 {
-    use DatabaseTrait;
     use DatabaseAddQueryTrait;
+    use DatabaseTrait;
 
     protected PDO $db;
     protected PDOStatement $stmt;
