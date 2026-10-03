@@ -120,12 +120,12 @@ final class I18n extends AbstractLibrary implements I18nInterface
 
     protected function setLocale(string $locale): bool
     {
-        /**
+        /*
          * Rumored to allow using a locale regardless of server locale setup.
          * putenv("LANGUAGE=" . $locale);
          */
 
-        /**
+        /*
          * Rumored to be needed on Win.
          * putenv("LANG=" . $locale);
          */
