@@ -40,6 +40,7 @@
         }
     },
     "scripts" : {
+        "c": ["@lint", "@check", "@s:3"],
         "all": "clear && composer lint && composer check && composer s:3",
         "check" : "vendor/bin/phpcs --standard=php-coding-standard.xml --extensions=php -sp config public resources src",
         "check:structure" : "pds-skeleton validate .",
