@@ -1,53 +1,76 @@
 # Cookie
 
-## `\WebServCo\Framework\Libraries\Cookie`
+`\WebServCo\Framework\Libraries\Cookie`
+
+Setting, reading and removing cookies.
+
+---
 
 ## Instantiation
 
-### Framework
+In controllers, repositories and forms: `$this->cookie()`. Elsewhere: `\WebServCo\Framework\Helpers\CookieLibraryHelper::library()`.
 
-Both `\WebServCo\Framework\AbstractController` and `\WebServCo\Framework\AbstractRepository` contain the method `cookie()` which returns a single instance of the Cookie class.
-
-This means you can use `$this->cookie()` in your Controller or Repository classes.
-
-The Library is instantiated using the configuration file `Cookie.php` from your application's `config` directory.
-
-To use the library in another place:
+It loads `config/Cookie.php` if the file exists, though nothing in the framework reads from it. Outside the framework, create it yourself:
 
 ```php
-final public function cookie()
-{
-    return \WebServCo\Framework\Framework::library('Cookie');
-}
+$cookie = new \WebServCo\Framework\Libraries\Cookie();
 ```
 
-### Standalone instantiation
+---
 
-```php
-$cookie = new \WebServCo\Framework\Libraries\Cookie($configurationArray);
-```
 ## Usage
 
 ### Setting a value
 
-> Note: the value is stored sanitized.
-
 ```php
-$this->cookie()->set($name, $value, $expires, $path, $domain, $secure, $httponly, $samesite);
+$this->cookie()->set(
+    // name
+    'username',
+    // value
+    'Aria',
+    // expires: Unix timestamp, 0 = until the browser closes
+    time() + 60 * 60 * 24 * 30,
+    // path
+    '/',
+    // domain
+    '',
+    // secure
+    true,
+    // httponly
+    true,
+    // samesite: 'Lax', 'Strict' or 'None'
+    'Lax',
+);
+
+// Defaults: expires 0, path '', domain '', secure true, httponly false, samesite 'Lax'.
 $this->cookie()->set('username', 'Aria');
 ```
-### Removing a value
 
-```php
-$this->cookie()->remove($name);
-$this->cookie()->remove('username');
-```
+The return value is whatever `setcookie()` returned. A `samesite` other than the three allowed values throws an `\InvalidArgumentException`.
 
 ### Retrieving a value
 
-> Note: the value is stored sanitized.
+```php
+// '' if not set.
+$username = $this->cookie()->get('username');
+$username = $this->cookie()->get('username', 'guest');
+```
+
+### Removing a value
 
 ```php
-$this->cookie()->get($name);
-$this->cookie()->get('username');
+// false if the cookie isn't set.
+$this->cookie()->remove('username');
 ```
+
+This unsets it in `$_COOKIE` and sends the cookie again, already expired.
+
+---
+
+## Notes
+
+`set()` runs the value through [RequestHelper::sanitizeString()](../Helpers/RequestHelper.md#sanitizestring) first. Tags, backticks, backslashes, `$`, tabs and new lines disappear and quotes get encoded, so a value that needs any of those should be `base64_encode()`d before you store it.
+
+Reading is a different story. `get()` hands back `$_COOKIE` exactly as the browser sent it, which makes it user input like any other.
+
+`remove()` only knows the default path and domain. For a cookie you set with a custom path or domain, expire it yourself with `set($name, '', 1, $path, $domain)`.

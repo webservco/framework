@@ -1,210 +1,273 @@
 # Database (PDO)
 
-## `\WebServCo\Framework\Libraries\MysqlPdoDatabase`
-## `\WebServCo\Framework\Libraries\PgsqlPdoDatabase`
+`\WebServCo\Framework\Libraries\MysqlPdoDatabase`, `\WebServCo\Framework\Libraries\PgsqlPdoDatabase`
+
+PDO plus a handful of helpers for prepared queries, fetching rows, inserts and transactions.
+
+- Implements: `Interfaces\DatabaseInterface`
+- Requires: `ext-pdo` with the `pdo_mysql` or `pdo_pgsql` driver
+
+---
+
+## Configuration
+
+Connection details are [environment settings](../Configuration.md) in `config/.env.ini`:
+
+```ini
+[Database]
+
+app_dbms_host = db
+app_dbms_port = 3306
+app_dbms_dbname = db
+app_dbms_username = db
+app_dbms_passwd = "db"
+```
+
+The port has to be a number and everything else a string, so put quotes around a password made only of digits.
+
+MySQL connects with `charset=utf8mb4`. For both drivers, errors become exceptions, rows come back as associative arrays, prepared statements are real (not emulated), and connections aren't persistent.
+
+---
 
 ## Initialization
 
 ### Framework
 
-[TODO]
-
-### Standalone initialization
+Controllers, repositories and forms get MySQL with one call:
 
 ```php
-$this->db = new \WebServCo\Framework\Libraries\MysqlPdoDatabase(
-    [
-        'connection' => [
-            'host' => '',
-            'username' => '',
-            'passwd' => '',
-            'dbname' => '',
-            'port' => '',
-        ],
-    ]
-);
+// \WebServCo\Framework\Interfaces\DatabaseInterface
+$db = $this->mysqlPdoDb();
 ```
+
+Anywhere else, `\WebServCo\Framework\Helpers\MysqlPdoDatabaseLibraryHelper::library()` does the same. The first call opens the connection and later calls share it.
+
+### Standalone
+
+```php
+use WebServCo\Framework\Libraries\MysqlPdoDatabase;
+use WebServCo\Framework\Libraries\PgsqlPdoDatabase;
+
+// Connects immediately, with the APP_DBMS_* settings.
+$db = new MysqlPdoDatabase();
+$db = new PgsqlPdoDatabase();
+```
+
+If the connection fails you get a [DatabaseException](../Exceptions/DatabaseException.md).
+
+---
 
 ## Usage
 
-### Add
-
-#### INSERT
-
-* This method uses a transaction.
-
-* Returns lastInsertId regardless of queries executed as it's not possible to retrieve lastInsertId after commit
-
-```php
-$lastInsertId = $this->db->insert('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
-```
-
-
-#### INSERT ... ON DUPLICATE KEY UPDATE
-
-* This method uses a transaction.
-
-* Not supported when adding multiple rows at once
-
-```php
-$this->db->insert('<tableName>', [<addData>], [<updateData>]);
-$this->db->insert(
-    '<tableName>',
-    ['<col1>' => <val1>, '<col2>' => <val2>],
-    ['<col2>' => <val2>]
-);
-```
-
-#### INSERT IGNORE
-
-* This method uses a transaction.
-
-* Returns lastInsertId regardless of queries executed as it's not possible to retrieve lastInsertId after commit
-
-```php
-$lastInsertId = $this->db->insertIgnore('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
-```
-
-#### REPLACE
-
-* This method uses a transaction.
-
-* Returns lastInsertId regardless of queries executed as it's not possible to retrieve lastInsertId after commit
-
-```php
-$lastInsertId = $this->db->replace('<tableName>', ['<col1>' => <val1>, '<col2>' => <val2>]);
-```
-
-#### Add multiple items at once
-
-* MySQL: Please note the information about the last inserted Id below
-
-```php
-$this->db->insert(
-    '<tableName>',
-    [
-        ['<col1>' => <val1>, '<col2>' => <val2>],
-        ['<col1>' => <val3>, '<col2>' => <val4>],
-    ]
-);
-```
+Placeholders are positional `?` marks. Named ones (`:id`) aren't supported.
 
 ### Retrieve data
 
 #### Multiple rows
 
 ```php
-return $this->db->getRows("SELECT <col1>, <col2> FROM <table> WHERE 1", []);
+// [['id' => 1, 'name' => 'a'], ...] or []
+$rows = $db->getRows('SELECT id, name FROM item WHERE user_id = ?', [$userId]);
 ```
 
 #### One row
+
 ```php
-return $this->db->getRow("SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", ['<val3>']);
+// ['id' => 1, 'name' => 'a'] or []
+$row = $db->getRow('SELECT id, name FROM item WHERE id = ?', [$id]);
 ```
 
-#### One column
+#### One value
+
 ```php
-return $this->db->getColumn(
-    "SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", // query
-    ['<val3>'], // params
-    0 // column number
+$name = $db->getColumn(
+    // query
+    'SELECT id, name FROM item WHERE id = ?',
+    // params
+    [$id],
+    // column number, default 0
+    1,
 );
 ```
+
+No row means `false`.
 
 ### Custom query
 
 ```php
-$data = [];
-$stmt = $this->db->query("SELECT <col1>, <col2> FROM <table> WHERE <col3> = ?", ['<val3>']);
-while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-    $data[] = $row;
+// \PDOStatement
+$stmt = $db->query('SELECT id, name FROM item WHERE status = ?', ['active']);
+while ($row = $stmt->fetch()) {
+    // ...
 }
 ```
 
 ```php
-$this->db->query("DELETE FROM <table> WHERE <col> = ? LIMIT 1", [<val>]);
-return $this->db->affectedRows();
+$db->query('UPDATE item SET name = ? WHERE id = ?', [$name, $id]);
+$affected = $db->affectedRows();
+
+$db->query('DELETE FROM item WHERE id = ? LIMIT 1', [$id]);
+$affected = $db->affectedRows();
 ```
 
+#### `IN (...)`
+
 ```php
-$this->db->query("UPDATE <table> SET <col1> = ? WHERE <col2> = ?", ['<val1>', '<val2>']);
-return $this->db->affectedRows();
+use WebServCo\Framework\Database\Utils\PreparedStatements;
+
+// "?,?,?"
+$placeholders = PreparedStatements::generatePlaceholdersString($ids);
+$rows = $db->getRows(sprintf('SELECT id FROM item WHERE id IN (%s)', $placeholders), $ids);
 ```
+
+### Add data
+
+Each insert helper wraps its query in a transaction and returns the last insert id. They only work on MySQL, for reasons explained in the [Notes](#notes).
+
+#### INSERT
+
+```php
+$id = $db->insert('item', ['name' => 'a', 'status' => 'active']);
+```
+
+#### INSERT ... ON DUPLICATE KEY UPDATE
+
+```php
+$db->insert(
+    'item',
+    // add data
+    ['code' => 'A1', 'name' => 'a'],
+    // update data
+    ['name' => 'a'],
+);
+```
+
+With several rows at once, the update data is silently ignored.
+
+#### INSERT IGNORE
+
+```php
+$id = $db->insertIgnore('item', ['code' => 'A1', 'name' => 'a']);
+```
+
+#### REPLACE
+
+```php
+$id = $db->replace('item', ['code' => 'A1', 'name' => 'a']);
+```
+
+#### Multiple rows at once
+
+```php
+$db->insert(
+    'item',
+    [
+        ['code' => 'A1', 'name' => 'a'],
+        ['code' => 'A2', 'name' => 'b'],
+    ],
+);
+```
+
+Give every row the same keys in the same order. The column list is built from all the rows combined, yet each row's values are bound in that row's own order, so a row with an extra or missing key shifts everything after it.
+
+Table names may include the database, as in `'other_db.item'`.
 
 ### Transactions
 
 ```php
-$this->db->transaction(
-    [
-        ["INSERT INTO <mainTable> (<col1>, <col2>) VALUES (?, ?)", [<val1>, <val2>]],
-        ["SET @id = LAST_INSERT_ID();", []],
-        ["INSERT INTO <secondaryTable> (id, <col1>, <col2>) VALUES (@id, ?, ?)", [<val1>, <val2>]],
-        ["INSERT INTO <secondaryTable> (id, <col1>, <col2>) VALUES (@id, ?, ?)", [<val1>, <val2>]],
-    ]
-);
-return $this->db->getColumn("SELECT @id", [], 0);
+$lastInsertId = $db->transaction([
+    // [query, params]
+    ['INSERT INTO invoice (client_id, total) VALUES (?, ?)', [$clientId, $total]],
+    ['SET @id = LAST_INSERT_ID()', []],
+    ['INSERT INTO invoice_item (invoice_id, product_id) VALUES (@id, ?)', [$productId1]],
+    ['INSERT INTO invoice_item (invoice_id, product_id) VALUES (@id, ?)', [$productId2]],
+]);
+$invoiceId = $db->getColumn('SELECT @id', [], 0);
 ```
 
-### Get last inserted Id
+One failing query rolls back the whole list and throws a `DatabaseException`. On success you get the last insert id, read just before the commit.
 
-* [MySQL](https://dev.mysql.com/doc/refman/5.5/en/information-functions.html#function_last-insert-id):
-> If you insert multiple rows using a single INSERT statement, LAST_INSERT_ID() returns the value generated for the first inserted row only. The reason for this is to make it possible to reproduce easily the same INSERT statement against some other server.
-
-* **Important**: When using transactions, this method is not useful as it returns `0`. If using the insert helpers, `lastInsertId` is returned by those methods.
+### Last insert id
 
 ```php
-return $this->db->lastInsertId();
+$id = $db->lastInsertId();
+// PostgreSQL: the sequence name.
+$id = $db->lastInsertId('item_id_seq');
 ```
 
-### Get affected rows
+For multi-row inserts, keep in mind what the [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/information-functions.html#function_last-insert-id) says:
+
+> If you insert multiple rows using a single INSERT statement, LAST_INSERT_ID() returns the value generated for the first inserted row only.
+
+Once a transaction has committed, `lastInsertId()` returns `0`. That's why the insert helpers and `transaction()` hand you the id directly.
+
+### Row count
 
 ```php
-return $this->db->affectedRows();
+$db->query('SELECT id FROM item');
+$count = $db->numRows();
 ```
 
-### Get row count
+Better to skip this one. `rowCount()` after a `SELECT` isn't reliable on every driver, and `SELECT COUNT(*)` or `count($db->getRows(...))` gets you the number without guessing.
 
-*  It is strongly recommended to avoid this functionality, as it adds an usually unnecessary overhead.
-* Alternative: use `$this->db->getRows()` and count the result.
+### Checks
 
 ```php
-$this->db->query("SELECT <col> FROM <table>");
-return $this->db->numRows();
+// SELECT 1 FROM `item` WHERE `code` = ? LIMIT 1
+$exists = $db->valueExists('item', 'code', 'A1');
+
+// true if "SELECT 1 FROM `item` LIMIT 1" doesn't fail
+$exists = $db->tableExists('item');
 ```
 
-### Check if value exists
+### Escaping
+
 ```php
-return $this->db->valueExists('<table>', '<col>', '<val>');
+// `name` (MySQL), "name" (PostgreSQL)
+$column = $db->escapeIdentifier($name);
+// `db`.`item` (MySQL)
+$table = $db->escapeTableName('db.item');
+// Quoted string literal, with PDO::quote(). Prefer parameters.
+$value = $db->escape($value);
 ```
 
-### Check if table exists
+### PDO
+
 ```php
-return $this->db->tableExists('<table>');
+// \PDO
+$pdo = $db->getPdo();
+$db->setAttribute(\PDO::ATTR_TIMEOUT, 5);
 ```
 
----
+#### Unbuffered query (MySQL)
 
-## Error Handling
-
-Please see [DatabaseException](/docs/Exceptions/DatabaseException.md).
-
----
-
-## Unbuffered query example
+A query returning millions of rows can exhaust memory before the first `fetch()`. Turning off buffering streams the rows instead:
 
 ```php
 $db->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
-$stmt = $db->query(...);
+$stmt = $db->query('SELECT ...', []);
+while ($row = $stmt->fetch()) {
+    // ...
+}
 $db->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
-while (...)
 ```
+
+Until the last row is fetched, the connection can't run anything else.
 
 ---
 
-## \WebServCo\Framework\Database\Utils\PreparedStatements
+## Error handling
 
-### `generatePlaceholdersString(array $data = []): string`
+Errors from any method arrive as a [DatabaseException](../Exceptions/DatabaseException.md) whose code is the driver error number.
 
-Generate placeholders string from array data.
+---
 
-Eg. if array has 3 items, it generates the string "?, ?, ?".
+## Notes
+
+On PostgreSQL, `PgsqlPdoDatabase::escapeTableName()` throws a `NotImplementedException`, which takes `insert()`, `insertIgnore()`, `replace()`, `valueExists()` and `tableExists()` down with it. `query()`, `getRows()`, `getRow()`, `getColumn()` and `transaction()` work fine on both. (`INSERT IGNORE`, `REPLACE` and `ON DUPLICATE KEY UPDATE` are MySQL syntax in any case.)
+
+Every parameter is bound as `PDO::PARAM_STR`, and MySQL converts it to the column type. That holds for `LIMIT ?, ?` too.
+
+Arrays aren't allowed as parameters and throw a `DatabaseException`. The one exception is a single level of nesting, which gets flattened, so `[[1, 2], 3]` binds `1, 2, 3`.
+
+There's no way to point these classes at a second database. They always read the `APP_DBMS_*` settings and both are `final`, so for another server or other credentials you'll need plain PDO.

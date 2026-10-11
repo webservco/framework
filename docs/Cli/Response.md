@@ -1,38 +1,47 @@
-# Response
+# CLI Response
 
-## `\WebServCo\Framework\Cli\Response`
+`\WebServCo\Framework\Cli\Response`
+
+Command methods return this. It holds an exit status and, optionally, some text to print.
+
+- Implements: `Interfaces\ResponseInterface`
+
+---
 
 ## Usage
 
-Last line in your Controller method:
+It's the last line of a command method:
 
 ```php
-return new \WebServCo\Framework\Libraries\CliResponse('<content>', <statusCode>);
+use WebServCo\Framework\Cli\Response;
+
+// content, exitStatus
+return new Response('Hello World' . PHP_EOL, 0);
 ```
 
-Success:
+When something went wrong:
 
 ```php
-return new \WebServCo\Framework\Libraries\CliResponse('Hello World' . PHP_EOL, 0);
+return new Response('Error!' . PHP_EOL, 1);
 ```
 
-Error:
+If you already printed everything with `outputCli()`:
 
 ```php
-return new \WebServCo\Framework\Libraries\CliResponse('Error!' . PHP_EOL, 1);
+// No content, exit status 0.
+return new Response();
 ```
 
-It's also possible to use boolean for the status code:
+The application prints the content and exits with your status, which shell scripts and cron can check:
 
-```php
-return new \WebServCo\Framework\Libraries\CliResponse('Hello World' . PHP_EOL, true);
+```shell
+bin/cli Import/run && echo "ok"
 ```
 
-```php
-return new \WebServCo\Framework\Libraries\CliResponse('Error!' . PHP_EOL, false);
-```
+---
 
-To simply return the object after successful custom output:
-```php
-return new \WebServCo\Framework\Libraries\CliResponse();
-```
+## Notes
+
+Older versions let you pass `true` or `false` as the status. With strict types, that's now a `TypeError`, so use an `int`.
+
+An uncaught exception prints the [error message](../Application.md#error-output) and exits with `1`.

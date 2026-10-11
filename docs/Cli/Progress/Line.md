@@ -1,37 +1,49 @@
-# ProgressLine
+# Progress\Line
 
-## `\WebServCo\Framework\Cli\Progress\Line`
+`\WebServCo\Framework\Cli\Progress\Line`
 
-Show a simple single line progress bar with a custom message.
+One line that gets rewritten for every item, with your message and, if you want it, an OK or KO result. Use it when a [Bar](Bar.md) would be too much.
+
+---
 
 ## Usage
 
-### `__construct`:
+Like the bar, it returns strings and leaves the printing to you (`outputCli($string, false)`).
+
+### Constructor
+
 ```php
-$this->progressLine = new \WebServCo\Framework\Cli\Progress\Line();
-# optional: don't show result
-$this->progressLine->setShowResult(false);
+use WebServCo\Framework\Cli\Progress\Line;
+
+$this->progressLine = new Line();
+// Optional: show [OK] / [KO] after the message. Default false.
+$this->progressLine->setShowResult(true);
 ```
 
-### Before loop:
+### Before the loop
+
 ```php
-$i = 0; // pl counter
+$i = 0;
 ```
 
-### During loop:
-```php
-++$i; // pl increment
-$this->outputCli(
-    $this->progressLine->prefix(sprintf('Processing item %s', $i)),
-    false
-); // pl prefix
+### During the loop
 
-// processing
-//$result = ... (bool)
-$this->outputCli($this->progressLine->suffix($result), false); // pl suffix
+```php
+foreach ($items as $item) {
+    ++$i;
+    $this->outputCli($this->progressLine->prefix(sprintf('Processing item %s', $i)), false);
+
+    // processing
+    $result = $this->process($item); // bool
+
+    $this->outputCli($this->progressLine->suffix($result), false);
+}
 ```
 
-### After loop:
+### After the loop
+
 ```php
-$this->progressLine->finish(); //pl finish
+$this->outputCli($this->progressLine->finish(), false);
 ```
+
+What `finish()` returns blanks out the current line.

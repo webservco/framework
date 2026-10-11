@@ -1,23 +1,38 @@
-# Abstract Object
+# AbstractObject
 
-Provides access to protected member `$db`.
-Use it in any class that needs a database object.
+`\WebServCo\Framework\Database\AbstractObject`
 
-## Example
+A tiny base class for anything that talks to the database. Its constructor takes a `DatabaseInterface` and keeps it in the protected `$db` property.
+
+---
+
+## Usage
 
 ```php
+use WebServCo\Framework\Database\AbstractObject;
 use WebServCo\Framework\Exceptions\DatabaseException;
 
-class MyClass extends \WebServCo\Framework\Database\AbstractObject
+final class ItemStorage extends AbstractObject
 {
-    public function getitems()
+    /**
+     * @return array<int,array<string,float|int|string|null>>
+     */
+    public function getItems(int $userId): array
     {
         try {
-            return $this->db->query(...);
+            return $this->db->getRows('SELECT id, name FROM item WHERE user_id = ?', [$userId]);
         } catch (DatabaseException $e) {
-            // rethrow in order to pinpoint the query location in the logs.
+            // Rethrow in order to pinpoint the query location in the logs.
             throw new DatabaseException($e->getMessage(), $e);
         }
     }
 }
 ```
+
+```php
+// In a controller or repository.
+$itemStorage = new ItemStorage($this->mysqlPdoDb());
+$items = $itemStorage->getItems($userId);
+```
+
+The query methods are documented in [PDO](PdoDatabase.md), and the rethrow trick in [DatabaseException](../Exceptions/DatabaseException.md).

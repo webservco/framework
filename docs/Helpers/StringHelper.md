@@ -1,29 +1,47 @@
-# Utils - Strings
+# StringHelper
+
+`\WebServCo\Framework\Helpers\StringHelper`
 
 ---
 
 ## Usage
 
 ```php
-$result = \WebServCo\Framework\Helpers\StringHelper::method($arguments);
+use WebServCo\Framework\Helpers\StringHelper;
+
+$result = StringHelper::method($arguments);
 ```
 
 ---
 
 ## Static methods
 
-### `getContextAsString($context)`
+### `getContextAsString(mixed $context): string`
 
-Get string representation of variable (usually an array or an object).
+Captures `var_dump()` output as a string, handy for arrays and objects. `FileLogger` writes its context files with it.
 
-### `linkify($string)`
+### `isEmpty(string $string): bool`
 
-Convert URL's into links (adds the `<a>` tag)
+Only `''` counts. `empty()` would also say yes to `'0'`, and this method doesn't.
 
-Adapted from https://stackoverflow.com/a/507459
+### `linkify(string $string): string`
 
-### `startsWith($haystack, $needle, $ignoreCase = true)`
+Wraps every URL in an `<a>` tag. The regular expression is adapted from https://stackoverflow.com/a/507459
 
-Check if a string starts with another string.
+```php
+StringHelper::linkify('See https://example.com/page');
+// See <a href="https://example.com/page">https://example.com/page</a>
+```
 
----
+No escaping happens here. Escape the text first and linkify the result.
+
+### `startsWith(string $haystack, string $needle, bool $ignoreCase = true): bool`
+
+Ignores case unless you pass `false`, and handles multibyte strings when `ext-mbstring` is installed.
+
+```php
+StringHelper::startsWith('Hello', 'he');         // true
+StringHelper::startsWith('Hello', 'he', false);  // false
+```
+
+For a case sensitive check, PHP 8's own `str_starts_with()` is simpler.
