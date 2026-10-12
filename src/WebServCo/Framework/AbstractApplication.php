@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebServCo\Framework;
 
+use ReflectionMethod;
 use Throwable;
 use WebServCo\Framework\Cli\Response;
 use WebServCo\Framework\Environment\Setting;
@@ -106,39 +107,49 @@ abstract class AbstractApplication
         );
 
         $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
-        if (!class_exists($className)) {
+        if (!$this->isValidAction($className, $route->method)) {
             if ($classType !== 'Controller') {
                 throw new NonApplicationException(
-                    sprintf('No matching %s found. Target: "%s"', $classType, $target),
+                    sprintf('No matching %s or Action found. Target: "%s"', $classType, $target),
                 );
             }
             // Class type is "Controller", so check for 404 route
             // throws \WebServCo\Framework\Exceptions\NotFoundException
             $route = $this->router()->getFourOhfourRoute();
             $className = sprintf("\\%s\\Domain\\%s\\%s", $this->projectNamespace, $route->class, $classType);
+            if (!$this->isValidAction($className, $route->method)) {
+                throw new NonApplicationException(
+                    sprintf('404 route is not a valid Controller Action. Target: "%s"', $target),
+                );
+            }
         }
 
         $object = new $className();
-        $parent = get_parent_class($object);
-        /**
-         * PHP 8 compatibility.
-         *
-         * https://www.php.net/manual/en/migration80.incompatible.php
-         * "The ability to call non-static methods statically has been removed.
-         * Thus is_callable() will fail when checking for a non-static method with a classname
-         * (must check with an object instance). "
-         * old line:
-         * if (\method_exists((string) $parent, $route->method) || !\is_callable([$className, $route->method])) {
-         */
-        if (method_exists((string) $parent, $route->method) || !method_exists($className, $route->method)) {
-            throw new NonApplicationException(sprintf('No valid matching Action found. Target: "%s".', $target));
-        }
         $callable = [$object, $route->method];
         if (!is_callable($callable)) {
             throw new NonApplicationException(sprintf('Method is not callable. Target: "%s"', $target));
         }
 
         return call_user_func_array($callable, $route->arguments);
+    }
+
+    /**
+     * Public method of the class that its parent class doesn't have
+     * (so inherited framework methods can not be called as actions).
+     *
+     * Checked on the class name: PHP 8 `is_callable()` fails for non-static methods without an instance.
+     */
+    final protected function isValidAction(string $className, string $method): bool
+    {
+        if (!class_exists($className) || !method_exists($className, $method)) {
+            return false;
+        }
+        $parent = get_parent_class($className);
+        if ($parent !== false && method_exists($parent, $method)) {
+            return false;
+        }
+
+        return (new ReflectionMethod($className, $method))->isPublic();
     }
 
     /**

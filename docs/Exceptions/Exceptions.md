@@ -68,7 +68,7 @@ When you rethrow, pass the original as `$previous`. The [error processor](../Log
 
 ## Notes
 
-`NonApplicationException` covers problems the application has no way to deal with. A missing command or action is one. A PHP error from before the script even started (an oversized POST, say) is another.
+`NonApplicationException` covers problems the application has no way to deal with. A missing CLI command or action is one. A PHP error from before the script even started (an oversized POST, say) is another.
 
 `UploadException` is the odd one out. Its constructor takes an upload error code, and the message comes from `Files\Upload\Codes::getMessage()`, which calls the `__()` translation function. Load the [I18n library](../Libraries/I18n.md) before creating one, or `__()` won't exist yet ([File upload](../Files/Upload.md) has the rest).
 

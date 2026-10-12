@@ -187,8 +187,8 @@ So `/Blog/post/12` ends up in `\Project\Domain\Blog\Controller::post('12')`.
 
 - The class is created with **no constructor arguments**. That means your controller needs a parameterless constructor, which passes an output loader up to the parent ([Controllers](Controllers.md) shows one).
 - Arguments always arrive as strings, first the URL parts after the method, then any CLI arguments.
-- A controller class that doesn't exist sends the request to the router's `404_route`, and without one you get a `NotFoundException` (404). For a missing `Command` it's a `NonApplicationException`.
-- A missing method throws a `NonApplicationException`, which means a 500 page. The same happens for a method that also exists in a parent class (`setData`, `output`, ...).
+- A controller class or action that doesn't exist sends the request to the router's `404_route`, and without one you get a `NotFoundException` (404). The same goes for a method that isn't public or that also exists in the parent class (`setData`, `output`, ...). For the CLI it's a `NonApplicationException`.
+- A `404_route` that doesn't point to a valid action throws a `NonApplicationException`, which means a 500 page.
 - Whatever the method returns has to be a `ResponseInterface` (`Http\Response`, `Json\Response`, `Cli\Response`, ...).
 
 ---

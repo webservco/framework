@@ -10,8 +10,10 @@ use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionMethod;
+use WebServCo\Framework\AbstractController;
 use WebServCo\Framework\Application as App;
 use WebServCo\Framework\Exceptions\ApplicationException;
+use WebServCo\Framework\Interfaces\OutputLoaderInterface;
 
 use function is_readable;
 use function mkdir;
@@ -74,6 +76,31 @@ final class ApplicationTest extends TestCase
         $app = new App(self::$pathWeb, self::$pathProject, 'Project');
         $reflection = new ReflectionMethod($app, 'shutdown');
         $this->assertTrue($reflection->isPublic());
+    }
+
+    #[Test]
+    public function isValidActionAcceptsOnlyOwnPublicMethods(): void
+    {
+        $app = new App(self::$pathWeb, self::$pathProject, 'Project');
+        $controller = new class ($this->createStub(OutputLoaderInterface::class)) extends AbstractController {
+            public function index(): bool
+            {
+                return true;
+            }
+
+            protected function helper(): bool
+            {
+                return true;
+            }
+        };
+        $isValidAction = new ReflectionMethod($app, 'isValidAction');
+
+        $this->assertTrue($isValidAction->invoke($app, $controller::class, 'index'));
+        $this->assertFalse($isValidAction->invoke($app, $controller::class, 'missing'));
+        $this->assertFalse($isValidAction->invoke($app, $controller::class, 'helper'));
+        // Public, but inherited from the framework.
+        $this->assertFalse($isValidAction->invoke($app, $controller::class, 'setData'));
+        $this->assertFalse($isValidAction->invoke($app, '\\Project\\Domain\\Missing\\Controller', 'index'));
     }
 
     public static function setUpBeforeClass(): void

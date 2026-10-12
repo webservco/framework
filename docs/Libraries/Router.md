@@ -103,7 +103,7 @@ The class part goes into the class name unchanged, case included. On Linux `/blo
 
 Only two levels come before the arguments, so `Admin/User/edit` calls `Admin\Controller::User('edit')` and there's no way to nest domains.
 
-The router never checks that the method exists. The application does that later, and a missing method there throws a `NonApplicationException`, which is a 500. If unknown methods should give a 404, list your routes explicitly.
+The router never checks that the method exists. The application does that later and treats a missing method like a missing class, so the visitor lands on the 404 route.
 
 Patterns sit inside `#...#` delimiters, so escape any `#` in them.
 
