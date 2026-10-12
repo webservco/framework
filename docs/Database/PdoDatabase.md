@@ -168,7 +168,7 @@ $db->insert(
 );
 ```
 
-Give every row the same keys in the same order. The column list is built from all the rows combined, yet each row's values are bound in that row's own order, so a row with an extra or missing key shifts everything after it.
+Rows don't need the same keys or key order. The column list is built from all the rows combined, and a row that lacks a column gets `NULL` for it (not the column's default, so the column has to accept `NULL`).
 
 Table names may include the database, as in `'other_db.item'`.
 

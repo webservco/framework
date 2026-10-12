@@ -106,8 +106,11 @@ trait DatabaseTrait
 
         $query = $this->generateAddQuery($queryType, $tableName, $addData, $updateData);
 
+        // Bind the same data the query was built from (multiple rows: missing keys filled, keys in column order).
+        [, $data] = $this->getKeysValues($addData);
+
         $queryData = [];
-        foreach ($addData as $item) {
+        foreach ($data as $item) {
             $queryData[] = $item;
         }
         foreach ($updateData as $item) {
@@ -122,6 +125,12 @@ trait DatabaseTrait
             ],
         );
     }
+
+    /**
+    * @param array<mixed> $data
+    * @return array<mixed>
+    */
+    abstract protected function getKeysValues(array $data = []): array;
 
     /**
     * @param array<string,float|int|string|null> $addData
