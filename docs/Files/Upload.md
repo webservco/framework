@@ -10,7 +10,7 @@ Namespace `\WebServCo\Framework\Files\Upload`
 
 Whichever you pick, failures come as an `\WebServCo\Framework\Exceptions\UploadException` with a code from `Codes` and a translated message.
 
-- Requires: the [I18n library](../Libraries/I18n.md) loaded (`$this->i18n()`), because the error messages use `__()`
+- Messages are translated with `__()` once the [I18n library](../Libraries/I18n.md) is loaded (`$this->i18n()`). Before that they come out in English.
 
 ---
 
@@ -170,7 +170,7 @@ $fileName = $processor->handleUpload('photo', $uploadDirectory, $_FILES);
 | `IMAGE_TOO_SMALL` | 101 | Image is too small. |
 | `IMAGE_WRONG_ASPECT_RATIO` | 102 | Image has wrong aspect ratio. |
 
-`Codes::getMessage($code)` translates these through `__()`, so add them to your `.po` files.
+`Codes::getMessage($code)` translates these through `__()` when the I18n library is loaded. They're written as literal `__('...')` calls, so `xgettext` picks them up when you include the framework source (`vendor/webservco/framework/src`) in your scan.
 
 ---
 

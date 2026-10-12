@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebServCo\Framework\Files\Upload;
 
 use function __;
+use function function_exists;
 
 final class Codes
 {
@@ -29,23 +30,35 @@ final class Codes
                 return '';
             case self::INI_SIZE:
             case self::FORM_SIZE:
-                return __('Uploaded file size exceeds maximum file size allowed.');
+                return self::__('Uploaded file size exceeds maximum file size allowed.');
             case self::PARTIAL:
-                return __('The uploaded file was only partially uploaded.');
+                return self::__('The uploaded file was only partially uploaded.');
             case self::NO_FILE:
-                return __('No file was uploaded.');
+                return self::__('No file was uploaded.');
             case self::TYPE_NOT_ALLOWED:
-                return __('File type not allowed.');
+                return self::__('File type not allowed.');
             case self::CANT_WRITE:
-                return __('Error saving uploaded file.');
+                return self::__('Error saving uploaded file.');
             case self::IMAGE_TOO_SMALL:
-                return __('Image is too small.');
+                return self::__('Image is too small.');
             case self::IMAGE_WRONG_ASPECT_RATIO:
-                return __('Image has wrong aspect ratio.');
+                return self::__('Image has wrong aspect ratio.');
             case self::NO_TMP_DIR:
             case self::EXTENSION:
             default:
-                return __('Upload error.');
+                return self::__('Upload error.');
         }
+    }
+
+    /**
+    * `__()` when the I18n library is loaded (defines it), the message as is otherwise.
+    *
+    * Named `__` so `xgettext` extracts the messages with the usual `--keyword=__`.
+    */
+    private static function __(string $message): string
+    {
+        return function_exists('__')
+            ? __($message)
+            : $message;
     }
 }
