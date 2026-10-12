@@ -54,7 +54,7 @@ abstract class AbstractFileLogger extends AbstractLogger implements FileLoggerIn
 
     public function clear(): bool
     {
-        return (bool) file_put_contents($this->logPath, null);
+        return file_put_contents($this->logPath, '') !== false;
     }
 
     public function getLastLine(): int

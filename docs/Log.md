@@ -43,7 +43,7 @@ A line starts with the timestamp, which doubles as the log id. After it come the
 Context never goes in the line itself. It's dumped with `var_dump()` into a separate file named after the log id, `var/log/context-import/20241009.143012.234567.context` in this example.
 
 ```php
-// Empty the log file. Returns false even when it worked (0 bytes written).
+// Empty the log file. Returns false if the file could not be written.
 $logger->clear();
 // Number of the last line.
 $lines = $logger->getLastLine();
