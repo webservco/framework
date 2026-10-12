@@ -122,11 +122,11 @@ class Response extends AbstractResponse implements
         return $this->statusCode;
     }
 
-    protected function sendHeader(string $name, string $value, int $statusCode): bool
+    protected function sendHeader(string $name, string $value, int $statusCode, bool $replace = true): bool
     {
         header(
             sprintf('%s: %s', $name, $value),
-            true,
+            $replace,
             $statusCode,
         );
 
@@ -136,8 +136,11 @@ class Response extends AbstractResponse implements
     protected function sendHeaders(): bool
     {
         foreach ($this->headers as $name => $data) {
+            // replace any previously set header on the first value, append the rest
+            $replace = true;
             foreach ($data as $value => $bool) {
-                $this->sendHeader($name, $value, $this->statusCode);
+                $this->sendHeader($name, (string) $value, $this->statusCode, $replace);
+                $replace = false;
             }
         }
         // use strlen and not mb_strlen: "The length of the request body in octets (8-bit bytes)."

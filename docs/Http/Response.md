@@ -85,4 +85,4 @@ if ($this->request()->getMethod() !== Method::POST) {
 
 The constructor lowercases header names (`content-type`), which HTTP is fine with. `setHeader()` doesn't. Call `setHeader('Content-Type', ...)` on a response that got its `Content-Type` from the constructor and the header goes out twice, so stick to lower case with `setHeader()`.
 
-You can store several values for one header, but each is sent with `header($line, true)`, the `true` replaces whatever came before, and the browser only ever sees the last one. Cookies should go through the [Cookie library](../Libraries/Cookie.md) rather than `Set-Cookie` headers.
+You can store several values for one header and each goes out as its own header line. The first value replaces anything PHP had already queued under that name, the rest are appended. Cookies should go through the [Cookie library](../Libraries/Cookie.md) rather than `Set-Cookie` headers.
