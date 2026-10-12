@@ -13,9 +13,9 @@ Wrap some data you already have in memory, a generated PDF for instance, and get
 | Class | Content type |
 | --- | --- |
 | `File` | `application/octet-stream`, the one given, or detected (`null`) |
-| `CsvFile` | see [CSV](CSV.md) |
-| `PdfFile` | pass `PdfFile::CONTENT_TYPE` (`application/pdf`), see [Notes](#notes) |
-| `Mp3File` | pass `Mp3File::CONTENT_TYPE` (`audio/mpeg`) |
+| `CsvFile` | `text/csv`, the one given, or detected (`null`), see [CSV](CSV.md) |
+| `PdfFile` | `application/pdf`, the one given, or detected (`null`) |
+| `Mp3File` | `audio/mpeg`, the one given, or detected (`null`) |
 | `XmlFile` | `text/xml` |
 | `XmlFileFromDomElement` | `text/xml` |
 
@@ -42,7 +42,7 @@ return $file->getDownloadResponse();
 
 ```php
 // Show in the browser.
-$pdfFile = new PdfFile('invoice.pdf', $pdfData, PdfFile::CONTENT_TYPE);
+$pdfFile = new PdfFile('invoice.pdf', $pdfData);
 return $pdfFile->getOutputResponse();
 ```
 
@@ -89,7 +89,7 @@ Everything here sits in memory. A 2 GB video belongs with [X-Sendfile](../Http/X
 
 ## Notes
 
-The default content type is `application/octet-stream` in every class, `CsvFile`, `PdfFile` and `Mp3File` included. Their `CONTENT_TYPE` constants only take effect if you pass them in yourself. The two XML classes are different and set `text/xml` on their own.
+Each class defaults to its own `CONTENT_TYPE` constant. The two XML classes always use `text/xml` and don't take a content type.
 
 `XmlFile` runs the data through `DOMDocument::loadXML()`. Broken XML triggers a warning there, and the framework's error handler turns that into an `\ErrorException`.
 

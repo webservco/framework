@@ -54,12 +54,6 @@ The first 5 MB are built in memory, and anything bigger spills into a temporary 
 
 An empty array gives you an empty string, with no BOM and no header row.
 
-`getCsvFile()` ends up with `application/octet-stream` as the content type instead of `text/csv` ([Files](Files.md#notes) explains why). Downloads don't care. When you do want `text/csv`, build the file yourself:
-
-```php
-use WebServCo\Framework\Files\CsvFile;
-
-$csvFile = new CsvFile('users.csv', $csvCreator->getCsvData($data), CsvFile::CONTENT_TYPE);
-```
+`getCsvFile()` gives you a file with the `text/csv` content type.
 
 Anything that goes wrong surfaces as a `FileException`.
