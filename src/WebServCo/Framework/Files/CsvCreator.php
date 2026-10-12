@@ -41,7 +41,7 @@ final class CsvCreator
     {
         $csvData = $this->getCsvData($data, $addHeader);
 
-        return new CsvFile($fileName, $csvData);
+        return new CsvFile($fileName, $csvData, CsvFile::CONTENT_TYPE);
     }
 
     /**
