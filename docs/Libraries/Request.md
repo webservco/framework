@@ -116,7 +116,7 @@ $this->request()->getServerVariable('HTTP_X_REQUESTED_WITH');
 The framework parses the query string itself and ignores `$_GET`. `?page=2&sort=date` turns into `['page' => '2', 'sort' => 'date']`, and three details differ from what PHP would give you:
 
 - A parameter with no value (`?debug`) is dropped.
-- Sanitizing happens before URL decoding. An encoded `%3C` survives and comes out as `<`, so query values are raw user input.
+- Keys and values are sanitized after URL decoding, so an encoded `%3C` gets the same treatment as a literal `<`.
 - Brackets mean nothing. `?ids[]=1` produces a key literally named `ids[]`.
 
 ---

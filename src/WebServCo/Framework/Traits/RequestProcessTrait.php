@@ -248,9 +248,13 @@ trait RequestProcessTrait
             $this->setting('suffixes', []),
         );
         $this->target = RequestHelper::sanitizeString(urldecode($target));
-        $this->query = RequestHelper::format(
-            RequestHelper::sanitizeString($queryString),
-        );
+        // Sanitize after `format()`, which URL decodes, so encoded characters (`%3C`) are sanitized too.
+        $this->query = [];
+        foreach (RequestHelper::format($queryString) as $key => $value) {
+            $this->query[RequestHelper::sanitizeString((string) $key)] = $value === null
+                ? null
+                : RequestHelper::sanitizeString($value);
+        }
         $this->suffix = $suffix;
 
         return true;
