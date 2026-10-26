@@ -7,6 +7,8 @@ Sessions, gettext translations, PDO database helpers, forms, file uploads and do
 
 > **Note:** This framework is considered legacy. It has been replaced by individual components, please see [webservco/sandbox](https://webservco.github.io/sandbox/).
 
+History before 2017: [webservco-legacy/web-2012-2017](https://github.com/webservco-legacy/web-2012-2017).
+
 
 - Requires: PHP 8.3+, `ext-fileinfo`, `psr/log`
 - Optional: `ext-pdo` (MySQL or PostgreSQL driver), `ext-curl`, `ext-gettext`, `ext-dom`, `ext-mbstring`
